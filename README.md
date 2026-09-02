@@ -48,11 +48,26 @@ with the entry either way:
 
 ```js
 'case.gamehouse-plus.hero': {
-  src: '/img/gamehouse-hero.png',   // file at public/img/gamehouse-hero.png
+  src: 'img/gamehouse-hero.png',    // file at public/img/gamehouse-hero.png
   alt: 'GameHouse+ first-session flow, three screens.',
   plate: 'mesh', tone: 'dark', seed: 201,   // ignored once src is set
 },
 ```
+
+**Write the path without a leading slash.** `img/shot.png` is resolved
+against the deployment base, so it works both at a domain root and from a
+subfolder (`user.github.io/manel-portfolio/`). A leading slash resolves from
+the domain root and 404s in the subfolder case. Absolute `https://` URLs work
+too. Verified against both layouts.
+
+Two things that bite people:
+
+- Files in `public/` are committed to git and copied into `dist/` verbatim,
+  so they do upload — but **filenames are case-sensitive once deployed**,
+  even though macOS is not. `Hero.PNG` referenced as `hero.png` works on your
+  laptop and 404s on the host.
+- Images are lazy-loaded and the box is sized from `ratio`, so give each
+  entry a `ratio` close to the real aspect to avoid a visible letterbox.
 
 Plates: `lattice`, `mesh`, `grid`, `strata`, `portrait`, `orbit`, `panels`,
 `columns`, `weave`, `ramp`. Tones: `dark`, `light`, `accent`. `seed` is any

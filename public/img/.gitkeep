@@ -1,2 +1,9 @@
-Drop real screenshots here, then point a CONTENT.IMAGES entry's `src` at
-them — e.g. src: '/img/gamehouse-hero.png'
+Drop real images here, then point a CONTENT.IMAGES entry's `src` at them.
+
+Write the path WITHOUT a leading slash:
+
+    src: 'img/gamehouse-hero.png'      correct
+    src: '/img/gamehouse-hero.png'     breaks in a subfolder deploy
+
+Files in this folder are committed to git and copied into dist/ verbatim.
+Filenames are case-sensitive once deployed, even though macOS is not.

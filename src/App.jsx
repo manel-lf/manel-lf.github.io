@@ -879,9 +879,12 @@ export const CONTENT = {
    * IMAGES — the single map for every visual on the site.
    *
    * Each entry: { src, alt, plate, tone, seed }
-   *   src   — null renders the procedural SVG plate. Set it to a path
-   *           ('/img/my-shot.png', file in public/img/) to use a real image.
-   *           That one value is the whole swap; nothing else changes.
+   *   src   — null renders the procedural SVG plate. Set it to a path with
+   *           NO leading slash ('img/my-shot.png', file in public/img/) to
+   *           use a real image. That one value is the whole swap.
+   *           Paths are resolved against the deployment base by resolveSrc,
+   *           so the same value works at a domain root and in a subfolder.
+   *           Absolute URLs (https://...) also work.
    *   alt   — always required, and correct for either rendering.
    *   plate — lattice | mesh | grid | strata | portrait | orbit | panels
    *           | columns | weave | ramp
@@ -2302,6 +2305,22 @@ function useParallax(strength = 0.12, reduced = false) {
  * Give an entry a `src` and the <img> takes over instead.
  * ========================================================================= */
 
+/**
+ * Resolves a CONTENT.IMAGES `src` against the deployment base.
+ *
+ * Write paths WITHOUT a leading slash — 'img/shot.png'. A leading slash
+ * resolves from the domain root, which 404s when the site is served from a
+ * subfolder (a GitHub Pages project site, say). This prefixes Vite's
+ * BASE_URL so the same value works at a domain root and in a subfolder.
+ * Absolute URLs and data URIs are passed straight through.
+ */
+function resolveSrc(src) {
+  if (!src) return src
+  if (/^([a-z]+:)?\/\//i.test(src) || /^data:/i.test(src)) return src
+  const base = import.meta.env.BASE_URL || '/'
+  return `${base.replace(/\/+$/, '')}/${src.replace(/^\/+/, '')}`
+}
+
 /** Deterministic PRNG so a given seed always draws the same composition. */
 function mulberry32(a) {
   return function () {
@@ -2742,7 +2761,7 @@ function Visual({ imageKey, ratio = 16 / 9, fill = false, className, style }) {
     <div ref={boxRef} className={className ? `${className} vis` : 'vis'} style={wrapStyle}>
       {entry.src ? (
         <img
-          src={entry.src}
+          src={resolveSrc(entry.src)}
           alt={entry.alt}
           loading="lazy"
           decoding="async"
