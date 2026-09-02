@@ -2780,6 +2780,7 @@ function Nav({ theme, onToggleTheme, onHome }) {
           href={CONTENT.links.bookACall}
           target="_blank"
           rel="noreferrer noopener"
+          aria-label={CONTENT.nav.bookLabel}
         >
           <span className="dot" aria-hidden="true" />
           <span className="navLinkText">{CONTENT.nav.bookLabel}</span>
@@ -2806,6 +2807,9 @@ function SectionHead({ label, statement, aside, onPanel, headingId, as: Tag = 'h
   const heading = (
     <Tag className={`sectionHead${onPanel ? ' sectionHead--onPanel' : ''}`} id={headingId}>
       <span className="label reveal">{label}</span>
+      {/* Both halves are block-level, so this space is invisible but keeps
+          the heading's accessible name from running them together. */}
+      {' '}
       <span className="statement reveal" style={{ '--reveal-delay': '80ms' }}>
         {statement}
       </span>
@@ -2932,7 +2936,15 @@ function Hero({ reduced }) {
       className={`container hero${loaded ? ' is-loaded' : ''}`}
       aria-labelledby="hero-name"
     >
-      <h1 className="heroName" id="hero-name">
+      {/* The visible name is split into per-word masks with margin-based
+          spacing, which would otherwise be read as one run-together token
+          ("ManelLópez"). aria-label sets the accessible name outright rather
+          than relying on the split spans being skipped. */}
+      <h1
+        className="heroName"
+        id="hero-name"
+        aria-label={`${CONTENT.hero.name} — ${CONTENT.meta.role}`}
+      >
         {words.map((word, i) => (
           <span className="word" key={word + i}>
             <span className="wordInner" style={{ '--word-delay': `${i * 90}ms` }}>
@@ -2940,7 +2952,6 @@ function Hero({ reduced }) {
             </span>
           </span>
         ))}
-        <span className="sr-only">{` — ${CONTENT.meta.role}`}</span>
       </h1>
 
       {/* Line two. The live region is polite and the roles are also listed for
@@ -3026,6 +3037,7 @@ function ProjectCard({ project, onCapture, index }) {
         href={`#/work/${project.slug}`}
         style={{ '--reveal-delay': `${index * 70}ms` }}
         onClick={() => onCapture(titleRef.current)}
+        aria-label={`${project.name} — ${CONTENT.work.viewCase}`}
       >
         <span className="cardTop mono">
           <span ref={titleRef}>{project.eyebrow}</span>
@@ -3741,6 +3753,7 @@ function CaseStudy({ project, prev, next, onCapture, onHome, flight, reduced }) 
               <span className="caseEyebrow mono">{project.eyebrow}</span>
               <h1 className="caseTitle">
                 <span className="prefix">{CONTENT.caseUi.eyebrow}</span>
+                {' '}
                 <span className="subject" ref={subjectRef}>
                   {`${CONTENT.caseUi.titlePrefix} ${project.name}`}
                 </span>
