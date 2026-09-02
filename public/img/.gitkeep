@@ -1,0 +1,2 @@
+Drop real screenshots here, then point a CONTENT.IMAGES entry's `src` at
+them — e.g. src: '/img/gamehouse-hero.png'
