@@ -20,11 +20,13 @@ change what the site says.
 
 | I want to change… | Edit |
 | --- | --- |
-| Email, LinkedIn, Behance, GitHub, "Book a call" | `LINKS` (just above `CONTENT`) — each URL is written once |
+| Email, LinkedIn, Behance, "Book a call" | `LINKS` (just above `CONTENT`) — each URL is written once |
 | Name, role, monogram | `CONTENT.meta` |
 | Hero bio | `CONTENT.hero.bio` |
 | The cycling roles in the headline | `CONTENT.hero.roles` |
 | Logo strip companies | `CONTENT.logos.items` |
+| How many logos show at once, and how fast they turn | `CONTENT.logos.perPage`, `CONTENT.logos.intervalMs` |
+| Booking dialog copy and the calendar URL | `CONTENT.booking` |
 | Which project is the spotlight | `CONTENT.work.spotlightSlug` |
 | A project, or a whole case study | `CONTENT.projects[n]` |
 | "Design bits" tiles | `CONTENT.bits.items` |
@@ -32,6 +34,7 @@ change what the site says.
 | Testimonials | `CONTENT.testimonials.quotes` |
 | Journal posts | `CONTENT.journal.posts` |
 | Contact copy, labels, validation messages | `CONTENT.contact` |
+| Make the form actually send (see below) | `CONTENT.contact.endpoint` |
 | Footer rail, socials, copyright | `CONTENT.footer` |
 | Case-study section labels shared across projects | `CONTENT.caseUi` |
 | Any visual on the site | `CONTENT.IMAGES` |
@@ -62,6 +65,38 @@ Append to `CONTENT.projects` with a unique `slug`, then add its eight
 and gets its own case study at `#/work/<slug>` automatically, including
 prev/next navigation.
 
+### Making the contact form actually send
+
+Out of the box the form validates and then opens a prefilled draft in the
+visitor's mail app — no third-party service, no keys, works as a pure static
+build. A static page cannot send email on its own, so real sending needs a
+form service. Set one key and it switches over; the UI then reports genuine
+success or failure instead of being optimistic:
+
+```js
+// CONTENT.contact
+endpoint: 'https://formspree.io/f/YOUR_ID',
+```
+
+Web3Forms works too, with its key passed alongside:
+
+```js
+endpoint: 'https://api.web3forms.com/submit',
+endpointExtraFields: { access_key: 'YOUR_ACCESS_KEY' },
+```
+
+It POSTs `{ name, email, subject, message }` as JSON. Leave `endpoint: null`
+to keep the mail-draft behaviour.
+
+### Booking a call
+
+The header CTA opens `CONTENT.booking.url` in a dialog as an iframe, rather
+than pulling in Cal.com's embed script — so the app stays free of
+third-party JavaScript. The CTA is a real anchor to the same URL, so
+middle-click, "open in new tab" and a no-JavaScript visit all still work, and
+the dialog carries a visible "open in a new tab" fallback in case the frame
+is ever refused.
+
 ### Adding journal post links
 
 Journal rows are deliberately not links, because there are no post pages yet.
@@ -79,6 +114,12 @@ Transform and opacity only, 150–400ms for UI transitions and longer only for
 deliberate reveals. Everything is gated behind `prefers-reduced-motion`: the
 typing headline resolves to a single static role, reveals render visible, and
 hover/parallax/flight are all disabled.
+
+Two things move on a timer the visitor did not trigger: the typing headline
+and the logo strip, which cross-fades four marks at a time. Both stop under
+reduced motion — the headline pins to a single role and the strip renders
+every logo at once. The strip also pauses on hover and focus so a name can be
+read.
 
 The scroll reveal is opt-in from JavaScript (`.has-reveal` on `<html>`), so if
 scripting or `IntersectionObserver` is unavailable the page renders fully

@@ -34,11 +34,10 @@ import {
  * EDIT THESE before publishing.
  */
 const LINKS = {
-  email: 'manell@gamehouse.com',
-  linkedin: 'https://www.linkedin.com/in/manellopez',
-  behance: 'https://www.behance.net/manellopez',
-  bookACall: 'https://cal.com/manellopez/30min',
-  github: 'https://github.com/manellopez',
+  email: 'manellopez.alu@gmail.com',
+  linkedin: 'https://www.linkedin.com/in/manel-lf/',
+  behance: 'https://www.behance.net/manellpez',
+  bookACall: 'https://cal.com/manel-lopez-wc3pop/book-a-call',
 }
 
 export const CONTENT = {
@@ -50,6 +49,17 @@ export const CONTENT = {
   },
 
   links: LINKS,
+
+  booking: {
+    // The scheduling page shown inside the dialog. `?embed=` drops Cal.com's
+    // own site chrome; the theme is matched to the site's at open time.
+    url: LINKS.bookACall,
+    title: 'Book a call',
+    subtitle: 'Pick a slot that suits you — 30 minutes, no agenda needed.',
+    closeLabel: 'Close booking dialog',
+    newTabLabel: 'Open in a new tab instead',
+    loadingLabel: 'Loading available times…',
+  },
 
   nav: {
     bookLabel: 'Book a call',
@@ -65,19 +75,23 @@ export const CONTENT = {
     rolePrefix: '',
     roles: [
       'Product Designer',
-      'UX Designer',
-      'UI Designer',
-      'Design Systems',
-      'Prototyper in Code',
+      'UX/UI Designer',
+      'AI Prototyper',
+      'Mixed Methods Researcher',
+      'System Builder',
       'Engineer',
       'University Lecturer',
     ],
-    bio: 'Barcelona-based product designer with an engineering background. I work across consumer subscription apps, mobile products and web, ground decisions in research and product analytics, and build functional prototypes in code so a direction is tested before engineering time is committed to it.',
+    bio: 'Barcelona-based Senior Product Designer with an engineering background. From research and analytics to prototypes and production, I help turn ideas into products people return to.',
     scrollHint: 'Scroll',
   },
 
   logos: {
     label: 'Companies and teams I have designed for',
+    // Shown `perPage` at a time, cross-fading every `intervalMs`.
+    // Under reduced motion the rotation is dropped and all of them render at once.
+    perPage: 4,
+    intervalMs: 3500,
     // `mark` maps to a hand-drawn SVG wordmark below. Keep the key if you swap the name.
     items: [
       { name: 'GameHouse', mark: 'gamehouse' },
@@ -86,6 +100,8 @@ export const CONTENT = {
       { name: 'Popcore Games', mark: 'popcore' },
       { name: 'SEAT CUPRA', mark: 'cupra' },
       { name: 'Socialpoint', mark: 'socialpoint' },
+      { name: 'La Salle BCN', mark: 'lasalle' },
+      { name: 'Kave Home', mark: 'kave' },
     ],
   },
 
@@ -190,34 +206,31 @@ export const CONTENT = {
     eyebrow: 'Shoutouts.',
     heading: 'What stakeholders and teammates say about me.',
     intro:
-      'Attributed by role rather than by name. Every line below is drawn from working relationships across product, engineering, design and teaching — happy to put you in touch with any of them.',
+      'People I have worked with directly, across product, design and engineering. Happy to put you in touch with any of them.',
     prevLabel: 'Previous testimonial',
     nextLabel: 'Next testimonial',
     dotLabel: 'Go to testimonial',
     quotes: [
       {
-        id: 'q-ucd',
+        id: 'q-emmi',
         quote:
-          'Manel built our design system from nothing and then defended it, which is the harder half. He argued for the constraints when it would have been easier to make an exception, and the result is a library the team actually reaches for. He is unusually comfortable moving between a token definition and a positioning conversation in the same hour.',
+          'Manel combines strong design skills with genuine product thinking. He consistently keeps the user at the center, runs usability tests, and uses feedback to improve. He embraces feedback while confidently challenging perspectives with thoughtful reasoning and a clear point of view. He has a strong sense of product vision and translates it into coherent, consistent experiences.',
+        name: 'Emmi Kuusikko',
+        role: 'Head of Product',
+      },
+      {
+        id: 'q-lea',
+        quote:
+          'Manel consistently acted above his level as a Senior UI/UX Designer. He presented ideas in front of senior management and defended them with confidence. He combines UI/UX craft excellence with strong prototyping and technical skills, paired with sharp abstraction and communication skills, which is a rare mix. Whoever gets to work with Manel will be very lucky.',
+        name: 'Lea Schönfelder',
         role: 'UX Creative Director',
       },
       {
-        id: 'q-product',
+        id: 'q-alex',
         quote:
-          'He led the instant-content pivot end to end — framing the problem, running the research, and rebuilding the first session around it. The activation and retention numbers moved in a way none of us had forecast. What I value most is that he brought the evidence before he brought the design.',
-        role: 'Product Lead, GameHouse',
-      },
-      {
-        id: 'q-eng',
-        quote:
-          'Manel hands over prototypes that already answer the questions engineering would have asked. He writes code, so the spec is realistic about state, edge cases and platform limits. It has saved us entire sprints of finding out that a flow does not survive contact with the runtime.',
-        role: 'Engineering Lead',
-      },
-      {
-        id: 'q-lasalle',
-        quote:
-          'He teaches UX to students who arrive as data scientists, and he meets them where they are — methods framed as instruments, not as ceremony. Students leave the course able to run and defend a study. Having a practising designer in front of them is the reason it lands.',
-        role: 'Programme Director, La Salle URL',
+          'Manel consistently delivers clean and visually appealing designs. He’s great at bringing Product and Development together, making sure everyone is aligned and ideas move smoothly from concept to delivery. Even with tight deadlines, he stays collaborative, open to new ideas, and focused on finding practical solutions.',
+        name: 'Alex Segura',
+        role: 'Frontend Developer',
       },
     ],
   },
@@ -260,8 +273,24 @@ export const CONTENT = {
     intro:
       'Open to senior product design roles, design system work, and prototyping engagements with product and games teams. Also available for guest lectures and workshops.',
     emailLabel: 'Or email me directly',
+
+    /**
+     * Set this to a form-service endpoint and the form genuinely sends the
+     * message — no mail client involved. It POSTs JSON
+     * { name, email, subject, message } and reports real success or failure.
+     *
+     * Works as-is with Formspree ('https://formspree.io/f/<id>') or
+     * Web3Forms ('https://api.web3forms.com/submit', which also needs
+     * `endpointExtraFields: { access_key: '<your-key>' }`).
+     *
+     * Left null: the form validates, then opens a prefilled draft in the
+     * visitor's mail app instead. Nothing else needs to change either way.
+     */
+    endpoint: null,
+    endpointExtraFields: null,
+
     fields: {
-      name: { label: 'Your name', placeholder: 'Manel López', required: true },
+      name: { label: 'Your name', placeholder: 'Hiring Manager', required: true },
       email: { label: 'Your email', placeholder: 'you@company.com', required: true },
       subject: { label: 'Subject', placeholder: 'Senior Product Designer role', required: true },
       message: {
@@ -272,9 +301,21 @@ export const CONTENT = {
     },
     submitLabel: 'Send message',
     submittingLabel: 'Sending…',
-    successTitle: 'Message ready to send.',
-    successBody:
-      'Your mail client should have opened with everything filled in. If it did not, email me directly at the address above.',
+
+    // Shown when `endpoint` is set and the message actually went out.
+    sentTitle: 'Message sent.',
+    sentBody: 'Thanks — it landed in my inbox and I’ll come back to you shortly.',
+
+    // Shown when `endpoint` is null and a mail draft was opened instead.
+    // Deliberately does not say "above": on a wide screen the address sits to
+    // the left of the form, not above it.
+    draftTitle: 'Your email is ready.',
+    draftBody: `A prefilled draft to ${LINKS.email} should have opened in your mail app. If nothing happened, copy that address and send it directly.`,
+
+    // Shown when `endpoint` is set but the request failed.
+    failedTitle: 'That didn’t go through.',
+    failedBody: `Something went wrong sending the message. Please email me directly at ${LINKS.email}.`,
+
     resetLabel: 'Write another',
     errors: {
       name: 'Please tell me your name.',
@@ -297,7 +338,6 @@ export const CONTENT = {
     socials: [
       { label: 'LinkedIn', href: LINKS.linkedin, icon: 'linkedin' },
       { label: 'Behance', href: LINKS.behance, icon: 'behance' },
-      { label: 'GitHub', href: LINKS.github, icon: 'github' },
       { label: 'Email', href: `mailto:${LINKS.email}`, icon: 'mail' },
     ],
     location: 'Barcelona, Spain',
@@ -1140,6 +1180,92 @@ body{
 }
 .navLink:hover{color:var(--accent)}
 
+/* Primary call to action in the bar. Filled, not a quiet text link. */
+.ctaBook{
+  display:inline-flex;align-items:center;gap:var(--s2);
+  padding:var(--s3) var(--s4);
+  border-radius:var(--r-pill);
+  background:var(--ink);
+  color:var(--canvas);
+  font-weight:500;
+  border:1px solid var(--ink);
+  transition:transform var(--dur-base) var(--ease-out),
+             background-color var(--dur-base) var(--ease-std),
+             opacity var(--dur-base) var(--ease-std);
+}
+.ctaBook svg{transition:transform var(--dur-base) var(--ease-out)}
+.ctaBook:hover{transform:translate3d(0,-1px,0);opacity:.92}
+.ctaBook:hover svg{transform:translateX(3px)}
+.ctaBook .ctaDot{
+  width:6px;height:6px;border-radius:50%;flex:none;
+  background:var(--accent);
+}
+[data-theme='dark'] .ctaBook .ctaDot{background:var(--accent)}
+
+/* ---- booking dialog ---- */
+.bookingScrim{
+  position:fixed;inset:0;z-index:60;
+  display:grid;place-items:center;
+  padding:var(--s4);
+  background:rgba(10,10,10,.55);
+  backdrop-filter:blur(4px);
+}
+.bookingScrim.is-animated{animation:scrimIn var(--dur-base) var(--ease-out) both}
+@keyframes scrimIn{from{opacity:0}to{opacity:1}}
+.bookingPanel{
+  /* Wide and tall enough for Cal.com's month view plus its slot column;
+     below this the embed starts clipping its own layout. */
+  width:min(1080px,100%);
+  max-height:min(94vh,940px);
+  display:flex;flex-direction:column;
+  background:var(--surface);
+  border:1px solid var(--hairline-strong);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  box-shadow:0 40px 80px -32px rgba(0,0,0,.5);
+}
+.bookingScrim.is-animated .bookingPanel{
+  animation:panelIn var(--dur-slow) var(--ease-out) both;
+}
+@keyframes panelIn{
+  from{opacity:0;transform:translate3d(0,12px,0) scale(.99)}
+  to{opacity:1;transform:none}
+}
+.bookingHead{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:var(--s4);
+  padding:var(--s5);
+  border-bottom:1px solid var(--hairline);
+}
+.bookingTitle{
+  font-size:1.25rem;font-weight:600;letter-spacing:-.025em;color:var(--ink);
+}
+.bookingSub{margin-top:var(--s2);color:var(--muted);font-size:.9375rem;max-width:44ch}
+.bookingFrame{position:relative;flex:1;min-height:640px;background:var(--surface)}
+.bookingFrame iframe{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  border:0;
+}
+.bookingLoading{
+  position:absolute;inset:0;
+  display:grid;place-items:center;
+  color:var(--muted);
+}
+.bookingFoot{
+  padding:var(--s4) var(--s5);
+  border-top:1px solid var(--hairline);
+}
+.bookingFoot .textLink{display:inline-flex;align-items:center;gap:var(--s2)}
+
+@media (max-width:640px){
+  .bookingScrim{padding:0;place-items:stretch}
+  .bookingPanel{max-height:100dvh;border:0;border-radius:0;width:100%}
+  .bookingFrame{min-height:0}
+  .bookingHead{padding:var(--s4)}
+  .bookingSub{display:none}
+}
+
 .themeToggle{
   position:relative;
   width:44px;height:24px;flex:none;
@@ -1220,6 +1346,21 @@ body{
   border-top:1px solid var(--hairline);
   border-bottom:1px solid var(--hairline);
 }
+.logoRotator{
+  display:grid;
+  border-top:1px solid var(--hairline);
+  border-bottom:1px solid var(--hairline);
+}
+.logoRotator .logoPage{
+  grid-area:1 / 1;
+  border:0;
+  opacity:0;
+  pointer-events:none;
+  transform:translate3d(0,6px,0);
+  transition:opacity var(--dur-slow) var(--ease-std),
+             transform var(--dur-slow) var(--ease-out);
+}
+.logoRotator .logoPage.is-active{opacity:1;transform:none;pointer-events:auto}
 .logoStrip li{opacity:.62;transition:opacity var(--dur-base) var(--ease-std)}
 .logoStrip li:hover{opacity:1}
 .wordmark{height:24px;width:auto;color:var(--ink)}
@@ -1467,7 +1608,12 @@ const STYLES_HOME = `
   line-height:1.55;letter-spacing:-.011em;color:var(--ink);
   max-width:48ch;
 }
-.quoteAttr{margin-top:var(--s5);color:var(--muted)}
+.quoteAttr{
+  margin-top:var(--s5);
+  display:flex;flex-direction:column;gap:2px;
+}
+.quoteName{font-weight:600;letter-spacing:-.015em;color:var(--ink)}
+.quoteRole{color:var(--muted)}
 .quoteFoot{
   display:flex;align-items:center;justify-content:space-between;
   gap:var(--s5);margin-top:var(--s6);
@@ -1555,6 +1701,8 @@ textarea.control{min-height:120px;resize:vertical;line-height:1.6}
   align-items:flex-start;
 }
 .successCard h3{font-size:1.25rem;font-weight:600;letter-spacing:-.02em}
+.successCard--failed{border-color:#C0392B}
+[data-theme='dark'] .successCard--failed{border-color:#FF6B5B}
 .successCard p{color:var(--muted);max-width:48ch}
 .textLink{
   color:var(--ink);
@@ -2627,6 +2775,7 @@ const ICON_PATHS = {
   moon: 'M15.5 12.6A6.2 6.2 0 017.4 4.5a6.5 6.5 0 108.1 8.1z',
   mail: 'M2.5 5.5h15v9h-15zM2.5 6l7.5 5 7.5-5',
   calendar: 'M4 5.5h12v11H4zM7 3v3M13 3v3M4 9h12',
+  close: 'M5 5l10 10M15 5L5 15',
 }
 
 const ICON_FILLED = {
@@ -2681,6 +2830,8 @@ const GLYPHS = {
   cupra: 'M9 3L4 17h3l5-14zM15 3l-5 14h3l5-14z',
   socialpoint: 'M11 2l8 8-8 8-8-8zm0 5.2L7.8 10 11 12.8 14.2 10z',
   radisson: 'M4 17V3h4a5 5 0 010 10H8l5 4H9L5 13v4zm4-6h1a2.5 2.5 0 000-5H8z',
+  lasalle: 'M11 2l2.2 5.4L19 8.2l-4 4 1 5.8-5-2.9-5 2.9 1-5.8-4-4 5.8-.8z',
+  kave: 'M4 3h3v6l5-6h3.6l-5.4 6.4L19 17h-4l-4-5.2V17H4z',
 }
 
 function Wordmark({ mark, name, large = false }) {
@@ -2754,7 +2905,7 @@ function scrollToId(id, reduced) {
   window.scrollTo({ top: y, behavior: reduced ? 'auto' : 'smooth' })
 }
 
-function Nav({ theme, onToggleTheme, onHome }) {
+function Nav({ theme, onToggleTheme, onHome, onBook }) {
   const [stuck, setStuck] = useState(false)
   useEffect(() => {
     const onScroll = () => setStuck(window.scrollY > 8)
@@ -2775,15 +2926,24 @@ function Nav({ theme, onToggleTheme, onHome }) {
         {CONTENT.meta.monogram}
       </a>
       <div className="navRight">
+        {/* Anchored to the real scheduling URL so it still works without
+            JavaScript, middle-click and "open in new tab"; the click is
+            intercepted to show the calendar inline instead. */}
         <a
-          className="navLink mono"
+          className="ctaBook mono"
           href={CONTENT.links.bookACall}
           target="_blank"
           rel="noreferrer noopener"
           aria-label={CONTENT.nav.bookLabel}
+          onClick={(e) => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+            e.preventDefault()
+            onBook()
+          }}
         >
-          <span className="dot" aria-hidden="true" />
+          <span className="ctaDot" aria-hidden="true" />
           <span className="navLinkText">{CONTENT.nav.bookLabel}</span>
+          <Icon name="arrowRight" size={14} />
         </a>
         <button
           type="button"
@@ -2800,6 +2960,125 @@ function Nav({ theme, onToggleTheme, onHome }) {
         </button>
       </div>
     </header>
+  )
+}
+
+/**
+ * Booking dialog: the Cal.com scheduling page in an iframe.
+ *
+ * Uses an iframe rather than Cal.com's embed script so the app stays free of
+ * third-party JavaScript. If the frame is refused for any reason there is an
+ * always-visible link to open the page in a new tab, so booking never becomes
+ * a dead end.
+ */
+function BookingDialog({ onClose, theme, reduced }) {
+  const panelRef = useRef(null)
+  const [loaded, setLoaded] = useState(false)
+
+  // Mounted only while open, so `loaded` starts fresh on every open and the
+  // iframe is torn down on close rather than kept alive in the background.
+  useEffect(() => {
+    const previouslyFocused = document.activeElement
+    const { overflow } = document.body.style
+    document.body.style.overflow = 'hidden'
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        onClose()
+        return
+      }
+      if (e.key !== 'Tab') return
+      // Keep focus inside the dialog while it is open.
+      const focusables = panelRef.current?.querySelectorAll(
+        'a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])',
+      )
+      if (!focusables || !focusables.length) return
+      const first = focusables[0]
+      const last = focusables[focusables.length - 1]
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+
+    // Focus synchronously: the panel is already in the DOM by the time this
+    // effect runs, and requestAnimationFrame does not fire in a background
+    // tab — which would leave focus stranded outside the dialog.
+    panelRef.current?.querySelector('button, a[href]')?.focus()
+
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = overflow
+      if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus()
+    }
+  }, [onClose])
+
+  const src = `${CONTENT.booking.url}?embed=&layout=month_view&theme=${theme}`
+
+  return (
+    <div
+      className={`bookingScrim${reduced ? '' : ' is-animated'}`}
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose()
+      }}
+    >
+      <div
+        className="bookingPanel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="booking-title"
+        ref={panelRef}
+      >
+        <div className="bookingHead">
+          <div>
+            <h2 id="booking-title" className="bookingTitle">
+              {CONTENT.booking.title}
+            </h2>
+            <p className="bookingSub">{CONTENT.booking.subtitle}</p>
+          </div>
+          <button
+            type="button"
+            className="iconBtn"
+            onClick={onClose}
+            aria-label={CONTENT.booking.closeLabel}
+          >
+            <Icon name="close" size={16} />
+          </button>
+        </div>
+
+        <div className="bookingFrame">
+          {!loaded ? (
+            <p className="bookingLoading mono" role="status">
+              {CONTENT.booking.loadingLabel}
+            </p>
+          ) : null}
+          <iframe
+            src={src}
+            title={CONTENT.booking.title}
+            onLoad={() => setLoaded(true)}
+            loading="eager"
+          />
+        </div>
+
+        <div className="bookingFoot">
+          <a
+            className="textLink mono"
+            href={CONTENT.booking.url}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {CONTENT.booking.newTabLabel}
+            <Icon name="arrowUpRight" size={13} />
+          </a>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -2972,16 +3251,75 @@ function Hero({ reduced }) {
   )
 }
 
-function LogoStrip() {
+/**
+ * Logo strip. Shows CONTENT.logos.perPage marks at a time and cross-fades to
+ * the next set on an interval.
+ *
+ * This is the one timed animation besides the typing headline. Under reduced
+ * motion the rotation is dropped entirely and every mark renders at once, so
+ * nothing moves and no content is hidden behind a timer. It pauses on hover
+ * and on focus, so a reader can stop it to read a name.
+ */
+function LogoStrip({ reduced }) {
+  const items = CONTENT.logos.items
+  const perPage = Math.max(1, CONTENT.logos.perPage || 4)
+  const pageCount = Math.max(1, Math.ceil(items.length / perPage))
+  const [page, setPage] = useState(0)
+  const [paused, setPaused] = useState(false)
+
+  useEffect(() => {
+    if (reduced || pageCount < 2 || paused) return
+    // Deliberately no document.hidden check: browsers already throttle
+    // background timers, and some embedded contexts report hidden
+    // permanently — which would strand the strip on its first page and
+    // hide the remaining logos for good.
+    const id = window.setInterval(() => {
+      setPage((n) => (n + 1) % pageCount)
+    }, CONTENT.logos.intervalMs || 3500)
+    return () => window.clearInterval(id)
+  }, [reduced, pageCount, paused])
+
+  // Reduced motion: no rotation, no timer, everything visible at once.
+  if (reduced) {
+    return (
+      <div className="container">
+        <ul className="logoStrip" aria-label={CONTENT.logos.label}>
+          {items.map((logo) => (
+            <li key={logo.name}>
+              <Wordmark mark={logo.mark} name={logo.name} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
   return (
     <div className="container">
-      <ul className="logoStrip" aria-label={CONTENT.logos.label}>
-        {CONTENT.logos.items.map((logo) => (
-          <li key={logo.name} className="reveal">
-            <Wordmark mark={logo.mark} name={logo.name} />
-          </li>
+      {/* All pages are stacked in one grid cell, so the strip's height is
+          fixed by the tallest page and the section never reflows as it turns. */}
+      <div
+        className="logoRotator reveal"
+        aria-label={CONTENT.logos.label}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onFocus={() => setPaused(true)}
+        onBlur={() => setPaused(false)}
+      >
+        {Array.from({ length: pageCount }, (_, i) => (
+          <ul
+            key={i}
+            className={`logoStrip logoPage${i === page ? ' is-active' : ''}`}
+            aria-hidden={i === page ? undefined : 'true'}
+          >
+            {items.slice(i * perPage, i * perPage + perPage).map((logo) => (
+              <li key={logo.name}>
+                <Wordmark mark={logo.mark} name={logo.name} />
+              </li>
+            ))}
+          </ul>
         ))}
-      </ul>
+      </div>
     </div>
   )
 }
@@ -3284,7 +3622,10 @@ function Testimonials() {
                   aria-hidden={n === i ? undefined : 'true'}
                 >
                   <blockquote className="quoteBody">{q.quote}</blockquote>
-                  <figcaption className="quoteAttr mono">{q.role}</figcaption>
+                  <figcaption className="quoteAttr">
+                    <span className="quoteName">{q.name}</span>
+                    <span className="quoteRole mono">{q.role}</span>
+                  </figcaption>
                 </figure>
               ))}
             </div>
@@ -3296,7 +3637,7 @@ function Testimonials() {
                     type="button"
                     className="dot"
                     aria-current={n === i ? 'true' : undefined}
-                    aria-label={`${CONTENT.testimonials.dotLabel} ${n + 1}: ${q.role}`}
+                    aria-label={`${CONTENT.testimonials.dotLabel} ${n + 1}: ${q.name}, ${q.role}`}
                     onClick={() => setI(n)}
                   />
                 ))}
@@ -3404,7 +3745,8 @@ function ContactSection() {
   const [values, setValues] = useState({ name: '', email: '', subject: '', message: '' })
   const [errors, setErrors] = useState({})
   const [touched, setTouched] = useState({})
-  const [status, setStatus] = useState('idle') // idle | sending | sent
+  // idle | sending | sent (posted for real) | draft (mail app opened) | failed
+  const [status, setStatus] = useState('idle')
 
   const validate = useCallback((v) => {
     const e = {}
@@ -3426,7 +3768,8 @@ function ContactSection() {
     setErrors(validate(values))
   }
 
-  const deliver = (v) => {
+  /** Opens a prefilled draft in the visitor's mail app. */
+  const openMailDraft = (v) => {
     const body = `${v.message}\n\n— ${v.name}\n${v.email}`
     const href =
       `mailto:${CONTENT.links.email}` +
@@ -3435,7 +3778,17 @@ function ContactSection() {
     window.location.href = href
   }
 
-  const onSubmit = (ev) => {
+  /** Actually posts the message, when an endpoint is configured. */
+  const postMessage = async (v) => {
+    const res = await fetch(CONTENT.contact.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ ...(CONTENT.contact.endpointExtraFields || {}), ...v }),
+    })
+    if (!res.ok) throw new Error(`Form endpoint returned ${res.status}`)
+  }
+
+  const onSubmit = async (ev) => {
     ev.preventDefault()
     const e = validate(values)
     setErrors(e)
@@ -3446,17 +3799,27 @@ function ContactSection() {
       return
     }
     setStatus('sending')
-    // Optimistic: the visitor sees confirmation immediately, the mail client
-    // opens alongside it.
-    window.setTimeout(() => {
-      // A blocked or unhandled mailto must not leave the form stuck on
-      // "Sending…" — the success card names the address as a fallback.
+
+    if (CONTENT.contact.endpoint) {
+      // Real send: report what actually happened rather than assuming success.
       try {
-        deliver(values)
+        await postMessage(values)
+        setStatus('sent')
       } catch {
-        /* no mail handler; the success card still shows the address */
+        setStatus('failed')
       }
-      setStatus('sent')
+      return
+    }
+
+    // No endpoint: hand off to the visitor's mail app. Optimistic, because
+    // the page cannot observe whether the client opened.
+    window.setTimeout(() => {
+      try {
+        openMailDraft(values)
+      } catch {
+        /* no mail handler; the card names the address as a fallback */
+      }
+      setStatus('draft')
     }, 420)
   }
 
@@ -3543,18 +3906,30 @@ function ContactSection() {
           <div className="reveal">
             {/* Submission state is announced, not just shown. */}
             <div aria-live="polite" aria-atomic="true">
-              {status === 'sent' ? (
-                <div className="successCard">
-                  <h3>{CONTENT.contact.successTitle}</h3>
-                  <p>{CONTENT.contact.successBody}</p>
+              {status === 'sent' || status === 'draft' || status === 'failed' ? (
+                <div className={`successCard${status === 'failed' ? ' successCard--failed' : ''}`}>
+                  <h3>
+                    {status === 'sent'
+                      ? CONTENT.contact.sentTitle
+                      : status === 'draft'
+                        ? CONTENT.contact.draftTitle
+                        : CONTENT.contact.failedTitle}
+                  </h3>
+                  <p>
+                    {status === 'sent'
+                      ? CONTENT.contact.sentBody
+                      : status === 'draft'
+                        ? CONTENT.contact.draftBody
+                        : CONTENT.contact.failedBody}
+                  </p>
                   <button type="button" className="textLink mono" onClick={reset}>
-                    {CONTENT.contact.resetLabel}
+                    {status === 'failed' ? CONTENT.contact.submitLabel : CONTENT.contact.resetLabel}
                   </button>
                 </div>
               ) : null}
             </div>
 
-            {status !== 'sent' ? (
+            {status === 'idle' || status === 'sending' ? (
               <form className="form" onSubmit={onSubmit} noValidate>
                 {renderField('name', { type: 'text' })}
                 {renderField('email', { type: 'email' })}
@@ -3947,7 +4322,7 @@ function HomeView({ onCapture, reduced }) {
     <>
       <main id="main" ref={revealRef}>
         <Hero reduced={reduced} />
-        <LogoStrip />
+        <LogoStrip reduced={reduced} />
         <WorkSection
           projects={secondary}
           spotlight={spotlight}
@@ -3981,6 +4356,7 @@ export default function App() {
   const { theme, toggle } = useTheme()
   const route = useHashRoute()
   const [flight, setFlight] = useState(null)
+  const [booking, setBooking] = useState(false)
 
   const projects = CONTENT.projects
   const index = route.slug ? projects.findIndex((p) => p.slug === route.slug) : -1
@@ -4017,6 +4393,8 @@ export default function App() {
     [reduced],
   )
 
+  const closeBooking = useCallback(() => setBooking(false), [])
+
   const goHome = useCallback((e) => {
     if (e) e.preventDefault()
     setFlight(null)
@@ -4040,7 +4418,19 @@ export default function App() {
       <a className="skip mono" href="#main">
         Skip to content
       </a>
-      <Nav theme={theme} onToggleTheme={toggle} onHome={goHome} />
+      <Nav
+        theme={theme}
+        onToggleTheme={toggle}
+        onHome={goHome}
+        onBook={() => setBooking(true)}
+      />
+      {booking ? (
+        <BookingDialog
+          onClose={closeBooking}
+          theme={theme}
+          reduced={reduced}
+        />
+      ) : null}
       {isCase ? (
         <CaseStudy
           key={project.slug}
