@@ -499,92 +499,6 @@ export const CONTENT = {
           },
         ],
       },
-      {
-        id: "post-system",
-        slug: "design-system-from-scratch",
-        date: "April 2026",
-        tags: ["Design Systems", "Process"],
-        title:
-          "Building a design system from scratch, with no team to inherit one",
-        dek: "Starting from a single product and one designer: what to standardise first, what to leave loose, and how to keep it alive past launch.",
-        imageKey: "journal.system",
-        readMins: 7,
-        body: [
-          {
-            p: "Most writing about design systems assumes a platform team, a component roadmap and a governance model. That was not the situation at Jesterday. There was a strong art direction, an interface assembled screen by screen, and two of us on design. Eleven button treatments, four type scales, no consistent spacing.",
-          },
-          { h: "Standardise the contract, not the components" },
-          {
-            p: "The instinct is to start drawing components. That is the wrong first move when nobody has agreed what a component is made of. I started with tokens — colour, type, spacing, radius, motion — defined once and named, because a token is a contract and a component is just an opinion built on top of one.",
-          },
-          {
-            p: "The reason this mattered more than usual is that the implementation was in Unity. Tokens gave engineering something to mirror structurally rather than a set of exported images to eyeball. A colour change became one commit instead of a coordination meeting.",
-          },
-          {
-            imageKey: "journal.system.fig",
-            caption:
-              "Tokens as the contract between the design file and the engine.",
-          },
-          { h: "Ship states, not artwork" },
-          {
-            p: "Every component went in with its loading, empty, error and disconnected appearance. This is the part teams skip, and it is the part that decides whether a system survives contact with production. A multiplayer game spends a meaningful share of its life mid-reconnect; if that is an edge case in your library, your library does not describe your product.",
-          },
-          {
-            p: "It also changes review. Once states are in the library, “is this done?” has an answer that is not a matter of taste.",
-          },
-          { h: "Keep it small on purpose" },
-          {
-            p: "The library settled at forty-eight components, and every one of them earned its place by being needed on more than one surface. A system that documents every one-off is a catalogue, not a system, and nobody reads a catalogue. Refusing additions was more work than making them.",
-          },
-          {
-            p: "What keeps it alive is not documentation. It is that using the system is the path of least resistance — the components are there, they are correct, and assembling one is faster than drawing one. The moment that stops being true, people go around it, and no amount of governance fixes that.",
-          },
-          {
-            p: "The thing I would tell anyone starting from zero: a design system is mostly an organisational argument. The components are the easy half.",
-          },
-        ],
-      },
-      {
-        id: "post-analytics",
-        slug: "analytics-redirected-my-feature",
-        date: "January 2026",
-        tags: ["Analytics", "Product"],
-        title:
-          "The feature I shipped, and the analytics that told me to redirect it",
-        dek: "A funnel that disagreed with the roadmap, and the case for treating a shipped feature as a hypothesis rather than a result.",
-        imageKey: "journal.analytics",
-        readMins: 5,
-        body: [
-          {
-            p: "I shipped something good and it solved the wrong half of the problem. The funnel told me so about three weeks later, and the uncomfortable part is that I had the instrumentation in place precisely so it could.",
-          },
-          { h: "What we thought the problem was" },
-          {
-            p: "Activation at GameHouse+ was low. The prevailing theory was discovery: users could not find something they wanted, so we invested in helping them choose. Better surfacing, better merchandising, clearer entry points into the catalogue. It tested well and it shipped.",
-          },
-          {
-            p: "Then the funnel came back. The drop was not at the point of choosing. It was in the gap between opening the app and anything being playable at all. We had made a decision easier to make, when the actual failure was that a decision was being asked for in the first place.",
-          },
-          {
-            imageKey: "journal.analytics.fig",
-            caption: "The step where the funnel disagreed with the roadmap.",
-          },
-          { h: "Instrument before you ship, not after" },
-          {
-            p: "The only reason this was recoverable in weeks rather than quarters is that the funnel was wired before release. Instrumenting after the fact means you find out at the next planning cycle, by which point the feature has defenders and the conversation is about sunk cost rather than evidence.",
-          },
-          {
-            p: "I now treat a shipped feature as a hypothesis with a date attached. It is a strange thing to say out loud in a roadmap review, and it has saved more time than any process change I have made.",
-          },
-          { h: "Arguing against your own work" },
-          {
-            p: "Redirecting meant standing in front of product and engineering and saying the thing I had advocated for was aimed at the wrong target. That is easier when the evidence is not yours to spin — the funnel said it, not me, and the funnel had been agreed on in advance.",
-          },
-          {
-            p: "The pivot that followed put content in front of the user instantly rather than asking them to pick. Day-0 activation moved sixfold. None of that was available from the design that tested well, because the thing that tested well was answering a question nobody was actually stuck on.",
-          },
-        ],
-      },
     ],
   },
 
@@ -607,8 +521,8 @@ export const CONTENT = {
      * Left null: the form validates, then opens a prefilled draft in the
      * visitor's mail app instead. Nothing else needs to change either way.
      */
-    endpoint: null,
-    endpointExtraFields: null,
+    endpoint: "https://api.web3forms.com/submit",
+    endpointExtraFields: { access_key: "1b6dcaa6-47ca-47bb-b373-2a920bf46c9b" },
 
     fields: {
       name: {
@@ -1394,21 +1308,6 @@ export const CONTENT = {
       tone: "dark",
       seed: 194,
     },
-    "journal.system": {
-      src: null,
-      alt: "Abstract plate of a modular grid for the design-system journal entry.",
-      plate: "grid",
-      tone: "dark",
-      seed: 140,
-    },
-    "journal.analytics": {
-      src: null,
-      alt: "Abstract plate of stepped columns for the product-analytics journal entry.",
-      plate: "columns",
-      tone: "dark",
-      seed: 151,
-    },
-
     "case.gamehouse-plus.hero": {
       src: null,
       alt: "GameHouse+ case study hero — a wide gradient mesh over a modular grid, in near-black and deep purple.",
@@ -1928,12 +1827,13 @@ body{
 
 /* Primary call to action in the bar. Filled, not a quiet text link. */
 .ctaBook{
-  display:inline-flex;align-items:center;gap:var(--s2);
-  padding:var(--s3) var(--s4);
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--s2);
+  height:32px;
+  padding:0 var(--s4);
   border-radius:var(--r-pill);
   background:var(--ink);
   color:var(--canvas);
-  font-weight:500;
+  font-size:.875rem;line-height:1;font-weight:500;
   border:1px solid var(--ink);
   transition:transform var(--dur-base) var(--ease-out),
              background-color var(--dur-base) var(--ease-std),
@@ -2111,6 +2011,23 @@ body{
 .logoRotator .logoPage.is-active{opacity:1;transform:none;pointer-events:auto}
 .logoStrip li{opacity:.62;transition:opacity var(--dur-base) var(--ease-std)}
 .logoStrip li:hover{opacity:1}
+@media (max-width:640px){
+  /* space-between plus flex-wrap on five marks of very different widths
+     produces a ragged, unevenly-spaced two-row wrap on narrow screens.
+     A fixed 2-column grid keeps every logo the same cell width instead. */
+  .logoRotator .logoPage{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    align-items:center;justify-items:start;
+    gap:var(--s6) var(--s5);
+  }
+  .logoStrip{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    align-items:center;justify-items:start;
+    gap:var(--s6) var(--s5);
+  }
+}
 .wordmark{height:24px;width:auto;color:var(--ink)}
 /* Real brand marks: the SVG is the mask, currentColor is the paint. This is
    what makes them near-black on the light canvas and off-white in dark mode
@@ -2856,6 +2773,12 @@ const STYLES_CASE = `
   .stat .label{font-size:.5625rem;letter-spacing:.08em}
   .railDock{bottom:var(--s3);padding-inline:var(--s3)}
   .rail{justify-content:flex-start}
+  /* "View case" and the About card's LinkedIn button go full width on
+     mobile rather than sitting at their content width. */
+  .spotFoot{flex-direction:column;align-items:stretch}
+  .viewCase{width:100%;justify-content:center}
+  .btnRow{flex-direction:column}
+  .btn{width:100%;justify-content:center}
 }
 
 /* ========================= REDUCED MOTION =========================
