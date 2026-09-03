@@ -89,10 +89,12 @@ export const CONTENT = {
   logos: {
     label: 'Companies and teams I have designed for',
     // Shown `perPage` at a time, cross-fading every `intervalMs`.
+    // `fadeMs` is the length of the cross-fade itself, `intervalMs` the wait
+    // between swaps — they are independent.
     // Under reduced motion the rotation is dropped and all of them render at once.
     perPage: 4,
-    // 3x the original 3500ms. This is the only number to change the pace.
-    intervalMs: 10500,
+    intervalMs: 4000,
+    fadeMs: 960,
     // `mark` maps to a hand-drawn SVG wordmark below. Keep the key if you swap the name.
     items: [
       { name: 'GameHouse', mark: 'gamehouse' },
@@ -1359,8 +1361,11 @@ body{
   opacity:0;
   pointer-events:none;
   transform:translate3d(0,6px,0);
-  transition:opacity var(--dur-slow) var(--ease-std),
-             transform var(--dur-slow) var(--ease-out);
+  /* Longer than the 150-400ms UI band on purpose: this is an ambient reveal
+     nobody triggered, so it should drift rather than snap. Driven from
+     CONTENT.logos.fadeMs. */
+  transition:opacity var(--logo-fade,960ms) var(--ease-std),
+             transform var(--logo-fade,960ms) var(--ease-out);
 }
 .logoRotator .logoPage.is-active{opacity:1;transform:none;pointer-events:auto}
 .logoStrip li{opacity:.62;transition:opacity var(--dur-base) var(--ease-std)}
@@ -3337,6 +3342,7 @@ function LogoStrip({ reduced }) {
           fixed by the tallest page and the section never reflows as it turns. */}
       <div
         className="logoRotator reveal"
+        style={{ '--logo-fade': `${CONTENT.logos.fadeMs || 960}ms` }}
         aria-label={CONTENT.logos.label}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}

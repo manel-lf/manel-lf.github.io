@@ -25,7 +25,7 @@ change what the site says.
 | Hero bio | `CONTENT.hero.bio` |
 | The cycling roles in the headline | `CONTENT.hero.roles` |
 | Logo strip companies | `CONTENT.logos.items` |
-| How many logos show at once, and how fast they turn | `CONTENT.logos.perPage`, `CONTENT.logos.intervalMs` |
+| How many logos show at once, the wait between swaps, and the cross-fade length | `CONTENT.logos.perPage`, `CONTENT.logos.intervalMs`, `CONTENT.logos.fadeMs` |
 | Booking dialog copy and the calendar URL | `CONTENT.booking` |
 | Which project is the spotlight | `CONTENT.work.spotlightSlug` |
 | A project, or a whole case study | `CONTENT.projects[n]` |
