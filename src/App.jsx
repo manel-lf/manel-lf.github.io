@@ -194,6 +194,9 @@ export const CONTENT = {
       'Today I own a consumer subscription app end to end at GameHouse, and I teach UX inside an AI and Data Science degree at La Salle URL. Teaching keeps the fundamentals sharp; the engineering background means I can build the prototype instead of describing it.',
     ],
     imageKey: 'about.portrait',
+    // 1 = square, matching the photo, so nothing is cropped. Change this if
+    // you swap in a portrait-orientation shot (4 / 5 was the original frame).
+    imageRatio: 1,
     buttons: [{ label: 'LinkedIn', href: LINKS.linkedin, icon: 'linkedin' }],
   },
 
@@ -891,7 +894,7 @@ export const CONTENT = {
    * --------------------------------------------------------------------- */
   IMAGES: {
     'hero.spotlight': { src: null, alt: 'GameHouse+ — an isometric lattice of extruded blocks receding into darkness, standing in for the app’s content system.', plate: 'lattice', tone: 'dark', seed: 11 },
-    'about.portrait': { src: null, alt: 'Abstract portrait plate — a soft figure-shaped light form emerging from a dark, grained field.', plate: 'portrait', tone: 'dark', seed: 27 },
+    'about.portrait': { src: 'img/manel-portrait.jpg', alt: 'Manel López, photographed outdoors against a bright sky.', plate: 'portrait', tone: 'dark', seed: 27 },
 
     'bits.claudeFigma': { src: null, alt: 'Overlapping structured panels suggesting a prototype assembled from a design system.', plate: 'panels', tone: 'dark', seed: 41 },
     'bits.energy': { src: null, alt: 'A decaying and refilling waveform standing in for an energy economy model.', plate: 'ramp', tone: 'light', seed: 52 },
@@ -3573,7 +3576,7 @@ function AboutSection() {
             </div>
           </div>
           <div className="aboutPortrait">
-            <Visual imageKey={CONTENT.about.imageKey} ratio={4 / 5} />
+            <Visual imageKey={CONTENT.about.imageKey} ratio={CONTENT.about.imageRatio} />
           </div>
         </div>
       </div>
