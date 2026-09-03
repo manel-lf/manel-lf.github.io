@@ -96,16 +96,20 @@ export const CONTENT = {
     perPage: 4,
     intervalMs: 4000,
     fadeMs: 960,
-    // `mark` maps to a hand-drawn SVG wordmark below. Keep the key if you swap the name.
+    // `logo` is a real brand SVG in public/img/logos/, painted as a CSS mask
+    // over currentColor — so it takes the theme's ink colour and comes out
+    // off-white in dark mode whatever the source file's own fill is.
+    // `aspect` is the file's viewBox ratio, which sets width from height.
+    // Entries with only `mark` fall back to the built-in drawn wordmark.
     items: [
       { name: 'GameHouse', mark: 'gamehouse' },
-      { name: 'Jesterday', mark: 'jesterday' },
+      { name: 'Jesterday', logo: 'img/logos/jesterday.svg', aspect: 3.292, scale: 1.45 },
       { name: 'Eunoia Digital', mark: 'eunoia' },
-      { name: 'Popcore Games', mark: 'popcore' },
-      { name: 'SEAT CUPRA', mark: 'cupra' },
-      { name: 'Socialpoint', mark: 'socialpoint' },
-      { name: 'La Salle BCN', mark: 'lasalle' },
-      { name: 'Kave Home', mark: 'kave' },
+      { name: 'Popcore Games', logo: 'img/logos/popcore.svg', aspect: 6.036, scale: 0.9 },
+      { name: 'SEAT CUPRA', logo: 'img/logos/cupra.svg', aspect: 7.008, scale: 0.85 },
+      { name: 'Socialpoint', logo: 'img/logos/socialpoint.svg', aspect: 4.867 },
+      { name: 'La Salle BCN', logo: 'img/logos/lasalle.svg', aspect: 3.526, scale: 1.4 },
+      { name: 'Kave Home', logo: 'img/logos/kavehome.svg', aspect: 5.581, scale: 0.95 },
     ],
   },
 
@@ -472,6 +476,8 @@ export const CONTENT = {
     },
     {
       slug: 'jesterday',
+      logo: 'img/logos/jesterday.svg',
+      logoAspect: 3.292,
       name: 'Jesterday',
       mark: 'jesterday',
       eyebrow: 'Jesterday',
@@ -573,6 +579,8 @@ export const CONTENT = {
     },
     {
       slug: 'seat-cupra',
+      logo: 'img/logos/cupra.svg',
+      logoAspect: 7.008,
       name: 'SEAT CUPRA',
       mark: 'cupra',
       eyebrow: 'SEAT CUPRA',
@@ -674,6 +682,8 @@ export const CONTENT = {
     },
     {
       slug: 'radisson',
+      logo: 'img/logos/radisson.svg',
+      logoAspect: 2.681,
       name: 'Radisson Hotels',
       mark: 'radisson',
       eyebrow: 'Radisson Hotels — via Eunoia Digital',
@@ -775,6 +785,8 @@ export const CONTENT = {
     },
     {
       slug: 'scavenger-hunt',
+      logo: 'img/logos/popcore.svg',
+      logoAspect: 6.036,
       name: 'Scavenger Hunt',
       mark: 'popcore',
       eyebrow: 'Scavenger Hunt — at Popcore',
@@ -1369,6 +1381,20 @@ body{
 .logoStrip li{opacity:.62;transition:opacity var(--dur-base) var(--ease-std)}
 .logoStrip li:hover{opacity:1}
 .wordmark{height:24px;width:auto;color:var(--ink)}
+/* Real brand marks: the SVG is the mask, currentColor is the paint. This is
+   what makes them near-black on the light canvas and off-white in dark mode
+   from a single black source file. */
+.brandmark{
+  display:block;
+  background-color:currentColor;
+  color:var(--ink);
+  mask-repeat:no-repeat;
+  mask-position:center;
+  mask-size:contain;
+  -webkit-mask-repeat:no-repeat;
+  -webkit-mask-position:center;
+  -webkit-mask-size:contain;
+}
 .wordmark--lg{height:34px}
 `
 
@@ -2874,7 +2900,34 @@ const GLYPHS = {
   kave: 'M4 3h3v6l5-6h3.6l-5.4 6.4L19 17h-4l-4-5.2V17H4z',
 }
 
-function Wordmark({ mark, name, large = false }) {
+function Wordmark({ mark, name, logo, aspect, scale, large = false }) {
+  // A real brand SVG is drawn as a mask over currentColor. The source files
+  // are solid black; masking ignores their fill entirely, so the mark picks up
+  // the theme's ink colour and needs no per-theme asset.
+  if (logo) {
+    // Normalising every mark to one height gives them very different optical
+    // weight (a wide wordmark reads far heavier than a compact one), so each
+    // item can carry a `scale` to even them out by eye.
+    const height = (large ? 34 : 24) * (scale || 1)
+    const url = `url(${resolveSrc(logo)})`
+    return (
+      <span
+        className={large ? 'brandmark brandmark--lg' : 'brandmark'}
+        role="img"
+        aria-label={name}
+        style={{
+          width: `${Math.round(height * (aspect || 4))}px`,
+          height: `${Math.round(height)}px`,
+          maskImage: url,
+          WebkitMaskImage: url,
+        }}
+      />
+    )
+  }
+  return <DrawnWordmark mark={mark} name={name} large={large} />
+}
+
+function DrawnWordmark({ mark, name, large = false }) {
   const glyph = GLYPHS[mark] || GLYPHS.eunoia
   const textRef = useRef(null)
   const TEXT_X = 27
@@ -3296,27 +3349,30 @@ function Hero({ reduced }) {
  *
  * This is the one timed animation besides the typing headline. Under reduced
  * motion the rotation is dropped entirely and every mark renders at once, so
- * nothing moves and no content is hidden behind a timer. It pauses on hover
- * and on focus, so a reader can stop it to read a name.
+ * nothing moves and no content is hidden behind a timer.
+ *
+ * It deliberately does NOT pause on hover any more. With the strip spanning
+ * the full width, a cursor resting anywhere over it held `paused` true and the
+ * rotation appeared stuck — and every pause toggle also restarted the
+ * interval, so passing through repeatedly could stall it indefinitely.
  */
 function LogoStrip({ reduced }) {
   const items = CONTENT.logos.items
   const perPage = Math.max(1, CONTENT.logos.perPage || 4)
   const pageCount = Math.max(1, Math.ceil(items.length / perPage))
   const [page, setPage] = useState(0)
-  const [paused, setPaused] = useState(false)
 
   useEffect(() => {
-    if (reduced || pageCount < 2 || paused) return
+    if (reduced || pageCount < 2) return
     // Deliberately no document.hidden check: browsers already throttle
     // background timers, and some embedded contexts report hidden
     // permanently — which would strand the strip on its first page and
     // hide the remaining logos for good.
     const id = window.setInterval(() => {
       setPage((n) => (n + 1) % pageCount)
-    }, CONTENT.logos.intervalMs || 3500)
+    }, CONTENT.logos.intervalMs || 4000)
     return () => window.clearInterval(id)
-  }, [reduced, pageCount, paused])
+  }, [reduced, pageCount])
 
   // Reduced motion: no rotation, no timer, everything visible at once.
   if (reduced) {
@@ -3325,7 +3381,13 @@ function LogoStrip({ reduced }) {
         <ul className="logoStrip" aria-label={CONTENT.logos.label}>
           {items.map((logo) => (
             <li key={logo.name}>
-              <Wordmark mark={logo.mark} name={logo.name} />
+              <Wordmark
+                mark={logo.mark}
+                name={logo.name}
+                logo={logo.logo}
+                aspect={logo.aspect}
+                scale={logo.scale}
+              />
             </li>
           ))}
         </ul>
@@ -3341,10 +3403,6 @@ function LogoStrip({ reduced }) {
         className="logoRotator reveal"
         style={{ '--logo-fade': `${CONTENT.logos.fadeMs || 960}ms` }}
         aria-label={CONTENT.logos.label}
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-        onFocus={() => setPaused(true)}
-        onBlur={() => setPaused(false)}
       >
         {Array.from({ length: pageCount }, (_, i) => (
           <ul
@@ -3354,7 +3412,13 @@ function LogoStrip({ reduced }) {
           >
             {items.slice(i * perPage, i * perPage + perPage).map((logo) => (
               <li key={logo.name}>
-                <Wordmark mark={logo.mark} name={logo.name} />
+                <Wordmark
+                  mark={logo.mark}
+                  name={logo.name}
+                  logo={logo.logo}
+                  aspect={logo.aspect}
+                  scale={logo.scale}
+                />
               </li>
             ))}
           </ul>
@@ -3422,7 +3486,14 @@ function ProjectCard({ project, onCapture, index }) {
           <Icon name="arrowUpRight" size={16} />
         </span>
         <span className="cardMarkWrap">
-          <Wordmark mark={project.mark} name={project.name} large />
+          <Wordmark
+            mark={project.mark}
+            name={project.name}
+            logo={project.logo}
+            aspect={project.logoAspect}
+            scale={project.logoScale}
+            large
+          />
         </span>
         <span className="cardBody">
           <span className="cardDesc">{project.cardDescription}</span>
