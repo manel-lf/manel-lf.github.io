@@ -104,9 +104,9 @@ export const CONTENT = {
     items: [
       {
         name: "GameHouse",
-        logo: "img/logos/ghplus.svg",
-        aspect: 6.959,
-        scale: 0.75,
+        logo: "img/logos/gamehouse.svg",
+        aspect: 8.201,
+        scale: 0.62,
       },
       {
         name: "Jesterday",
@@ -254,6 +254,7 @@ export const CONTENT = {
     prevLabel: "Previous testimonial",
     nextLabel: "Next testimonial",
     dotLabel: "Go to testimonial",
+    profileLabel: "on LinkedIn",
     quotes: [
       {
         id: "q-emmi",
@@ -262,6 +263,7 @@ export const CONTENT = {
         name: "Emmi Kuusikko",
         role: "Head of Product",
         avatar: "img/testimonial-emmi-kuusikko.jpg",
+        href: "https://www.linkedin.com/in/emmik/",
       },
       {
         id: "q-lea",
@@ -270,6 +272,7 @@ export const CONTENT = {
         name: "Lea Schönfelder",
         role: "UX Creative Director",
         avatar: "img/testimonial-lea-schonfelder.jpg",
+        href: "https://www.linkedin.com/in/lea-schoenfelder/",
       },
       {
         id: "q-alex",
@@ -278,6 +281,7 @@ export const CONTENT = {
         name: "Alex Segura",
         role: "Frontend Developer",
         avatar: "img/testimonial-alex-segura.jpg",
+        href: "https://www.linkedin.com/in/xlerida/",
       },
     ],
   },
@@ -520,8 +524,8 @@ export const CONTENT = {
       { label: "Behance", href: LINKS.behance, icon: "behance" },
       { label: "Email", href: `mailto:${LINKS.email}`, icon: "mail" },
     ],
-    location: "Barcelona, Spain",
-    copyright: "© 2026 Manel López. Built and written by hand in Barcelona.",
+    copyright: "© 2026 Manel López",
+    madeIn: "Designed and built in Barcelona.",
   },
 
   caseUi: {
@@ -1880,7 +1884,8 @@ body{
   color:var(--muted);
   min-height:1em;
 }
-.typeLine .typed{white-space:pre}
+.typeLine{min-width:0}
+.typeLine .typed{white-space:pre;overflow-wrap:anywhere}
 .caret{
   display:inline-block;
   margin-left:.035em;
@@ -2009,7 +2014,7 @@ const STYLES_HOME = `
 }
 .stat .label{display:block;margin-top:var(--s2);color:var(--panel-muted)}
 .spotFoot{
-  display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
   gap:var(--s5);
   padding-top:var(--s5);
   border-top:1px solid var(--panel-hairline);
@@ -2225,6 +2230,21 @@ const STYLES_HOME = `
   margin-top:var(--s5);
   display:flex;align-items:center;gap:var(--s3);
 }
+.quoteWhoLink{
+  display:inline-flex;align-items:center;gap:var(--s3);
+  border-radius:var(--r-pill);
+  color:var(--ink);
+}
+.quoteWhoLink svg{
+  color:var(--muted);
+  opacity:0;
+  transition:opacity var(--dur-base) var(--ease-std),
+             transform var(--dur-base) var(--ease-out);
+}
+.quoteWhoLink:hover svg,.quoteWhoLink:focus-visible svg{opacity:1;transform:translateX(2px)}
+.quoteWhoLink:hover .quoteName{color:var(--accent)}
+.quoteWhoLink:hover .avatar{border-color:var(--accent)}
+.quoteWhoLink.is-static{cursor:default}
 .quoteWho{display:flex;flex-direction:column;gap:2px;min-width:0}
 .avatar{
   width:44px;height:44px;flex:none;
@@ -2261,8 +2281,13 @@ const STYLES_HOME = `
   grid-template-columns:120px minmax(0,180px) minmax(0,1fr) 40px;
   gap:var(--s5);align-items:center;
   padding-block:var(--s5);
+  /* Bleed the row past the text column so the hover highlight has breathing
+     room either side instead of stopping flush against the content. */
+  padding-inline:var(--row-bleed,24px);
+  margin-inline:calc(var(--row-bleed,24px) * -1);
   border-top:1px solid var(--hairline);
-  text-align:left;width:100%;
+  border-radius:var(--r-md);
+  text-align:left;
 }
 .journalList li:last-child .postRow{border-bottom:1px solid var(--hairline)}
 .postRow{transition:background-color var(--dur-base) var(--ease-std)}
@@ -2358,7 +2383,12 @@ textarea.control{min-height:120px;resize:vertical;line-height:1.6}
   transition:color var(--dur-base) var(--ease-std),border-color var(--dur-base) var(--ease-std),transform var(--dur-base) var(--ease-out);
 }
 .socialBtn:hover{color:var(--ink);border-color:var(--ink);transform:translateY(-2px)}
-.copyright{color:var(--muted)}
+.copyright{
+  display:flex;flex-wrap:wrap;align-items:center;
+  gap:var(--s2);
+  color:var(--muted);
+}
+.copyright .sep{opacity:.5;padding-inline:var(--s3)}
 
 .railDock{
   position:fixed;left:0;right:0;bottom:var(--s5);
@@ -2620,6 +2650,9 @@ const STYLES_CASE = `
   }
   .postThumb{grid-area:thumb;width:88px}
   .journalList .postRow .go{display:none}
+  /* The bleed must stay inside the container gutter or the row pushes the
+     document sideways on narrow screens. */
+  .journalList{--row-bleed:12px}
   .postMeta{grid-area:meta;flex-direction:row;flex-wrap:wrap;align-items:center;gap:var(--s3)}
   .postRow > .postMain{grid-area:body}
   .postRow .go{display:none}
@@ -2639,6 +2672,10 @@ const STYLES_CASE = `
 
 @media (max-width:640px){
   .bitsRow > .bitTile{flex:0 0 78%}
+  /* The longest role ("University Lecturer") does not fit at the hero size
+     on a 320px screen, and wrapping mid-type would shift the page. Step the
+     second line down instead; it reads as a subtitle either way. */
+  .typeLine{font-size:clamp(1.5rem,7vw,2.25rem)}
   .navRight{gap:var(--s4)}
   .navLink{
     padding:var(--s2) var(--s4);
@@ -4573,11 +4610,24 @@ function Avatar({ src, name }) {
 function Testimonials() {
   const quotes = CONTENT.testimonials.quotes;
   const [i, setI] = useState(0);
+  // +1 travelling forward, -1 back. Drives which side a quote enters from.
+  const [dir, setDir] = useState(1);
   const touch = useRef(null);
 
   const go = useCallback(
-    (dir) => setI((n) => (n + dir + quotes.length) % quotes.length),
+    (d) => {
+      setDir(d);
+      setI((n) => (n + d + quotes.length) % quotes.length);
+    },
     [quotes.length],
+  );
+
+  const goTo = useCallback(
+    (n) => {
+      setDir(n >= i ? 1 : -1);
+      setI(n);
+    },
+    [i],
   );
 
   const onKeyDown = (e) => {
@@ -4634,7 +4684,10 @@ function Testimonials() {
             <span className="quoteMark" aria-hidden="true">
               &#8220;
             </span>
-            <div className="quoteViewport">
+            <div
+              className="quoteViewport"
+              style={{ "--slide-from": dir === 1 ? "28px" : "-28px" }}
+            >
               {quotes.map((q, n) => (
                 <figure
                   key={q.id}
@@ -4643,11 +4696,33 @@ function Testimonials() {
                 >
                   <blockquote className="quoteBody">{q.quote}</blockquote>
                   <figcaption className="quoteAttr">
-                    <Avatar src={q.avatar} name={q.name} />
-                    <span className="quoteWho">
-                      <span className="quoteName">{q.name}</span>
-                      <span className="quoteRole mono">{q.role}</span>
-                    </span>
+                    {/* Avatar and name/role are one link, so tapping either
+                        target works — and one link rather than two means
+                        keyboard users tab past it once. */}
+                    {q.href ? (
+                      <a
+                        className="quoteWhoLink"
+                        href={q.href}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        aria-label={`${q.name}, ${q.role} — ${CONTENT.testimonials.profileLabel}`}
+                      >
+                        <Avatar src={q.avatar} name={q.name} />
+                        <span className="quoteWho">
+                          <span className="quoteName">{q.name}</span>
+                          <span className="quoteRole mono">{q.role}</span>
+                        </span>
+                        <Icon name="arrowUpRight" size={14} />
+                      </a>
+                    ) : (
+                      <span className="quoteWhoLink is-static">
+                        <Avatar src={q.avatar} name={q.name} />
+                        <span className="quoteWho">
+                          <span className="quoteName">{q.name}</span>
+                          <span className="quoteRole mono">{q.role}</span>
+                        </span>
+                      </span>
+                    )}
                   </figcaption>
                 </figure>
               ))}
@@ -4661,7 +4736,7 @@ function Testimonials() {
                     className="dot"
                     aria-current={n === i ? "true" : undefined}
                     aria-label={`${CONTENT.testimonials.dotLabel} ${n + 1}: ${q.name}, ${q.role}`}
-                    onClick={() => setI(n)}
+                    onClick={() => goTo(n)}
                   />
                 ))}
               </div>
@@ -5038,7 +5113,11 @@ function Footer() {
             ))}
           </ul>
           <p className="copyright mono">
-            {CONTENT.footer.location} &middot; {CONTENT.footer.copyright}
+            <span>{CONTENT.footer.copyright}</span>
+            <span className="sep" aria-hidden="true">
+              |
+            </span>
+            <span>{CONTENT.footer.madeIn}</span>
           </p>
         </div>
       </div>
@@ -5786,12 +5865,20 @@ const STYLES_UTIL = `
 }
 
 /* testimonial slides share one grid cell, so the block never changes height */
-.quoteViewport{display:grid}
+.quoteViewport{
+  display:grid;
+  /* The off-stage slide sits 28px to one side; without clipping it widens
+     the document on narrow screens. Clipping is also what gives the swap
+     its slide-in edge. */
+  overflow:hidden;
+}
 .quoteSlide{
   grid-area:1 / 1;
   margin:0;
   opacity:0;
-  transform:translate3d(0,8px,0);
+  /* Horizontal, and signed by direction of travel, so the motion agrees with
+     the arrow that caused it: next brings the quote in from the right. */
+  transform:translate3d(var(--slide-from,28px),0,0);
   pointer-events:none;
   transition:opacity var(--dur-slow) var(--ease-std),
              transform var(--dur-slow) var(--ease-out);
