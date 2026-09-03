@@ -22,7 +22,7 @@ import {
   useMemo,
   useRef,
   useState,
-} from 'react'
+} from "react";
 
 /* =========================================================================
  * CONTENT — the only thing you need to edit
@@ -34,18 +34,18 @@ import {
  * EDIT THESE before publishing.
  */
 const LINKS = {
-  email: 'manellopez.alu@gmail.com',
-  linkedin: 'https://www.linkedin.com/in/manel-lf/',
-  behance: 'https://www.behance.net/manellpez',
-  bookACall: 'https://cal.com/manel-lopez-wc3pop/book-a-call',
-}
+  email: "manellopez.alu@gmail.com",
+  linkedin: "https://www.linkedin.com/in/manel-lf/",
+  behance: "https://www.behance.net/manellpez",
+  bookACall: "https://cal.com/manel-lopez-wc3pop/book-a-call",
+};
 
 export const CONTENT = {
   meta: {
-    name: 'Manel López',
-    monogram: 'M',
-    role: 'Senior Product Designer',
-    location: 'Barcelona, Spain',
+    name: "Manel López",
+    monogram: "M",
+    role: "Senior Product Designer",
+    location: "Barcelona, Spain",
   },
 
   links: LINKS,
@@ -54,46 +54,46 @@ export const CONTENT = {
     // The scheduling page shown inside the dialog. `?embed=` drops Cal.com's
     // own site chrome; the theme is matched to the site's at open time.
     url: LINKS.bookACall,
-    title: 'Book a call',
-    subtitle: 'Pick a slot that suits you — 30 minutes, no agenda needed.',
-    closeLabel: 'Close booking dialog',
-    newTabLabel: 'Open in a new tab instead',
-    loadingLabel: 'Loading available times…',
+    title: "Book a call",
+    subtitle: "Pick a slot that suits you — 30 minutes, no agenda needed.",
+    closeLabel: "Close booking dialog",
+    newTabLabel: "Open in a new tab instead",
+    loadingLabel: "Loading available times…",
   },
 
   nav: {
-    bookLabel: 'Book a call',
-    themeLabelToLight: 'Switch to light theme',
-    themeLabelToDark: 'Switch to dark theme',
-    homeLabel: 'Manel López — back to home',
+    bookLabel: "Book a call",
+    themeLabelToLight: "Switch to light theme",
+    themeLabelToDark: "Switch to dark theme",
+    homeLabel: "Manel López — back to home",
   },
 
   hero: {
     // Line one: masks up per word on load.
-    name: 'Manel López',
+    name: "Manel López",
     // Line two: types and untypes on loop. Reduced motion pins it to roles[0].
-    rolePrefix: '',
+    rolePrefix: "",
     roles: [
-      'Product Designer',
-      'Engineer',
-      'Systems Designer',
-      'AI Prototyper',
-      'Gamificator',
-      'Product Thinker',
-      'University Lecturer',
-      'Cat Butler',
+      "Product Designer",
+      "Engineer",
+      "Systems Designer",
+      "AI Prototyper",
+      "Gamificator",
+      "Product Thinker",
+      "University Lecturer",
+      "Cat Butler",
     ],
-    bio: 'Barcelona-based Senior Product Designer with an engineering background. From research and analytics to prototypes and production, I help turn ideas into products people return to.',
-    scrollHint: 'Scroll',
+    bio: "From research and analytics to prototypes and production, I help turn ideas into products people return to.",
+    scrollHint: "Scroll",
   },
 
   logos: {
-    label: 'Companies and teams I have designed for',
+    label: "Companies and teams I have designed for",
     // Shown `perPage` at a time, cross-fading every `intervalMs`.
     // `fadeMs` is the length of the cross-fade itself, `intervalMs` the wait
     // between swaps — they are independent.
     // Under reduced motion the rotation is dropped and all of them render at once.
-    perPage: 4,
+    perPage: 5,
     intervalMs: 4000,
     fadeMs: 960,
     // `logo` is a real brand SVG in public/img/logos/, painted as a CSS mask
@@ -102,182 +102,343 @@ export const CONTENT = {
     // `aspect` is the file's viewBox ratio, which sets width from height.
     // Entries with only `mark` fall back to the built-in drawn wordmark.
     items: [
-      { name: 'GameHouse', mark: 'gamehouse' },
-      { name: 'Jesterday', logo: 'img/logos/jesterday.svg', aspect: 3.292, scale: 1.45 },
-      { name: 'Eunoia Digital', mark: 'eunoia' },
-      { name: 'Popcore Games', logo: 'img/logos/popcore.svg', aspect: 6.036, scale: 0.9 },
-      { name: 'SEAT CUPRA', logo: 'img/logos/cupra.svg', aspect: 7.008, scale: 0.85 },
-      { name: 'Socialpoint', logo: 'img/logos/socialpoint.svg', aspect: 4.867 },
-      { name: 'La Salle BCN', logo: 'img/logos/lasalle.svg', aspect: 3.526, scale: 1.4 },
-      { name: 'Kave Home', logo: 'img/logos/kavehome.svg', aspect: 5.581, scale: 0.95 },
+      {
+        name: "GameHouse",
+        logo: "img/logos/ghplus.svg",
+        aspect: 6.959,
+        scale: 0.75,
+      },
+      {
+        name: "Jesterday",
+        logo: "img/logos/jesterday.svg",
+        aspect: 3.292,
+        scale: 1.45,
+      },
+      {
+        name: "Eunoia Digital",
+        logo: "img/logos/eunoiadigital.svg",
+        aspect: 12.264,
+        scale: 0.45,
+      },
+      {
+        name: "Popcore Games",
+        logo: "img/logos/popcore.svg",
+        aspect: 6.036,
+        scale: 0.9,
+      },
+      {
+        name: "SEAT CUPRA",
+        logo: "img/logos/cupra.svg",
+        aspect: 7.008,
+        scale: 0.85,
+      },
+      { name: "Socialpoint", logo: "img/logos/socialpoint.svg", aspect: 4.867 },
+      {
+        name: "La Salle BCN",
+        logo: "img/logos/lasalle.svg",
+        aspect: 3.526,
+        scale: 1.4,
+      },
+      {
+        name: "Kave Home",
+        logo: "img/logos/kavehome.svg",
+        aspect: 5.581,
+        scale: 0.95,
+      },
+      { name: "MURIS", logo: "img/logos/murisbrand.svg", aspect: 4.68 },
+      {
+        name: "Radisson Hotels",
+        logo: "img/logos/radisson.svg",
+        aspect: 2.681,
+        scale: 1.5,
+      },
     ],
   },
 
   work: {
-    eyebrow: 'Recent work.',
-    heading: 'From pixels to products.',
-    spotlightSlug: 'gamehouse-plus',
-    viewCase: 'View case',
+    eyebrow: "Recent work.",
+    heading: "From pixels to products.",
+    spotlightSlug: "gamehouse-plus",
+    viewCase: "View case",
   },
 
   bits: {
-    eyebrow: 'Design bits.',
-    heading: 'What I have lately been working on.',
-    prevLabel: 'Previous bits',
-    nextLabel: 'Next bits',
+    eyebrow: "Design bits.",
+    heading: "What I have lately been working on.",
+    prevLabel: "Previous bits",
+    nextLabel: "Next bits",
     // One label per row of four items below.
-    rowLabels: ['Prototypes and tooling', 'Systems and analysis'],
+    rowLabels: ["Prototypes and tooling", "Systems and analysis"],
     // Every tile uses this ratio, so the cards line up as an even grid.
     mediaRatio: 4 / 3,
     items: [
       {
-        id: 'bit-claude-figma',
-        kicker: 'AI tooling',
+        id: "bit-claude-figma",
+        kicker: "AI tooling",
         caption:
-          'A working prototype in an afternoon — Claude Code driving the build, the Figma MCP keeping it on the design system.',
-        imageKey: 'bits.claudeFigma',
+          "A working prototype in an afternoon — Claude Code driving the build, the Figma MCP keeping it on the design system.",
+        imageKey: "bits.claudeFigma",
       },
       {
-        id: 'bit-energy',
-        kicker: 'Game economy',
+        id: "bit-energy",
+        kicker: "Game economy",
         caption:
-          'Jesterday’s energy economy modelled in a spreadsheet and tuned against session length before a single screen was drawn.',
-        imageKey: 'bits.energy',
+          "Jesterday’s energy economy modelled in a spreadsheet and tuned against session length before a single screen was drawn.",
+        imageKey: "bits.energy",
       },
       {
-        id: 'bit-teaching',
-        kicker: 'Teaching',
+        id: "bit-teaching",
+        kicker: "Teaching",
         caption:
-          'Research-methods material for a UX course inside an AI and Data Science degree at La Salle URL.',
-        imageKey: 'bits.teaching',
+          "Research-methods material for a UX course inside an AI and Data Science degree at La Salle URL.",
+        imageKey: "bits.teaching",
       },
       {
-        id: 'bit-instant',
-        kicker: 'Prototype',
+        id: "bit-instant",
+        kicker: "Prototype",
         caption:
-          'Five entry-point variants for instant play, narrowed to one by putting a real build in front of players.',
-        imageKey: 'bits.instant',
+          "Five entry-point variants for instant play, narrowed to one by putting a real build in front of players.",
+        imageKey: "bits.instant",
       },
       {
-        id: 'bit-tokens',
-        kicker: 'Design systems',
+        id: "bit-tokens",
+        kicker: "Design systems",
         caption:
-          'Design tokens as the contract between Figma and Unity, so a colour change is one commit rather than a meeting.',
-        imageKey: 'bits.tokens',
+          "Design tokens as the contract between Figma and Unity, so a colour change is one commit rather than a meeting.",
+        imageKey: "bits.tokens",
       },
       {
-        id: 'bit-typeramp',
-        kicker: 'Automotive',
+        id: "bit-typeramp",
+        kicker: "Automotive",
         caption:
-          'One type ramp that has to stay legible from a 7-inch cluster to a 15-inch centre display, at arm’s length, in sunlight.',
-        imageKey: 'bits.typeRamp',
+          "One type ramp that has to stay legible from a 7-inch cluster to a 15-inch centre display, at arm’s length, in sunlight.",
+        imageKey: "bits.typeRamp",
       },
       {
-        id: 'bit-analytics',
-        kicker: 'Product analytics',
+        id: "bit-analytics",
+        kicker: "Product analytics",
         caption:
-          'The funnel that told me a feature I had already shipped was solving the wrong half of the problem.',
-        imageKey: 'bits.analytics',
+          "The funnel that told me a feature I had already shipped was solving the wrong half of the problem.",
+        imageKey: "bits.analytics",
       },
       {
-        id: 'bit-componentapi',
-        kicker: 'Craft',
+        id: "bit-componentapi",
+        kicker: "Craft",
         caption:
-          'Sketching the component API before the component — props first, pixels second.',
-        imageKey: 'bits.componentApi',
+          "Sketching the component API before the component — props first, pixels second.",
+        imageKey: "bits.componentApi",
       },
     ],
   },
 
   about: {
-    eyebrow: 'About me.',
-    heading: 'Design that ships.',
-    title: 'AI Native Designer. Design Thinker.',
+    eyebrow: "About me.",
+    heading: "Design that ships.",
+    title: "AI Native Designer. Design Thinker.",
     body: [
-      'I came to design through engineering. The degree gave me the systems habit — read the constraints, model the thing, then draw it — and a Master’s in User Experience gave me the research and evaluation side to go with it.',
-      'Today I own a consumer subscription app end to end at GameHouse, and I teach UX inside an AI and Data Science degree at La Salle URL. Teaching keeps the fundamentals sharp; the engineering background means I can build the prototype instead of describing it.',
+      "I came to design through engineering. The degree gave me the systems habit — read the constraints, model the thing, then draw it — and a Master’s in User Experience gave me the research and evaluation side to go with it.",
+      "Today I own a consumer subscription app end to end at GameHouse, and I teach UX inside an AI and Data Science degree at La Salle URL. Teaching keeps the fundamentals sharp; the engineering background means I can build the prototype instead of describing it.",
     ],
-    imageKey: 'about.portrait',
+    imageKey: "about.portrait",
     // 1 = square, matching the photo, so nothing is cropped. Change this if
     // you swap in a portrait-orientation shot (4 / 5 was the original frame).
     imageRatio: 1,
-    buttons: [{ label: 'LinkedIn', href: LINKS.linkedin, icon: 'linkedin' }],
+    buttons: [{ label: "LinkedIn", href: LINKS.linkedin, icon: "linkedin" }],
   },
 
   testimonials: {
-    eyebrow: 'Shoutouts.',
-    heading: 'What stakeholders and teammates say about me.',
+    eyebrow: "Shoutouts.",
+    heading: "What stakeholders and teammates say about me.",
     intro:
-      'People I have worked with directly, across product, design and engineering. Happy to put you in touch with any of them.',
-    prevLabel: 'Previous testimonial',
-    nextLabel: 'Next testimonial',
-    dotLabel: 'Go to testimonial',
+      "People I have worked with directly, across product, design and engineering. Happy to put you in touch with any of them.",
+    prevLabel: "Previous testimonial",
+    nextLabel: "Next testimonial",
+    dotLabel: "Go to testimonial",
     quotes: [
       {
-        id: 'q-emmi',
+        id: "q-emmi",
         quote:
-          'Manel combines strong design skills with genuine product thinking. He consistently keeps the user at the center, runs usability tests, and uses feedback to improve. He embraces feedback while confidently challenging perspectives with thoughtful reasoning and a clear point of view. He has a strong sense of product vision and translates it into coherent, consistent experiences.',
-        name: 'Emmi Kuusikko',
-        role: 'Head of Product',
-        avatar: 'img/testimonial-emmi-kuusikko.jpg',
+          "Manel combines strong design skills with genuine product thinking. He consistently keeps the user at the center, runs usability tests, and uses feedback to improve. He embraces feedback while confidently challenging perspectives with thoughtful reasoning and a clear point of view. He has a strong sense of product vision and translates it into coherent, consistent experiences.",
+        name: "Emmi Kuusikko",
+        role: "Head of Product",
+        avatar: "img/testimonial-emmi-kuusikko.jpg",
       },
       {
-        id: 'q-lea',
+        id: "q-lea",
         quote:
-          'Manel consistently acted above his level as a Senior UI/UX Designer. He presented ideas in front of senior management and defended them with confidence. He combines UI/UX craft excellence with strong prototyping and technical skills, paired with sharp abstraction and communication skills, which is a rare mix. Whoever gets to work with Manel will be very lucky.',
-        name: 'Lea Schönfelder',
-        role: 'UX Creative Director',
-        avatar: 'img/testimonial-lea-schonfelder.jpg',
+          "Manel consistently acted above his level as a Senior UI/UX Designer. He presented ideas in front of senior management and defended them with confidence. He combines UI/UX craft excellence with strong prototyping and technical skills, paired with sharp abstraction and communication skills, which is a rare mix. Whoever gets to work with Manel will be very lucky.",
+        name: "Lea Schönfelder",
+        role: "UX Creative Director",
+        avatar: "img/testimonial-lea-schonfelder.jpg",
       },
       {
-        id: 'q-alex',
+        id: "q-alex",
         quote:
-          'Manel consistently delivers clean and visually appealing designs. He’s great at bringing Product and Development together, making sure everyone is aligned and ideas move smoothly from concept to delivery. Even with tight deadlines, he stays collaborative, open to new ideas, and focused on finding practical solutions.',
-        name: 'Alex Segura',
-        role: 'Frontend Developer',
-        avatar: 'img/testimonial-alex-segura.jpg',
+          "Manel consistently delivers clean and visually appealing designs. He’s great at bringing Product and Development together, making sure everyone is aligned and ideas move smoothly from concept to delivery. Even with tight deadlines, he stays collaborative, open to new ideas, and focused on finding practical solutions.",
+        name: "Alex Segura",
+        role: "Frontend Developer",
+        avatar: "img/testimonial-alex-segura.jpg",
       },
     ],
   },
 
   journal: {
-    eyebrow: 'Journal.',
-    heading: 'Notes from the work.',
-    readLabel: 'Read',
+    eyebrow: "Journal.",
+    heading: "Notes from the work.",
+    readLabel: "Read",
+    backLabel: "Back to journal",
+    prevLabel: "Previous",
+    nextLabel: "Next",
+    /**
+     * Each post gets its own view at #/journal/<slug>.
+     *
+     * `body` is a list of blocks: { h } is a heading, { p } a paragraph,
+     * { imageKey, caption } a figure. Add, reorder or delete blocks freely —
+     * the layout follows whatever is here.
+     *
+     * The prose below is drawn from real work described elsewhere in this
+     * file, but it is scaffolding: rewrite it in your own voice.
+     */
     posts: [
       {
-        id: 'post-prototyping',
-        date: 'July 2026',
-        tags: ['Prototyping', 'AI Tooling'],
-        title: 'Prototyping in code with Claude Code and the Figma MCP',
-        dek: 'How a functional prototype became cheaper than a clickable mock, and what that changes about when you commit engineering time.',
-        imageKey: 'journal.prototyping',
+        id: "post-prototyping",
+        slug: "prototyping-in-code",
+        date: "July 2026",
+        tags: ["Prototyping", "AI Tooling"],
+        title: "Prototyping in code with Claude Code and the Figma MCP",
+        dek: "How a functional prototype became cheaper than a clickable mock, and what that changes about when you commit engineering time.",
+        imageKey: "journal.prototyping",
+        readMins: 6,
+        body: [
+          {
+            p: "For most of my career the honest answer to “can we try it?” was a clickable prototype: a set of frames wired together, convincing from the front and hollow behind. It answers questions about layout and sequence. It answers almost nothing about latency, empty states, or what happens when the network gives up halfway through.",
+          },
+          { h: "Why a mock stopped being enough" },
+          {
+            p: "The work that changed my mind was the instant-play entry flow at GameHouse+. The whole proposition was that a new user meets content already running rather than a catalogue to browse. That claim lives or dies on timing — how long the first frame takes, what fills the gap, what happens when it fails. None of it is testable in a prototype that fakes the wait.",
+          },
+          {
+            p: "So I built it instead. Not production code, but a real front end talking to real endpoints, with the loading and failure paths wired up honestly. It took an afternoon rather than the week I had budgeted, because the model did the typing and I did the deciding.",
+          },
+          {
+            imageKey: "journal.prototyping.fig",
+            caption:
+              "The entry flow as a working build: real latency, real empty state, real failure path.",
+          },
+          { h: "What the setup actually is" },
+          {
+            p: "Two pieces. Claude Code writes and runs the thing, so I am reviewing behaviour rather than describing it. The Figma MCP gives it access to the design system, so the components it reaches for are the ones that already exist — the same tokens, the same spacing, the same states. That second part is what stops the output being a generic bootstrap page wearing my colours.",
+          },
+          {
+            p: "The loop is short enough to be worth using on a question I am only mildly curious about, which is the real shift. When a prototype costs an afternoon, you build the version you are unsure about instead of arguing over it.",
+          },
+          { h: "Where it does not help" },
+          {
+            p: "It is poor at deciding what to build. Given a vague brief it produces something plausible and confident, which is worse than nothing because it looks like an answer. The framing, the research, the call about what matters — that work did not get cheaper, and leaning on the tool for it produces expensive noise.",
+          },
+          {
+            p: "It is also not a substitute for engineering. What I hand over is evidence about a direction, not an implementation. The value is that the spec arrives already knowing which questions engineering would have asked, because the prototype hit them first.",
+          },
+          {
+            p: "The net effect is that direction gets tested before engineering time is committed to it. That is the entire point, and it is not really about AI — it is about the cost of finding out being low enough that you find out early.",
+          },
+        ],
       },
       {
-        id: 'post-system',
-        date: 'April 2026',
-        tags: ['Design Systems', 'Process'],
-        title: 'Building a design system from scratch, with no team to inherit one',
-        dek: 'Starting from a single product and one designer: what to standardise first, what to leave loose, and how to keep it alive past launch.',
-        imageKey: 'journal.system',
+        id: "post-system",
+        slug: "design-system-from-scratch",
+        date: "April 2026",
+        tags: ["Design Systems", "Process"],
+        title:
+          "Building a design system from scratch, with no team to inherit one",
+        dek: "Starting from a single product and one designer: what to standardise first, what to leave loose, and how to keep it alive past launch.",
+        imageKey: "journal.system",
+        readMins: 7,
+        body: [
+          {
+            p: "Most writing about design systems assumes a platform team, a component roadmap and a governance model. That was not the situation at Jesterday. There was a strong art direction, an interface assembled screen by screen, and two of us on design. Eleven button treatments, four type scales, no consistent spacing.",
+          },
+          { h: "Standardise the contract, not the components" },
+          {
+            p: "The instinct is to start drawing components. That is the wrong first move when nobody has agreed what a component is made of. I started with tokens — colour, type, spacing, radius, motion — defined once and named, because a token is a contract and a component is just an opinion built on top of one.",
+          },
+          {
+            p: "The reason this mattered more than usual is that the implementation was in Unity. Tokens gave engineering something to mirror structurally rather than a set of exported images to eyeball. A colour change became one commit instead of a coordination meeting.",
+          },
+          {
+            imageKey: "journal.system.fig",
+            caption:
+              "Tokens as the contract between the design file and the engine.",
+          },
+          { h: "Ship states, not artwork" },
+          {
+            p: "Every component went in with its loading, empty, error and disconnected appearance. This is the part teams skip, and it is the part that decides whether a system survives contact with production. A multiplayer game spends a meaningful share of its life mid-reconnect; if that is an edge case in your library, your library does not describe your product.",
+          },
+          {
+            p: "It also changes review. Once states are in the library, “is this done?” has an answer that is not a matter of taste.",
+          },
+          { h: "Keep it small on purpose" },
+          {
+            p: "The library settled at forty-eight components, and every one of them earned its place by being needed on more than one surface. A system that documents every one-off is a catalogue, not a system, and nobody reads a catalogue. Refusing additions was more work than making them.",
+          },
+          {
+            p: "What keeps it alive is not documentation. It is that using the system is the path of least resistance — the components are there, they are correct, and assembling one is faster than drawing one. The moment that stops being true, people go around it, and no amount of governance fixes that.",
+          },
+          {
+            p: "The thing I would tell anyone starting from zero: a design system is mostly an organisational argument. The components are the easy half.",
+          },
+        ],
       },
       {
-        id: 'post-analytics',
-        date: 'January 2026',
-        tags: ['Analytics', 'Product'],
-        title: 'The feature I shipped, and the analytics that told me to redirect it',
-        dek: 'A funnel that disagreed with the roadmap, and the case for treating a shipped feature as a hypothesis rather than a result.',
-        imageKey: 'journal.analytics',
+        id: "post-analytics",
+        slug: "analytics-redirected-my-feature",
+        date: "January 2026",
+        tags: ["Analytics", "Product"],
+        title:
+          "The feature I shipped, and the analytics that told me to redirect it",
+        dek: "A funnel that disagreed with the roadmap, and the case for treating a shipped feature as a hypothesis rather than a result.",
+        imageKey: "journal.analytics",
+        readMins: 5,
+        body: [
+          {
+            p: "I shipped something good and it solved the wrong half of the problem. The funnel told me so about three weeks later, and the uncomfortable part is that I had the instrumentation in place precisely so it could.",
+          },
+          { h: "What we thought the problem was" },
+          {
+            p: "Activation at GameHouse+ was low. The prevailing theory was discovery: users could not find something they wanted, so we invested in helping them choose. Better surfacing, better merchandising, clearer entry points into the catalogue. It tested well and it shipped.",
+          },
+          {
+            p: "Then the funnel came back. The drop was not at the point of choosing. It was in the gap between opening the app and anything being playable at all. We had made a decision easier to make, when the actual failure was that a decision was being asked for in the first place.",
+          },
+          {
+            imageKey: "journal.analytics.fig",
+            caption: "The step where the funnel disagreed with the roadmap.",
+          },
+          { h: "Instrument before you ship, not after" },
+          {
+            p: "The only reason this was recoverable in weeks rather than quarters is that the funnel was wired before release. Instrumenting after the fact means you find out at the next planning cycle, by which point the feature has defenders and the conversation is about sunk cost rather than evidence.",
+          },
+          {
+            p: "I now treat a shipped feature as a hypothesis with a date attached. It is a strange thing to say out loud in a roadmap review, and it has saved more time than any process change I have made.",
+          },
+          { h: "Arguing against your own work" },
+          {
+            p: "Redirecting meant standing in front of product and engineering and saying the thing I had advocated for was aimed at the wrong target. That is easier when the evidence is not yours to spin — the funnel said it, not me, and the funnel had been agreed on in advance.",
+          },
+          {
+            p: "The pivot that followed put content in front of the user instantly rather than asking them to pick. Day-0 activation moved sixfold. None of that was available from the design that tested well, because the thing that tested well was answering a question nobody was actually stuck on.",
+          },
+        ],
       },
     ],
   },
 
   contact: {
-    eyebrow: 'Get in touch.',
-    heading: 'Let’s talk.',
+    eyebrow: "Get in touch.",
+    heading: "Let’s talk.",
     intro:
-      'Open to senior product design roles, design system work, and prototyping engagements with product and games teams. Also available for guest lectures and workshops.',
-    emailLabel: 'Or email me directly',
+      "Open to senior product design roles, design system work, and prototyping engagements with product and games teams. Also available for guest lectures and workshops.",
+    emailLabel: "Or email me directly",
 
     /**
      * Set this to a form-service endpoint and the form genuinely sends the
@@ -295,76 +456,90 @@ export const CONTENT = {
     endpointExtraFields: null,
 
     fields: {
-      name: { label: 'Your name', placeholder: 'Hiring Manager', required: true },
-      email: { label: 'Your email', placeholder: 'you@company.com', required: true },
-      subject: { label: 'Subject', placeholder: 'Senior Product Designer role', required: true },
+      name: {
+        label: "Your name",
+        placeholder: "Hiring Manager",
+        required: true,
+      },
+      email: {
+        label: "Your email",
+        placeholder: "you@company.com",
+        required: true,
+      },
+      subject: {
+        label: "Subject",
+        placeholder: "Senior Product Designer role",
+        required: true,
+      },
       message: {
-        label: 'Message',
-        placeholder: 'A line or two about the team, the product and the problem.',
+        label: "Message",
+        placeholder:
+          "A line or two about the team, the product and the problem.",
         required: true,
       },
     },
-    submitLabel: 'Send message',
-    submittingLabel: 'Sending…',
+    submitLabel: "Send message",
+    submittingLabel: "Sending…",
 
     // Shown when `endpoint` is set and the message actually went out.
-    sentTitle: 'Message sent.',
-    sentBody: 'Thanks — it landed in my inbox and I’ll come back to you shortly.',
+    sentTitle: "Message sent.",
+    sentBody:
+      "Thanks — it landed in my inbox and I’ll come back to you shortly.",
 
     // Shown when `endpoint` is null and a mail draft was opened instead.
     // Deliberately does not say "above": on a wide screen the address sits to
     // the left of the form, not above it.
-    draftTitle: 'Your email is ready.',
+    draftTitle: "Your email is ready.",
     draftBody: `A prefilled draft to ${LINKS.email} should have opened in your mail app. If nothing happened, copy that address and send it directly.`,
 
     // Shown when `endpoint` is set but the request failed.
-    failedTitle: 'That didn’t go through.',
+    failedTitle: "That didn’t go through.",
     failedBody: `Something went wrong sending the message. Please email me directly at ${LINKS.email}.`,
 
-    resetLabel: 'Write another',
+    resetLabel: "Write another",
     errors: {
-      name: 'Please tell me your name.',
-      email: 'Please enter a valid email address.',
-      subject: 'Please add a subject.',
-      message: 'Please add a message — a couple of sentences is plenty.',
+      name: "Please tell me your name.",
+      email: "Please enter a valid email address.",
+      subject: "Please add a subject.",
+      message: "Please add a message — a couple of sentences is plenty.",
     },
   },
 
   footer: {
     rail: [
-      { id: 'work', label: 'Work' },
-      { id: 'bits', label: 'Bits' },
-      { id: 'about', label: 'About' },
-      { id: 'shoutouts', label: 'Shoutouts' },
-      { id: 'journal', label: 'Journal' },
-      { id: 'contact', label: 'Contact' },
+      { id: "work", label: "Work" },
+      { id: "bits", label: "Bits" },
+      { id: "about", label: "About" },
+      { id: "shoutouts", label: "Shoutouts" },
+      { id: "journal", label: "Journal" },
+      { id: "contact", label: "Contact" },
     ],
-    railLabel: 'Sections on this page',
+    railLabel: "Sections on this page",
     socials: [
-      { label: 'LinkedIn', href: LINKS.linkedin, icon: 'linkedin' },
-      { label: 'Behance', href: LINKS.behance, icon: 'behance' },
-      { label: 'Email', href: `mailto:${LINKS.email}`, icon: 'mail' },
+      { label: "LinkedIn", href: LINKS.linkedin, icon: "linkedin" },
+      { label: "Behance", href: LINKS.behance, icon: "behance" },
+      { label: "Email", href: `mailto:${LINKS.email}`, icon: "mail" },
     ],
-    location: 'Barcelona, Spain',
-    copyright: '© 2026 Manel López. Built and written by hand in Barcelona.',
+    location: "Barcelona, Spain",
+    copyright: "© 2026 Manel López. Built and written by hand in Barcelona.",
   },
 
   caseUi: {
-    eyebrow: 'End-to-End Design',
-    titlePrefix: 'For',
-    backLabel: 'Back to work',
-    metaLabels: { role: 'Role', years: 'Years', skills: 'Skills' },
-    processPrev: 'Previous process card',
-    processNext: 'Next process card',
-    prevProject: 'Previous',
-    nextProject: 'Next',
-    railLabel: 'Sections in this case study',
+    eyebrow: "End-to-End Design",
+    titlePrefix: "For",
+    backLabel: "Back to work",
+    metaLabels: { role: "Role", years: "Years", skills: "Skills" },
+    processPrev: "Previous process card",
+    processNext: "Next process card",
+    prevProject: "Previous",
+    nextProject: "Next",
+    railLabel: "Sections in this case study",
     rail: [
-      { id: 'overview', label: 'Overview' },
-      { id: 'process', label: 'Process' },
-      { id: 'system', label: 'System' },
-      { id: 'extend', label: 'Extend' },
-      { id: 'impact', label: 'Impact' },
+      { id: "overview", label: "Overview" },
+      { id: "process", label: "Process" },
+      { id: "system", label: "System" },
+      { id: "extend", label: "Extend" },
+      { id: "impact", label: "Impact" },
     ],
   },
 
@@ -374,515 +549,559 @@ export const CONTENT = {
    * --------------------------------------------------------------------- */
   projects: [
     {
-      slug: 'gamehouse-plus',
-      name: 'GameHouse+',
-      mark: 'gamehouse',
-      eyebrow: 'GameHouse+',
+      slug: "gamehouse-plus",
+      // Shown only on the home spotlight card. The colored lockup keeps its
+      // gradients, so it is a real <img> rather than a recoloured mask.
+      spotlightLogo: "img/logos/ghplus-colored.svg",
+      spotlightLogoAspect: 4.457,
+      spotlightTitle: [
+        "Rethinking how players start playing.",
+        "A product-wide pivot to in-app games.",
+      ],
+      name: "GameHouse+",
+      mark: "gamehouse",
+      eyebrow: "GameHouse+",
       positioning:
-        'A consumer subscription app for casual games, repositioned around instant play.',
+        "A consumer subscription app for casual games, repositioned around instant play.",
       cardDescription:
-        'End-to-end ownership of a casual-games subscription app — research, product analytics, design system and the first-session rebuild.',
-      role: 'Senior Product Designer — end-to-end ownership',
-      years: '2023 — Present',
-      skills: ['UX Design', 'UX Research', 'Product Analytics', 'Design Systems', 'Prototyping', 'Visual'],
+        "End-to-end ownership of a casual-games subscription app — research, product analytics, design system and the first-session rebuild.",
+      role: "Senior Product Designer — end-to-end ownership",
+      years: "2023 — Present",
+      skills: [
+        "UX Design",
+        "UX Research",
+        "Product Analytics",
+        "Design Systems",
+        "Prototyping",
+        "Visual",
+      ],
       metrics: [
-        { value: '6×', label: 'Day-0 activation' },
-        { value: '6×', label: 'Faster time to first session' },
-        { value: '2×', label: 'Day-1 retention' },
+        { value: "6×", label: "Day-0 activation" },
+        { value: "6×", label: "Faster time to first session" },
+        { value: "2×", label: "Day-1 retention" },
       ],
       images: {
-        hero: 'case.gamehouse-plus.hero',
-        overview: 'case.gamehouse-plus.overview',
+        hero: "case.gamehouse-plus.hero",
+        overview: "case.gamehouse-plus.overview",
         system: [
-          'case.gamehouse-plus.system.1',
-          'case.gamehouse-plus.system.2',
-          'case.gamehouse-plus.system.3',
-          'case.gamehouse-plus.system.4',
+          "case.gamehouse-plus.system.1",
+          "case.gamehouse-plus.system.2",
+          "case.gamehouse-plus.system.3",
+          "case.gamehouse-plus.system.4",
         ],
-        extend: ['case.gamehouse-plus.extend.1', 'case.gamehouse-plus.extend.2'],
+        extend: [
+          "case.gamehouse-plus.extend.1",
+          "case.gamehouse-plus.extend.2",
+        ],
       },
       overview: {
-        eyebrow: 'Overview:',
-        heading: 'Backstory of the work.',
+        eyebrow: "Overview:",
+        heading: "Backstory of the work.",
         body: [
-          'GameHouse+ is a subscription app for casual games. I own it end to end — discovery, research, interaction design, the design system, the visual language, and the analytics that tell us whether any of it worked.',
-          'The product had a catalogue people liked and a first session almost nobody finished. Installs arrived, the store loaded, and the majority of new users left before they had played anything at all. The subscription was being asked to justify itself before it had delivered a single minute of value.',
+          "GameHouse+ is a subscription app for casual games. I own it end to end — discovery, research, interaction design, the design system, the visual language, and the analytics that tell us whether any of it worked.",
+          "The product had a catalogue people liked and a first session almost nobody finished. Installs arrived, the store loaded, and the majority of new users left before they had played anything at all. The subscription was being asked to justify itself before it had delivered a single minute of value.",
         ],
       },
       process: {
-        eyebrow: 'Process:',
-        heading: 'How I kicked things off.',
+        eyebrow: "Process:",
+        heading: "How I kicked things off.",
         body: [
-          'I started where the disagreement was: everyone had a theory about why activation was low, and none of them were written down. So I made the current state undeniable before proposing anything.',
-          'Session recordings and funnel analysis first, then a short round of moderated sessions with new users, then a written problem statement the whole team could argue with. Only after that did I start drawing.',
+          "I started where the disagreement was: everyone had a theory about why activation was low, and none of them were written down. So I made the current state undeniable before proposing anything.",
+          "Session recordings and funnel analysis first, then a short round of moderated sessions with new users, then a written problem statement the whole team could argue with. Only after that did I start drawing.",
         ],
         cards: [
           {
-            title: 'Funnel teardown',
-            meta: 'Product analytics',
-            body: 'Instrumented the first session step by step in Amplitude and found the drop was not at paywall or signup — it was in the gap between opening the app and anything being playable.',
+            title: "Funnel teardown",
+            meta: "Product analytics",
+            body: "Instrumented the first session step by step in Amplitude and found the drop was not at paywall or signup — it was in the gap between opening the app and anything being playable.",
           },
           {
-            title: 'Moderated first sessions',
-            meta: 'UX research',
-            body: 'Watched new users open the app cold. The catalogue read as a decision to make rather than an invitation to play, and the download wait broke the moment of intent.',
+            title: "Moderated first sessions",
+            meta: "UX research",
+            body: "Watched new users open the app cold. The catalogue read as a decision to make rather than an invitation to play, and the download wait broke the moment of intent.",
           },
           {
-            title: 'Problem statement',
-            meta: 'Framing document',
-            body: 'One page: what we observed, what it costs, what we are choosing to optimise, and what we are explicitly not solving in this cycle. Signed off by product and engineering before design started.',
+            title: "Problem statement",
+            meta: "Framing document",
+            body: "One page: what we observed, what it costs, what we are choosing to optimise, and what we are explicitly not solving in this cycle. Signed off by product and engineering before design started.",
           },
           {
-            title: 'Instant-play hypothesis',
-            meta: 'Concept',
-            body: 'If the first thing a new user meets is content already running rather than a catalogue to browse, activation stops depending on a download completing.',
+            title: "Instant-play hypothesis",
+            meta: "Concept",
+            body: "If the first thing a new user meets is content already running rather than a catalogue to browse, activation stops depending on a download completing.",
           },
           {
-            title: 'Coded prototype',
-            meta: 'Prototyping',
-            body: 'Built the entry flow as a working prototype rather than a clickable mock, so latency, loading and failure states were real and could be tested honestly.',
+            title: "Coded prototype",
+            meta: "Prototyping",
+            body: "Built the entry flow as a working prototype rather than a clickable mock, so latency, loading and failure states were real and could be tested honestly.",
           },
           {
-            title: 'Instrumented rollout',
-            meta: 'Validation',
-            body: 'Shipped behind a flag with the funnel already wired, so the comparison against the old first session was available in days rather than after a quarter.',
+            title: "Instrumented rollout",
+            meta: "Validation",
+            body: "Shipped behind a flag with the funnel already wired, so the comparison against the old first session was available in days rather than after a quarter.",
           },
         ],
       },
       system: {
-        eyebrow: 'Shaping the system:',
-        heading: 'Shaping the system for GameHouse+.',
+        eyebrow: "Shaping the system:",
+        heading: "Shaping the system for GameHouse+.",
         body: [
-          'The pivot only holds if the surfaces around it are consistent, so I built the design system in parallel with the flow rather than after it. Tokens for colour, type, spacing and motion; a component library with real states rather than happy-path artwork; and documented rules for how content density behaves as the catalogue grows.',
-          'The system is deliberately small. Every component in it exists because two or more surfaces needed it, and each one ships with its loading, empty, error and offline states — those are the states a games subscription actually spends its time in.',
+          "The pivot only holds if the surfaces around it are consistent, so I built the design system in parallel with the flow rather than after it. Tokens for colour, type, spacing and motion; a component library with real states rather than happy-path artwork; and documented rules for how content density behaves as the catalogue grows.",
+          "The system is deliberately small. Every component in it exists because two or more surfaces needed it, and each one ships with its loading, empty, error and offline states — those are the states a games subscription actually spends its time in.",
         ],
       },
       extend: {
-        eyebrow: 'Extend:',
-        heading: 'Store and marketing surfaces.',
+        eyebrow: "Extend:",
+        heading: "Store and marketing surfaces.",
         body: [
-          'Once the in-app language settled, the same system had to carry the surfaces that sit outside the app: store listings, lifecycle email, acquisition landing pages and the in-app merchandising slots that promote new content.',
-          'Reusing the tokens and components meant the promise made in an ad matched the first screen a new user saw. That continuity is a measurable part of activation, not a brand nicety.',
+          "Once the in-app language settled, the same system had to carry the surfaces that sit outside the app: store listings, lifecycle email, acquisition landing pages and the in-app merchandising slots that promote new content.",
+          "Reusing the tokens and components meant the promise made in an ad matched the first screen a new user saw. That continuity is a measurable part of activation, not a brand nicety.",
         ],
       },
       impact: {
-        eyebrow: 'The impact:',
-        heading: 'Activation, and what changed.',
+        eyebrow: "The impact:",
+        heading: "Activation, and what changed.",
         body: [
-          'The instant-content pivot delivered six times day-0 activation, a six-fold reduction in time to first session, and double day-1 retention. The first session stopped being a decision and became an experience.',
-          'The more durable change is how the team now works. A problem statement precedes design, prototypes are functional before they are pretty, and the funnel is instrumented before a feature ships rather than after someone asks how it is doing. I have since used the same analytics to argue for redirecting a feature I had already shipped myself.',
+          "The instant-content pivot delivered six times day-0 activation, a six-fold reduction in time to first session, and double day-1 retention. The first session stopped being a decision and became an experience.",
+          "The more durable change is how the team now works. A problem statement precedes design, prototypes are functional before they are pretty, and the funnel is instrumented before a feature ships rather than after someone asks how it is doing. I have since used the same analytics to argue for redirecting a feature I had already shipped myself.",
         ],
       },
     },
     {
-      slug: 'jesterday',
-      logo: 'img/logos/jesterday.svg',
+      slug: "jesterday",
+      logo: "img/logos/jesterday.svg",
       logoAspect: 3.292,
-      name: 'Jesterday',
-      mark: 'jesterday',
-      eyebrow: 'Jesterday',
+      name: "Jesterday",
+      mark: "jesterday",
+      eyebrow: "Jesterday",
       positioning:
-        'An indie mobile multiplayer title, given a design system and an economy that survive production.',
+        "An indie mobile multiplayer title, given a design system and an economy that survive production.",
       cardDescription:
-        'Indie mobile multiplayer. Design system built from scratch, an energy economy modelled end to end, and the component library implemented in Unity.',
-      role: 'Product Designer & Design System Owner',
-      years: '2022 — 2023',
-      skills: ['UX Design', 'Design Systems', 'Game Economy', 'Unity Implementation', 'Visual'],
+        "Indie mobile multiplayer. Design system built from scratch, an energy economy modelled end to end, and the component library implemented in Unity.",
+      role: "Product Designer & Design System Owner",
+      years: "2022 — 2023",
+      skills: [
+        "UX Design",
+        "Design Systems",
+        "Game Economy",
+        "Unity Implementation",
+        "Visual",
+      ],
       metrics: [
-        { value: '0 → 1', label: 'Design system, built from scratch' },
-        { value: '48', label: 'Components shipped into Unity' },
-        { value: '1', label: 'Energy economy, modelled before build' },
+        { value: "0 → 1", label: "Design system, built from scratch" },
+        { value: "48", label: "Components shipped into Unity" },
+        { value: "1", label: "Energy economy, modelled before build" },
       ],
       images: {
-        hero: 'case.jesterday.hero',
-        overview: 'case.jesterday.overview',
+        hero: "case.jesterday.hero",
+        overview: "case.jesterday.overview",
         system: [
-          'case.jesterday.system.1',
-          'case.jesterday.system.2',
-          'case.jesterday.system.3',
-          'case.jesterday.system.4',
+          "case.jesterday.system.1",
+          "case.jesterday.system.2",
+          "case.jesterday.system.3",
+          "case.jesterday.system.4",
         ],
-        extend: ['case.jesterday.extend.1', 'case.jesterday.extend.2'],
+        extend: ["case.jesterday.extend.1", "case.jesterday.extend.2"],
       },
       overview: {
-        eyebrow: 'Overview:',
-        heading: 'Backstory of the work.',
+        eyebrow: "Overview:",
+        heading: "Backstory of the work.",
         body: [
-          'Jesterday is an indie mobile multiplayer game. There was no design system, no component library and no shared language for the interface — the studio had a strong art direction and a UI assembled ad hoc, screen by screen.',
-          'I joined to give the product a system: something the two of us on design could work inside, and something engineering could implement once rather than re-solve for every new screen.',
+          "Jesterday is an indie mobile multiplayer game. There was no design system, no component library and no shared language for the interface — the studio had a strong art direction and a UI assembled ad hoc, screen by screen.",
+          "I joined to give the product a system: something the two of us on design could work inside, and something engineering could implement once rather than re-solve for every new screen.",
         ],
       },
       process: {
-        eyebrow: 'Process:',
-        heading: 'How I kicked things off.',
+        eyebrow: "Process:",
+        heading: "How I kicked things off.",
         body: [
-          'A game interface has a harder constraint than most product UI: the economy and the interface are the same design. You cannot lay out an energy meter sensibly until you know what energy costs, how fast it refills and what it gates.',
-          'So I modelled the economy first, in a spreadsheet, against target session lengths — then designed the surfaces that expose it.',
+          "A game interface has a harder constraint than most product UI: the economy and the interface are the same design. You cannot lay out an energy meter sensibly until you know what energy costs, how fast it refills and what it gates.",
+          "So I modelled the economy first, in a spreadsheet, against target session lengths — then designed the surfaces that expose it.",
         ],
         cards: [
           {
-            title: 'Interface audit',
-            meta: 'Discovery',
-            body: 'Catalogued every existing screen and found eleven button treatments, four type scales and no consistent spacing. Turned that into the argument for a system.',
+            title: "Interface audit",
+            meta: "Discovery",
+            body: "Catalogued every existing screen and found eleven button treatments, four type scales and no consistent spacing. Turned that into the argument for a system.",
           },
           {
-            title: 'Economy model',
-            meta: 'Game design',
-            body: 'Modelled energy cost, refill rate and session pacing in a spreadsheet, tuned against the session length the studio wanted, before any screen was drawn.',
+            title: "Economy model",
+            meta: "Game design",
+            body: "Modelled energy cost, refill rate and session pacing in a spreadsheet, tuned against the session length the studio wanted, before any screen was drawn.",
           },
           {
-            title: 'Token foundation',
-            meta: 'Design systems',
-            body: 'Colour, type, spacing, radius and motion as named tokens, defined once and referenced everywhere — including in the Unity implementation.',
+            title: "Token foundation",
+            meta: "Design systems",
+            body: "Colour, type, spacing, radius and motion as named tokens, defined once and referenced everywhere — including in the Unity implementation.",
           },
           {
-            title: 'Component library',
-            meta: 'Design systems',
-            body: 'Built the library in Figma with real states, then worked alongside engineering to mirror it as reusable Unity prefabs rather than a set of exported images.',
+            title: "Component library",
+            meta: "Design systems",
+            body: "Built the library in Figma with real states, then worked alongside engineering to mirror it as reusable Unity prefabs rather than a set of exported images.",
           },
           {
-            title: 'Multiplayer states',
-            meta: 'Interaction design',
-            body: 'Matchmaking, reconnect, opponent-dropped and latency states designed as first-class screens. In multiplayer these are not edge cases, they are the weather.',
+            title: "Multiplayer states",
+            meta: "Interaction design",
+            body: "Matchmaking, reconnect, opponent-dropped and latency states designed as first-class screens. In multiplayer these are not edge cases, they are the weather.",
           },
           {
-            title: 'Handoff in engine',
-            meta: 'Implementation',
-            body: 'Reviewed in the build rather than in Figma. If a component only looked right in the design file, it was not finished.',
+            title: "Handoff in engine",
+            meta: "Implementation",
+            body: "Reviewed in the build rather than in Figma. If a component only looked right in the design file, it was not finished.",
           },
         ],
       },
       system: {
-        eyebrow: 'Shaping the system:',
-        heading: 'Shaping the system for Jesterday.',
+        eyebrow: "Shaping the system:",
+        heading: "Shaping the system for Jesterday.",
         body: [
-          'The library ended up at forty-eight components, each one earning its place by being needed on more than one surface. Tokens were the contract: a colour or spacing change was a single edit that propagated into the engine, not a coordination meeting.',
-          'The part I would defend hardest is the state coverage. Every component was specified with its loading, empty, error and disconnected appearance, because a multiplayer game spends a meaningful share of its life in exactly those states.',
+          "The library ended up at forty-eight components, each one earning its place by being needed on more than one surface. Tokens were the contract: a colour or spacing change was a single edit that propagated into the engine, not a coordination meeting.",
+          "The part I would defend hardest is the state coverage. Every component was specified with its loading, empty, error and disconnected appearance, because a multiplayer game spends a meaningful share of its life in exactly those states.",
         ],
       },
       extend: {
-        eyebrow: 'Extend:',
-        heading: 'Into the engine, and out to the store.',
+        eyebrow: "Extend:",
+        heading: "Into the engine, and out to the store.",
         body: [
-          'The system extended in two directions. Inward, into Unity, as prefabs built from the same tokens — which is what made it stick, because the implementation was not a translation of the design, it was the design.',
-          'Outward, into store assets and campaign surfaces, so the game presented one visual language from the first screenshot a player sees to the interface they land in.',
+          "The system extended in two directions. Inward, into Unity, as prefabs built from the same tokens — which is what made it stick, because the implementation was not a translation of the design, it was the design.",
+          "Outward, into store assets and campaign surfaces, so the game presented one visual language from the first screenshot a player sees to the interface they land in.",
         ],
       },
       impact: {
-        eyebrow: 'The impact:',
-        heading: 'What the system changed.',
+        eyebrow: "The impact:",
+        heading: "What the system changed.",
         body: [
-          'New screens stopped being bespoke. A feature that would previously have needed a designer to invent its buttons, spacing and states could be assembled from the library and reviewed in the build the same week.',
-          'The economy model turned out to be the more valuable artefact. Because the numbers existed before the screens, arguments about pacing were settled against the model rather than against taste — and the interface never had to be redrawn because the economy shifted underneath it.',
+          "New screens stopped being bespoke. A feature that would previously have needed a designer to invent its buttons, spacing and states could be assembled from the library and reviewed in the build the same week.",
+          "The economy model turned out to be the more valuable artefact. Because the numbers existed before the screens, arguments about pacing were settled against the model rather than against taste — and the interface never had to be redrawn because the economy shifted underneath it.",
         ],
       },
     },
     {
-      slug: 'seat-cupra',
-      logo: 'img/logos/cupra.svg',
+      slug: "seat-cupra",
+      logo: "img/logos/cupra.svg",
       logoAspect: 7.008,
-      name: 'SEAT CUPRA',
-      mark: 'cupra',
-      eyebrow: 'SEAT CUPRA',
+      name: "SEAT CUPRA",
+      mark: "cupra",
+      eyebrow: "SEAT CUPRA",
       positioning:
-        'In-car infotainment for connected services — enrolment, data plans and software updates, across every screen in the range.',
+        "In-car infotainment for connected services — enrolment, data plans and software updates, across every screen in the range.",
       cardDescription:
-        'In-car infotainment. Connected-services enrolment, data plan purchase and an update centre, designed to hold from 7-inch clusters to 15-inch displays.',
-      role: 'Product Designer, Connected Services',
-      years: '2021 — 2022',
-      skills: ['UX Design', 'UX Research', 'Automotive HMI', 'Responsive Systems', 'Visual'],
+        "In-car infotainment. Connected-services enrolment, data plan purchase and an update centre, designed to hold from 7-inch clusters to 15-inch displays.",
+      role: "Product Designer, Connected Services",
+      years: "2021 — 2022",
+      skills: [
+        "UX Design",
+        "UX Research",
+        "Automotive HMI",
+        "Responsive Systems",
+        "Visual",
+      ],
       metrics: [
-        { value: '7"–15"', label: 'Screen sizes supported' },
-        { value: '3', label: 'Core flows owned end to end' },
-        { value: '2', label: 'Brands sharing one system' },
+        { value: '7"–15"', label: "Screen sizes supported" },
+        { value: "3", label: "Core flows owned end to end" },
+        { value: "2", label: "Brands sharing one system" },
       ],
       images: {
-        hero: 'case.seat-cupra.hero',
-        overview: 'case.seat-cupra.overview',
+        hero: "case.seat-cupra.hero",
+        overview: "case.seat-cupra.overview",
         system: [
-          'case.seat-cupra.system.1',
-          'case.seat-cupra.system.2',
-          'case.seat-cupra.system.3',
-          'case.seat-cupra.system.4',
+          "case.seat-cupra.system.1",
+          "case.seat-cupra.system.2",
+          "case.seat-cupra.system.3",
+          "case.seat-cupra.system.4",
         ],
-        extend: ['case.seat-cupra.extend.1', 'case.seat-cupra.extend.2'],
+        extend: ["case.seat-cupra.extend.1", "case.seat-cupra.extend.2"],
       },
       overview: {
-        eyebrow: 'Overview:',
-        heading: 'Backstory of the work.',
+        eyebrow: "Overview:",
+        heading: "Backstory of the work.",
         body: [
-          'Connected services turn a car into a product with an account, a subscription and a software lifecycle. I designed three of those flows for SEAT and CUPRA infotainment: enrolling the vehicle, buying a data plan, and managing software updates.',
-          'The context is unforgiving. The user is in a driver’s seat, possibly parked and impatient, reading a screen at arm’s length in variable light, using a system that cannot assume a keyboard, a fast connection or a second attempt.',
+          "Connected services turn a car into a product with an account, a subscription and a software lifecycle. I designed three of those flows for SEAT and CUPRA infotainment: enrolling the vehicle, buying a data plan, and managing software updates.",
+          "The context is unforgiving. The user is in a driver’s seat, possibly parked and impatient, reading a screen at arm’s length in variable light, using a system that cannot assume a keyboard, a fast connection or a second attempt.",
         ],
       },
       process: {
-        eyebrow: 'Process:',
-        heading: 'How I kicked things off.',
+        eyebrow: "Process:",
+        heading: "How I kicked things off.",
         body: [
-          'Automotive HMI has constraints you cannot design around, only design for: legal, safety, hardware and a screen range that spans more than double in physical size. I began by writing those constraints down as design inputs.',
-          'From there the work was mostly about reduction — finding the smallest flow that survives a bad connection, a distracted user and a 7-inch display.',
+          "Automotive HMI has constraints you cannot design around, only design for: legal, safety, hardware and a screen range that spans more than double in physical size. I began by writing those constraints down as design inputs.",
+          "From there the work was mostly about reduction — finding the smallest flow that survives a bad connection, a distracted user and a 7-inch display.",
         ],
         cards: [
           {
-            title: 'Constraint inventory',
-            meta: 'Framing',
-            body: 'Hardware sizes, input methods, safety rules on what may appear while moving, and connectivity assumptions — collected as a single document that every design decision was checked against.',
+            title: "Constraint inventory",
+            meta: "Framing",
+            body: "Hardware sizes, input methods, safety rules on what may appear while moving, and connectivity assumptions — collected as a single document that every design decision was checked against.",
           },
           {
-            title: 'Flow reduction',
-            meta: 'UX design',
-            body: 'Rewrote enrolment to the minimum number of decisions, deferring everything that could be completed later from a phone rather than blocking the driver in the car.',
+            title: "Flow reduction",
+            meta: "UX design",
+            body: "Rewrote enrolment to the minimum number of decisions, deferring everything that could be completed later from a phone rather than blocking the driver in the car.",
           },
           {
-            title: 'Type and touch ramp',
-            meta: 'Responsive system',
-            body: 'One type and target scale defined against viewing distance rather than pixels, so the same layout stays legible and tappable at 7 inches and does not look sparse at 15.',
+            title: "Type and touch ramp",
+            meta: "Responsive system",
+            body: "One type and target scale defined against viewing distance rather than pixels, so the same layout stays legible and tappable at 7 inches and does not look sparse at 15.",
           },
           {
-            title: 'Purchase without a keyboard',
-            meta: 'Interaction design',
-            body: 'Designed data plan purchase to avoid text entry wherever possible, handing off to the phone for anything that genuinely needed typing.',
+            title: "Purchase without a keyboard",
+            meta: "Interaction design",
+            body: "Designed data plan purchase to avoid text entry wherever possible, handing off to the phone for anything that genuinely needed typing.",
           },
           {
-            title: 'Update centre',
-            meta: 'UX design',
-            body: 'Software updates presented as a state the driver can understand and trust: what is changing, how long it takes, and what happens if they walk away.',
+            title: "Update centre",
+            meta: "UX design",
+            body: "Software updates presented as a state the driver can understand and trust: what is changing, how long it takes, and what happens if they walk away.",
           },
           {
-            title: 'In-vehicle review',
-            meta: 'Validation',
-            body: 'Reviewed on real hardware in real light. Contrast and legibility decisions that looked safe on a monitor repeatedly did not survive a sunny car park.',
+            title: "In-vehicle review",
+            meta: "Validation",
+            body: "Reviewed on real hardware in real light. Contrast and legibility decisions that looked safe on a monitor repeatedly did not survive a sunny car park.",
           },
         ],
       },
       system: {
-        eyebrow: 'Shaping the system:',
-        heading: 'One system, every screen size.',
+        eyebrow: "Shaping the system:",
+        heading: "One system, every screen size.",
         body: [
-          'The core of the work is a responsive system keyed to viewing distance instead of viewport width. Type, touch targets, spacing and information density all step together across the screen range, so a flow designed once behaves correctly on every configuration in the line-up.',
-          'Two brands share it. SEAT and CUPRA differ in tone and palette but not in structure, which meant the flows could be designed once and themed rather than forked.',
+          "The core of the work is a responsive system keyed to viewing distance instead of viewport width. Type, touch targets, spacing and information density all step together across the screen range, so a flow designed once behaves correctly on every configuration in the line-up.",
+          "Two brands share it. SEAT and CUPRA differ in tone and palette but not in structure, which meant the flows could be designed once and themed rather than forked.",
         ],
       },
       extend: {
-        eyebrow: 'Extend:',
-        heading: 'Beyond the head unit.',
+        eyebrow: "Extend:",
+        heading: "Beyond the head unit.",
         body: [
-          'Several flows genuinely belong on a phone — anything involving typing, payment detail or reading terms. I designed the handoff so starting in the car and finishing on a phone is one continuous task rather than two disconnected ones.',
-          'The same system also carried the companion-app surfaces that mirror vehicle state, so the two screens agreed with each other about what the car was doing.',
+          "Several flows genuinely belong on a phone — anything involving typing, payment detail or reading terms. I designed the handoff so starting in the car and finishing on a phone is one continuous task rather than two disconnected ones.",
+          "The same system also carried the companion-app surfaces that mirror vehicle state, so the two screens agreed with each other about what the car was doing.",
         ],
       },
       impact: {
-        eyebrow: 'The impact:',
-        heading: 'What shipped, and what it taught me.',
+        eyebrow: "The impact:",
+        heading: "What shipped, and what it taught me.",
         body: [
-          'Three connected-services flows shipped into production infotainment across two brands and the full screen range, on a shared responsive system rather than per-configuration designs.',
-          'Automotive changed how I design generally. When you cannot patch next week and a mistake sits in front of the user for the life of the vehicle, you get rigorous about states, about legibility, and about testing on the real thing rather than on a monitor.',
+          "Three connected-services flows shipped into production infotainment across two brands and the full screen range, on a shared responsive system rather than per-configuration designs.",
+          "Automotive changed how I design generally. When you cannot patch next week and a mistake sits in front of the user for the life of the vehicle, you get rigorous about states, about legibility, and about testing on the real thing rather than on a monitor.",
         ],
       },
     },
     {
-      slug: 'radisson',
-      logo: 'img/logos/radisson.svg',
+      slug: "radisson",
+      logo: "img/logos/radisson.svg",
       logoAspect: 2.681,
-      name: 'Radisson Hotels',
-      mark: 'radisson',
-      eyebrow: 'Radisson Hotels — via Eunoia Digital',
+      name: "Radisson Hotels",
+      mark: "radisson",
+      eyebrow: "Radisson Hotels — via Eunoia Digital",
       positioning:
-        'Enterprise interfaces, flows and UI kits for a global hotel group, produced at agency scale.',
+        "Enterprise interfaces, flows and UI kits for a global hotel group, produced at agency scale.",
       cardDescription:
-        'Enterprise interfaces for a global hotel group. Flows, screens and reusable UI kits delivered at agency pace without losing consistency.',
-      role: 'Product Designer, Eunoia Digital',
-      years: '2020 — 2021',
-      skills: ['UX Design', 'UI Design', 'Design Systems', 'Enterprise Flows', 'Visual'],
+        "Enterprise interfaces for a global hotel group. Flows, screens and reusable UI kits delivered at agency pace without losing consistency.",
+      role: "Product Designer, Eunoia Digital",
+      years: "2020 — 2021",
+      skills: [
+        "UX Design",
+        "UI Design",
+        "Design Systems",
+        "Enterprise Flows",
+        "Visual",
+      ],
       metrics: [
-        { value: 'Enterprise', label: 'Scale and governance' },
-        { value: 'Multi-market', label: 'Rollout footprint' },
-        { value: 'Reusable', label: 'UI kits over one-off screens' },
+        { value: "Enterprise", label: "Scale and governance" },
+        { value: "Multi-market", label: "Rollout footprint" },
+        { value: "Reusable", label: "UI kits over one-off screens" },
       ],
       images: {
-        hero: 'case.radisson.hero',
-        overview: 'case.radisson.overview',
+        hero: "case.radisson.hero",
+        overview: "case.radisson.overview",
         system: [
-          'case.radisson.system.1',
-          'case.radisson.system.2',
-          'case.radisson.system.3',
-          'case.radisson.system.4',
+          "case.radisson.system.1",
+          "case.radisson.system.2",
+          "case.radisson.system.3",
+          "case.radisson.system.4",
         ],
-        extend: ['case.radisson.extend.1', 'case.radisson.extend.2'],
+        extend: ["case.radisson.extend.1", "case.radisson.extend.2"],
       },
       overview: {
-        eyebrow: 'Overview:',
-        heading: 'Backstory of the work.',
+        eyebrow: "Overview:",
+        heading: "Backstory of the work.",
         body: [
-          'At Eunoia Digital I worked on enterprise interfaces for Radisson Hotels — internal and operational tools rather than the booking site most people picture when they hear hotel software.',
-          'Enterprise work at agency pace has a specific failure mode: every request is urgent, every screen is delivered by a different person, and six months later the product is a patchwork. The interesting problem was consistency under deadline pressure, not any single screen.',
+          "At Eunoia Digital I worked on enterprise interfaces for Radisson Hotels — internal and operational tools rather than the booking site most people picture when they hear hotel software.",
+          "Enterprise work at agency pace has a specific failure mode: every request is urgent, every screen is delivered by a different person, and six months later the product is a patchwork. The interesting problem was consistency under deadline pressure, not any single screen.",
         ],
       },
       process: {
-        eyebrow: 'Process:',
-        heading: 'How I kicked things off.',
+        eyebrow: "Process:",
+        heading: "How I kicked things off.",
         body: [
-          'I treated reusable UI kits as the deliverable and individual screens as the by-product. Building the kit costs more on the first request and less on every one after it.',
-          'That argument had to be made commercially as well as design-side, because it front-loads effort in a model that bills by delivery.',
+          "I treated reusable UI kits as the deliverable and individual screens as the by-product. Building the kit costs more on the first request and less on every one after it.",
+          "That argument had to be made commercially as well as design-side, because it front-loads effort in a model that bills by delivery.",
         ],
         cards: [
           {
-            title: 'Flow mapping',
-            meta: 'Discovery',
-            body: 'Mapped the operational flows end to end with the people who actually run them, which surfaced steps that existed only as institutional knowledge.',
+            title: "Flow mapping",
+            meta: "Discovery",
+            body: "Mapped the operational flows end to end with the people who actually run them, which surfaced steps that existed only as institutional knowledge.",
           },
           {
-            title: 'Pattern extraction',
-            meta: 'Analysis',
-            body: 'Pulled the recurring structures out of the screens already delivered — tables, filters, detail panes, bulk actions — and made them the basis of the kit.',
+            title: "Pattern extraction",
+            meta: "Analysis",
+            body: "Pulled the recurring structures out of the screens already delivered — tables, filters, detail panes, bulk actions — and made them the basis of the kit.",
           },
           {
-            title: 'UI kit build',
-            meta: 'Design systems',
-            body: 'Built kits designed to be handed to another designer and used correctly without a briefing. Documentation as part of the component, not a separate wiki nobody opens.',
+            title: "UI kit build",
+            meta: "Design systems",
+            body: "Built kits designed to be handed to another designer and used correctly without a briefing. Documentation as part of the component, not a separate wiki nobody opens.",
           },
           {
-            title: 'Dense data screens',
-            meta: 'UI design',
-            body: 'Enterprise screens carry far more information than consumer ones. Established density, hierarchy and scanning rules so volume stayed readable.',
+            title: "Dense data screens",
+            meta: "UI design",
+            body: "Enterprise screens carry far more information than consumer ones. Established density, hierarchy and scanning rules so volume stayed readable.",
           },
           {
-            title: 'Multi-market variance',
-            meta: 'UX design',
-            body: 'Designed for markets whose operational rules differ, keeping one structure and varying only what genuinely had to vary.',
+            title: "Multi-market variance",
+            meta: "UX design",
+            body: "Designed for markets whose operational rules differ, keeping one structure and varying only what genuinely had to vary.",
           },
           {
-            title: 'Delivery cadence',
-            meta: 'Process',
-            body: 'Set a review rhythm with client stakeholders so consistency was checked continuously rather than discovered as drift at the end of a phase.',
+            title: "Delivery cadence",
+            meta: "Process",
+            body: "Set a review rhythm with client stakeholders so consistency was checked continuously rather than discovered as drift at the end of a phase.",
           },
         ],
       },
       system: {
-        eyebrow: 'Shaping the system:',
-        heading: 'UI kits that survive a handover.',
+        eyebrow: "Shaping the system:",
+        heading: "UI kits that survive a handover.",
         body: [
-          'The kits were built for the realistic case: someone else picking them up under time pressure, with no access to me. That meant obvious naming, states included by default, and documentation written into the component rather than filed beside it.',
-          'Density was the hard part. Operational users want everything on one screen, and the job is to make that volume scannable — consistent alignment, real hierarchy, and restraint about how many things may compete for attention at once.',
+          "The kits were built for the realistic case: someone else picking them up under time pressure, with no access to me. That meant obvious naming, states included by default, and documentation written into the component rather than filed beside it.",
+          "Density was the hard part. Operational users want everything on one screen, and the job is to make that volume scannable — consistent alignment, real hierarchy, and restraint about how many things may compete for attention at once.",
         ],
       },
       extend: {
-        eyebrow: 'Extend:',
-        heading: 'Across products and markets.',
+        eyebrow: "Extend:",
+        heading: "Across products and markets.",
         body: [
-          'Once the kits existed they were reused across adjacent products in the same account, which is where the front-loaded effort paid back. New requests started from assembly rather than invention.',
-          'They also absorbed market-specific variation without forking, because the variable parts were isolated by design rather than copied and edited.',
+          "Once the kits existed they were reused across adjacent products in the same account, which is where the front-loaded effort paid back. New requests started from assembly rather than invention.",
+          "They also absorbed market-specific variation without forking, because the variable parts were isolated by design rather than copied and edited.",
         ],
       },
       impact: {
-        eyebrow: 'The impact:',
-        heading: 'Consistency, under deadline.',
+        eyebrow: "The impact:",
+        heading: "Consistency, under deadline.",
         body: [
-          'Delivery got faster and drift got slower. The measurable win was that a new screen could be assembled from existing patterns and reviewed the same day, instead of being designed from a blank canvas by whoever was free.',
-          'This is where I learned that a design system is mostly an organisational argument. The components are the easy half; getting a team under commercial pressure to invest in reuse is the work.',
+          "Delivery got faster and drift got slower. The measurable win was that a new screen could be assembled from existing patterns and reviewed the same day, instead of being designed from a blank canvas by whoever was free.",
+          "This is where I learned that a design system is mostly an organisational argument. The components are the easy half; getting a team under commercial pressure to invest in reuse is the work.",
         ],
       },
     },
     {
-      slug: 'scavenger-hunt',
-      logo: 'img/logos/popcore.svg',
+      slug: "scavenger-hunt",
+      logo: "img/logos/popcore.svg",
       logoAspect: 6.036,
-      name: 'Scavenger Hunt',
-      mark: 'popcore',
-      eyebrow: 'Scavenger Hunt — at Popcore',
-      positioning:
-        'Live-events design support on a top-grossing mobile title.',
+      name: "Scavenger Hunt",
+      mark: "popcore",
+      eyebrow: "Scavenger Hunt — at Popcore",
+      positioning: "Live-events design support on a top-grossing mobile title.",
       cardDescription:
-        'Live events on a top-grossing mobile game. Designing a recurring event so it reads instantly, ships on cadence and never blocks the release train.',
-      role: 'Product Designer, Live Events',
-      years: '2023',
-      skills: ['UX Design', 'Live Ops', 'Mobile Games', 'Visual', 'Rapid Iteration'],
+        "Live events on a top-grossing mobile game. Designing a recurring event so it reads instantly, ships on cadence and never blocks the release train.",
+      role: "Product Designer, Live Events",
+      years: "2023",
+      skills: [
+        "UX Design",
+        "Live Ops",
+        "Mobile Games",
+        "Visual",
+        "Rapid Iteration",
+      ],
       metrics: [
-        { value: 'Top-grossing', label: 'Title the event ran on' },
-        { value: 'Recurring', label: 'Event cadence, not a one-off' },
-        { value: 'Live ops', label: 'Shipped inside a running game' },
+        { value: "Top-grossing", label: "Title the event ran on" },
+        { value: "Recurring", label: "Event cadence, not a one-off" },
+        { value: "Live ops", label: "Shipped inside a running game" },
       ],
       images: {
-        hero: 'case.scavenger-hunt.hero',
-        overview: 'case.scavenger-hunt.overview',
+        hero: "case.scavenger-hunt.hero",
+        overview: "case.scavenger-hunt.overview",
         system: [
-          'case.scavenger-hunt.system.1',
-          'case.scavenger-hunt.system.2',
-          'case.scavenger-hunt.system.3',
-          'case.scavenger-hunt.system.4',
+          "case.scavenger-hunt.system.1",
+          "case.scavenger-hunt.system.2",
+          "case.scavenger-hunt.system.3",
+          "case.scavenger-hunt.system.4",
         ],
-        extend: ['case.scavenger-hunt.extend.1', 'case.scavenger-hunt.extend.2'],
+        extend: [
+          "case.scavenger-hunt.extend.1",
+          "case.scavenger-hunt.extend.2",
+        ],
       },
       overview: {
-        eyebrow: 'Overview:',
-        heading: 'Backstory of the work.',
+        eyebrow: "Overview:",
+        heading: "Backstory of the work.",
         body: [
-          'Popcore runs top-grossing casual mobile titles, and live events are how those games stay alive between releases. I provided design support on Scavenger Hunt, a recurring event layered onto a game already in players’ hands.',
-          'Designing into a live product is a different discipline from designing a new one. You inherit the interface, the economy and the player’s existing habits, and your event has to be understood in seconds by someone who did not ask for it.',
+          "Popcore runs top-grossing casual mobile titles, and live events are how those games stay alive between releases. I provided design support on Scavenger Hunt, a recurring event layered onto a game already in players’ hands.",
+          "Designing into a live product is a different discipline from designing a new one. You inherit the interface, the economy and the player’s existing habits, and your event has to be understood in seconds by someone who did not ask for it.",
         ],
       },
       process: {
-        eyebrow: 'Process:',
-        heading: 'How I kicked things off.',
+        eyebrow: "Process:",
+        heading: "How I kicked things off.",
         body: [
-          'Live ops runs on cadence, so the process has to be fast without becoming careless. I worked from the existing game language outward rather than proposing anything the player would have to learn.',
-          'The constraint I held to: the event must be comprehensible without a tutorial. If it needs explaining, it is too complicated for a live event.',
+          "Live ops runs on cadence, so the process has to be fast without becoming careless. I worked from the existing game language outward rather than proposing anything the player would have to learn.",
+          "The constraint I held to: the event must be comprehensible without a tutorial. If it needs explaining, it is too complicated for a live event.",
         ],
         cards: [
           {
-            title: 'Existing language audit',
-            meta: 'Discovery',
-            body: 'Catalogued the game’s existing patterns for progress, reward and time pressure so the event could reuse them instead of inventing new ones.',
+            title: "Existing language audit",
+            meta: "Discovery",
+            body: "Catalogued the game’s existing patterns for progress, reward and time pressure so the event could reuse them instead of inventing new ones.",
           },
           {
-            title: 'Comprehension in seconds',
-            meta: 'UX design',
-            body: 'Designed the entry point so a returning player understands the goal, the reward and the deadline at a glance, with no tutorial step.',
+            title: "Comprehension in seconds",
+            meta: "UX design",
+            body: "Designed the entry point so a returning player understands the goal, the reward and the deadline at a glance, with no tutorial step.",
           },
           {
-            title: 'Reward legibility',
-            meta: 'Interaction design',
-            body: 'Made progress and payoff visible at every moment. In a live event the player’s sense of momentum is the feature.',
+            title: "Reward legibility",
+            meta: "Interaction design",
+            body: "Made progress and payoff visible at every moment. In a live event the player’s sense of momentum is the feature.",
           },
           {
-            title: 'Cadence-safe scope',
-            meta: 'Process',
-            body: 'Scoped every element against the release train. Anything that could not ship reliably on cadence was cut rather than carried.',
+            title: "Cadence-safe scope",
+            meta: "Process",
+            body: "Scoped every element against the release train. Anything that could not ship reliably on cadence was cut rather than carried.",
           },
           {
-            title: 'Cross-functional loop',
-            meta: 'Collaboration',
-            body: 'Worked in a tight loop with product, live ops and engineering, reviewing in build so the event was validated in the real game, not in isolation.',
+            title: "Cross-functional loop",
+            meta: "Collaboration",
+            body: "Worked in a tight loop with product, live ops and engineering, reviewing in build so the event was validated in the real game, not in isolation.",
           },
           {
-            title: 'Post-event read',
-            meta: 'Analytics',
-            body: 'Reviewed participation and completion after the run so the next iteration started from evidence rather than from opinion.',
+            title: "Post-event read",
+            meta: "Analytics",
+            body: "Reviewed participation and completion after the run so the next iteration started from evidence rather than from opinion.",
           },
         ],
       },
       system: {
-        eyebrow: 'Shaping the system:',
-        heading: 'An event built from the game’s own parts.',
+        eyebrow: "Shaping the system:",
+        heading: "An event built from the game’s own parts.",
         body: [
-          'The event deliberately reuses the game’s existing visual and interaction vocabulary. Recognition is worth more than novelty here — a player should feel like they already know how it works, because structurally they do.',
-          'What is new is confined to the event’s own identity and its progress model, so the surrounding game stays untouched and the event can be re-run, re-skinned and re-scheduled without redesign.',
+          "The event deliberately reuses the game’s existing visual and interaction vocabulary. Recognition is worth more than novelty here — a player should feel like they already know how it works, because structurally they do.",
+          "What is new is confined to the event’s own identity and its progress model, so the surrounding game stays untouched and the event can be re-run, re-skinned and re-scheduled without redesign.",
         ],
       },
       extend: {
-        eyebrow: 'Extend:',
-        heading: 'Re-runs and promotion.',
+        eyebrow: "Extend:",
+        heading: "Re-runs and promotion.",
         body: [
-          'A live event is only economical if it comes back. The structure was built to be re-skinned and re-scheduled, so subsequent runs are a content exercise rather than a design one.',
-          'The same assets carried into in-game promotion and store surfaces, so what players were told about the event matched what they found when they opened it.',
+          "A live event is only economical if it comes back. The structure was built to be re-skinned and re-scheduled, so subsequent runs are a content exercise rather than a design one.",
+          "The same assets carried into in-game promotion and store surfaces, so what players were told about the event matched what they found when they opened it.",
         ],
       },
       impact: {
-        eyebrow: 'The impact:',
-        heading: 'Shipping into a live game.',
+        eyebrow: "The impact:",
+        heading: "Shipping into a live game.",
         body: [
-          'The event shipped on cadence into a top-grossing title and was built to be re-run rather than rebuilt, which is the outcome live ops actually needs from design.',
-          'The lasting lesson was about restraint. On a live product the best design is frequently the one that adds the least new vocabulary — reuse is not a shortcut, it is the reason the player understands you at all.',
+          "The event shipped on cadence into a top-grossing title and was built to be re-run rather than rebuilt, which is the outcome live ops actually needs from design.",
+          "The lasting lesson was about restraint. On a live product the best design is frequently the one that adds the least new vocabulary — reuse is not a shortcut, it is the reason the player understands you at all.",
         ],
       },
     },
@@ -905,85 +1124,427 @@ export const CONTENT = {
    *   seed  — any integer; changes the deterministic composition.
    * --------------------------------------------------------------------- */
   IMAGES: {
-    'hero.spotlight': { src: null, alt: 'GameHouse+ — an isometric lattice of extruded blocks receding into darkness, standing in for the app’s content system.', plate: 'lattice', tone: 'dark', seed: 11 },
-    'about.portrait': { src: 'img/manel-portrait.jpg', alt: 'Manel López, photographed outdoors against a bright sky.', plate: 'portrait', tone: 'dark', seed: 27 },
+    "hero.spotlight": {
+      src: null,
+      alt: "GameHouse+ — an isometric lattice of extruded blocks receding into darkness, standing in for the app’s content system.",
+      plate: "lattice",
+      tone: "dark",
+      seed: 11,
+    },
+    // The spotlight card's bloom, in purple rather than the site accent.
+    "about.portrait": {
+      src: "img/manel-portrait.jpg",
+      alt: "Manel López, photographed outdoors against a bright sky.",
+      plate: "portrait",
+      tone: "dark",
+      seed: 27,
+    },
 
-    'bits.claudeFigma': { src: null, alt: 'Overlapping structured panels suggesting a prototype assembled from a design system.', plate: 'panels', tone: 'dark', seed: 41 },
-    'bits.energy': { src: null, alt: 'A decaying and refilling waveform standing in for an energy economy model.', plate: 'ramp', tone: 'light', seed: 52 },
-    'bits.teaching': { src: null, alt: 'A grid of hairline cells with a few filled, standing in for teaching material and research methods.', plate: 'grid', tone: 'light', seed: 63 },
-    'bits.instant': { src: null, alt: 'Five stacked variants converging on one, standing in for prototype iterations.', plate: 'strata', tone: 'accent', seed: 74 },
-    'bits.tokens': { src: null, alt: 'Interlocking bars standing in for design tokens shared between Figma and Unity.', plate: 'weave', tone: 'dark', seed: 85 },
-    'bits.typeRamp': { src: null, alt: 'A stepped ramp of increasing bar heights, standing in for a type scale across screen sizes.', plate: 'columns', tone: 'light', seed: 96 },
-    'bits.analytics': { src: null, alt: 'A falling funnel of narrowing bands, standing in for a product analytics funnel.', plate: 'ramp', tone: 'dark', seed: 107 },
-    'bits.componentApi': { src: null, alt: 'Concentric arcs around a small centre, standing in for a component API sketched before the component.', plate: 'orbit', tone: 'light', seed: 118 },
+    "bits.claudeFigma": {
+      src: null,
+      alt: "Overlapping structured panels suggesting a prototype assembled from a design system.",
+      plate: "panels",
+      tone: "dark",
+      seed: 41,
+    },
+    "bits.energy": {
+      src: null,
+      alt: "A decaying and refilling waveform standing in for an energy economy model.",
+      plate: "ramp",
+      tone: "light",
+      seed: 52,
+    },
+    "bits.teaching": {
+      src: null,
+      alt: "A grid of hairline cells with a few filled, standing in for teaching material and research methods.",
+      plate: "grid",
+      tone: "light",
+      seed: 63,
+    },
+    "bits.instant": {
+      src: null,
+      alt: "Five stacked variants converging on one, standing in for prototype iterations.",
+      plate: "strata",
+      tone: "accent",
+      seed: 74,
+    },
+    "bits.tokens": {
+      src: null,
+      alt: "Interlocking bars standing in for design tokens shared between Figma and Unity.",
+      plate: "weave",
+      tone: "dark",
+      seed: 85,
+    },
+    "bits.typeRamp": {
+      src: null,
+      alt: "A stepped ramp of increasing bar heights, standing in for a type scale across screen sizes.",
+      plate: "columns",
+      tone: "light",
+      seed: 96,
+    },
+    "bits.analytics": {
+      src: null,
+      alt: "A falling funnel of narrowing bands, standing in for a product analytics funnel.",
+      plate: "ramp",
+      tone: "dark",
+      seed: 107,
+    },
+    "bits.componentApi": {
+      src: null,
+      alt: "Concentric arcs around a small centre, standing in for a component API sketched before the component.",
+      plate: "orbit",
+      tone: "light",
+      seed: 118,
+    },
 
-    'journal.prototyping': { src: null, alt: 'Abstract plate of nested panels for the prototyping-in-code journal entry.', plate: 'panels', tone: 'dark', seed: 129 },
-    'journal.system': { src: null, alt: 'Abstract plate of a modular grid for the design-system journal entry.', plate: 'grid', tone: 'dark', seed: 140 },
-    'journal.analytics': { src: null, alt: 'Abstract plate of stepped columns for the product-analytics journal entry.', plate: 'columns', tone: 'dark', seed: 151 },
+    "journal.prototyping.fig": {
+      src: null,
+      alt: "Abstract plate of nested panels standing in for a working prototype build.",
+      plate: "panels",
+      tone: "dark",
+      seed: 161,
+    },
+    "journal.system.fig": {
+      src: null,
+      alt: "Abstract plate of interlocking bars standing in for design tokens shared across tools.",
+      plate: "weave",
+      tone: "dark",
+      seed: 171,
+    },
+    "journal.analytics.fig": {
+      src: null,
+      alt: "Abstract plate of a falling funnel standing in for an activation drop-off.",
+      plate: "ramp",
+      tone: "dark",
+      seed: 181,
+    },
+    "journal.prototyping": {
+      src: null,
+      alt: "Abstract plate of nested panels for the prototyping-in-code journal entry.",
+      plate: "panels",
+      tone: "dark",
+      seed: 129,
+    },
+    "journal.system": {
+      src: null,
+      alt: "Abstract plate of a modular grid for the design-system journal entry.",
+      plate: "grid",
+      tone: "dark",
+      seed: 140,
+    },
+    "journal.analytics": {
+      src: null,
+      alt: "Abstract plate of stepped columns for the product-analytics journal entry.",
+      plate: "columns",
+      tone: "dark",
+      seed: 151,
+    },
 
-    'case.gamehouse-plus.hero': { src: null, alt: 'GameHouse+ case study hero — a wide gradient mesh over a modular grid, in near-black and electric blue.', plate: 'mesh', tone: 'dark', seed: 201 },
-    'case.gamehouse-plus.overview': { src: null, alt: 'GameHouse+ overview visual — an isometric lattice standing in for the catalogue and content system.', plate: 'lattice', tone: 'dark', seed: 202 },
-    'case.gamehouse-plus.system.1': { src: null, alt: 'GameHouse+ system panel — nested structural panels standing in for the component library.', plate: 'panels', tone: 'dark', seed: 203 },
-    'case.gamehouse-plus.system.2': { src: null, alt: 'GameHouse+ system panel — a token grid standing in for colour, type and spacing tokens.', plate: 'grid', tone: 'dark', seed: 204 },
-    'case.gamehouse-plus.system.3': { src: null, alt: 'GameHouse+ system panel — stacked strata standing in for content density rules.', plate: 'strata', tone: 'dark', seed: 205 },
-    'case.gamehouse-plus.system.4': { src: null, alt: 'GameHouse+ system panel — interlocking bars standing in for component state coverage.', plate: 'weave', tone: 'dark', seed: 206 },
-    'case.gamehouse-plus.extend.1': { src: null, alt: 'GameHouse+ extend visual — a wide mesh standing in for store and marketing surfaces.', plate: 'mesh', tone: 'accent', seed: 207 },
-    'case.gamehouse-plus.extend.2': { src: null, alt: 'GameHouse+ extend visual — stepped columns standing in for merchandising slots.', plate: 'columns', tone: 'dark', seed: 208 },
+    "case.gamehouse-plus.hero": {
+      src: null,
+      alt: "GameHouse+ case study hero — a wide gradient mesh over a modular grid, in near-black and deep purple.",
+      plate: "mesh",
+      tone: "dark",
+      seed: 201,
+      glow: "#3B3061",
+      accent: "#6E5BA6",
+    },
+    "case.gamehouse-plus.overview": {
+      src: null,
+      alt: "GameHouse+ overview visual — an isometric lattice standing in for the catalogue and content system.",
+      plate: "lattice",
+      tone: "dark",
+      seed: 202,
+    },
+    "case.gamehouse-plus.system.1": {
+      src: null,
+      alt: "GameHouse+ system panel — nested structural panels standing in for the component library.",
+      plate: "panels",
+      tone: "dark",
+      seed: 203,
+    },
+    "case.gamehouse-plus.system.2": {
+      src: null,
+      alt: "GameHouse+ system panel — a token grid standing in for colour, type and spacing tokens.",
+      plate: "grid",
+      tone: "dark",
+      seed: 204,
+    },
+    "case.gamehouse-plus.system.3": {
+      src: null,
+      alt: "GameHouse+ system panel — stacked strata standing in for content density rules.",
+      plate: "strata",
+      tone: "dark",
+      seed: 205,
+    },
+    "case.gamehouse-plus.system.4": {
+      src: null,
+      alt: "GameHouse+ system panel — interlocking bars standing in for component state coverage.",
+      plate: "weave",
+      tone: "dark",
+      seed: 206,
+    },
+    "case.gamehouse-plus.extend.1": {
+      src: null,
+      alt: "GameHouse+ extend visual — a wide mesh standing in for store and marketing surfaces.",
+      plate: "mesh",
+      tone: "accent",
+      seed: 207,
+    },
+    "case.gamehouse-plus.extend.2": {
+      src: null,
+      alt: "GameHouse+ extend visual — stepped columns standing in for merchandising slots.",
+      plate: "columns",
+      tone: "dark",
+      seed: 208,
+    },
 
-    'case.jesterday.hero': { src: null, alt: 'Jesterday case study hero — interlocking bars over a dark grained field.', plate: 'weave', tone: 'dark', seed: 301 },
-    'case.jesterday.overview': { src: null, alt: 'Jesterday overview visual — concentric arcs standing in for multiplayer matchmaking states.', plate: 'orbit', tone: 'dark', seed: 302 },
-    'case.jesterday.system.1': { src: null, alt: 'Jesterday system panel — a token grid standing in for the foundation layer.', plate: 'grid', tone: 'dark', seed: 303 },
-    'case.jesterday.system.2': { src: null, alt: 'Jesterday system panel — nested panels standing in for the component library.', plate: 'panels', tone: 'dark', seed: 304 },
-    'case.jesterday.system.3': { src: null, alt: 'Jesterday system panel — a decaying and refilling ramp standing in for the energy economy.', plate: 'ramp', tone: 'dark', seed: 305 },
-    'case.jesterday.system.4': { src: null, alt: 'Jesterday system panel — stacked strata standing in for component states.', plate: 'strata', tone: 'dark', seed: 306 },
-    'case.jesterday.extend.1': { src: null, alt: 'Jesterday extend visual — an isometric lattice standing in for the Unity prefab implementation.', plate: 'lattice', tone: 'dark', seed: 307 },
-    'case.jesterday.extend.2': { src: null, alt: 'Jesterday extend visual — a wide mesh standing in for store and campaign assets.', plate: 'mesh', tone: 'accent', seed: 308 },
+    "case.jesterday.hero": {
+      src: null,
+      alt: "Jesterday case study hero — interlocking bars over a dark grained field.",
+      plate: "weave",
+      tone: "dark",
+      seed: 301,
+    },
+    "case.jesterday.overview": {
+      src: null,
+      alt: "Jesterday overview visual — concentric arcs standing in for multiplayer matchmaking states.",
+      plate: "orbit",
+      tone: "dark",
+      seed: 302,
+    },
+    "case.jesterday.system.1": {
+      src: null,
+      alt: "Jesterday system panel — a token grid standing in for the foundation layer.",
+      plate: "grid",
+      tone: "dark",
+      seed: 303,
+    },
+    "case.jesterday.system.2": {
+      src: null,
+      alt: "Jesterday system panel — nested panels standing in for the component library.",
+      plate: "panels",
+      tone: "dark",
+      seed: 304,
+    },
+    "case.jesterday.system.3": {
+      src: null,
+      alt: "Jesterday system panel — a decaying and refilling ramp standing in for the energy economy.",
+      plate: "ramp",
+      tone: "dark",
+      seed: 305,
+    },
+    "case.jesterday.system.4": {
+      src: null,
+      alt: "Jesterday system panel — stacked strata standing in for component states.",
+      plate: "strata",
+      tone: "dark",
+      seed: 306,
+    },
+    "case.jesterday.extend.1": {
+      src: null,
+      alt: "Jesterday extend visual — an isometric lattice standing in for the Unity prefab implementation.",
+      plate: "lattice",
+      tone: "dark",
+      seed: 307,
+    },
+    "case.jesterday.extend.2": {
+      src: null,
+      alt: "Jesterday extend visual — a wide mesh standing in for store and campaign assets.",
+      plate: "mesh",
+      tone: "accent",
+      seed: 308,
+    },
 
-    'case.seat-cupra.hero': { src: null, alt: 'SEAT CUPRA case study hero — a wide horizontal ramp of light across a dark field, echoing an instrument cluster.', plate: 'ramp', tone: 'dark', seed: 401 },
-    'case.seat-cupra.overview': { src: null, alt: 'SEAT CUPRA overview visual — stacked strata standing in for the range of screen sizes.', plate: 'strata', tone: 'dark', seed: 402 },
-    'case.seat-cupra.system.1': { src: null, alt: 'SEAT CUPRA system panel — a stepped column ramp standing in for the type and touch scale.', plate: 'columns', tone: 'dark', seed: 403 },
-    'case.seat-cupra.system.2': { src: null, alt: 'SEAT CUPRA system panel — a modular grid standing in for layout across screen sizes.', plate: 'grid', tone: 'dark', seed: 404 },
-    'case.seat-cupra.system.3': { src: null, alt: 'SEAT CUPRA system panel — nested panels standing in for the enrolment flow.', plate: 'panels', tone: 'dark', seed: 405 },
-    'case.seat-cupra.system.4': { src: null, alt: 'SEAT CUPRA system panel — concentric arcs standing in for update-centre progress states.', plate: 'orbit', tone: 'dark', seed: 406 },
-    'case.seat-cupra.extend.1': { src: null, alt: 'SEAT CUPRA extend visual — interlocking bars standing in for the car-to-phone handoff.', plate: 'weave', tone: 'accent', seed: 407 },
-    'case.seat-cupra.extend.2': { src: null, alt: 'SEAT CUPRA extend visual — an isometric lattice standing in for companion-app surfaces.', plate: 'lattice', tone: 'dark', seed: 408 },
+    "case.seat-cupra.hero": {
+      src: null,
+      alt: "SEAT CUPRA case study hero — a wide horizontal ramp of light across a dark field, echoing an instrument cluster.",
+      plate: "ramp",
+      tone: "dark",
+      seed: 401,
+    },
+    "case.seat-cupra.overview": {
+      src: null,
+      alt: "SEAT CUPRA overview visual — stacked strata standing in for the range of screen sizes.",
+      plate: "strata",
+      tone: "dark",
+      seed: 402,
+    },
+    "case.seat-cupra.system.1": {
+      src: null,
+      alt: "SEAT CUPRA system panel — a stepped column ramp standing in for the type and touch scale.",
+      plate: "columns",
+      tone: "dark",
+      seed: 403,
+    },
+    "case.seat-cupra.system.2": {
+      src: null,
+      alt: "SEAT CUPRA system panel — a modular grid standing in for layout across screen sizes.",
+      plate: "grid",
+      tone: "dark",
+      seed: 404,
+    },
+    "case.seat-cupra.system.3": {
+      src: null,
+      alt: "SEAT CUPRA system panel — nested panels standing in for the enrolment flow.",
+      plate: "panels",
+      tone: "dark",
+      seed: 405,
+    },
+    "case.seat-cupra.system.4": {
+      src: null,
+      alt: "SEAT CUPRA system panel — concentric arcs standing in for update-centre progress states.",
+      plate: "orbit",
+      tone: "dark",
+      seed: 406,
+    },
+    "case.seat-cupra.extend.1": {
+      src: null,
+      alt: "SEAT CUPRA extend visual — interlocking bars standing in for the car-to-phone handoff.",
+      plate: "weave",
+      tone: "accent",
+      seed: 407,
+    },
+    "case.seat-cupra.extend.2": {
+      src: null,
+      alt: "SEAT CUPRA extend visual — an isometric lattice standing in for companion-app surfaces.",
+      plate: "lattice",
+      tone: "dark",
+      seed: 408,
+    },
 
-    'case.radisson.hero': { src: null, alt: 'Radisson Hotels case study hero — a dense hairline grid standing in for enterprise data interfaces.', plate: 'grid', tone: 'dark', seed: 501 },
-    'case.radisson.overview': { src: null, alt: 'Radisson Hotels overview visual — nested panels standing in for operational flows.', plate: 'panels', tone: 'dark', seed: 502 },
-    'case.radisson.system.1': { src: null, alt: 'Radisson Hotels system panel — a dense grid standing in for table and filter patterns.', plate: 'grid', tone: 'dark', seed: 503 },
-    'case.radisson.system.2': { src: null, alt: 'Radisson Hotels system panel — stacked strata standing in for information density rules.', plate: 'strata', tone: 'dark', seed: 504 },
-    'case.radisson.system.3': { src: null, alt: 'Radisson Hotels system panel — interlocking bars standing in for the reusable UI kit.', plate: 'weave', tone: 'dark', seed: 505 },
-    'case.radisson.system.4': { src: null, alt: 'Radisson Hotels system panel — nested panels standing in for detail panes and bulk actions.', plate: 'panels', tone: 'dark', seed: 506 },
-    'case.radisson.extend.1': { src: null, alt: 'Radisson Hotels extend visual — a wide mesh standing in for reuse across adjacent products.', plate: 'mesh', tone: 'accent', seed: 507 },
-    'case.radisson.extend.2': { src: null, alt: 'Radisson Hotels extend visual — stepped columns standing in for multi-market variance.', plate: 'columns', tone: 'dark', seed: 508 },
+    "case.radisson.hero": {
+      src: null,
+      alt: "Radisson Hotels case study hero — a dense hairline grid standing in for enterprise data interfaces.",
+      plate: "grid",
+      tone: "dark",
+      seed: 501,
+    },
+    "case.radisson.overview": {
+      src: null,
+      alt: "Radisson Hotels overview visual — nested panels standing in for operational flows.",
+      plate: "panels",
+      tone: "dark",
+      seed: 502,
+    },
+    "case.radisson.system.1": {
+      src: null,
+      alt: "Radisson Hotels system panel — a dense grid standing in for table and filter patterns.",
+      plate: "grid",
+      tone: "dark",
+      seed: 503,
+    },
+    "case.radisson.system.2": {
+      src: null,
+      alt: "Radisson Hotels system panel — stacked strata standing in for information density rules.",
+      plate: "strata",
+      tone: "dark",
+      seed: 504,
+    },
+    "case.radisson.system.3": {
+      src: null,
+      alt: "Radisson Hotels system panel — interlocking bars standing in for the reusable UI kit.",
+      plate: "weave",
+      tone: "dark",
+      seed: 505,
+    },
+    "case.radisson.system.4": {
+      src: null,
+      alt: "Radisson Hotels system panel — nested panels standing in for detail panes and bulk actions.",
+      plate: "panels",
+      tone: "dark",
+      seed: 506,
+    },
+    "case.radisson.extend.1": {
+      src: null,
+      alt: "Radisson Hotels extend visual — a wide mesh standing in for reuse across adjacent products.",
+      plate: "mesh",
+      tone: "accent",
+      seed: 507,
+    },
+    "case.radisson.extend.2": {
+      src: null,
+      alt: "Radisson Hotels extend visual — stepped columns standing in for multi-market variance.",
+      plate: "columns",
+      tone: "dark",
+      seed: 508,
+    },
 
-    'case.scavenger-hunt.hero': { src: null, alt: 'Scavenger Hunt case study hero — concentric arcs over a dark field, standing in for event progress.', plate: 'orbit', tone: 'dark', seed: 601 },
-    'case.scavenger-hunt.overview': { src: null, alt: 'Scavenger Hunt overview visual — a wide mesh standing in for a live game surface.', plate: 'mesh', tone: 'dark', seed: 602 },
-    'case.scavenger-hunt.system.1': { src: null, alt: 'Scavenger Hunt system panel — concentric arcs standing in for the progress model.', plate: 'orbit', tone: 'dark', seed: 603 },
-    'case.scavenger-hunt.system.2': { src: null, alt: 'Scavenger Hunt system panel — nested panels standing in for the event entry point.', plate: 'panels', tone: 'dark', seed: 604 },
-    'case.scavenger-hunt.system.3': { src: null, alt: 'Scavenger Hunt system panel — stepped columns standing in for reward legibility.', plate: 'columns', tone: 'dark', seed: 605 },
-    'case.scavenger-hunt.system.4': { src: null, alt: 'Scavenger Hunt system panel — a ramp standing in for time pressure and deadline.', plate: 'ramp', tone: 'dark', seed: 606 },
-    'case.scavenger-hunt.extend.1': { src: null, alt: 'Scavenger Hunt extend visual — stacked strata standing in for re-skinned event re-runs.', plate: 'strata', tone: 'accent', seed: 607 },
-    'case.scavenger-hunt.extend.2': { src: null, alt: 'Scavenger Hunt extend visual — interlocking bars standing in for in-game promotion surfaces.', plate: 'weave', tone: 'dark', seed: 608 },
+    "case.scavenger-hunt.hero": {
+      src: null,
+      alt: "Scavenger Hunt case study hero — concentric arcs over a dark field, standing in for event progress.",
+      plate: "orbit",
+      tone: "dark",
+      seed: 601,
+    },
+    "case.scavenger-hunt.overview": {
+      src: null,
+      alt: "Scavenger Hunt overview visual — a wide mesh standing in for a live game surface.",
+      plate: "mesh",
+      tone: "dark",
+      seed: 602,
+    },
+    "case.scavenger-hunt.system.1": {
+      src: null,
+      alt: "Scavenger Hunt system panel — concentric arcs standing in for the progress model.",
+      plate: "orbit",
+      tone: "dark",
+      seed: 603,
+    },
+    "case.scavenger-hunt.system.2": {
+      src: null,
+      alt: "Scavenger Hunt system panel — nested panels standing in for the event entry point.",
+      plate: "panels",
+      tone: "dark",
+      seed: 604,
+    },
+    "case.scavenger-hunt.system.3": {
+      src: null,
+      alt: "Scavenger Hunt system panel — stepped columns standing in for reward legibility.",
+      plate: "columns",
+      tone: "dark",
+      seed: 605,
+    },
+    "case.scavenger-hunt.system.4": {
+      src: null,
+      alt: "Scavenger Hunt system panel — a ramp standing in for time pressure and deadline.",
+      plate: "ramp",
+      tone: "dark",
+      seed: 606,
+    },
+    "case.scavenger-hunt.extend.1": {
+      src: null,
+      alt: "Scavenger Hunt extend visual — stacked strata standing in for re-skinned event re-runs.",
+      plate: "strata",
+      tone: "accent",
+      seed: 607,
+    },
+    "case.scavenger-hunt.extend.2": {
+      src: null,
+      alt: "Scavenger Hunt extend visual — interlocking bars standing in for in-game promotion surfaces.",
+      plate: "weave",
+      tone: "dark",
+      seed: 608,
+    },
   },
-}
+};
 
 /* =========================================================================
  * Design tokens
  * ========================================================================= */
 
-const RADIUS = { sm: '4px', md: '8px', lg: '12px', pill: '999px' }
+const RADIUS = { sm: "4px", md: "8px", lg: "12px", pill: "999px" };
 
 const EASE = {
   // Entrances: decisive start, long settle.
-  out: 'cubic-bezier(0.16, 1, 0.3, 1)',
+  out: "cubic-bezier(0.16, 1, 0.3, 1)",
   // Standard UI state changes.
-  std: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  std: "cubic-bezier(0.4, 0, 0.2, 1)",
   // Exits: leaves quickly.
-  in: 'cubic-bezier(0.4, 0, 1, 1)',
+  in: "cubic-bezier(0.4, 0, 1, 1)",
   // Restrained spring for the section-rail pill. Slight overshoot, no bounce.
-  spring: 'cubic-bezier(0.34, 1.28, 0.52, 1)',
-}
+  spring: "cubic-bezier(0.34, 1.28, 0.52, 1)",
+};
 
 const DUR = {
   fast: 150,
@@ -991,7 +1552,7 @@ const DUR = {
   slow: 320,
   reveal: 640,
   hero: 760,
-}
+};
 
 /* =========================================================================
  * Stylesheet — injected once. Themes are pure CSS-variable swaps so the
@@ -1396,7 +1957,7 @@ body{
   -webkit-mask-size:contain;
 }
 .wordmark--lg{height:34px}
-`
+`;
 
 const STYLES_HOME = `
 /* ============================ SPOTLIGHT ============================ */
@@ -1426,15 +1987,19 @@ const STYLES_HOME = `
   min-height:clamp(420px,62vh,660px);
 }
 .spotlightEyebrow{color:var(--panel-muted)}
+.spotlightBrand{display:flex;align-items:center}
+.spotlightBrand img{display:block;height:30px;width:auto}
 .spotlightStatement{
+  display:flex;flex-direction:column;
   font-size:clamp(1.5rem,3.4vw,2.75rem);
   font-weight:600;letter-spacing:-.03em;line-height:1.12;
-  max-width:24ch;text-wrap:balance;
+  max-width:26ch;
 }
+/* The second line carries the same weight but reads as the subordinate
+   clause, matching the two-tone treatment used by the section headings. */
+.spotlightStatement span + span{color:var(--panel-muted)}
 .statRow{
-  display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,72px);
-  padding-top:var(--s5);
-  border-top:1px solid var(--panel-hairline);
+  display:flex;flex-wrap:wrap;gap:clamp(20px,3.4vw,56px);
 }
 .stat{display:flex;flex-direction:column-reverse}
 .stat .value{
@@ -1443,20 +2008,31 @@ const STYLES_HOME = `
   font-weight:700;letter-spacing:-.03em;line-height:1;
 }
 .stat .label{display:block;margin-top:var(--s2);color:var(--panel-muted)}
-.spotFoot{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:var(--s5)}
+.spotFoot{
+  display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
+  gap:var(--s5);
+  padding-top:var(--s5);
+  border-top:1px solid var(--panel-hairline);
+}
 
+/* Solid, not a ghost outline: at 11px mono on a near-black panel the old
+   treatment was barely legible. */
 .viewCase{
   display:inline-flex;align-items:center;gap:var(--s3);
-  padding:var(--s3) var(--s5);
-  border:1px solid var(--panel-hairline);
+  flex:none;
+  padding:var(--s4) var(--s6);
+  border:1px solid transparent;
   border-radius:var(--r-pill);
-  color:var(--panel-ink);
-  background:rgba(255,255,255,.04);
-  transition:background-color var(--dur-base) var(--ease-std),
-             border-color var(--dur-base) var(--ease-std);
+  background:var(--panel-ink);
+  color:var(--panel);
+  font-size:.9375rem;
+  font-weight:600;
+  letter-spacing:-.01em;
+  transition:transform var(--dur-base) var(--ease-out),
+             opacity var(--dur-base) var(--ease-std);
 }
 .viewCase svg{transition:transform var(--dur-base) var(--ease-out)}
-.viewCase:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.34)}
+.viewCase:hover{transform:translate3d(0,-2px,0);opacity:.92}
 .viewCase:hover svg{transform:translateX(3px)}
 
 /* ========================= PROJECT GRID ========================= */
@@ -1679,6 +2255,7 @@ const STYLES_HOME = `
 .dot[aria-current='true']{background:var(--ink);transform:scaleY(1.6)}
 
 /* ============================= JOURNAL ============================= */
+.journalList{margin-top:clamp(32px,5vh,56px)}
 .postRow{
   display:grid;
   grid-template-columns:120px minmax(0,180px) minmax(0,1fr) 40px;
@@ -1687,7 +2264,11 @@ const STYLES_HOME = `
   border-top:1px solid var(--hairline);
   text-align:left;width:100%;
 }
-.postRow:last-child{border-bottom:1px solid var(--hairline)}
+.journalList li:last-child .postRow{border-bottom:1px solid var(--hairline)}
+.postRow{transition:background-color var(--dur-base) var(--ease-std)}
+.postRow:hover{background:var(--surface)}
+.postTitle{display:block}
+.postThumb,.postMeta,.postMain{display:block}
 .postThumb{border-radius:var(--r-sm);overflow:hidden;width:120px}
 .postMeta{display:flex;flex-direction:column;gap:var(--s3);color:var(--muted)}
 .chips{display:flex;flex-wrap:wrap;gap:var(--s2)}
@@ -1702,7 +2283,7 @@ const STYLES_HOME = `
   font-size:clamp(1.0625rem,1.7vw,1.3125rem);
   font-weight:600;letter-spacing:-.02em;line-height:1.3;color:var(--ink);
 }
-.postDek{margin-top:var(--s2);color:var(--muted);font-size:.9375rem;line-height:1.55;max-width:60ch}
+.postDek{display:block;margin-top:var(--s2);color:var(--muted);font-size:.9375rem;line-height:1.55;max-width:60ch}
 .postRow .go{
   justify-self:end;color:var(--muted);
   transition:transform var(--dur-base) var(--ease-out),color var(--dur-base) var(--ease-std);
@@ -1834,7 +2415,7 @@ textarea.control{min-height:120px;resize:vertical;line-height:1.6}
 [data-theme='dark'] .spotlight,
 [data-theme='dark'] .systemPanel,
 [data-theme='dark'] .aboutCard{border-color:var(--hairline)}
-`
+`;
 
 const STYLES_CASE = `
 /* ============================ CASE STUDY ============================ */
@@ -2038,6 +2619,7 @@ const STYLES_CASE = `
     row-gap:var(--s4);
   }
   .postThumb{grid-area:thumb;width:88px}
+  .journalList .postRow .go{display:none}
   .postMeta{grid-area:meta;flex-direction:row;flex-wrap:wrap;align-items:center;gap:var(--s3)}
   .postRow > .postMain{grid-area:body}
   .postRow .go{display:none}
@@ -2096,7 +2678,7 @@ const STYLES_CASE = `
   .viewFade{animation:none}
   .subject.is-flying{transition:none !important;transform:none !important}
 }
-`
+`;
 
 /* =========================================================================
  * Hooks
@@ -2104,50 +2686,51 @@ const STYLES_CASE = `
 
 function useStyleSheet() {
   useEffect(() => {
-    const el = document.createElement('style')
-    el.setAttribute('data-portfolio', '')
-    el.textContent = STYLES + STYLES_HOME + STYLES_CASE + STYLES_UTIL
-    document.head.appendChild(el)
-    return () => el.remove()
-  }, [])
+    const el = document.createElement("style");
+    el.setAttribute("data-portfolio", "");
+    el.textContent =
+      STYLES + STYLES_HOME + STYLES_CASE + STYLES_POST + STYLES_UTIL;
+    document.head.appendChild(el);
+    return () => el.remove();
+  }, []);
 }
 
 /** Live prefers-reduced-motion. Every animation in the app reads this. */
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = useState(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return false
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  })
+    if (typeof window === "undefined" || !window.matchMedia) return false;
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  });
   useEffect(() => {
-    if (!window.matchMedia) return
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const onChange = (e) => setReduced(e.matches)
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [])
-  return reduced
+    if (!window.matchMedia) return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onChange = (e) => setReduced(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  return reduced;
 }
 
 /** Theme lives in component state and drives the CSS-variable set. */
 function useTheme() {
-  const [theme, setTheme] = useState('light')
+  const [theme, setTheme] = useState("light");
   useEffect(() => {
-    const root = document.documentElement
-    root.setAttribute('data-theme', theme)
-    root.style.colorScheme = theme
-  }, [theme])
+    const root = document.documentElement;
+    root.setAttribute("data-theme", theme);
+    root.style.colorScheme = theme;
+  }, [theme]);
   // Enable colour transitions only after first paint, so load never animates.
   useEffect(() => {
     const id = requestAnimationFrame(() =>
-      document.documentElement.classList.add('theme-ready'),
-    )
-    return () => cancelAnimationFrame(id)
-  }, [])
+      document.documentElement.classList.add("theme-ready"),
+    );
+    return () => cancelAnimationFrame(id);
+  }, []);
   const toggle = useCallback(
-    () => setTheme((t) => (t === 'light' ? 'dark' : 'light')),
+    () => setTheme((t) => (t === "light" ? "dark" : "light")),
     [],
-  )
-  return { theme, toggle }
+  );
+  return { theme, toggle };
 }
 
 /**
@@ -2155,37 +2738,37 @@ function useTheme() {
  * observing — re-entering a section does not replay it.
  */
 function useReveal() {
-  const ref = useRef(null)
+  const ref = useRef(null);
   useEffect(() => {
-    const root = ref.current
-    if (!root) return
-    const targets = root.querySelectorAll('.reveal')
-    if (!targets.length) return
+    const root = ref.current;
+    if (!root) return;
+    const targets = root.querySelectorAll(".reveal");
+    if (!targets.length) return;
 
-    if (!('IntersectionObserver' in window)) {
-      targets.forEach((t) => t.classList.add('is-in'))
-      return
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach((t) => t.classList.add("is-in"));
+      return;
     }
-    document.documentElement.classList.add('has-reveal')
+    document.documentElement.classList.add("has-reveal");
 
     // IntersectionObserver delivers an initial callback for every observed
     // target, intersecting or not. So "the callback ran at all" is the signal
     // that the observer works — not "something has revealed yet", which is
     // merely a function of where the page is scrolled and how fast it painted.
-    let fired = false
+    let fired = false;
 
     const io = new IntersectionObserver(
       (entries) => {
-        fired = true
+        fired = true;
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) return
-          entry.target.classList.add('is-in')
-          io.unobserve(entry.target)
-        })
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-in");
+          io.unobserve(entry.target);
+        });
       },
-      { rootMargin: '0px 0px -12% 0px', threshold: 0.12 },
-    )
-    targets.forEach((t) => io.observe(t))
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.12 },
+    );
+    targets.forEach((t) => io.observe(t));
 
     // Safety net: if the observer never reports at all, it is not working, so
     // drop the gate rather than strand the page at opacity 0.
@@ -2194,32 +2777,32 @@ function useReveal() {
     // observer callbacks, and treating that as a broken observer would throw
     // away the reveal for anyone who opens the site in a background tab and
     // switches to it later.
-    let guard = 0
+    let guard = 0;
     const arm = () => {
-      if (document.hidden || fired || guard) return
+      if (document.hidden || fired || guard) return;
       guard = window.setTimeout(() => {
-        guard = 0
-        if (!fired) document.documentElement.classList.remove('has-reveal')
-      }, 2500)
-    }
+        guard = 0;
+        if (!fired) document.documentElement.classList.remove("has-reveal");
+      }, 2500);
+    };
     const onVisibility = () => {
       if (document.hidden) {
-        window.clearTimeout(guard)
-        guard = 0
+        window.clearTimeout(guard);
+        guard = 0;
       } else {
-        arm()
+        arm();
       }
-    }
-    arm()
-    document.addEventListener('visibilitychange', onVisibility)
+    };
+    arm();
+    document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
-      io.disconnect()
-      window.clearTimeout(guard)
-      document.removeEventListener('visibilitychange', onVisibility)
-    }
-  }, [])
-  return ref
+      io.disconnect();
+      window.clearTimeout(guard);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+  return ref;
 }
 
 /**
@@ -2227,120 +2810,124 @@ function useReveal() {
  * Under reduced motion it returns roles[0] and no caret movement at all.
  */
 function useTypewriter(words, reduced, cfg = {}) {
-  const { typeMs = 58, deleteMs = 30, holdMs = 1500, gapMs = 420 } = cfg
-  const [text, setText] = useState('')
-  const [index, setIndex] = useState(0)
-  const [phase, setPhase] = useState('typing')
+  const { typeMs = 58, deleteMs = 30, holdMs = 1500, gapMs = 420 } = cfg;
+  const [text, setText] = useState("");
+  const [index, setIndex] = useState(0);
+  const [phase, setPhase] = useState("typing");
 
   useEffect(() => {
-    if (reduced) return
-    const word = words[index % words.length]
-    let t
+    if (reduced) return;
+    const word = words[index % words.length];
+    let t;
 
-    if (phase === 'typing') {
+    if (phase === "typing") {
       if (text.length < word.length) {
-        t = setTimeout(() => setText(word.slice(0, text.length + 1)), typeMs)
+        t = setTimeout(() => setText(word.slice(0, text.length + 1)), typeMs);
       } else {
-        t = setTimeout(() => setPhase('holding'), holdMs)
+        t = setTimeout(() => setPhase("holding"), holdMs);
       }
-    } else if (phase === 'holding') {
-      t = setTimeout(() => setPhase('deleting'), 0)
-    } else if (phase === 'deleting') {
+    } else if (phase === "holding") {
+      t = setTimeout(() => setPhase("deleting"), 0);
+    } else if (phase === "deleting") {
       if (text.length > 0) {
-        t = setTimeout(() => setText(word.slice(0, text.length - 1)), deleteMs)
+        t = setTimeout(() => setText(word.slice(0, text.length - 1)), deleteMs);
       } else {
         t = setTimeout(() => {
-          setIndex((i) => (i + 1) % words.length)
-          setPhase('typing')
-        }, gapMs)
+          setIndex((i) => (i + 1) % words.length);
+          setPhase("typing");
+        }, gapMs);
       }
     }
-    return () => clearTimeout(t)
-  }, [text, phase, index, words, reduced, typeMs, deleteMs, holdMs, gapMs])
+    return () => clearTimeout(t);
+  }, [text, phase, index, words, reduced, typeMs, deleteMs, holdMs, gapMs]);
 
   // Reduced motion resolves to a single static role — no loop, no timers.
-  return reduced ? words[0] : text
+  return reduced ? words[0] : text;
 }
 
 /** Hash routing: '#/' is home, '#/work/<slug>' is a case study. No router dep. */
 function parseHash(hash) {
-  const m = /^#\/work\/([a-z0-9-]+)/i.exec(hash || '')
-  if (m) return { view: 'case', slug: m[1] }
-  return { view: 'home', slug: null }
+  const work = /^#\/work\/([a-z0-9-]+)/i.exec(hash || "");
+  if (work) return { view: "case", slug: work[1] };
+  const post = /^#\/journal\/([a-z0-9-]+)/i.exec(hash || "");
+  if (post) return { view: "post", slug: post[1] };
+  return { view: "home", slug: null };
 }
 
 function useHashRoute() {
-  const [route, setRoute] = useState(() => parseHash(window.location.hash))
+  const [route, setRoute] = useState(() => parseHash(window.location.hash));
   useEffect(() => {
-    const onHash = () => setRoute(parseHash(window.location.hash))
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
-  }, [])
-  return route
+    const onHash = () => setRoute(parseHash(window.location.hash));
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+  return route;
 }
 
 /** Which section is currently in view, for the rail. */
 function useScrollSpy(ids, deps) {
-  const [active, setActive] = useState(ids[0])
+  const [active, setActive] = useState(ids[0]);
   useEffect(() => {
-    if (!('IntersectionObserver' in window)) return
-    const nodes = ids
-      .map((id) => document.getElementById(id))
-      .filter(Boolean)
-    if (!nodes.length) return
+    if (!("IntersectionObserver" in window)) return;
+    const nodes = ids.map((id) => document.getElementById(id)).filter(Boolean);
+    if (!nodes.length) return;
 
-    const visible = new Map()
+    const visible = new Map();
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => visible.set(e.target.id, e.intersectionRatio))
-        let best = null
-        let bestRatio = 0
+        entries.forEach((e) => visible.set(e.target.id, e.intersectionRatio));
+        let best = null;
+        let bestRatio = 0;
         visible.forEach((ratio, id) => {
           if (ratio > bestRatio) {
-            bestRatio = ratio
-            best = id
+            bestRatio = ratio;
+            best = id;
           }
-        })
-        if (best && bestRatio > 0) setActive(best)
+        });
+        if (best && bestRatio > 0) setActive(best);
       },
-      { threshold: [0, 0.15, 0.35, 0.6, 0.85], rootMargin: '-18% 0px -38% 0px' },
-    )
-    nodes.forEach((n) => io.observe(n))
-    return () => io.disconnect()
+      {
+        threshold: [0, 0.15, 0.35, 0.6, 0.85],
+        rootMargin: "-18% 0px -38% 0px",
+      },
+    );
+    nodes.forEach((n) => io.observe(n));
+    return () => io.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps)
-  return active
+  }, deps);
+  return active;
 }
 
 /** Slow parallax on the spotlight media. rAF-throttled, transform only. */
 function useParallax(strength = 0.12, reduced = false) {
-  const ref = useRef(null)
+  const ref = useRef(null);
   useEffect(() => {
-    const el = ref.current
-    if (!el || reduced) return
-    let raf = 0
+    const el = ref.current;
+    if (!el || reduced) return;
+    let raf = 0;
     const update = () => {
-      raf = 0
-      const rect = el.parentElement.getBoundingClientRect()
-      const vh = window.innerHeight || 1
+      raf = 0;
+      const rect = el.parentElement.getBoundingClientRect();
+      const vh = window.innerHeight || 1;
       // -1 (below fold) .. 1 (above fold)
-      const progress = (rect.top + rect.height / 2 - vh / 2) / vh
-      const offset = Math.max(-1, Math.min(1, progress)) * rect.height * strength
-      el.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0)`
-    }
+      const progress = (rect.top + rect.height / 2 - vh / 2) / vh;
+      const offset =
+        Math.max(-1, Math.min(1, progress)) * rect.height * strength;
+      el.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0)`;
+    };
     const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update)
-    }
-    update()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
-      if (raf) cancelAnimationFrame(raf)
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-    }
-  }, [strength, reduced])
-  return ref
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [strength, reduced]);
+  return ref;
 }
 
 /* =========================================================================
@@ -2362,62 +2949,77 @@ function useParallax(strength = 0.12, reduced = false) {
  * Absolute URLs and data URIs are passed straight through.
  */
 function resolveSrc(src) {
-  if (!src) return src
-  if (/^([a-z]+:)?\/\//i.test(src) || /^data:/i.test(src)) return src
-  const base = import.meta.env.BASE_URL || '/'
-  return `${base.replace(/\/+$/, '')}/${src.replace(/^\/+/, '')}`
+  if (!src) return src;
+  if (/^([a-z]+:)?\/\//i.test(src) || /^data:/i.test(src)) return src;
+  const base = import.meta.env.BASE_URL || "/";
+  return `${base.replace(/\/+$/, "")}/${src.replace(/^\/+/, "")}`;
 }
 
 /** Deterministic PRNG so a given seed always draws the same composition. */
 function mulberry32(a) {
   return function () {
-    a |= 0
-    a = (a + 0x6d2b79f5) | 0
-    let t = Math.imul(a ^ (a >>> 15), 1 | a)
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
-  }
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 }
 
 const PLATE_PALETTE = {
   dark: {
-    bg0: '#15151A', bg1: '#07070A',
-    line: 'rgba(255,255,255,0.17)', line2: 'rgba(255,255,255,0.07)',
-    fill: 'rgba(255,255,255,0.055)', fill2: 'rgba(255,255,255,0.135)',
-    accent: '#4665FF', glow: '#2145E6', grain: 0.16,
+    bg0: "#15151A",
+    bg1: "#07070A",
+    line: "rgba(255,255,255,0.17)",
+    line2: "rgba(255,255,255,0.07)",
+    fill: "rgba(255,255,255,0.055)",
+    fill2: "rgba(255,255,255,0.135)",
+    accent: "#4665FF",
+    glow: "#2145E6",
+    grain: 0.16,
   },
   light: {
-    bg0: '#FAFAF8', bg1: '#E4E4DF',
-    line: 'rgba(10,10,10,0.26)', line2: 'rgba(10,10,10,0.11)',
-    fill: 'rgba(10,10,10,0.05)', fill2: 'rgba(10,10,10,0.12)',
-    accent: '#2145E6', glow: '#2145E6', grain: 0.07,
+    bg0: "#FAFAF8",
+    bg1: "#E4E4DF",
+    line: "rgba(10,10,10,0.26)",
+    line2: "rgba(10,10,10,0.11)",
+    fill: "rgba(10,10,10,0.05)",
+    fill2: "rgba(10,10,10,0.12)",
+    accent: "#2145E6",
+    glow: "#2145E6",
+    grain: 0.07,
   },
   accent: {
-    bg0: '#18225F', bg1: '#06091B',
-    line: 'rgba(255,255,255,0.19)', line2: 'rgba(255,255,255,0.08)',
-    fill: 'rgba(255,255,255,0.075)', fill2: 'rgba(150,175,255,0.22)',
-    accent: '#8AA0FF', glow: '#3B5BFF', grain: 0.14,
+    bg0: "#18225F",
+    bg1: "#06091B",
+    line: "rgba(255,255,255,0.19)",
+    line2: "rgba(255,255,255,0.08)",
+    fill: "rgba(255,255,255,0.075)",
+    fill2: "rgba(150,175,255,0.22)",
+    accent: "#8AA0FF",
+    glow: "#3B5BFF",
+    grain: 0.14,
   },
-}
+};
 
 /* ---- individual plate generators: (rnd, W, H, p) -> array of elements ---- */
 
 function drawLattice(rnd, W, H, p) {
-  const cw = W / 11
-  const ch = cw * 0.5
-  const ox = W * 0.52
-  const oy = H * 0.2
-  const out = []
+  const cw = W / 11;
+  const ch = cw * 0.5;
+  const ox = W * 0.52;
+  const oy = H * 0.2;
+  const out = [];
   for (let j = 0; j < 8; j++) {
     for (let i = 0; i < 9; i++) {
-      const x = ox + (i - j) * cw
-      const y = oy + (i + j) * ch * 0.66
-      if (x < -cw * 2 || x > W + cw * 2 || y > H + ch * 6) continue
-      const r = rnd()
-      const h = 6 + r * r * H * 0.22
-      const depth = Math.min(1, Math.max(0, y / (H * 1.15)))
-      const o = 0.25 + depth * 0.75
-      const key = `l${i}-${j}`
+      const x = ox + (i - j) * cw;
+      const y = oy + (i + j) * ch * 0.66;
+      if (x < -cw * 2 || x > W + cw * 2 || y > H + ch * 6) continue;
+      const r = rnd();
+      const h = 6 + r * r * H * 0.22;
+      const depth = Math.min(1, Math.max(0, y / (H * 1.15)));
+      const o = 0.25 + depth * 0.75;
+      const key = `l${i}-${j}`;
       out.push(
         <g key={key} opacity={o.toFixed(3)}>
           <polygon
@@ -2434,247 +3036,425 @@ function drawLattice(rnd, W, H, p) {
           />
           {r > 0.87 && (
             <line
-              x1={x - cw} y1={y - h + ch} x2={x} y2={y - h + ch * 2}
-              stroke={p.accent} strokeWidth={1.4} opacity="0.9"
+              x1={x - cw}
+              y1={y - h + ch}
+              x2={x}
+              y2={y - h + ch * 2}
+              stroke={p.accent}
+              strokeWidth={1.4}
+              opacity="0.9"
             />
           )}
         </g>,
-      )
+      );
     }
   }
-  return out
+  return out;
 }
 
 function drawMesh(rnd, W, H, p, id) {
-  const blobs = []
+  const blobs = [];
   // Radius is keyed to width, not min(W,H). This plate also renders in the
   // spotlight's fill mode, where the frame can be far taller than it is wide —
   // keying off the shorter side there made every blob as wide as the panel and
   // flooded it, leaving no dark ground for the type to sit on.
   for (let i = 0; i < 4; i++) {
-    const cx = W * (0.08 + rnd() * 0.84)
-    const cy = H * (0.08 + rnd() * 0.84)
-    const r = W * (0.16 + rnd() * 0.3)
+    const cx = W * (0.08 + rnd() * 0.84);
+    const cy = H * (0.08 + rnd() * 0.84);
+    const r = W * (0.16 + rnd() * 0.3);
     blobs.push(
-      <circle key={`b${i}`} cx={cx} cy={cy} r={r} fill={`url(#${id}-rg${i % 3})`} />,
-    )
+      <circle
+        key={`b${i}`}
+        cx={cx}
+        cy={cy}
+        r={r}
+        fill={`url(#${id}-rg${i % 3})`}
+      />,
+    );
   }
   // Square-ish cells at any aspect, rather than stretching a 9-row grid.
-  const cell = W / 12
-  const lines = []
+  const cell = W / 12;
+  const lines = [];
   for (let i = 1; i * cell < H; i++) {
     lines.push(
-      <line key={`h${i}`} x1="0" y1={i * cell} x2={W} y2={i * cell}
-        stroke={p.line2} strokeWidth="1" />,
-    )
+      <line
+        key={`h${i}`}
+        x1="0"
+        y1={i * cell}
+        x2={W}
+        y2={i * cell}
+        stroke={p.line2}
+        strokeWidth="1"
+      />,
+    );
   }
   for (let i = 1; i < 12; i++) {
     lines.push(
-      <line key={`v${i}`} x1={i * cell} y1="0" x2={i * cell} y2={H}
-        stroke={p.line2} strokeWidth="1" />,
-    )
+      <line
+        key={`v${i}`}
+        x1={i * cell}
+        y1="0"
+        x2={i * cell}
+        y2={H}
+        stroke={p.line2}
+        strokeWidth="1"
+      />,
+    );
   }
   return [
     <g key="blobs">{blobs}</g>,
-    <g key="lines" opacity="0.7">{lines}</g>,
-  ]
+    <g key="lines" opacity="0.7">
+      {lines}
+    </g>,
+  ];
 }
 
 function drawGrid(rnd, W, H, p) {
-  const cols = 12
-  const rows = Math.max(4, Math.round((cols * H) / W))
-  const cwid = W / cols
-  const chei = H / rows
-  const out = []
+  const cols = 12;
+  const rows = Math.max(4, Math.round((cols * H) / W));
+  const cwid = W / cols;
+  const chei = H / rows;
+  const out = [];
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const v = rnd()
+      const v = rnd();
       if (v > 0.84) {
         out.push(
-          <rect key={`f${r}-${c}`} x={c * cwid} y={r * chei} width={cwid} height={chei}
-            fill={v > 0.965 ? p.accent : p.fill2} opacity={v > 0.965 ? 0.85 : 1} />,
-        )
+          <rect
+            key={`f${r}-${c}`}
+            x={c * cwid}
+            y={r * chei}
+            width={cwid}
+            height={chei}
+            fill={v > 0.965 ? p.accent : p.fill2}
+            opacity={v > 0.965 ? 0.85 : 1}
+          />,
+        );
       } else if (v > 0.7) {
         out.push(
-          <rect key={`f${r}-${c}`} x={c * cwid} y={r * chei} width={cwid} height={chei}
-            fill={p.fill} />,
-        )
+          <rect
+            key={`f${r}-${c}`}
+            x={c * cwid}
+            y={r * chei}
+            width={cwid}
+            height={chei}
+            fill={p.fill}
+          />,
+        );
       }
     }
   }
   for (let c = 0; c <= cols; c++) {
-    out.push(<line key={`vl${c}`} x1={c * cwid} y1="0" x2={c * cwid} y2={H}
-      stroke={p.line2} strokeWidth="1" />)
+    out.push(
+      <line
+        key={`vl${c}`}
+        x1={c * cwid}
+        y1="0"
+        x2={c * cwid}
+        y2={H}
+        stroke={p.line2}
+        strokeWidth="1"
+      />,
+    );
   }
   for (let r = 0; r <= rows; r++) {
-    out.push(<line key={`hl${r}`} x1="0" y1={r * chei} x2={W} y2={r * chei}
-      stroke={p.line2} strokeWidth="1" />)
+    out.push(
+      <line
+        key={`hl${r}`}
+        x1="0"
+        y1={r * chei}
+        x2={W}
+        y2={r * chei}
+        stroke={p.line2}
+        strokeWidth="1"
+      />,
+    );
   }
-  return out
+  return out;
 }
 
 function drawStrata(rnd, W, H, p) {
-  const out = []
-  let y = H * 0.06
-  let i = 0
+  const out = [];
+  let y = H * 0.06;
+  let i = 0;
   while (y < H * 0.96 && i < 26) {
-    const h = H * (0.012 + rnd() * 0.07)
-    const inset = W * (rnd() * 0.16)
-    const v = rnd()
+    const h = H * (0.012 + rnd() * 0.07);
+    const inset = W * (rnd() * 0.16);
+    const v = rnd();
     out.push(
-      <rect key={`s${i}`} x={inset} y={y} width={W - inset - W * (rnd() * 0.1)} height={h}
+      <rect
+        key={`s${i}`}
+        x={inset}
+        y={y}
+        width={W - inset - W * (rnd() * 0.1)}
+        height={h}
         fill={v > 0.9 ? p.accent : v > 0.6 ? p.fill2 : p.fill}
-        opacity={v > 0.9 ? 0.9 : 1} rx="1" />,
-    )
-    y += h + H * (0.008 + rnd() * 0.024)
-    i += 1
+        opacity={v > 0.9 ? 0.9 : 1}
+        rx="1"
+      />,
+    );
+    y += h + H * (0.008 + rnd() * 0.024);
+    i += 1;
   }
-  return out
+  return out;
 }
 
 function drawPortrait(rnd, W, H, p, id) {
-  const cx = W * 0.5
-  const headR = W * 0.155
-  const headCy = H * 0.3
+  const cx = W * 0.5;
+  const headR = W * 0.155;
+  const headCy = H * 0.3;
   return [
     // light behind the figure
-    <ellipse key="halo" cx={cx} cy={H * 0.3} rx={W * 0.44} ry={H * 0.32}
-      fill={`url(#${id}-rg0)`} />,
+    <ellipse
+      key="halo"
+      cx={cx}
+      cy={H * 0.3}
+      rx={W * 0.44}
+      ry={H * 0.32}
+      fill={`url(#${id}-rg0)`}
+    />,
     // shoulders, sitting lower and wider so a neck gap stays readable
-    <path key="shoulders"
+    <path
+      key="shoulders"
       d={`M ${cx - W * 0.46} ${H} C ${cx - W * 0.42} ${H * 0.76} ${cx - W * 0.23} ${H * 0.62} ${cx} ${H * 0.62} C ${cx + W * 0.23} ${H * 0.62} ${cx + W * 0.42} ${H * 0.76} ${cx + W * 0.46} ${H} Z`}
-      fill={`url(#${id}-lg1)`} />,
+      fill={`url(#${id}-lg1)`}
+    />,
     // neck
-    <rect key="neck" x={cx - W * 0.06} y={headCy + headR * 0.6} width={W * 0.12}
-      height={H * 0.14} fill={`url(#${id}-lg1)`} opacity="0.8" />,
+    <rect
+      key="neck"
+      x={cx - W * 0.06}
+      y={headCy + headR * 0.6}
+      width={W * 0.12}
+      height={H * 0.14}
+      fill={`url(#${id}-lg1)`}
+      opacity="0.8"
+    />,
     // head
-    <circle key="head" cx={cx} cy={headCy} r={headR} fill={`url(#${id}-rg1)`} />,
-    <circle key="headEdge" cx={cx} cy={headCy} r={headR} fill="none"
-      stroke="rgba(255,255,255,0.14)" strokeWidth="1.5" />,
+    <circle
+      key="head"
+      cx={cx}
+      cy={headCy}
+      r={headR}
+      fill={`url(#${id}-rg1)`}
+    />,
+    <circle
+      key="headEdge"
+      cx={cx}
+      cy={headCy}
+      r={headR}
+      fill="none"
+      stroke="rgba(255,255,255,0.14)"
+      strokeWidth="1.5"
+    />,
     // single hard rim light down one side, the way a studio portrait is lit
-    <path key="rim"
+    <path
+      key="rim"
       d={`M ${cx - headR * 0.95} ${headCy - headR * 0.35} A ${headR} ${headR} 0 0 0 ${cx - headR * 0.5} ${headCy + headR * 0.86}`}
-      fill="none" stroke={p.accent} strokeWidth="3" opacity="0.75" strokeLinecap="round" />,
-    <rect key="scan" width={W} height={H} fill={`url(#${id}-scan)`} opacity="0.42" />,
-  ]
+      fill="none"
+      stroke={p.accent}
+      strokeWidth="3"
+      opacity="0.75"
+      strokeLinecap="round"
+    />,
+    <rect
+      key="scan"
+      width={W}
+      height={H}
+      fill={`url(#${id}-scan)`}
+      opacity="0.42"
+    />,
+  ];
 }
 
 function drawOrbit(rnd, W, H, p) {
-  const cx = W * 0.5
-  const cy = H * 0.54
-  const out = []
-  const maxR = Math.min(W, H) * 0.62
+  const cx = W * 0.5;
+  const cy = H * 0.54;
+  const out = [];
+  const maxR = Math.min(W, H) * 0.62;
   for (let i = 1; i <= 9; i++) {
-    const r = (i / 9) * maxR
-    const start = rnd() * Math.PI * 2
-    const sweep = 0.6 + rnd() * 4.4
-    const x1 = cx + r * Math.cos(start)
-    const y1 = cy + r * Math.sin(start)
-    const x2 = cx + r * Math.cos(start + sweep)
-    const y2 = cy + r * Math.sin(start + sweep)
-    const large = sweep > Math.PI ? 1 : 0
+    const r = (i / 9) * maxR;
+    const start = rnd() * Math.PI * 2;
+    const sweep = 0.6 + rnd() * 4.4;
+    const x1 = cx + r * Math.cos(start);
+    const y1 = cy + r * Math.sin(start);
+    const x2 = cx + r * Math.cos(start + sweep);
+    const y2 = cy + r * Math.sin(start + sweep);
+    const large = sweep > Math.PI ? 1 : 0;
     out.push(
-      <path key={`a${i}`}
+      <path
+        key={`a${i}`}
         d={`M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`}
         fill="none"
         stroke={i === 6 ? p.accent : p.line}
         strokeWidth={i === 6 ? 2.4 : 1.3}
         opacity={i === 6 ? 0.95 : 0.5 + (i / 9) * 0.4}
-        strokeLinecap="round" />,
-    )
+        strokeLinecap="round"
+      />,
+    );
   }
-  out.push(<circle key="core" cx={cx} cy={cy} r={Math.min(W, H) * 0.028} fill={p.accent} opacity="0.9" />)
-  return out
+  out.push(
+    <circle
+      key="core"
+      cx={cx}
+      cy={cy}
+      r={Math.min(W, H) * 0.028}
+      fill={p.accent}
+      opacity="0.9"
+    />,
+  );
+  return out;
 }
 
 function drawPanels(rnd, W, H, p) {
-  const out = []
+  const out = [];
   for (let i = 0; i < 4; i++) {
-    const w = W * (0.34 + rnd() * 0.3)
-    const h = H * (0.4 + rnd() * 0.4)
-    const x = W * 0.06 + i * (W * 0.16) * (rnd() > 0.5 ? 1 : 0.7)
-    const y = H * 0.08 + rnd() * (H * 0.3)
+    const w = W * (0.34 + rnd() * 0.3);
+    const h = H * (0.4 + rnd() * 0.4);
+    const x = W * 0.06 + i * (W * 0.16) * (rnd() > 0.5 ? 1 : 0.7);
+    const y = H * 0.08 + rnd() * (H * 0.3);
     out.push(
       <g key={`p${i}`} opacity={(0.5 + i * 0.14).toFixed(2)}>
-        <rect x={x} y={y} width={Math.min(w, W - x - 6)} height={Math.min(h, H - y - 6)}
-          rx={Math.min(W, H) * 0.02} fill={p.fill} stroke={p.line} strokeWidth="1" />
+        <rect
+          x={x}
+          y={y}
+          width={Math.min(w, W - x - 6)}
+          height={Math.min(h, H - y - 6)}
+          rx={Math.min(W, H) * 0.02}
+          fill={p.fill}
+          stroke={p.line}
+          strokeWidth="1"
+        />
         {[0, 1, 2, 3].map((b) => (
-          <rect key={b}
-            x={x + W * 0.02} y={y + H * 0.06 + b * (H * 0.075)}
+          <rect
+            key={b}
+            x={x + W * 0.02}
+            y={y + H * 0.06 + b * (H * 0.075)}
             width={Math.min(w, W - x - 6) * (0.3 + rnd() * 0.55)}
             height={Math.max(2, H * 0.014)}
             rx="1"
             fill={b === 0 ? p.accent : p.fill2}
-            opacity={b === 0 ? 0.8 : 1} />
+            opacity={b === 0 ? 0.8 : 1}
+          />
         ))}
       </g>,
-    )
+    );
   }
-  return out
+  return out;
 }
 
 function drawColumns(rnd, W, H, p) {
-  const n = 16
-  const gap = W * 0.012
-  const bw = (W - gap * (n + 1)) / n
-  const out = []
+  const n = 16;
+  const gap = W * 0.012;
+  const bw = (W - gap * (n + 1)) / n;
+  const out = [];
   for (let i = 0; i < n; i++) {
-    const t = i / (n - 1)
-    const h = H * (0.1 + Math.pow(t, 1.7) * 0.78) * (0.82 + rnd() * 0.28)
-    const x = gap + i * (bw + gap)
+    const t = i / (n - 1);
+    const h = H * (0.1 + Math.pow(t, 1.7) * 0.78) * (0.82 + rnd() * 0.28);
+    const x = gap + i * (bw + gap);
     out.push(
-      <rect key={`c${i}`} x={x} y={H - h - H * 0.08} width={bw} height={h}
+      <rect
+        key={`c${i}`}
+        x={x}
+        y={H - h - H * 0.08}
+        width={bw}
+        height={h}
         rx={Math.min(2, bw * 0.12)}
         fill={i === n - 1 ? p.accent : p.fill2}
-        opacity={i === n - 1 ? 0.92 : 0.5 + t * 0.5} />,
-    )
+        opacity={i === n - 1 ? 0.92 : 0.5 + t * 0.5}
+      />,
+    );
   }
-  out.push(<line key="base" x1="0" y1={H - H * 0.08} x2={W} y2={H - H * 0.08}
-    stroke={p.line} strokeWidth="1" />)
-  return out
+  out.push(
+    <line
+      key="base"
+      x1="0"
+      y1={H - H * 0.08}
+      x2={W}
+      y2={H - H * 0.08}
+      stroke={p.line}
+      strokeWidth="1"
+    />,
+  );
+  return out;
 }
 
 function drawWeave(rnd, W, H, p) {
-  const out = []
+  const out = [];
   for (let i = 0; i < 9; i++) {
-    const y = H * (0.08 + i * 0.1)
-    const w = W * (0.35 + rnd() * 0.6)
+    const y = H * (0.08 + i * 0.1);
+    const w = W * (0.35 + rnd() * 0.6);
     out.push(
-      <rect key={`h${i}`} x={W * (rnd() * 0.2)} y={y} width={Math.min(w, W)} height={H * 0.032}
-        rx={H * 0.016} fill={i === 4 ? p.accent : p.fill2}
-        opacity={i === 4 ? 0.9 : 0.42 + rnd() * 0.4} />,
-    )
+      <rect
+        key={`h${i}`}
+        x={W * (rnd() * 0.2)}
+        y={y}
+        width={Math.min(w, W)}
+        height={H * 0.032}
+        rx={H * 0.016}
+        fill={i === 4 ? p.accent : p.fill2}
+        opacity={i === 4 ? 0.9 : 0.42 + rnd() * 0.4}
+      />,
+    );
   }
   for (let i = 0; i < 11; i++) {
-    const x = W * (0.05 + i * 0.088)
-    const h = H * (0.3 + rnd() * 0.6)
+    const x = W * (0.05 + i * 0.088);
+    const h = H * (0.3 + rnd() * 0.6);
     out.push(
-      <rect key={`v${i}`} x={x} y={H * (rnd() * 0.25)} width={W * 0.014} height={Math.min(h, H)}
-        rx={W * 0.007} fill={p.fill} opacity={0.5 + rnd() * 0.5} />,
-    )
+      <rect
+        key={`v${i}`}
+        x={x}
+        y={H * (rnd() * 0.25)}
+        width={W * 0.014}
+        height={Math.min(h, H)}
+        rx={W * 0.007}
+        fill={p.fill}
+        opacity={0.5 + rnd() * 0.5}
+      />,
+    );
   }
-  return out
+  return out;
 }
 
 function drawRamp(rnd, W, H, p, id) {
-  const pts = []
-  const n = 26
+  const pts = [];
+  const n = 26;
   for (let i = 0; i <= n; i++) {
-    const t = i / n
+    const t = i / n;
     // decay with periodic refills — reads as an energy or funnel curve
-    const decay = 1 - t * 0.72
-    const wobble = Math.sin(t * Math.PI * 3.1) * 0.1 + (rnd() - 0.5) * 0.05
-    const v = Math.max(0.06, Math.min(1, decay + wobble))
-    pts.push(`${(t * W).toFixed(1)},${(H - v * H * 0.78 - H * 0.08).toFixed(1)}`)
+    const decay = 1 - t * 0.72;
+    const wobble = Math.sin(t * Math.PI * 3.1) * 0.1 + (rnd() - 0.5) * 0.05;
+    const v = Math.max(0.06, Math.min(1, decay + wobble));
+    pts.push(
+      `${(t * W).toFixed(1)},${(H - v * H * 0.78 - H * 0.08).toFixed(1)}`,
+    );
   }
-  const line = pts.join(' ')
+  const line = pts.join(" ");
   return [
-    <polygon key="area" points={`0,${H} ${line} ${W},${H}`} fill={`url(#${id}-lg0)`} />,
-    <polyline key="line" points={line} fill="none" stroke={p.accent} strokeWidth="2.2"
-      strokeLinejoin="round" strokeLinecap="round" opacity="0.95" />,
-    <line key="base" x1="0" y1={H - H * 0.08} x2={W} y2={H - H * 0.08}
-      stroke={p.line} strokeWidth="1" />,
-  ]
+    <polygon
+      key="area"
+      points={`0,${H} ${line} ${W},${H}`}
+      fill={`url(#${id}-lg0)`}
+    />,
+    <polyline
+      key="line"
+      points={line}
+      fill="none"
+      stroke={p.accent}
+      strokeWidth="2.2"
+      strokeLinejoin="round"
+      strokeLinecap="round"
+      opacity="0.95"
+    />,
+    <line
+      key="base"
+      x1="0"
+      y1={H - H * 0.08}
+      x2={W}
+      y2={H - H * 0.08}
+      stroke={p.line}
+      strokeWidth="1"
+    />,
+  ];
 }
 
 const PLATE_DRAW = {
@@ -2688,18 +3468,36 @@ const PLATE_DRAW = {
   columns: drawColumns,
   weave: drawWeave,
   ramp: drawRamp,
-}
+};
 
-function Plate({ plate = 'mesh', tone = 'dark', seed = 1, ratio = 16 / 9, alt }) {
-  const uid = useId().replace(/[^a-zA-Z0-9-]/g, '')
-  const W = 1200
-  const H = Math.round(W / ratio)
-  const p = PLATE_PALETTE[tone] || PLATE_PALETTE.dark
+function Plate({
+  plate = "mesh",
+  tone = "dark",
+  seed = 1,
+  ratio = 16 / 9,
+  alt,
+  glow,
+  accent,
+}) {
+  const uid = useId().replace(/[^a-zA-Z0-9-]/g, "");
+  const W = 1200;
+  const H = Math.round(W / ratio);
+  const base = PLATE_PALETTE[tone] || PLATE_PALETTE.dark;
+  // An entry can recolour just the bloom and linework without needing a
+  // whole extra palette.
+  const p = useMemo(
+    () => ({
+      ...base,
+      ...(glow ? { glow } : {}),
+      ...(accent ? { accent } : {}),
+    }),
+    [base, glow, accent],
+  );
   const shapes = useMemo(() => {
-    const rnd = mulberry32(seed)
-    const draw = PLATE_DRAW[plate] || PLATE_DRAW.mesh
-    return draw(rnd, W, H, p, uid)
-  }, [plate, seed, H, p, uid])
+    const rnd = mulberry32(seed);
+    const draw = PLATE_DRAW[plate] || PLATE_DRAW.mesh;
+    return draw(rnd, W, H, p, uid);
+  }, [plate, seed, H, p, uid]);
 
   return (
     <svg
@@ -2710,7 +3508,7 @@ function Plate({ plate = 'mesh', tone = 'dark', seed = 1, ratio = 16 / 9, alt })
       preserveAspectRatio="xMidYMid slice"
       role="img"
       aria-label={alt}
-      style={{ display: 'block', isolation: 'isolate' }}
+      style={{ display: "block", isolation: "isolate" }}
     >
       <defs>
         <linearGradient id={`${uid}-bg`} x1="0" y1="0" x2="1" y2="1">
@@ -2744,12 +3542,22 @@ function Plate({ plate = 'mesh', tone = 'dark', seed = 1, ratio = 16 / 9, alt })
             linework visible at small sizes would otherwise apply in here too,
             inflating a 1-unit hatch line to a device pixel — which at these
             scales is most of the tile, turning the texture into a flat wash. */}
-        <pattern id={`${uid}-tex`} width="6" height="6" patternUnits="userSpaceOnUse"
-          patternTransform="rotate(38)">
+        <pattern
+          id={`${uid}-tex`}
+          width="6"
+          height="6"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(38)"
+        >
           <rect width="6" height="6" fill="#000000" opacity="0.35" />
           <rect width="2" height="6" fill="#FFFFFF" opacity="0.5" />
         </pattern>
-        <pattern id={`${uid}-scan`} width="4" height="4" patternUnits="userSpaceOnUse">
+        <pattern
+          id={`${uid}-scan`}
+          width="4"
+          height="4"
+          patternUnits="userSpaceOnUse"
+        >
           <rect width="4" height="2" fill="rgba(0,0,0,0.42)" />
         </pattern>
       </defs>
@@ -2762,7 +3570,7 @@ function Plate({ plate = 'mesh', tone = 'dark', seed = 1, ratio = 16 / 9, alt })
           ground and washed the whole panel out to grey. */}
       <rect width={W} height={H} fill={`url(#${uid}-tex)`} opacity={p.grain} />
     </svg>
-  )
+  );
 }
 
 /**
@@ -2775,44 +3583,51 @@ function Plate({ plate = 'mesh', tone = 'dark', seed = 1, ratio = 16 / 9, alt })
  * rather than being cover-cropped down to a narrow slice of a 16/9 drawing.
  */
 function Visual({ imageKey, ratio = 16 / 9, fill = false, className, style }) {
-  const entry = CONTENT.IMAGES[imageKey]
-  const boxRef = useRef(null)
-  const [measured, setMeasured] = useState(null)
+  const entry = CONTENT.IMAGES[imageKey];
+  const boxRef = useRef(null);
+  const [measured, setMeasured] = useState(null);
 
   useEffect(() => {
-    if (!fill) return
-    const el = boxRef.current
-    if (!el || typeof ResizeObserver === 'undefined') return
+    if (!fill) return;
+    const el = boxRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
     const ro = new ResizeObserver((entries) => {
-      const box = entries[0]?.contentRect
-      if (!box || !box.width || !box.height) return
-      const next = box.width / box.height
+      const box = entries[0]?.contentRect;
+      if (!box || !box.width || !box.height) return;
+      const next = box.width / box.height;
       // Only re-render on a change that would actually be visible.
-      setMeasured((prev) => (prev && Math.abs(prev - next) < 0.02 ? prev : next))
-    })
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [fill])
+      setMeasured((prev) =>
+        prev && Math.abs(prev - next) < 0.02 ? prev : next,
+      );
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [fill]);
 
   if (!entry) {
     // A missing key is a content bug, not something to paper over silently.
-    if (import.meta.env.DEV) console.warn(`[portfolio] unknown image key: ${imageKey}`)
-    return null
+    if (import.meta.env.DEV)
+      console.warn(`[portfolio] unknown image key: ${imageKey}`);
+    return null;
   }
 
   const wrapStyle = fill
-    ? { width: '100%', height: '100%', overflow: 'hidden', ...style }
-    : { aspectRatio: String(ratio), overflow: 'hidden', ...style }
+    ? { width: "100%", height: "100%", overflow: "hidden", ...style }
+    : { aspectRatio: String(ratio), overflow: "hidden", ...style };
 
   return (
-    <div ref={boxRef} className={className ? `${className} vis` : 'vis'} style={wrapStyle}>
+    <div
+      ref={boxRef}
+      className={className ? `${className} vis` : "vis"}
+      style={wrapStyle}
+    >
       {entry.src ? (
         <img
           src={resolveSrc(entry.src)}
           alt={entry.alt}
           loading="lazy"
           decoding="async"
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       ) : (
         <Plate
@@ -2821,10 +3636,12 @@ function Visual({ imageKey, ratio = 16 / 9, fill = false, className, style }) {
           seed={entry.seed}
           ratio={fill ? measured || ratio : ratio}
           alt={entry.alt}
+          glow={entry.glow}
+          accent={entry.accent}
         />
       )}
     </div>
-  )
+  );
 }
 
 /* =========================================================================
@@ -2832,29 +3649,29 @@ function Visual({ imageKey, ratio = 16 / 9, fill = false, className, style }) {
  * ========================================================================= */
 
 const ICON_PATHS = {
-  arrowRight: 'M4 10h12M11 5l5 5-5 5',
-  arrowLeft: 'M16 10H4M9 15L4 10l5-5',
-  arrowUpRight: 'M6 14L14 6M7 6h7v7',
-  chevronLeft: 'M12 4L6 10l6 6',
-  chevronRight: 'M8 4l6 6-6 6',
-  sun: 'M10 3v1.6M10 15.4V17M3 10h1.6M15.4 10H17M5.05 5.05l1.13 1.13M13.82 13.82l1.13 1.13M14.95 5.05l-1.13 1.13M6.18 13.82l-1.13 1.13',
-  moon: 'M15.5 12.6A6.2 6.2 0 017.4 4.5a6.5 6.5 0 108.1 8.1z',
-  mail: 'M2.5 5.5h15v9h-15zM2.5 6l7.5 5 7.5-5',
-  calendar: 'M4 5.5h12v11H4zM7 3v3M13 3v3M4 9h12',
-  close: 'M5 5l10 10M15 5L5 15',
-}
+  arrowRight: "M4 10h12M11 5l5 5-5 5",
+  arrowLeft: "M16 10H4M9 15L4 10l5-5",
+  arrowUpRight: "M6 14L14 6M7 6h7v7",
+  chevronLeft: "M12 4L6 10l6 6",
+  chevronRight: "M8 4l6 6-6 6",
+  sun: "M10 3v1.6M10 15.4V17M3 10h1.6M15.4 10H17M5.05 5.05l1.13 1.13M13.82 13.82l1.13 1.13M14.95 5.05l-1.13 1.13M6.18 13.82l-1.13 1.13",
+  moon: "M15.5 12.6A6.2 6.2 0 017.4 4.5a6.5 6.5 0 108.1 8.1z",
+  mail: "M2.5 5.5h15v9h-15zM2.5 6l7.5 5 7.5-5",
+  calendar: "M4 5.5h12v11H4zM7 3v3M13 3v3M4 9h12",
+  close: "M5 5l10 10M15 5L5 15",
+};
 
 const ICON_FILLED = {
   linkedin:
-    'M4.98 3.5a2 2 0 11-.02 4 2 2 0 01.02-4zM3.3 8.9h3.35V19H3.3zM9.2 8.9h3.2v1.38h.05c.45-.83 1.55-1.7 3.19-1.7 3.41 0 4.04 2.2 4.04 5.05V19h-3.35v-4.72c0-1.13-.02-2.58-1.6-2.58-1.6 0-1.85 1.22-1.85 2.5V19H9.2z',
+    "M4.98 3.5a2 2 0 11-.02 4 2 2 0 01.02-4zM3.3 8.9h3.35V19H3.3zM9.2 8.9h3.2v1.38h.05c.45-.83 1.55-1.7 3.19-1.7 3.41 0 4.04 2.2 4.04 5.05V19h-3.35v-4.72c0-1.13-.02-2.58-1.6-2.58-1.6 0-1.85 1.22-1.85 2.5V19H9.2z",
   behance:
-    'M8.4 4.6c1.9 0 3.4.55 3.4 2.55 0 1.05-.5 1.75-1.4 2.15 1.25.35 1.9 1.3 1.9 2.6 0 2.15-1.75 3.1-3.75 3.1H2.5V4.6zm-.3 4.2c.8 0 1.35-.35 1.35-1.2 0-.95-.7-1.15-1.5-1.15H5.1v2.35zm.15 4.45c.9 0 1.6-.35 1.6-1.4 0-1.05-.6-1.45-1.55-1.45H5.1v2.85zM16.9 13.6c.6 0 1.15-.3 1.35-.85h1.9c-.4 1.7-1.65 2.5-3.3 2.5-2.3 0-3.75-1.55-3.75-3.85 0-2.2 1.5-3.85 3.75-3.85 2.4 0 3.5 1.85 3.4 4.2h-5c0 1.15.6 1.85 1.65 1.85zm1.15-3.1c-.1-.9-.55-1.4-1.4-1.4-.95 0-1.35.65-1.4 1.4zM14.3 5.4h4.35v1.25H14.3z',
+    "M8.4 4.6c1.9 0 3.4.55 3.4 2.55 0 1.05-.5 1.75-1.4 2.15 1.25.35 1.9 1.3 1.9 2.6 0 2.15-1.75 3.1-3.75 3.1H2.5V4.6zm-.3 4.2c.8 0 1.35-.35 1.35-1.2 0-.95-.7-1.15-1.5-1.15H5.1v2.35zm.15 4.45c.9 0 1.6-.35 1.6-1.4 0-1.05-.6-1.45-1.55-1.45H5.1v2.85zM16.9 13.6c.6 0 1.15-.3 1.35-.85h1.9c-.4 1.7-1.65 2.5-3.3 2.5-2.3 0-3.75-1.55-3.75-3.85 0-2.2 1.5-3.85 3.75-3.85 2.4 0 3.5 1.85 3.4 4.2h-5c0 1.15.6 1.85 1.65 1.85zm1.15-3.1c-.1-.9-.55-1.4-1.4-1.4-.95 0-1.35.65-1.4 1.4zM14.3 5.4h4.35v1.25H14.3z",
   github:
-    'M10 1.8a8.2 8.2 0 00-2.6 16c.41.08.56-.18.56-.4v-1.4c-2.28.5-2.76-1.1-2.76-1.1-.37-.95-.91-1.2-.91-1.2-.75-.51.06-.5.06-.5.82.06 1.26.85 1.26.85.73 1.26 1.92.9 2.39.68.07-.53.28-.9.51-1.1-1.82-.21-3.73-.91-3.73-4.05 0-.9.32-1.63.85-2.2-.09-.21-.37-1.05.08-2.18 0 0 .69-.22 2.25.84a7.8 7.8 0 014.1 0c1.56-1.06 2.25-.84 2.25-.84.45 1.13.17 1.97.08 2.18.53.57.85 1.3.85 2.2 0 3.15-1.92 3.84-3.75 4.04.29.25.55.74.55 1.5v2.22c0 .22.15.48.57.4A8.2 8.2 0 0010 1.8z',
-}
+    "M10 1.8a8.2 8.2 0 00-2.6 16c.41.08.56-.18.56-.4v-1.4c-2.28.5-2.76-1.1-2.76-1.1-.37-.95-.91-1.2-.91-1.2-.75-.51.06-.5.06-.5.82.06 1.26.85 1.26.85.73 1.26 1.92.9 2.39.68.07-.53.28-.9.51-1.1-1.82-.21-3.73-.91-3.73-4.05 0-.9.32-1.63.85-2.2-.09-.21-.37-1.05.08-2.18 0 0 .69-.22 2.25.84a7.8 7.8 0 014.1 0c1.56-1.06 2.25-.84 2.25-.84.45 1.13.17 1.97.08 2.18.53.57.85 1.3.85 2.2 0 3.15-1.92 3.84-3.75 4.04.29.25.55.74.55 1.5v2.22c0 .22.15.48.57.4A8.2 8.2 0 0010 1.8z",
+};
 
 function Icon({ name, size = 20, strokeWidth = 1.5, className }) {
-  const filled = ICON_FILLED[name]
+  const filled = ICON_FILLED[name];
   return (
     <svg
       className={className}
@@ -2877,7 +3694,7 @@ function Icon({ name, size = 20, strokeWidth = 1.5, className }) {
         />
       )}
     </svg>
-  )
+  );
 }
 
 /* =========================================================================
@@ -2889,16 +3706,17 @@ function Icon({ name, size = 20, strokeWidth = 1.5, className }) {
  * ========================================================================= */
 
 const GLYPHS = {
-  gamehouse: 'M3 17V9.5L11 3l8 6.5V17h-6v-5H9v5z',
-  jesterday: 'M11 3l4.5 7H6.5zM6.5 12h9l-4.5 6z',
-  eunoia: 'M11 3a7 7 0 100 14 7 7 0 000-14zm0 4a3 3 0 110 6 3 3 0 010-6z',
-  popcore: 'M11 2.5a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8zm0 5.1a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8zm0 5.1a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8z',
-  cupra: 'M9 3L4 17h3l5-14zM15 3l-5 14h3l5-14z',
-  socialpoint: 'M11 2l8 8-8 8-8-8zm0 5.2L7.8 10 11 12.8 14.2 10z',
-  radisson: 'M4 17V3h4a5 5 0 010 10H8l5 4H9L5 13v4zm4-6h1a2.5 2.5 0 000-5H8z',
-  lasalle: 'M11 2l2.2 5.4L19 8.2l-4 4 1 5.8-5-2.9-5 2.9 1-5.8-4-4 5.8-.8z',
-  kave: 'M4 3h3v6l5-6h3.6l-5.4 6.4L19 17h-4l-4-5.2V17H4z',
-}
+  gamehouse: "M3 17V9.5L11 3l8 6.5V17h-6v-5H9v5z",
+  jesterday: "M11 3l4.5 7H6.5zM6.5 12h9l-4.5 6z",
+  eunoia: "M11 3a7 7 0 100 14 7 7 0 000-14zm0 4a3 3 0 110 6 3 3 0 010-6z",
+  popcore:
+    "M11 2.5a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8zm0 5.1a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8zm0 5.1a2.4 2.4 0 110 4.8 2.4 2.4 0 010-4.8z",
+  cupra: "M9 3L4 17h3l5-14zM15 3l-5 14h3l5-14z",
+  socialpoint: "M11 2l8 8-8 8-8-8zm0 5.2L7.8 10 11 12.8 14.2 10z",
+  radisson: "M4 17V3h4a5 5 0 010 10H8l5 4H9L5 13v4zm4-6h1a2.5 2.5 0 000-5H8z",
+  lasalle: "M11 2l2.2 5.4L19 8.2l-4 4 1 5.8-5-2.9-5 2.9 1-5.8-4-4 5.8-.8z",
+  kave: "M4 3h3v6l5-6h3.6l-5.4 6.4L19 17h-4l-4-5.2V17H4z",
+};
 
 function Wordmark({ mark, name, logo, aspect, scale, large = false }) {
   // A real brand SVG is drawn as a mask over currentColor. The source files
@@ -2908,11 +3726,11 @@ function Wordmark({ mark, name, logo, aspect, scale, large = false }) {
     // Normalising every mark to one height gives them very different optical
     // weight (a wide wordmark reads far heavier than a compact one), so each
     // item can carry a `scale` to even them out by eye.
-    const height = (large ? 34 : 24) * (scale || 1)
-    const url = `url(${resolveSrc(logo)})`
+    const height = (large ? 34 : 24) * (scale || 1);
+    const url = `url(${resolveSrc(logo)})`;
     return (
       <span
-        className={large ? 'brandmark brandmark--lg' : 'brandmark'}
+        className={large ? "brandmark brandmark--lg" : "brandmark"}
         role="img"
         aria-label={name}
         style={{
@@ -2922,46 +3740,48 @@ function Wordmark({ mark, name, logo, aspect, scale, large = false }) {
           WebkitMaskImage: url,
         }}
       />
-    )
+    );
   }
-  return <DrawnWordmark mark={mark} name={name} large={large} />
+  return <DrawnWordmark mark={mark} name={name} large={large} />;
 }
 
 function DrawnWordmark({ mark, name, large = false }) {
-  const glyph = GLYPHS[mark] || GLYPHS.eunoia
-  const textRef = useRef(null)
-  const TEXT_X = 27
+  const glyph = GLYPHS[mark] || GLYPHS.eunoia;
+  const textRef = useRef(null);
+  const TEXT_X = 27;
   // Start from an estimate, then measure for real. Measuring again once the
   // webfont resolves is what stops the mark from clipping on a cold load.
-  const [width, setWidth] = useState(() => Math.round(TEXT_X + name.length * 12.6))
+  const [width, setWidth] = useState(() =>
+    Math.round(TEXT_X + name.length * 12.6),
+  );
 
   useLayoutEffect(() => {
     const measure = () => {
-      const t = textRef.current
-      if (!t || typeof t.getComputedTextLength !== 'function') return
-      let len = 0
+      const t = textRef.current;
+      if (!t || typeof t.getComputedTextLength !== "function") return;
+      let len = 0;
       try {
-        len = t.getComputedTextLength()
+        len = t.getComputedTextLength();
       } catch {
-        return
+        return;
       }
-      if (len > 0) setWidth(Math.ceil(TEXT_X + len + 2))
-    }
-    measure()
+      if (len > 0) setWidth(Math.ceil(TEXT_X + len + 2));
+    };
+    measure();
     if (document.fonts && document.fonts.ready) {
-      let live = true
+      let live = true;
       document.fonts.ready.then(() => {
-        if (live) measure()
-      })
+        if (live) measure();
+      });
       return () => {
-        live = false
-      }
+        live = false;
+      };
     }
-  }, [name])
+  }, [name]);
 
   return (
     <svg
-      className={large ? 'wordmark wordmark--lg' : 'wordmark'}
+      className={large ? "wordmark wordmark--lg" : "wordmark"}
       viewBox={`0 0 ${width} 32`}
       role="img"
       aria-label={name}
@@ -2982,34 +3802,34 @@ function DrawnWordmark({ mark, name, large = false }) {
         {name}
       </text>
     </svg>
-  )
+  );
 }
 
 /* =========================================================================
  * Shared UI
  * ========================================================================= */
 
-const NAV_OFFSET = 76
+const NAV_OFFSET = 76;
 
 function scrollToId(id, reduced) {
-  const el = document.getElementById(id)
-  if (!el) return
-  const y = el.getBoundingClientRect().top + window.scrollY - NAV_OFFSET
-  window.scrollTo({ top: y, behavior: reduced ? 'auto' : 'smooth' })
+  const el = document.getElementById(id);
+  if (!el) return;
+  const y = el.getBoundingClientRect().top + window.scrollY - NAV_OFFSET;
+  window.scrollTo({ top: y, behavior: reduced ? "auto" : "smooth" });
 }
 
 function Nav({ theme, onToggleTheme, onHome, onBook }) {
-  const [stuck, setStuck] = useState(false)
+  const [stuck, setStuck] = useState(false);
   useEffect(() => {
-    const onScroll = () => setStuck(window.scrollY > 8)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+    const onScroll = () => setStuck(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  const isDark = theme === 'dark'
+  const isDark = theme === "dark";
   return (
-    <header className={`nav xfade${stuck ? ' is-stuck' : ''}`}>
+    <header className={`nav xfade${stuck ? " is-stuck" : ""}`}>
       <a
         href="#/"
         className="monogram"
@@ -3029,9 +3849,9 @@ function Nav({ theme, onToggleTheme, onHome, onBook }) {
           rel="noreferrer noopener"
           aria-label={CONTENT.nav.bookLabel}
           onClick={(e) => {
-            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
-            e.preventDefault()
-            onBook()
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+            e.preventDefault();
+            onBook();
           }}
         >
           <span className="navLinkText">{CONTENT.nav.bookLabel}</span>
@@ -3043,16 +3863,18 @@ function Nav({ theme, onToggleTheme, onHome, onBook }) {
           onClick={onToggleTheme}
           aria-pressed={isDark}
           aria-label={
-            isDark ? CONTENT.nav.themeLabelToLight : CONTENT.nav.themeLabelToDark
+            isDark
+              ? CONTENT.nav.themeLabelToLight
+              : CONTENT.nav.themeLabelToDark
           }
         >
           <span className="knob" aria-hidden="true">
-            <Icon name={isDark ? 'moon' : 'sun'} size={11} strokeWidth={1.8} />
+            <Icon name={isDark ? "moon" : "sun"} size={11} strokeWidth={1.8} />
           </span>
         </button>
       </div>
     </header>
-  )
+  );
 }
 
 /**
@@ -3064,60 +3886,60 @@ function Nav({ theme, onToggleTheme, onHome, onBook }) {
  * a dead end.
  */
 function BookingDialog({ onClose, theme, reduced }) {
-  const panelRef = useRef(null)
-  const [loaded, setLoaded] = useState(false)
+  const panelRef = useRef(null);
+  const [loaded, setLoaded] = useState(false);
 
   // Mounted only while open, so `loaded` starts fresh on every open and the
   // iframe is torn down on close rather than kept alive in the background.
   useEffect(() => {
-    const previouslyFocused = document.activeElement
-    const { overflow } = document.body.style
-    document.body.style.overflow = 'hidden'
+    const previouslyFocused = document.activeElement;
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
 
     const onKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        e.preventDefault()
-        onClose()
-        return
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
       }
-      if (e.key !== 'Tab') return
+      if (e.key !== "Tab") return;
       // Keep focus inside the dialog while it is open.
       const focusables = panelRef.current?.querySelectorAll(
         'a[href], button:not([disabled]), iframe, [tabindex]:not([tabindex="-1"])',
-      )
-      if (!focusables || !focusables.length) return
-      const first = focusables[0]
-      const last = focusables[focusables.length - 1]
+      );
+      if (!focusables || !focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
       if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault()
-        last.focus()
+        e.preventDefault();
+        last.focus();
       } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault()
-        first.focus()
+        e.preventDefault();
+        first.focus();
       }
-    }
+    };
 
-    document.addEventListener('keydown', onKeyDown)
+    document.addEventListener("keydown", onKeyDown);
 
     // Focus synchronously: the panel is already in the DOM by the time this
     // effect runs, and requestAnimationFrame does not fire in a background
     // tab — which would leave focus stranded outside the dialog.
-    panelRef.current?.querySelector('button, a[href]')?.focus()
+    panelRef.current?.querySelector("button, a[href]")?.focus();
 
     return () => {
-      document.removeEventListener('keydown', onKeyDown)
-      document.body.style.overflow = overflow
-      if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus()
-    }
-  }, [onClose])
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = overflow;
+      if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
+    };
+  }, [onClose]);
 
-  const src = `${CONTENT.booking.url}?embed=&layout=month_view&theme=${theme}`
+  const src = `${CONTENT.booking.url}?embed=&layout=month_view&theme=${theme}`;
 
   return (
     <div
-      className={`bookingScrim${reduced ? '' : ' is-animated'}`}
+      className={`bookingScrim${reduced ? "" : " is-animated"}`}
       onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose()
+        if (e.target === e.currentTarget) onClose();
       }}
     >
       <div
@@ -3171,65 +3993,80 @@ function BookingDialog({ onClose, theme, reduced }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-function SectionHead({ label, statement, aside, onPanel, headingId, as: Tag = 'h2' }) {
+function SectionHead({
+  label,
+  statement,
+  aside,
+  onPanel,
+  headingId,
+  as: Tag = "h2",
+}) {
   const heading = (
-    <Tag className={`sectionHead${onPanel ? ' sectionHead--onPanel' : ''}`} id={headingId}>
+    <Tag
+      className={`sectionHead${onPanel ? " sectionHead--onPanel" : ""}`}
+      id={headingId}
+    >
       <span className="label reveal">{label}</span>
       {/* Both halves are block-level, so this space is invisible but keeps
-          the heading's accessible name from running them together. */}
-      {' '}
-      <span className="statement reveal" style={{ '--reveal-delay': '80ms' }}>
+          the heading's accessible name from running them together. */}{" "}
+      <span className="statement reveal" style={{ "--reveal-delay": "80ms" }}>
         {statement}
       </span>
     </Tag>
-  )
+  );
   // Only split into two columns when there is actually an aside to put in the
   // second one. Wrapping unconditionally halved the measure of every heading
   // that already sat inside a narrow column.
-  if (!aside) return heading
+  if (!aside) return heading;
   return (
     <div className="splitHead">
       {heading}
-      <p className="aside reveal" style={{ '--reveal-delay': '160ms' }}>
+      <p className="aside reveal" style={{ "--reveal-delay": "160ms" }}>
         {aside}
       </p>
     </div>
-  )
+  );
 }
 
 /** Sticky bottom pill rail. The highlight slides with a restrained spring. */
 function SectionRail({ items, activeId, label, reduced }) {
-  const listRef = useRef(null)
-  const [pill, setPill] = useState({ x: 0, w: 0, ready: false })
+  const listRef = useRef(null);
+  const [pill, setPill] = useState({ x: 0, w: 0, ready: false });
 
   const measure = useCallback(() => {
-    const list = listRef.current
-    if (!list) return
-    const el = list.querySelector(`[data-rail-id="${activeId}"]`)
-    if (!el) return
-    setPill({ x: el.offsetLeft, w: el.offsetWidth, ready: true })
+    const list = listRef.current;
+    if (!list) return;
+    const el = list.querySelector(`[data-rail-id="${activeId}"]`);
+    if (!el) return;
+    setPill({ x: el.offsetLeft, w: el.offsetWidth, ready: true });
     // keep the active item in view when the rail is a scrollable row
     if (list.scrollWidth > list.clientWidth) {
-      const target = el.offsetLeft - (list.clientWidth - el.offsetWidth) / 2
-      list.scrollTo({ left: Math.max(0, target), behavior: reduced ? 'auto' : 'smooth' })
+      const target = el.offsetLeft - (list.clientWidth - el.offsetWidth) / 2;
+      list.scrollTo({
+        left: Math.max(0, target),
+        behavior: reduced ? "auto" : "smooth",
+      });
     }
-  }, [activeId, reduced])
+  }, [activeId, reduced]);
 
-  useLayoutEffect(measure, [measure, items])
+  useLayoutEffect(measure, [measure, items]);
   useEffect(() => {
-    window.addEventListener('resize', measure)
-    return () => window.removeEventListener('resize', measure)
-  }, [measure])
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [measure]);
 
   return (
     <div className="railDock">
       <nav className="rail xfade" aria-label={label} ref={listRef}>
         <span
-          className={`railPill${pill.ready ? ' is-ready' : ''}`}
-          style={{ transform: `translate3d(${pill.x}px,0,0)`, width: `${pill.w}px` }}
+          className={`railPill${pill.ready ? " is-ready" : ""}`}
+          style={{
+            transform: `translate3d(${pill.x}px,0,0)`,
+            width: `${pill.w}px`,
+          }}
           aria-hidden="true"
         />
         {items.map((item) => (
@@ -3238,7 +4075,7 @@ function SectionRail({ items, activeId, label, reduced }) {
             type="button"
             data-rail-id={item.id}
             className="railItem mono"
-            aria-current={activeId === item.id ? 'true' : undefined}
+            aria-current={activeId === item.id ? "true" : undefined}
             onClick={() => scrollToId(item.id, reduced)}
           >
             {item.label}
@@ -3246,46 +4083,46 @@ function SectionRail({ items, activeId, label, reduced }) {
         ))}
       </nav>
     </div>
-  )
+  );
 }
 
 /** Horizontal scroller with arrow controls. Used by Bits rows and Process. */
 function useScrollerControls() {
-  const ref = useRef(null)
-  const [state, setState] = useState({ atStart: true, atEnd: true })
+  const ref = useRef(null);
+  const [state, setState] = useState({ atStart: true, atEnd: true });
 
   const sync = useCallback(() => {
-    const el = ref.current
-    if (!el) return
-    const max = el.scrollWidth - el.clientWidth
+    const el = ref.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
     setState({
       atStart: el.scrollLeft <= 2,
       atEnd: max <= 2 || el.scrollLeft >= max - 2,
-    })
-  }, [])
+    });
+  }, []);
 
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    sync()
-    el.addEventListener('scroll', sync, { passive: true })
-    window.addEventListener('resize', sync)
+    const el = ref.current;
+    if (!el) return;
+    sync();
+    el.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
     return () => {
-      el.removeEventListener('scroll', sync)
-      window.removeEventListener('resize', sync)
-    }
-  }, [sync])
+      el.removeEventListener("scroll", sync);
+      window.removeEventListener("resize", sync);
+    };
+  }, [sync]);
 
   const scrollBy = useCallback((dir, reduced) => {
-    const el = ref.current
-    if (!el) return
+    const el = ref.current;
+    if (!el) return;
     el.scrollBy({
       left: dir * Math.max(240, el.clientWidth * 0.75),
-      behavior: reduced ? 'auto' : 'smooth',
-    })
-  }, [])
+      behavior: reduced ? "auto" : "smooth",
+    });
+  }, []);
 
-  return { ref, ...state, scrollBy }
+  return { ref, ...state, scrollBy };
 }
 
 /* =========================================================================
@@ -3293,18 +4130,18 @@ function useScrollerControls() {
  * ========================================================================= */
 
 function Hero({ reduced }) {
-  const [loaded, setLoaded] = useState(false)
+  const [loaded, setLoaded] = useState(false);
   useEffect(() => {
-    const id = requestAnimationFrame(() => setLoaded(true))
-    return () => cancelAnimationFrame(id)
-  }, [])
+    const id = requestAnimationFrame(() => setLoaded(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
-  const typed = useTypewriter(CONTENT.hero.roles, reduced)
-  const words = CONTENT.hero.name.split(' ')
+  const typed = useTypewriter(CONTENT.hero.roles, reduced);
+  const words = CONTENT.hero.name.split(" ");
 
   return (
     <section
-      className={`container hero${loaded ? ' is-loaded' : ''}`}
+      className={`container hero${loaded ? " is-loaded" : ""}`}
       aria-labelledby="hero-name"
     >
       {/* The visible name is split into per-word masks with margin-based
@@ -3318,7 +4155,10 @@ function Hero({ reduced }) {
       >
         {words.map((word, i) => (
           <span className="word" key={word + i}>
-            <span className="wordInner" style={{ '--word-delay': `${i * 90}ms` }}>
+            <span
+              className="wordInner"
+              style={{ "--word-delay": `${i * 90}ms` }}
+            >
               {word}
             </span>
           </span>
@@ -3340,7 +4180,7 @@ function Hero({ reduced }) {
         <p className="heroBio reveal">{CONTENT.hero.bio}</p>
       </div>
     </section>
-  )
+  );
 }
 
 /**
@@ -3357,22 +4197,22 @@ function Hero({ reduced }) {
  * interval, so passing through repeatedly could stall it indefinitely.
  */
 function LogoStrip({ reduced }) {
-  const items = CONTENT.logos.items
-  const perPage = Math.max(1, CONTENT.logos.perPage || 4)
-  const pageCount = Math.max(1, Math.ceil(items.length / perPage))
-  const [page, setPage] = useState(0)
+  const items = CONTENT.logos.items;
+  const perPage = Math.max(1, CONTENT.logos.perPage || 4);
+  const pageCount = Math.max(1, Math.ceil(items.length / perPage));
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
-    if (reduced || pageCount < 2) return
+    if (reduced || pageCount < 2) return;
     // Deliberately no document.hidden check: browsers already throttle
     // background timers, and some embedded contexts report hidden
     // permanently — which would strand the strip on its first page and
     // hide the remaining logos for good.
     const id = window.setInterval(() => {
-      setPage((n) => (n + 1) % pageCount)
-    }, CONTENT.logos.intervalMs || 4000)
-    return () => window.clearInterval(id)
-  }, [reduced, pageCount])
+      setPage((n) => (n + 1) % pageCount);
+    }, CONTENT.logos.intervalMs || 4000);
+    return () => window.clearInterval(id);
+  }, [reduced, pageCount]);
 
   // Reduced motion: no rotation, no timer, everything visible at once.
   if (reduced) {
@@ -3392,7 +4232,7 @@ function LogoStrip({ reduced }) {
           ))}
         </ul>
       </div>
-    )
+    );
   }
 
   return (
@@ -3401,14 +4241,14 @@ function LogoStrip({ reduced }) {
           fixed by the tallest page and the section never reflows as it turns. */}
       <div
         className="logoRotator reveal"
-        style={{ '--logo-fade': `${CONTENT.logos.fadeMs || 960}ms` }}
+        style={{ "--logo-fade": `${CONTENT.logos.fadeMs || 960}ms` }}
         aria-label={CONTENT.logos.label}
       >
         {Array.from({ length: pageCount }, (_, i) => (
           <ul
             key={i}
-            className={`logoStrip logoPage${i === page ? ' is-active' : ''}`}
-            aria-hidden={i === page ? undefined : 'true'}
+            className={`logoStrip logoPage${i === page ? " is-active" : ""}`}
+            aria-hidden={i === page ? undefined : "true"}
           >
             {items.slice(i * perPage, i * perPage + perPage).map((logo) => (
               <li key={logo.name}>
@@ -3425,7 +4265,7 @@ function LogoStrip({ reduced }) {
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 /* =========================================================================
@@ -3433,8 +4273,9 @@ function LogoStrip({ reduced }) {
  * ========================================================================= */
 
 function Spotlight({ project, onCapture, reduced }) {
-  const mediaRef = useParallax(0.1, reduced)
-  const titleRef = useRef(null)
+  const mediaRef = useParallax(0.1, reduced);
+  const titleRef = useRef(null);
+  const lines = project.spotlightTitle || [project.positioning];
 
   return (
     <article className="spotlight reveal">
@@ -3442,13 +4283,39 @@ function Spotlight({ project, onCapture, reduced }) {
         <Visual imageKey={project.images.hero} fill />
       </div>
       <div className="spotlightInner">
-        <p className="mono spotlightEyebrow" ref={titleRef}>
-          {project.eyebrow}
+        <p className="spotlightBrand" ref={titleRef}>
+          {project.spotlightLogo ? (
+            <img
+              src={resolveSrc(project.spotlightLogo)}
+              alt={project.name}
+              style={{
+                height: "30px",
+                width: `${Math.round(30 * project.spotlightLogoAspect)}px`,
+              }}
+            />
+          ) : (
+            <span className="mono spotlightEyebrow">{project.eyebrow}</span>
+          )}
         </p>
+
+        <h3 className="spotlightStatement">
+          {lines.map((line, i) => (
+            <span key={i}>{line}</span>
+          ))}
+        </h3>
+
+        {/* Stats and the call to action share the bottom rail. */}
         <div className="spotFoot">
-          <h3 className="spotlightStatement">{project.positioning}</h3>
+          <dl className="statRow">
+            {project.metrics.map((m) => (
+              <div className="stat" key={m.label}>
+                <dt className="label mono">{m.label}</dt>
+                <dd className="value">{m.value}</dd>
+              </div>
+            ))}
+          </dl>
           <a
-            className="viewCase mono"
+            className="viewCase"
             href={`#/work/${project.slug}`}
             onClick={() => onCapture(titleRef.current)}
             aria-label={`${project.name} — ${CONTENT.work.viewCase}`}
@@ -3457,27 +4324,19 @@ function Spotlight({ project, onCapture, reduced }) {
             <Icon name="arrowRight" size={16} />
           </a>
         </div>
-        <dl className="statRow">
-          {project.metrics.map((m) => (
-            <div className="stat" key={m.label}>
-              <dt className="label mono">{m.label}</dt>
-              <dd className="value">{m.value}</dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </article>
-  )
+  );
 }
 
 function ProjectCard({ project, onCapture, index }) {
-  const titleRef = useRef(null)
+  const titleRef = useRef(null);
   return (
     <li>
       <a
         className="projectCard reveal"
         href={`#/work/${project.slug}`}
-        style={{ '--reveal-delay': `${index * 70}ms` }}
+        style={{ "--reveal-delay": `${index * 70}ms` }}
         onClick={() => onCapture(titleRef.current)}
         aria-label={`${project.name} — ${CONTENT.work.viewCase}`}
       >
@@ -3504,7 +4363,7 @@ function ProjectCard({ project, onCapture, index }) {
         </span>
       </a>
     </li>
-  )
+  );
 }
 
 function WorkSection({ projects, spotlight, onCapture, reduced }) {
@@ -3516,17 +4375,26 @@ function WorkSection({ projects, spotlight, onCapture, reduced }) {
           label={CONTENT.work.eyebrow}
           statement={CONTENT.work.heading}
         />
-        <div style={{ marginTop: 'clamp(32px,5vh,56px)' }}>
-          <Spotlight project={spotlight} onCapture={onCapture} reduced={reduced} />
+        <div style={{ marginTop: "clamp(32px,5vh,56px)" }}>
+          <Spotlight
+            project={spotlight}
+            onCapture={onCapture}
+            reduced={reduced}
+          />
         </div>
         <ul className="projectGrid">
           {projects.map((p, i) => (
-            <ProjectCard key={p.slug} project={p} onCapture={onCapture} index={i} />
+            <ProjectCard
+              key={p.slug}
+              project={p}
+              onCapture={onCapture}
+              index={i}
+            />
           ))}
         </ul>
       </div>
     </section>
-  )
+  );
 }
 
 /* =========================================================================
@@ -3534,7 +4402,7 @@ function WorkSection({ projects, spotlight, onCapture, reduced }) {
  * ========================================================================= */
 
 function BitsRow({ items, reduced, rowIndex }) {
-  const { ref, atStart, atEnd, scrollBy } = useScrollerControls()
+  const { ref, atStart, atEnd, scrollBy } = useScrollerControls();
   return (
     <div className="bitsCluster">
       <div className="rowHead">
@@ -3567,7 +4435,7 @@ function BitsRow({ items, reduced, rowIndex }) {
           <li
             className="bitTile reveal"
             key={bit.id}
-            style={{ '--reveal-delay': `${i * 60}ms` }}
+            style={{ "--reveal-delay": `${i * 60}ms` }}
           >
             <div className="bitMedia">
               <Visual imageKey={bit.imageKey} ratio={CONTENT.bits.mediaRatio} />
@@ -3580,16 +4448,16 @@ function BitsRow({ items, reduced, rowIndex }) {
         ))}
       </ul>
     </div>
-  )
+  );
 }
 
 function BitsSection({ reduced }) {
   const rows = useMemo(() => {
-    const items = CONTENT.bits.items
-    const out = []
-    for (let i = 0; i < items.length; i += 4) out.push(items.slice(i, i + 4))
-    return out
-  }, [])
+    const items = CONTENT.bits.items;
+    const out = [];
+    for (let i = 0; i < items.length; i += 4) out.push(items.slice(i, i + 4));
+    return out;
+  }, []);
 
   return (
     <section id="bits" className="section" aria-labelledby="bits-h">
@@ -3606,7 +4474,7 @@ function BitsSection({ reduced }) {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 /* =========================================================================
@@ -3622,7 +4490,10 @@ function AboutSection() {
           label={CONTENT.about.eyebrow}
           statement={CONTENT.about.heading}
         />
-        <div className="aboutCard reveal" style={{ marginTop: 'clamp(32px,5vh,56px)' }}>
+        <div
+          className="aboutCard reveal"
+          style={{ marginTop: "clamp(32px,5vh,56px)" }}
+        >
           <div className="aboutCopy">
             <h3>{CONTENT.about.title}</h3>
             <div className="aboutBody">
@@ -3634,7 +4505,7 @@ function AboutSection() {
               {CONTENT.about.buttons.map((b, i) => (
                 <a
                   key={b.label}
-                  className={i === 0 ? 'btn' : 'btn btn--ghost'}
+                  className={i === 0 ? "btn" : "btn btn--ghost"}
                   href={b.href}
                   target="_blank"
                   rel="noreferrer noopener"
@@ -3647,12 +4518,15 @@ function AboutSection() {
             </div>
           </div>
           <div className="aboutPortrait">
-            <Visual imageKey={CONTENT.about.imageKey} ratio={CONTENT.about.imageRatio} />
+            <Visual
+              imageKey={CONTENT.about.imageKey}
+              ratio={CONTENT.about.imageRatio}
+            />
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 /* =========================================================================
@@ -3670,19 +4544,19 @@ function AboutSection() {
  * it twice is noise.
  */
 function Avatar({ src, name }) {
-  const [failed, setFailed] = useState(false)
+  const [failed, setFailed] = useState(false);
   const initials = name
     .split(/\s+/)
     .map((w) => w[0])
     .slice(0, 2)
-    .join('')
+    .join("");
 
   if (!src || failed) {
     return (
       <span className="avatar avatar--initials" aria-hidden="true">
         {initials}
       </span>
-    )
+    );
   }
   return (
     <img
@@ -3693,28 +4567,28 @@ function Avatar({ src, name }) {
       decoding="async"
       onError={() => setFailed(true)}
     />
-  )
+  );
 }
 
 function Testimonials() {
-  const quotes = CONTENT.testimonials.quotes
-  const [i, setI] = useState(0)
-  const touch = useRef(null)
+  const quotes = CONTENT.testimonials.quotes;
+  const [i, setI] = useState(0);
+  const touch = useRef(null);
 
   const go = useCallback(
     (dir) => setI((n) => (n + dir + quotes.length) % quotes.length),
     [quotes.length],
-  )
+  );
 
   const onKeyDown = (e) => {
-    if (e.key === 'ArrowLeft') {
-      e.preventDefault()
-      go(-1)
-    } else if (e.key === 'ArrowRight') {
-      e.preventDefault()
-      go(1)
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      go(-1);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      go(1);
     }
-  }
+  };
 
   return (
     <section id="shoutouts" className="section" aria-labelledby="shout-h">
@@ -3729,11 +4603,11 @@ function Testimonials() {
             <p
               className="reveal"
               style={{
-                marginTop: 'var(--s5)',
-                color: 'var(--muted)',
-                maxWidth: '42ch',
+                marginTop: "var(--s5)",
+                color: "var(--muted)",
+                maxWidth: "42ch",
                 lineHeight: 1.65,
-                '--reveal-delay': '160ms',
+                "--reveal-delay": "160ms",
               }}
             >
               {CONTENT.testimonials.intro}
@@ -3748,13 +4622,13 @@ function Testimonials() {
             tabIndex={0}
             onKeyDown={onKeyDown}
             onTouchStart={(e) => {
-              touch.current = e.touches[0].clientX
+              touch.current = e.touches[0].clientX;
             }}
             onTouchEnd={(e) => {
-              if (touch.current == null) return
-              const dx = e.changedTouches[0].clientX - touch.current
-              if (Math.abs(dx) > 44) go(dx < 0 ? 1 : -1)
-              touch.current = null
+              if (touch.current == null) return;
+              const dx = e.changedTouches[0].clientX - touch.current;
+              if (Math.abs(dx) > 44) go(dx < 0 ? 1 : -1);
+              touch.current = null;
             }}
           >
             <span className="quoteMark" aria-hidden="true">
@@ -3764,8 +4638,8 @@ function Testimonials() {
               {quotes.map((q, n) => (
                 <figure
                   key={q.id}
-                  className={`quoteSlide${n === i ? ' is-active' : ''}`}
-                  aria-hidden={n === i ? undefined : 'true'}
+                  className={`quoteSlide${n === i ? " is-active" : ""}`}
+                  aria-hidden={n === i ? undefined : "true"}
                 >
                   <blockquote className="quoteBody">{q.quote}</blockquote>
                   <figcaption className="quoteAttr">
@@ -3785,7 +4659,7 @@ function Testimonials() {
                     key={q.id}
                     type="button"
                     className="dot"
-                    aria-current={n === i ? 'true' : undefined}
+                    aria-current={n === i ? "true" : undefined}
                     aria-label={`${CONTENT.testimonials.dotLabel} ${n + 1}: ${q.name}, ${q.role}`}
                     onClick={() => setI(n)}
                   />
@@ -3814,7 +4688,7 @@ function Testimonials() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 /* =========================================================================
@@ -3824,7 +4698,7 @@ function Testimonials() {
  * a real link with a visible affordance — no dead links until then.
  * ========================================================================= */
 
-function JournalSection() {
+function JournalSection({ onCapture }) {
   return (
     <section id="journal" className="section" aria-labelledby="journal-h">
       <div className="container">
@@ -3833,23 +4707,23 @@ function JournalSection() {
           label={CONTENT.journal.eyebrow}
           statement={CONTENT.journal.heading}
         />
-        <div style={{ marginTop: 'clamp(32px,5vh,56px)' }}>
-          {CONTENT.journal.posts.map((post, i) => {
-            const Row = post.href ? 'a' : 'article'
-            const rowProps = post.href
-              ? { href: post.href, target: '_blank', rel: 'noreferrer noopener' }
-              : {}
-            return (
-              <Row
-                key={post.id}
+        <ul className="journalList">
+          {CONTENT.journal.posts.map((post, i) => (
+            <li key={post.id}>
+              {/* The whole row is the link, so the entire card is clickable. */}
+              <a
                 className="postRow reveal"
-                style={{ '--reveal-delay': `${i * 70}ms` }}
-                {...rowProps}
+                href={`#/journal/${post.slug}`}
+                style={{ "--reveal-delay": `${i * 70}ms` }}
+                onClick={(e) =>
+                  onCapture(e.currentTarget.querySelector("[data-post-title]"))
+                }
+                aria-label={`${post.title} — ${CONTENT.journal.readLabel}`}
               >
-                <div className="postThumb">
+                <span className="postThumb">
                   <Visual imageKey={post.imageKey} ratio={4 / 3} />
-                </div>
-                <div className="postMeta">
+                </span>
+                <span className="postMeta">
                   <span className="mono">{post.date}</span>
                   <span className="chips">
                     {post.tags.map((t) => (
@@ -3858,25 +4732,23 @@ function JournalSection() {
                       </span>
                     ))}
                   </span>
-                </div>
-                <div className="postMain">
-                  <h3 className="postTitle">{post.title}</h3>
-                  <p className="postDek">{post.dek}</p>
-                </div>
-                {post.href ? (
-                  <span className="go" aria-label={CONTENT.journal.readLabel}>
-                    <Icon name="arrowUpRight" size={18} />
+                </span>
+                <span className="postMain">
+                  <span className="postTitle" data-post-title>
+                    {post.title}
                   </span>
-                ) : (
-                  <span />
-                )}
-              </Row>
-            )
-          })}
-        </div>
+                  <span className="postDek">{post.dek}</span>
+                </span>
+                <span className="go" aria-hidden="true">
+                  <Icon name="arrowUpRight" size={18} />
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
-  )
+  );
 }
 
 /* =========================================================================
@@ -3888,107 +4760,118 @@ function JournalSection() {
  * `deliver()` below — nothing else needs to change.
  * ========================================================================= */
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 function ContactSection() {
-  const [values, setValues] = useState({ name: '', email: '', subject: '', message: '' })
-  const [errors, setErrors] = useState({})
-  const [touched, setTouched] = useState({})
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
   // idle | sending | sent (posted for real) | draft (mail app opened) | failed
-  const [status, setStatus] = useState('idle')
+  const [status, setStatus] = useState("idle");
 
   const validate = useCallback((v) => {
-    const e = {}
-    if (!v.name.trim()) e.name = CONTENT.contact.errors.name
-    if (!EMAIL_RE.test(v.email.trim())) e.email = CONTENT.contact.errors.email
-    if (!v.subject.trim()) e.subject = CONTENT.contact.errors.subject
-    if (v.message.trim().length < 4) e.message = CONTENT.contact.errors.message
-    return e
-  }, [])
+    const e = {};
+    if (!v.name.trim()) e.name = CONTENT.contact.errors.name;
+    if (!EMAIL_RE.test(v.email.trim())) e.email = CONTENT.contact.errors.email;
+    if (!v.subject.trim()) e.subject = CONTENT.contact.errors.subject;
+    if (v.message.trim().length < 4) e.message = CONTENT.contact.errors.message;
+    return e;
+  }, []);
 
   const setField = (key) => (ev) => {
-    const next = { ...values, [key]: ev.target.value }
-    setValues(next)
-    if (touched[key]) setErrors(validate(next))
-  }
+    const next = { ...values, [key]: ev.target.value };
+    setValues(next);
+    if (touched[key]) setErrors(validate(next));
+  };
 
   const blurField = (key) => () => {
-    setTouched((t) => ({ ...t, [key]: true }))
-    setErrors(validate(values))
-  }
+    setTouched((t) => ({ ...t, [key]: true }));
+    setErrors(validate(values));
+  };
 
   /** Opens a prefilled draft in the visitor's mail app. */
   const openMailDraft = (v) => {
-    const body = `${v.message}\n\n— ${v.name}\n${v.email}`
+    const body = `${v.message}\n\n— ${v.name}\n${v.email}`;
     const href =
       `mailto:${CONTENT.links.email}` +
       `?subject=${encodeURIComponent(v.subject)}` +
-      `&body=${encodeURIComponent(body)}`
-    window.location.href = href
-  }
+      `&body=${encodeURIComponent(body)}`;
+    window.location.href = href;
+  };
 
   /** Actually posts the message, when an endpoint is configured. */
   const postMessage = async (v) => {
     const res = await fetch(CONTENT.contact.endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ ...(CONTENT.contact.endpointExtraFields || {}), ...v }),
-    })
-    if (!res.ok) throw new Error(`Form endpoint returned ${res.status}`)
-  }
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        ...(CONTENT.contact.endpointExtraFields || {}),
+        ...v,
+      }),
+    });
+    if (!res.ok) throw new Error(`Form endpoint returned ${res.status}`);
+  };
 
   const onSubmit = async (ev) => {
-    ev.preventDefault()
-    const e = validate(values)
-    setErrors(e)
-    setTouched({ name: true, email: true, subject: true, message: true })
+    ev.preventDefault();
+    const e = validate(values);
+    setErrors(e);
+    setTouched({ name: true, email: true, subject: true, message: true });
     if (Object.keys(e).length) {
-      const first = document.getElementById(`field-${Object.keys(e)[0]}`)
-      if (first) first.focus()
-      return
+      const first = document.getElementById(`field-${Object.keys(e)[0]}`);
+      if (first) first.focus();
+      return;
     }
-    setStatus('sending')
+    setStatus("sending");
 
     if (CONTENT.contact.endpoint) {
       // Real send: report what actually happened rather than assuming success.
       try {
-        await postMessage(values)
-        setStatus('sent')
+        await postMessage(values);
+        setStatus("sent");
       } catch {
-        setStatus('failed')
+        setStatus("failed");
       }
-      return
+      return;
     }
 
     // No endpoint: hand off to the visitor's mail app. Optimistic, because
     // the page cannot observe whether the client opened.
     window.setTimeout(() => {
       try {
-        openMailDraft(values)
+        openMailDraft(values);
       } catch {
         /* no mail handler; the card names the address as a fallback */
       }
-      setStatus('draft')
-    }, 420)
-  }
+      setStatus("draft");
+    }, 420);
+  };
 
   const reset = () => {
-    setValues({ name: '', email: '', subject: '', message: '' })
-    setErrors({})
-    setTouched({})
-    setStatus('idle')
-  }
+    setValues({ name: "", email: "", subject: "", message: "" });
+    setErrors({});
+    setTouched({});
+    setStatus("idle");
+  };
 
-  const f = CONTENT.contact.fields
+  const f = CONTENT.contact.fields;
 
   const renderField = (key, opts = {}) => {
-    const cfg = f[key]
-    const invalid = Boolean(touched[key] && errors[key])
-    const Control = opts.textarea ? 'textarea' : 'input'
+    const cfg = f[key];
+    const invalid = Boolean(touched[key] && errors[key]);
+    const Control = opts.textarea ? "textarea" : "input";
     return (
       <div
-        className={`field${opts.full ? ' field--full' : ''}`}
-        data-invalid={invalid ? 'true' : 'false'}
+        className={`field${opts.full ? " field--full" : ""}`}
+        data-invalid={invalid ? "true" : "false"}
       >
         <label className="mono" htmlFor={`field-${key}`}>
           {cfg.label}
@@ -4013,8 +4896,8 @@ function ContactSection() {
           </span>
         ) : null}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <section id="contact" className="section" aria-labelledby="contact-h">
@@ -4029,23 +4912,29 @@ function ContactSection() {
             <p
               className="reveal"
               style={{
-                marginTop: 'var(--s5)',
-                color: 'var(--muted)',
-                maxWidth: '40ch',
+                marginTop: "var(--s5)",
+                color: "var(--muted)",
+                maxWidth: "40ch",
                 lineHeight: 1.65,
-                '--reveal-delay': '160ms',
+                "--reveal-delay": "160ms",
               }}
             >
               {CONTENT.contact.intro}
             </p>
-            <p className="reveal" style={{ marginTop: 'var(--s6)', '--reveal-delay': '220ms' }}>
-              <span className="mono" style={{ color: 'var(--muted)', display: 'block' }}>
+            <p
+              className="reveal"
+              style={{ marginTop: "var(--s6)", "--reveal-delay": "220ms" }}
+            >
+              <span
+                className="mono"
+                style={{ color: "var(--muted)", display: "block" }}
+              >
                 {CONTENT.contact.emailLabel}
               </span>
               <a
                 className="textLink"
                 href={`mailto:${CONTENT.links.email}`}
-                style={{ display: 'inline-block', marginTop: 'var(--s2)' }}
+                style={{ display: "inline-block", marginTop: "var(--s2)" }}
               >
                 {CONTENT.links.email}
               </a>
@@ -4055,44 +4944,60 @@ function ContactSection() {
           <div className="reveal">
             {/* Submission state is announced, not just shown. */}
             <div aria-live="polite" aria-atomic="true">
-              {status === 'sent' || status === 'draft' || status === 'failed' ? (
-                <div className={`successCard${status === 'failed' ? ' successCard--failed' : ''}`}>
+              {status === "sent" ||
+              status === "draft" ||
+              status === "failed" ? (
+                <div
+                  className={`successCard${status === "failed" ? " successCard--failed" : ""}`}
+                >
                   <h3>
-                    {status === 'sent'
+                    {status === "sent"
                       ? CONTENT.contact.sentTitle
-                      : status === 'draft'
+                      : status === "draft"
                         ? CONTENT.contact.draftTitle
                         : CONTENT.contact.failedTitle}
                   </h3>
                   <p>
-                    {status === 'sent'
+                    {status === "sent"
                       ? CONTENT.contact.sentBody
-                      : status === 'draft'
+                      : status === "draft"
                         ? CONTENT.contact.draftBody
                         : CONTENT.contact.failedBody}
                   </p>
-                  <button type="button" className="textLink mono" onClick={reset}>
-                    {status === 'failed' ? CONTENT.contact.submitLabel : CONTENT.contact.resetLabel}
+                  <button
+                    type="button"
+                    className="textLink mono"
+                    onClick={reset}
+                  >
+                    {status === "failed"
+                      ? CONTENT.contact.submitLabel
+                      : CONTENT.contact.resetLabel}
                   </button>
                 </div>
               ) : null}
             </div>
 
-            {status === 'idle' || status === 'sending' ? (
+            {status === "idle" || status === "sending" ? (
               <form className="form" onSubmit={onSubmit} noValidate>
-                {renderField('name', { type: 'text' })}
-                {renderField('email', { type: 'email' })}
-                {renderField('subject', { type: 'text', full: true })}
-                {renderField('message', { textarea: true, full: true })}
+                {renderField("name", { type: "text" })}
+                {renderField("email", { type: "email" })}
+                {renderField("subject", { type: "text", full: true })}
+                {renderField("message", { textarea: true, full: true })}
                 <div className="formFoot">
-                  <button className="submit" type="submit" disabled={status === 'sending'}>
-                    {status === 'sending'
+                  <button
+                    className="submit"
+                    type="submit"
+                    disabled={status === "sending"}
+                  >
+                    {status === "sending"
                       ? CONTENT.contact.submittingLabel
                       : CONTENT.contact.submitLabel}
                     <Icon name="arrowRight" size={16} />
                   </button>
                   <span className="formStatus mono" aria-live="polite">
-                    {status === 'sending' ? CONTENT.contact.submittingLabel : ''}
+                    {status === "sending"
+                      ? CONTENT.contact.submittingLabel
+                      : ""}
                   </span>
                 </div>
               </form>
@@ -4101,7 +5006,7 @@ function ContactSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 /* =========================================================================
@@ -4120,8 +5025,12 @@ function Footer() {
                   className="socialBtn"
                   href={s.href}
                   aria-label={s.label}
-                  target={s.href.startsWith('mailto:') ? undefined : '_blank'}
-                  rel={s.href.startsWith('mailto:') ? undefined : 'noreferrer noopener'}
+                  target={s.href.startsWith("mailto:") ? undefined : "_blank"}
+                  rel={
+                    s.href.startsWith("mailto:")
+                      ? undefined
+                      : "noreferrer noopener"
+                  }
                 >
                   <Icon name={s.icon} size={17} />
                 </a>
@@ -4134,14 +5043,22 @@ function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
 
 /* =========================================================================
  * Case study detail view
  * ========================================================================= */
 
-function CaseSection({ id, label, statement, body, children, onPanel, headingId }) {
+function CaseSection({
+  id,
+  label,
+  statement,
+  body,
+  children,
+  onPanel,
+  headingId,
+}) {
   return (
     <div id={id}>
       <div className="caseSplit">
@@ -4151,7 +5068,10 @@ function CaseSection({ id, label, statement, body, children, onPanel, headingId 
           statement={statement}
           onPanel={onPanel}
         />
-        <div className={`prose${onPanel ? ' prose--onPanel' : ''} reveal`} style={{ '--reveal-delay': '120ms' }}>
+        <div
+          className={`prose${onPanel ? " prose--onPanel" : ""} reveal`}
+          style={{ "--reveal-delay": "120ms" }}
+        >
           {body.map((para, i) => (
             <p key={i}>{para}</p>
           ))}
@@ -4159,15 +5079,15 @@ function CaseSection({ id, label, statement, body, children, onPanel, headingId 
       </div>
       {children}
     </div>
-  )
+  );
 }
 
 function ProcessScroller({ cards, reduced }) {
-  const { ref, atStart, atEnd, scrollBy } = useScrollerControls()
+  const { ref, atStart, atEnd, scrollBy } = useScrollerControls();
   return (
     <>
       <div className="scrollerHead">
-        <span className="mono" style={{ color: 'var(--muted)' }}>
+        <span className="mono" style={{ color: "var(--muted)" }}>
           {`${cards.length} steps`}
         </span>
         <span className="arrowPair">
@@ -4194,7 +5114,7 @@ function ProcessScroller({ cards, reduced }) {
       <ul className="scroller" ref={ref}>
         {cards.map((c, i) => (
           <li className="processCard" key={c.title}>
-            <span className="idx mono">{String(i + 1).padStart(2, '0')}</span>
+            <span className="idx mono">{String(i + 1).padStart(2, "0")}</span>
             <h3>{c.title}</h3>
             <span className="meta mono">{c.meta}</span>
             <p>{c.body}</p>
@@ -4202,14 +5122,22 @@ function ProcessScroller({ cards, reduced }) {
         ))}
       </ul>
     </>
-  )
+  );
 }
 
-function CaseStudy({ project, prev, next, onCapture, onHome, flight, reduced }) {
-  const revealRef = useReveal()
-  const subjectRef = useRef(null)
-  const caseIds = useMemo(() => CONTENT.caseUi.rail.map((r) => r.id), [])
-  const activeId = useScrollSpy(caseIds, [project.slug])
+function CaseStudy({
+  project,
+  prev,
+  next,
+  onCapture,
+  onHome,
+  flight,
+  reduced,
+}) {
+  const revealRef = useReveal();
+  const subjectRef = useRef(null);
+  const caseIds = useMemo(() => CONTENT.caseUi.rail.map((r) => r.id), []);
+  const activeId = useScrollSpy(caseIds, [project.slug]);
 
   /**
    * Shared-element flight: the title the visitor clicked animates into the
@@ -4218,54 +5146,58 @@ function CaseStudy({ project, prev, next, onCapture, onHome, flight, reduced }) 
    * reduced motion or on a direct URL load with no source rect.
    */
   useLayoutEffect(() => {
-    const el = subjectRef.current
-    if (!el || !flight || reduced) return
+    const el = subjectRef.current;
+    if (!el || !flight || reduced) return;
 
     // Measure from a clean state. This effect can run more than once for the
     // same flight (StrictMode in development, dependency changes), and
     // measuring while a previous transform is still applied collapses the
     // delta to zero — the animation silently does nothing.
-    el.classList.remove('is-flying')
-    el.style.transition = 'none'
-    el.style.transform = 'none'
-    el.style.opacity = ''
+    el.classList.remove("is-flying");
+    el.style.transition = "none";
+    el.style.transform = "none";
+    el.style.opacity = "";
 
-    const to = el.getBoundingClientRect()
-    if (!to.height) return
+    const to = el.getBoundingClientRect();
+    if (!to.height) return;
 
-    const dx = flight.left - to.left
-    const dy = flight.top - to.top
-    const scale = Math.max(0.2, Math.min(1, flight.height / to.height))
-    el.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(${scale})`
-    el.style.opacity = '0.55'
+    const dx = flight.left - to.left;
+    const dy = flight.top - to.top;
+    const scale = Math.max(0.2, Math.min(1, flight.height / to.height));
+    el.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(${scale})`;
+    el.style.opacity = "0.55";
 
     const raf = requestAnimationFrame(() => {
-      el.classList.add('is-flying')
-      el.style.transform = 'none'
-      el.style.opacity = '1'
-    })
+      el.classList.add("is-flying");
+      el.style.transform = "none";
+      el.style.opacity = "1";
+    });
     const clear = window.setTimeout(() => {
-      el.classList.remove('is-flying')
-      el.style.transition = ''
-      el.style.transform = ''
-      el.style.opacity = ''
-    }, DUR.hero + 80)
+      el.classList.remove("is-flying");
+      el.style.transition = "";
+      el.style.transform = "";
+      el.style.opacity = "";
+    }, DUR.hero + 80);
 
     return () => {
-      cancelAnimationFrame(raf)
-      window.clearTimeout(clear)
-      el.classList.remove('is-flying')
-      el.style.transition = ''
-      el.style.transform = ''
-      el.style.opacity = ''
-    }
-  }, [flight, reduced, project.slug])
+      cancelAnimationFrame(raf);
+      window.clearTimeout(clear);
+      el.classList.remove("is-flying");
+      el.style.transition = "";
+      el.style.transform = "";
+      el.style.opacity = "";
+    };
+  }, [flight, reduced, project.slug]);
 
-  const m = CONTENT.caseUi.metaLabels
+  const m = CONTENT.caseUi.metaLabels;
 
   return (
     <>
-      <main id="main" ref={revealRef} className={reduced ? undefined : 'viewFade'}>
+      <main
+        id="main"
+        ref={revealRef}
+        className={reduced ? undefined : "viewFade"}
+      >
         <div className="container caseTop">
           <a className="backLink mono" href="#/" onClick={onHome}>
             <Icon name="arrowLeft" size={16} />
@@ -4276,8 +5208,7 @@ function CaseStudy({ project, prev, next, onCapture, onHome, flight, reduced }) 
             <div>
               <span className="caseEyebrow mono">{project.eyebrow}</span>
               <h1 className="caseTitle">
-                <span className="prefix">{CONTENT.caseUi.eyebrow}</span>
-                {' '}
+                <span className="prefix">{CONTENT.caseUi.eyebrow}</span>{" "}
                 <span className="subject" ref={subjectRef}>
                   {`${CONTENT.caseUi.titlePrefix} ${project.name}`}
                 </span>
@@ -4334,7 +5265,10 @@ function CaseStudy({ project, prev, next, onCapture, onHome, flight, reduced }) 
         </section>
 
         {/* Process */}
-        <section className="section section--tight" aria-labelledby="case-process-h">
+        <section
+          className="section section--tight"
+          aria-labelledby="case-process-h"
+        >
           <div className="container">
             <CaseSection
               id="process"
@@ -4343,7 +5277,10 @@ function CaseStudy({ project, prev, next, onCapture, onHome, flight, reduced }) 
               statement={project.process.heading}
               body={project.process.body}
             >
-              <ProcessScroller cards={project.process.cards} reduced={reduced} />
+              <ProcessScroller
+                cards={project.process.cards}
+                reduced={reduced}
+              />
             </CaseSection>
           </div>
         </section>
@@ -4359,7 +5296,10 @@ function CaseStudy({ project, prev, next, onCapture, onHome, flight, reduced }) 
                   statement={project.system.heading}
                   onPanel
                 />
-                <div className="prose prose--onPanel reveal" style={{ '--reveal-delay': '120ms' }}>
+                <div
+                  className="prose prose--onPanel reveal"
+                  style={{ "--reveal-delay": "120ms" }}
+                >
                   {project.system.body.map((para, i) => (
                     <p key={i}>{para}</p>
                   ))}
@@ -4377,7 +5317,10 @@ function CaseStudy({ project, prev, next, onCapture, onHome, flight, reduced }) 
         </section>
 
         {/* Extend */}
-        <section className="section section--tight" aria-labelledby="case-extend-h">
+        <section
+          className="section section--tight"
+          aria-labelledby="case-extend-h"
+        >
           <div className="container">
             <CaseSection
               id="extend"
@@ -4416,7 +5359,9 @@ function CaseStudy({ project, prev, next, onCapture, onHome, flight, reduced }) 
             <a
               className="caseNavBtn"
               href={`#/work/${prev.slug}`}
-              onClick={(e) => onCapture(e.currentTarget.querySelector('[data-nav-name]'))}
+              onClick={(e) =>
+                onCapture(e.currentTarget.querySelector("[data-nav-name]"))
+              }
             >
               <span className="dir mono">
                 <Icon name="arrowLeft" size={14} />
@@ -4429,7 +5374,9 @@ function CaseStudy({ project, prev, next, onCapture, onHome, flight, reduced }) 
             <a
               className="caseNavBtn caseNavBtn--next"
               href={`#/work/${next.slug}`}
-              onClick={(e) => onCapture(e.currentTarget.querySelector('[data-nav-name]'))}
+              onClick={(e) =>
+                onCapture(e.currentTarget.querySelector("[data-nav-name]"))
+              }
             >
               <span className="dir mono">
                 {CONTENT.caseUi.nextProject}
@@ -4452,7 +5399,146 @@ function CaseStudy({ project, prev, next, onCapture, onHome, flight, reduced }) 
         reduced={reduced}
       />
     </>
-  )
+  );
+}
+
+/* =========================================================================
+ * Journal post detail view
+ * ========================================================================= */
+
+function JournalPost({ post, prev, next, onHome, flight, reduced }) {
+  const revealRef = useReveal();
+  const titleRef = useRef(null);
+
+  // Same shared-element flight as the case studies: the row title the visitor
+  // clicked animates into this heading. Measured from a clean state so a
+  // re-run cannot collapse the delta to zero.
+  useLayoutEffect(() => {
+    const el = titleRef.current;
+    if (!el || !flight || reduced) return;
+    el.classList.remove("is-flying");
+    el.style.transition = "none";
+    el.style.transform = "none";
+    el.style.opacity = "";
+
+    const to = el.getBoundingClientRect();
+    if (!to.height) return;
+    const dx = flight.left - to.left;
+    const dy = flight.top - to.top;
+    const scale = Math.max(0.2, Math.min(1, flight.height / to.height));
+    el.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(${scale})`;
+    el.style.opacity = "0.55";
+
+    const raf = requestAnimationFrame(() => {
+      el.classList.add("is-flying");
+      el.style.transform = "none";
+      el.style.opacity = "1";
+    });
+    const clear = window.setTimeout(() => {
+      el.classList.remove("is-flying");
+      el.style.transition = "";
+      el.style.transform = "";
+      el.style.opacity = "";
+    }, DUR.hero + 80);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(clear);
+      el.classList.remove("is-flying");
+      el.style.transition = "";
+      el.style.transform = "";
+      el.style.opacity = "";
+    };
+  }, [flight, reduced, post.slug]);
+
+  return (
+    <main
+      id="main"
+      ref={revealRef}
+      className={reduced ? undefined : "viewFade"}
+    >
+      <article className="container postTop">
+        <a className="backLink mono" href="#/" onClick={onHome}>
+          <Icon name="arrowLeft" size={16} />
+          {CONTENT.journal.backLabel}
+        </a>
+
+        <header className="postHead">
+          <p className="postHeadMeta mono">
+            <span>{post.date}</span>
+            <span className="chips">
+              {post.tags.map((t) => (
+                <span className="chip mono" key={t}>
+                  {t}
+                </span>
+              ))}
+            </span>
+            {post.readMins ? <span>{`${post.readMins} min read`}</span> : null}
+          </p>
+          <h1 className="postHeadTitle">
+            <span className="subject" ref={titleRef}>
+              {post.title}
+            </span>
+          </h1>
+          <p className="postHeadDek">{post.dek}</p>
+        </header>
+
+        <div className="postHero reveal">
+          <Visual imageKey={post.imageKey} ratio={16 / 8} />
+        </div>
+
+        <div className="postBody">
+          {post.body.map((block, i) => {
+            if (block.h) {
+              return (
+                <h2 className="postH reveal" key={i}>
+                  {block.h}
+                </h2>
+              );
+            }
+            if (block.imageKey) {
+              return (
+                <figure className="postFig reveal" key={i}>
+                  <Visual imageKey={block.imageKey} ratio={16 / 9} />
+                  {block.caption ? (
+                    <figcaption className="mono">{block.caption}</figcaption>
+                  ) : null}
+                </figure>
+              );
+            }
+            return (
+              <p className="postP" key={i}>
+                {block.p}
+              </p>
+            );
+          })}
+        </div>
+      </article>
+
+      <div className="container">
+        <nav className="caseNav" aria-label="Other journal entries">
+          <a className="caseNavBtn" href={`#/journal/${prev.slug}`}>
+            <span className="dir mono">
+              <Icon name="arrowLeft" size={14} />
+              {CONTENT.journal.prevLabel}
+            </span>
+            <span className="name">{prev.title}</span>
+          </a>
+          <a
+            className="caseNavBtn caseNavBtn--next"
+            href={`#/journal/${next.slug}`}
+          >
+            <span className="dir mono">
+              {CONTENT.journal.nextLabel}
+              <Icon name="arrowRight" size={14} />
+            </span>
+            <span className="name">{next.title}</span>
+          </a>
+        </nav>
+      </div>
+
+      <Footer />
+    </main>
+  );
 }
 
 /* =========================================================================
@@ -4460,12 +5546,16 @@ function CaseStudy({ project, prev, next, onCapture, onHome, flight, reduced }) 
  * ========================================================================= */
 
 function HomeView({ onCapture, reduced }) {
-  const revealRef = useReveal()
-  const homeIds = useMemo(() => CONTENT.footer.rail.map((r) => r.id), [])
-  const activeId = useScrollSpy(homeIds, [])
+  const revealRef = useReveal();
+  const homeIds = useMemo(() => CONTENT.footer.rail.map((r) => r.id), []);
+  const activeId = useScrollSpy(homeIds, []);
 
-  const spotlight = CONTENT.projects.find((p) => p.slug === CONTENT.work.spotlightSlug)
-  const secondary = CONTENT.projects.filter((p) => p.slug !== CONTENT.work.spotlightSlug)
+  const spotlight = CONTENT.projects.find(
+    (p) => p.slug === CONTENT.work.spotlightSlug,
+  );
+  const secondary = CONTENT.projects.filter(
+    (p) => p.slug !== CONTENT.work.spotlightSlug,
+  );
 
   return (
     <>
@@ -4481,7 +5571,7 @@ function HomeView({ onCapture, reduced }) {
         <BitsSection reduced={reduced} />
         <AboutSection />
         <Testimonials />
-        <JournalSection />
+        <JournalSection onCapture={onCapture} />
         <ContactSection />
         <Footer />
       </main>
@@ -4492,7 +5582,7 @@ function HomeView({ onCapture, reduced }) {
         reduced={reduced}
       />
     </>
-  )
+  );
 }
 
 /* =========================================================================
@@ -4500,22 +5590,33 @@ function HomeView({ onCapture, reduced }) {
  * ========================================================================= */
 
 export default function App() {
-  useStyleSheet()
-  const reduced = usePrefersReducedMotion()
-  const { theme, toggle } = useTheme()
-  const route = useHashRoute()
-  const [flight, setFlight] = useState(null)
-  const [booking, setBooking] = useState(false)
+  useStyleSheet();
+  const reduced = usePrefersReducedMotion();
+  const { theme, toggle } = useTheme();
+  const route = useHashRoute();
+  const [flight, setFlight] = useState(null);
+  const [booking, setBooking] = useState(false);
 
-  const projects = CONTENT.projects
-  const index = route.slug ? projects.findIndex((p) => p.slug === route.slug) : -1
-  const project = index >= 0 ? projects[index] : null
-  const isCase = route.view === 'case' && project
+  const projects = CONTENT.projects;
+  const index =
+    route.view === "case" && route.slug
+      ? projects.findIndex((p) => p.slug === route.slug)
+      : -1;
+  const project = index >= 0 ? projects[index] : null;
+  const isCase = route.view === "case" && project;
+
+  const posts = CONTENT.journal.posts;
+  const postIndex =
+    route.view === "post" && route.slug
+      ? posts.findIndex((x) => x.slug === route.slug)
+      : -1;
+  const post = postIndex >= 0 ? posts[postIndex] : null;
+  const isPost = route.view === "post" && post;
 
   // Reset scroll on every view change, before paint, so nothing jumps.
   useLayoutEffect(() => {
-    window.scrollTo(0, 0)
-  }, [route.view, route.slug])
+    window.scrollTo(0, 0);
+  }, [route.view, route.slug]);
 
   /**
    * Navigation itself is a plain anchor href, so keyboard, middle-click and
@@ -4525,42 +5626,45 @@ export default function App() {
   const captureFlight = useCallback(
     (sourceEl) => {
       if (!sourceEl || reduced) {
-        setFlight(null)
-        return
+        setFlight(null);
+        return;
       }
-      const r = sourceEl.getBoundingClientRect()
+      const r = sourceEl.getBoundingClientRect();
       // Only fly from a source that was actually on screen. Anything else
       // would swoop across an implausible distance; those fall back to the
       // plain crossfade, which is the better read anyway.
-      const vh = window.innerHeight || 0
+      const vh = window.innerHeight || 0;
       if (!r.height || r.bottom < 0 || r.top > vh) {
-        setFlight(null)
-        return
+        setFlight(null);
+        return;
       }
-      setFlight({ left: r.left, top: r.top, width: r.width, height: r.height })
+      setFlight({ left: r.left, top: r.top, width: r.width, height: r.height });
     },
     [reduced],
-  )
+  );
 
-  const closeBooking = useCallback(() => setBooking(false), [])
+  const closeBooking = useCallback(() => setBooking(false), []);
 
   const goHome = useCallback((e) => {
-    if (e) e.preventDefault()
-    setFlight(null)
-    window.location.hash = '#/'
-  }, [])
+    if (e) e.preventDefault();
+    setFlight(null);
+    window.location.hash = "#/";
+  }, []);
 
   // An unknown slug is not a blank screen — send it home.
   useEffect(() => {
-    if (route.view === 'case' && !project) window.location.hash = '#/'
-  }, [route.view, project])
+    if (route.view === "case" && !project) window.location.hash = "#/";
+    if (route.view === "post" && !post) window.location.hash = "#/";
+  }, [route.view, project, post]);
 
   const title = isCase
     ? `${project.name} — ${CONTENT.meta.name}`
-    : `${CONTENT.meta.name} — ${CONTENT.meta.role}`
+    : isPost
+      ? `${post.title} — ${CONTENT.meta.name}`
+      : `${CONTENT.meta.name} — ${CONTENT.meta.role}`;
   useEffect(() => {
-    document.title = title
-  }, [title])
+    document.title = title;
+  }, [title]);
 
   return (
     <>
@@ -4574,13 +5678,19 @@ export default function App() {
         onBook={() => setBooking(true)}
       />
       {booking ? (
-        <BookingDialog
-          onClose={closeBooking}
-          theme={theme}
+        <BookingDialog onClose={closeBooking} theme={theme} reduced={reduced} />
+      ) : null}
+      {isPost ? (
+        <JournalPost
+          key={post.slug}
+          post={post}
+          prev={posts[(postIndex - 1 + posts.length) % posts.length]}
+          next={posts[(postIndex + 1) % posts.length]}
+          onHome={goHome}
+          flight={flight}
           reduced={reduced}
         />
-      ) : null}
-      {isCase ? (
+      ) : isCase ? (
         <CaseStudy
           key={project.slug}
           project={project}
@@ -4595,12 +5705,69 @@ export default function App() {
         <HomeView onCapture={captureFlight} reduced={reduced} />
       )}
     </>
-  )
+  );
 }
 
 /* =========================================================================
  * Utility + late-cascade styles
  * ========================================================================= */
+
+const STYLES_POST = `
+/* ========================= JOURNAL POST VIEW ========================= */
+.postTop{padding-top:clamp(104px,16vh,168px);display:block}
+.postHead{max-width:22ch}
+.postHeadMeta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3);
+  color:var(--muted);margin-bottom:var(--s5);
+}
+.postHeadTitle{
+  font-size:clamp(2rem,4.6vw,3.5rem);
+  font-weight:700;letter-spacing:-.035em;line-height:1.04;
+  color:var(--ink);max-width:26ch;
+}
+.postHeadTitle .subject{display:block;transform-origin:left top}
+.postHeadDek{
+  margin-top:var(--s5);
+  color:var(--ink-2);font-size:1.0625rem;line-height:1.6;max-width:60ch;
+}
+.postHead{max-width:none}
+.postHero{
+  margin-top:clamp(40px,6vh,72px);
+  border-radius:var(--r-lg);overflow:hidden;
+  border:1px solid var(--hairline);
+}
+/* A single measured column: long-form reading, not a layout exercise. */
+.postBody{
+  margin-top:clamp(40px,6vh,72px);
+  max-width:68ch;
+}
+.postP{
+  color:var(--ink-2);
+  font-size:1.0625rem;line-height:1.72;
+}
+.postP + .postP{margin-top:var(--s5)}
+.postH{
+  margin-top:clamp(40px,5vh,64px);
+  margin-bottom:var(--s4);
+  font-size:clamp(1.25rem,2.2vw,1.625rem);
+  font-weight:600;letter-spacing:-.025em;line-height:1.2;
+  color:var(--ink);
+}
+.postFig{
+  margin:clamp(32px,4.5vh,56px) 0;
+}
+.postFig > .vis{
+  border-radius:var(--r-md);overflow:hidden;
+  border:1px solid var(--hairline);
+}
+.postFig figcaption{
+  margin-top:var(--s3);
+  color:var(--muted);
+}
+@media (max-width:900px){
+  .postBody{max-width:none}
+}
+`;
 
 const STYLES_UTIL = `
 .sr-only{
@@ -4651,4 +5818,4 @@ const STYLES_UTIL = `
 @media (prefers-reduced-motion:reduce){
   .quoteSlide{transition:none}
 }
-`
+`;
