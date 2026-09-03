@@ -24,7 +24,8 @@ change what the site says.
 | Name, role, monogram | `CONTENT.meta` |
 | Hero bio | `CONTENT.hero.bio` |
 | The cycling roles in the headline | `CONTENT.hero.roles` |
-| Logo strip companies | `CONTENT.logos.items` |
+| Logo strip companies, and each one's brand SVG | `CONTENT.logos.items` |
+| Spotlight card title and brand lockup | `CONTENT.projects[0].spotlightTitle`, `.spotlightLogo` |
 | How many logos show at once, the wait between swaps, and the cross-fade length | `CONTENT.logos.perPage`, `CONTENT.logos.intervalMs`, `CONTENT.logos.fadeMs` |
 | Booking dialog copy and the calendar URL | `CONTENT.booking` |
 | Which project is the spotlight | `CONTENT.work.spotlightSlug` |
@@ -33,7 +34,7 @@ change what the site says.
 | Design bits image aspect (all tiles share it) | `CONTENT.bits.mediaRatio` |
 | About copy and heading | `CONTENT.about` |
 | Testimonials, including each `avatar` path | `CONTENT.testimonials.quotes` |
-| Journal posts | `CONTENT.journal.posts` |
+| Journal posts, and the body of each post | `CONTENT.journal.posts` |
 | Contact copy, labels, validation messages | `CONTENT.contact` |
 | Make the form actually send (see below) | `CONTENT.contact.endpoint` |
 | Footer rail, socials, copyright | `CONTENT.footer` |
@@ -73,6 +74,37 @@ Two things that bite people:
 Plates: `lattice`, `mesh`, `grid`, `strata`, `portrait`, `orbit`, `panels`,
 `columns`, `weave`, `ramp`. Tones: `dark`, `light`, `accent`. `seed` is any
 integer and changes the composition deterministically.
+
+### Journal posts
+
+Each post has its own view at `#/journal/<slug>`, and the whole row on the
+home page is the link. `body` is a list of blocks:
+
+```js
+body: [
+  { p: 'A paragraph.' },
+  { h: 'A section heading' },
+  { imageKey: 'journal.system.fig', caption: 'Optional caption.' },
+]
+```
+
+Add, reorder or delete blocks freely — the layout follows whatever is there.
+Prev/next navigation wraps the list, so adding a post needs no other change.
+
+The prose in the three posts is drawn from real work described elsewhere in
+`CONTENT`, but treat it as scaffolding and rewrite it in your own voice.
+
+### Brand logos
+
+Logos in `public/img/logos/` are painted as CSS masks over `currentColor`,
+so one black source file renders near-black on the light canvas and
+off-white in dark mode. Each entry carries the file's `aspect` (its viewBox
+ratio, which sets width from height) and an optional `scale` to even out
+optical weight — sizing purely by height makes a wide wordmark read much
+heavier than a compact one.
+
+A logo with colour that must survive (the gh+ lockup) is used as a real
+`<img>` instead, since a mask discards the source's own fills.
 
 ### Testimonial avatars
 
