@@ -8,11 +8,12 @@ Write the path WITHOUT a leading slash:
 Files in this folder are committed to git and copied into dist/ verbatim.
 Filenames are case-sensitive once deployed, even though macOS is not.
 
-Testimonial avatars — save each person's photo under their own name:
+Testimonial avatars live here, named per person:
 
     img/testimonial-emmi-kuusikko.jpg
     img/testimonial-lea-schonfelder.jpg
     img/testimonial-alex-segura.jpg
 
-Square crops look best. Until a file exists the avatar shows the person's
-initials rather than a broken image.
+Square crops, downscaled to 176px (4x the 44px render size, so it stays
+crisp on retina without shipping an 800px file). Until a file exists the
+avatar falls back to the person's initials rather than a broken image.
