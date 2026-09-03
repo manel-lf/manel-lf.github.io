@@ -77,7 +77,7 @@ export const CONTENT = {
       'Product Designer',
       'UX/UI Designer',
       'AI Prototyper',
-      'Mixed Methods Researcher',
+      'User Researcher',
       'System Builder',
       'Engineer',
       'University Lecturer',
@@ -91,7 +91,8 @@ export const CONTENT = {
     // Shown `perPage` at a time, cross-fading every `intervalMs`.
     // Under reduced motion the rotation is dropped and all of them render at once.
     perPage: 4,
-    intervalMs: 3500,
+    // 3x the original 3500ms. This is the only number to change the pace.
+    intervalMs: 10500,
     // `mark` maps to a hand-drawn SVG wordmark below. Keep the key if you swap the name.
     items: [
       { name: 'GameHouse', mark: 'gamehouse' },
@@ -119,6 +120,8 @@ export const CONTENT = {
     nextLabel: 'Next bits',
     // One label per row of four items below.
     rowLabels: ['Prototypes and tooling', 'Systems and analysis'],
+    // Every tile uses this ratio, so the cards line up as an even grid.
+    mediaRatio: 4 / 3,
     items: [
       {
         id: 'bit-claude-figma',
@@ -126,7 +129,6 @@ export const CONTENT = {
         caption:
           'A working prototype in an afternoon — Claude Code driving the build, the Figma MCP keeping it on the design system.',
         imageKey: 'bits.claudeFigma',
-        span: 'tall',
       },
       {
         id: 'bit-energy',
@@ -134,7 +136,6 @@ export const CONTENT = {
         caption:
           'Jesterday’s energy economy modelled in a spreadsheet and tuned against session length before a single screen was drawn.',
         imageKey: 'bits.energy',
-        span: 'wide',
       },
       {
         id: 'bit-teaching',
@@ -142,7 +143,6 @@ export const CONTENT = {
         caption:
           'Research-methods material for a UX course inside an AI and Data Science degree at La Salle URL.',
         imageKey: 'bits.teaching',
-        span: 'short',
       },
       {
         id: 'bit-instant',
@@ -150,7 +150,6 @@ export const CONTENT = {
         caption:
           'Five entry-point variants for instant play, narrowed to one by putting a real build in front of players.',
         imageKey: 'bits.instant',
-        span: 'short',
       },
       {
         id: 'bit-tokens',
@@ -158,7 +157,6 @@ export const CONTENT = {
         caption:
           'Design tokens as the contract between Figma and Unity, so a colour change is one commit rather than a meeting.',
         imageKey: 'bits.tokens',
-        span: 'wide',
       },
       {
         id: 'bit-typeramp',
@@ -166,7 +164,6 @@ export const CONTENT = {
         caption:
           'One type ramp that has to stay legible from a 7-inch cluster to a 15-inch centre display, at arm’s length, in sunlight.',
         imageKey: 'bits.typeRamp',
-        span: 'tall',
       },
       {
         id: 'bit-analytics',
@@ -174,7 +171,6 @@ export const CONTENT = {
         caption:
           'The funnel that told me a feature I had already shipped was solving the wrong half of the problem.',
         imageKey: 'bits.analytics',
-        span: 'short',
       },
       {
         id: 'bit-componentapi',
@@ -182,7 +178,6 @@ export const CONTENT = {
         caption:
           'Sketching the component API before the component — props first, pixels second.',
         imageKey: 'bits.componentApi',
-        span: 'short',
       },
     ],
   },
@@ -196,10 +191,7 @@ export const CONTENT = {
       'Today I own a consumer subscription app end to end at GameHouse, and I teach UX inside an AI and Data Science degree at La Salle URL. Teaching keeps the fundamentals sharp; the engineering background means I can build the prototype instead of describing it.',
     ],
     imageKey: 'about.portrait',
-    buttons: [
-      { label: 'LinkedIn', href: LINKS.linkedin, icon: 'linkedin' },
-      { label: 'Behance', href: LINKS.behance, icon: 'behance' },
-    ],
+    buttons: [{ label: 'LinkedIn', href: LINKS.linkedin, icon: 'linkedin' }],
   },
 
   testimonials: {
@@ -217,6 +209,7 @@ export const CONTENT = {
           'Manel combines strong design skills with genuine product thinking. He consistently keeps the user at the center, runs usability tests, and uses feedback to improve. He embraces feedback while confidently challenging perspectives with thoughtful reasoning and a clear point of view. He has a strong sense of product vision and translates it into coherent, consistent experiences.',
         name: 'Emmi Kuusikko',
         role: 'Head of Product',
+        avatar: 'img/testimonial-emmi-kuusikko.jpg',
       },
       {
         id: 'q-lea',
@@ -224,6 +217,7 @@ export const CONTENT = {
           'Manel consistently acted above his level as a Senior UI/UX Designer. He presented ideas in front of senior management and defended them with confidence. He combines UI/UX craft excellence with strong prototyping and technical skills, paired with sharp abstraction and communication skills, which is a rare mix. Whoever gets to work with Manel will be very lucky.',
         name: 'Lea Schönfelder',
         role: 'UX Creative Director',
+        avatar: 'img/testimonial-lea-schonfelder.jpg',
       },
       {
         id: 'q-alex',
@@ -231,6 +225,7 @@ export const CONTENT = {
           'Manel consistently delivers clean and visually appealing designs. He’s great at bringing Product and Development together, making sure everyone is aligned and ideas move smoothly from concept to delivery. Even with tight deadlines, he stays collaborative, open to new ideas, and focused on finding practical solutions.',
         name: 'Alex Segura',
         role: 'Frontend Developer',
+        avatar: 'img/testimonial-alex-segura.jpg',
       },
     ],
   },
@@ -1344,7 +1339,7 @@ body{
 /* ---- logo strip ---- */
 .logoStrip{
   display:flex;flex-wrap:wrap;align-items:center;
-  gap:clamp(28px,5vw,64px);
+  gap:clamp(20px,4vw,48px);
   padding-block:var(--s7);
   border-top:1px solid var(--hairline);
   border-bottom:1px solid var(--hairline);
@@ -1356,6 +1351,10 @@ body{
 }
 .logoRotator .logoPage{
   grid-area:1 / 1;
+  /* A page always holds exactly perPage marks, so spreading them reads as an
+     even row. The reduced-motion strip wraps all eight and stays left-aligned,
+     where space-between would strand a partial last row across the width. */
+  justify-content:space-between;
   border:0;
   opacity:0;
   pointer-events:none;
@@ -1502,7 +1501,9 @@ const STYLES_HOME = `
 .bitsRow{
   min-width:0;
   display:flex;
-  align-items:flex-start;
+  /* stretch, so every card in a row ends at the same baseline regardless of
+     how long its caption runs */
+  align-items:stretch;
   gap:var(--s5);
   overflow-x:auto;
   scroll-snap-type:x mandatory;
@@ -1551,7 +1552,11 @@ const STYLES_HOME = `
 }
 .bitMedia > *{transition:transform ${DUR.reveal}ms var(--ease-out);will-change:transform}
 .bitTile:hover .bitMedia > *{transform:scale(1.04)}
-.bitBody{padding:0 var(--s4) var(--s4);display:flex;flex-direction:column;gap:var(--s2)}
+.bitBody{
+  padding:0 var(--s4) var(--s4);
+  display:flex;flex-direction:column;gap:var(--s2);
+  flex:1;
+}
 .bitBody .kicker{color:var(--accent)}
 .bitBody p{color:var(--ink-2);font-size:.875rem;line-height:1.55}
 
@@ -1613,7 +1618,20 @@ const STYLES_HOME = `
 }
 .quoteAttr{
   margin-top:var(--s5);
-  display:flex;flex-direction:column;gap:2px;
+  display:flex;align-items:center;gap:var(--s3);
+}
+.quoteWho{display:flex;flex-direction:column;gap:2px;min-width:0}
+.avatar{
+  width:44px;height:44px;flex:none;
+  border-radius:50%;
+  object-fit:cover;
+  background:var(--surface-2);
+  border:1px solid var(--hairline-strong);
+}
+.avatar--initials{
+  display:grid;place-items:center;
+  font-size:.8125rem;font-weight:600;letter-spacing:.02em;
+  color:var(--muted);
 }
 .quoteName{font-weight:600;letter-spacing:-.015em;color:var(--ink)}
 .quoteRole{color:var(--muted)}
@@ -3441,8 +3459,6 @@ function WorkSection({ projects, spotlight, onCapture, reduced }) {
  * HOME — design bits
  * ========================================================================= */
 
-const BIT_RATIO = { tall: 3 / 4, wide: 16 / 9, short: 4 / 3 }
-
 function BitsRow({ items, reduced, rowIndex }) {
   const { ref, atStart, atEnd, scrollBy } = useScrollerControls()
   return (
@@ -3480,7 +3496,7 @@ function BitsRow({ items, reduced, rowIndex }) {
             style={{ '--reveal-delay': `${i * 60}ms` }}
           >
             <div className="bitMedia">
-              <Visual imageKey={bit.imageKey} ratio={BIT_RATIO[bit.span] || 4 / 3} />
+              <Visual imageKey={bit.imageKey} ratio={CONTENT.bits.mediaRatio} />
             </div>
             <div className="bitBody">
               <span className="mono kicker">{bit.kicker}</span>
@@ -3569,6 +3585,43 @@ function AboutSection() {
  * HOME — testimonials
  * ========================================================================= */
 
+/**
+ * Circular avatar for a testimonial.
+ *
+ * Falls back to the person's initials if no file is set, or if the file is
+ * missing once deployed — so a dropped or misnamed image degrades to
+ * something deliberate rather than a broken-image icon.
+ *
+ * alt is empty on purpose: the name sits right next to it, and announcing
+ * it twice is noise.
+ */
+function Avatar({ src, name }) {
+  const [failed, setFailed] = useState(false)
+  const initials = name
+    .split(/\s+/)
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join('')
+
+  if (!src || failed) {
+    return (
+      <span className="avatar avatar--initials" aria-hidden="true">
+        {initials}
+      </span>
+    )
+  }
+  return (
+    <img
+      className="avatar"
+      src={resolveSrc(src)}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      onError={() => setFailed(true)}
+    />
+  )
+}
+
 function Testimonials() {
   const quotes = CONTENT.testimonials.quotes
   const [i, setI] = useState(0)
@@ -3642,8 +3695,11 @@ function Testimonials() {
                 >
                   <blockquote className="quoteBody">{q.quote}</blockquote>
                   <figcaption className="quoteAttr">
-                    <span className="quoteName">{q.name}</span>
-                    <span className="quoteRole mono">{q.role}</span>
+                    <Avatar src={q.avatar} name={q.name} />
+                    <span className="quoteWho">
+                      <span className="quoteName">{q.name}</span>
+                      <span className="quoteRole mono">{q.role}</span>
+                    </span>
                   </figcaption>
                 </figure>
               ))}

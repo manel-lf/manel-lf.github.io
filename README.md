@@ -30,8 +30,9 @@ change what the site says.
 | Which project is the spotlight | `CONTENT.work.spotlightSlug` |
 | A project, or a whole case study | `CONTENT.projects[n]` |
 | "Design bits" tiles | `CONTENT.bits.items` |
+| Design bits image aspect (all tiles share it) | `CONTENT.bits.mediaRatio` |
 | About copy and heading | `CONTENT.about` |
-| Testimonials | `CONTENT.testimonials.quotes` |
+| Testimonials, including each `avatar` path | `CONTENT.testimonials.quotes` |
 | Journal posts | `CONTENT.journal.posts` |
 | Contact copy, labels, validation messages | `CONTENT.contact` |
 | Make the form actually send (see below) | `CONTENT.contact.endpoint` |
@@ -72,6 +73,21 @@ Two things that bite people:
 Plates: `lattice`, `mesh`, `grid`, `strata`, `portrait`, `orbit`, `panels`,
 `columns`, `weave`, `ramp`. Tones: `dark`, `light`, `accent`. `seed` is any
 integer and changes the composition deterministically.
+
+### Testimonial avatars
+
+Each quote takes an `avatar` path resolved the same way as any other image.
+Save each person's photo into `public/img/` under their own filename:
+
+```
+img/testimonial-emmi-kuusikko.jpg
+img/testimonial-lea-schonfelder.jpg
+img/testimonial-alex-segura.jpg
+```
+
+Square crops look best — they are rendered as a 44px circle. Until a file
+exists, or if one is ever missing after deploy, the avatar falls back to the
+person's initials rather than showing a broken image.
 
 ### Adding a project
 
