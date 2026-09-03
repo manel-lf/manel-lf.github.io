@@ -293,58 +293,209 @@ export const CONTENT = {
     backLabel: "Back to journal",
     prevLabel: "Previous",
     nextLabel: "Next",
+    referencesLabel: "References",
     /**
      * Each post gets its own view at #/journal/<slug>.
      *
-     * `body` is a list of blocks: { h } is a heading, { p } a paragraph,
-     * { imageKey, caption } a figure. Add, reorder or delete blocks freely —
-     * the layout follows whatever is here.
+     * `body` is a list of blocks:
+     *   { h }                     a heading
+     *   { p }                     a paragraph
+     *   { imageKey, caption }     a figure — a real screenshot if the IMAGES
+     *                             entry has a src, otherwise a plate
+     *   { list: [...] }           a bullet list
+     *   { stats: [{value,label}] } a stat row, same treatment as the spotlight's
+     *
+     * `references` is an optional numbered source list rendered at the foot
+     * of the article. Cite a source inline as "[1]" inside a paragraph string
+     * and give it the matching entry — { label, href } — in `references`.
      *
      * The prose below is drawn from real work described elsewhere in this
      * file, but it is scaffolding: rewrite it in your own voice.
      */
     posts: [
       {
-        id: "post-prototyping",
-        slug: "prototyping-in-code",
-        date: "July 2026",
-        tags: ["Prototyping", "AI Tooling"],
-        title: "Prototyping in code with Claude Code and the Figma MCP",
-        dek: "How a functional prototype became cheaper than a clickable mock, and what that changes about when you commit engineering time.",
-        imageKey: "journal.prototyping",
+        id: "post-grounding-ideas",
+        slug: "grounding-ideas-fast",
+        date: "September 2026",
+        tags: ["Process", "Prototyping"],
+        title: "Grounding ideas fast is changing how I design",
+        dek: "The distance between a question and an answer used to be a chain of documents. Collapsing it changed what design review is even about.",
+        imageKey: "journal.groundingIdeas",
         readMins: 6,
         body: [
           {
-            p: "For most of my career the honest answer to “can we try it?” was a clickable prototype: a set of frames wired together, convincing from the front and hollow behind. It answers questions about layout and sequence. It answers almost nothing about latency, empty states, or what happens when the network gives up halfway through.",
+            p: "For most of my career, the distance between “what if we tried this” and an actual answer was measured in days. Wireframe, then flow, then mockup, then a slow march toward something you could put in front of a person. Somewhere in that chain the original question quietly got answered by the effort of building the deck meant to answer it, rather than by anything resembling evidence.",
           },
-          { h: "Why a mock stopped being enough" },
+          { h: "The old shape of the process" },
           {
-            p: "The work that changed my mind was the instant-play entry flow at GameHouse+. The whole proposition was that a new user meets content already running rather than a catalogue to browse. That claim lives or dies on timing — how long the first frame takes, what fills the gap, what happens when it fails. None of it is testable in a prototype that fakes the wait.",
-          },
-          {
-            p: "So I built it instead. Not production code, but a real front end talking to real endpoints, with the loading and failure paths wired up honestly. It took an afternoon rather than the week I had budgeted, because the model did the typing and I did the deciding.",
+            p: "The linear version goes: ideation, wireframes, flows, low-fidelity mockups, prototyping, and eventually a Figma prototype that is convincing from the front and hollow behind. Each step is a translation of the step before it, and every translation is a place to quietly lose the thing that mattered about the original idea. By the time a stakeholder sees anything, you are three interpretations removed from the question you actually wanted answered.",
           },
           {
-            imageKey: "journal.prototyping.fig",
+            imageKey: "journal.groundingIdeas.before",
             caption:
-              "The entry flow as a working build: real latency, real empty state, real failure path.",
+              "The old shape: a chain of translations between the question and an answer.",
           },
-          { h: "What the setup actually is" },
+          { h: "The shape it has now" },
           {
-            p: "Two pieces. Claude Code writes and runs the thing, so I am reviewing behaviour rather than describing it. The Figma MCP gives it access to the design system, so the components it reaches for are the ones that already exist — the same tokens, the same spacing, the same states. That second part is what stops the output being a generic bootstrap page wearing my colours.",
-          },
-          {
-            p: "The loop is short enough to be worth using on a question I am only mildly curious about, which is the real shift. When a prototype costs an afternoon, you build the version you are unsure about instead of arguing over it.",
-          },
-          { h: "Where it does not help" },
-          {
-            p: "It is poor at deciding what to build. Given a vague brief it produces something plausible and confident, which is worse than nothing because it looks like an answer. The framing, the research, the call about what matters — that work did not get cheaper, and leaning on the tool for it produces expensive noise.",
+            p: "The version I work in now is a loop, not a chain: idea, prompt, working thing, evaluate, refine — cycling directly on the artifact instead of on a document describing the artifact. Grounding an idea fast means exactly this: the thing you are reacting to is the thing, not a description of the thing standing in for it until engineering time gets allocated.",
           },
           {
-            p: "It is also not a substitute for engineering. What I hand over is evidence about a direction, not an implementation. The value is that the spec arrives already knowing which questions engineering would have asked, because the prototype hit them first.",
+            imageKey: "journal.groundingIdeas.after",
+            caption:
+              "The current shape: idea and evidence sit close enough to argue with each other directly.",
           },
           {
-            p: "The net effect is that direction gets tested before engineering time is committed to it. That is the entire point, and it is not really about AI — it is about the cost of finding out being low enough that you find out early.",
+            p: "The instinct to keep nudging a prompt to fix a bad result is usually wrong. Each round adds context, burns more of it on corrections than on the actual problem, and the output gets messier rather than closer. Once I have learned something real from a miss, I am almost always better off folding that into a clean rewrite than patching the one I have.",
+          },
+          { h: "What actually changed in the room" },
+          {
+            p: "The practical shift is not speed for its own sake, it is where judgment gets spent. I used to defend a direction that had not been tested yet — taste standing in for evidence, because evidence was a week away. Now I bring the thing, and the room reacts to the thing. Design review has moved from arguing about opinions to reading a result that already exists.",
+          },
+          {
+            p: "That is a real risk as well as a real gain. A loop this tight makes it easy to mistake motion for progress — a prototype that runs is not the same as a decision that is right [1]. The discipline that matters most now is investing real time in defining the idea clearly before generating anything at all, precisely because generating something is no longer the bottleneck.",
+          },
+          {
+            stats: [
+              { value: "Same day", label: "Idea to a testable build" },
+              { value: "Fewer", label: "Slide decks defending a hunch" },
+              { value: "Earlier", label: "Point where reality gets a vote" },
+            ],
+          },
+          { h: "Where I still do it the old way" },
+          {
+            p: "Framing, research, and the call about what is actually worth building — that work did not get any cheaper, and I do not let it. A tighter loop compresses the distance between a defined idea and a working answer. It does not decide which idea deserves the trip. Confusing the two is the fastest way to build the wrong thing extremely quickly, and a fast wrong thing is still wrong [2].",
+          },
+          {
+            p: "None of this is really about the tools. It is about the cost of finding out being low enough that you find out early, on the actual artifact, before anyone has to defend a position they have not tested yet.",
+          },
+        ],
+        references: [
+          {
+            label: "A designer's framework for better AI prompts — Figma Blog",
+            href: "https://www.figma.com/blog/designer-framework-for-better-ai-prompts/",
+          },
+          {
+            label: "Claude Code 101",
+            href: "https://www.youtube.com/watch?v=zxMjOqM7DFs",
+          },
+        ],
+      },
+      {
+        id: "post-toolkit",
+        slug: "claude-code-toolkit",
+        date: "August 2026",
+        tags: ["Prototyping", "AI Tooling"],
+        title: "My toolkit for prototyping with Claude Code",
+        dek: "The setup behind a working prototype: one terminal, a small stack of MCPs and skills, and a prompt framework I built to stop rewriting the same brief from scratch.",
+        imageKey: "journal.toolkit",
+        readMins: 8,
+        body: [
+          {
+            p: "A working prototype is closer to a conversation than a construction project now. The toolkit behind it is deliberately small — each piece has exactly one job, and none of them are load-bearing enough that losing one would stop me working.",
+          },
+          { h: "Getting Claude Code running" },
+          {
+            p: "It runs in a terminal. I use iTerm2 [1] because it is what most write-ups assume and it is a genuine improvement over the default, but the built-in Terminal app works fine too. Install is one line, then start a session:",
+          },
+          {
+            list: [
+              "curl -fsSL https://claude.ai/install.sh | bash — installs the CLI [2]",
+              "claude — starts an interactive session",
+              'claude "your question" — a one-off answer, no session',
+              "/help — lists commands inside a session",
+              "/exit — leaves the session",
+              "Ctrl-C twice — terminates it from outside",
+            ],
+          },
+          {
+            p: "First run opens a browser tab to authorise the CLI against your account. After that, the terminal shows a prompt and it is a conversation from there. Claude Code also takes a flag, --dangerously-skip-permissions, that stops it asking before every file edit or command — it is documented behaviour, not a trick, but it is also me removing my own safety net, so I only reach for it inside a directory I would not mind losing.",
+          },
+          { h: "The four things that turn it into a design tool" },
+          {
+            p: "None of this is Claude Code out of the box. What makes it usable for interface work specifically is a short list of MCPs and skills layered on top:",
+          },
+          {
+            list: [
+              "Stitch MCP — generates and composes actual screens from a prompt, so layout is not hand-rolled from a blank div [3]",
+              "Nanobanana MCP — generates and edits the imagery, so nothing ships as a grey box or a stock photo standing in for the real thing",
+              "UI UX Pro Max skill — a second pass on spacing, hierarchy and component consistency once the first draft exists",
+              "Emil Kowalski skill — production-grade motion: correct easing, sane durations, respects prefers-reduced-motion, installed with npx skills add emilkowalski/skill",
+            ],
+          },
+          {
+            imageKey: "journal.toolkit.fig",
+            caption:
+              "Four narrow tools, layered — none of them load-bearing on its own.",
+          },
+          { h: "TC-EBC: the prompt framework I actually use" },
+          {
+            p: "An unstructured prompt produces an unstructured back-and-forth — you correct one thing, the model overcorrects two others, and three rounds in you are further from the brief than when you started. A well-structured prompt is worth more than a well-structured revision, almost every time [4]. So I standardised the shape of the prompt itself, into five sections I fill in every time:",
+          },
+          {
+            list: [
+              "Task — what needs to be built, in one line",
+              "Context — why it matters and who it is for",
+              "Elements — the concrete pieces: screens, components, copy, assets",
+              "Behavior — how it should feel, interact, and degrade when something is missing",
+              "Constraints — the hard rules: which tools to use, what to avoid, the deployment target",
+            ],
+          },
+          {
+            p: "I built a small Claude project that writes these for me — feed it a one-line idea, it asks whatever needs clarifying before committing to anything [5], then hands back a ready-to-paste TC-EBC prompt. It is the same discipline the framework is built on, applied to writing the framework's own inputs: don't guess when a clarifying question would change the output.",
+          },
+          {
+            imageKey: "journal.toolkit.tool",
+            // Matches the screenshot's own crop (970x700) so the real
+            // interface is never cover-cropped against a mismatched ratio.
+            ratio: 970 / 700,
+            caption:
+              "The project I actually use — a one-line idea in, a ready-to-paste T-C-E-B-C prompt out.",
+          },
+          { h: "The rules baked into every prompt it writes" },
+          {
+            p: "Whatever the idea is, the generated prompt carries the same standing constraints, so quality does not depend on me remembering to ask for it each time:",
+          },
+          {
+            list: [
+              "Screens come from Stitch, not a hand-rolled layout",
+              "Every image comes from Nanobanana — never a placeholder, a grey box, or a stock stand-in",
+              "Copy is real and contextual — no Lorem ipsum, no [Heading here]",
+              "Motion goes through the Emil Kowalski skill — production-ready, reduced-motion aware",
+              "The result is one self-contained artifact, deployable without cleanup",
+            ],
+          },
+          {
+            stats: [
+              { value: "5", label: "Tools in the loop" },
+              { value: "1", label: "Prompt framework" },
+              { value: "0", label: "Placeholder images allowed" },
+            ],
+          },
+          {
+            p: "The toolkit will keep changing — a new MCP replaces an old one, a skill gets swapped out. The framework underneath it has not needed to, because it was never really about the tools. It is a fixed shape for saying what I mean, so the tools have something precise to respond to.",
+          },
+        ],
+        references: [
+          { label: "iTerm2", href: "https://iterm2.com" },
+          {
+            label: "Install Claude Code — claude.ai",
+            href: "https://claude.ai",
+          },
+          {
+            label: "Claude Code 101",
+            href: "https://www.youtube.com/watch?v=zxMjOqM7DFs",
+          },
+          {
+            label: "How to connect Claude to Figma",
+            href: "https://www.youtube.com/watch?v=yTFdbtHsM4o",
+          },
+          {
+            label: "A designer's framework for better AI prompts — Figma Blog",
+            href: "https://www.figma.com/blog/designer-framework-for-better-ai-prompts/",
+          },
+          {
+            label: "Figma — AI Prompting webinar",
+            href: "https://fig-events.figma.com/l/event/5abaf5d1-c37f-4ac5-8bc0-f6b0d5e9e8c4/stages/c9360a2c-15ed-40fd-a303-02b615aea2f2",
           },
         ],
       },
@@ -1201,33 +1352,47 @@ export const CONTENT = {
       seed: 118,
     },
 
-    "journal.prototyping.fig": {
+    "journal.groundingIdeas.before": {
       src: null,
-      alt: "Abstract plate of nested panels standing in for a working prototype build.",
+      alt: "Abstract plate of stepped columns standing in for the old, linear prototyping chain.",
+      plate: "columns",
+      tone: "dark",
+      seed: 192,
+    },
+    "journal.groundingIdeas.after": {
+      src: null,
+      alt: "Abstract plate of concentric arcs standing in for the current, looped prototyping process.",
+      plate: "orbit",
+      tone: "dark",
+      seed: 193,
+    },
+    "journal.groundingIdeas": {
+      src: null,
+      alt: "Abstract plate of concentric arcs for the grounding-ideas-fast journal entry.",
+      plate: "orbit",
+      tone: "dark",
+      seed: 191,
+    },
+    "journal.toolkit.fig": {
+      src: null,
+      alt: "Abstract plate of nested panels standing in for four layered prototyping tools.",
       plate: "panels",
       tone: "dark",
-      seed: 161,
+      seed: 195,
     },
-    "journal.system.fig": {
+    "journal.toolkit.tool": {
+      src: "img/journal-tcebc-tool.jpg",
+      alt: "The TC-EBC Prompts Cook — a Claude project that turns a one-line idea into a ready-to-paste T-C-E-B-C prompt.",
+      plate: "panels",
+      tone: "dark",
+      seed: 196,
+    },
+    "journal.toolkit": {
       src: null,
-      alt: "Abstract plate of interlocking bars standing in for design tokens shared across tools.",
+      alt: "Abstract plate of interlocking bars for the claude-code-toolkit journal entry.",
       plate: "weave",
       tone: "dark",
-      seed: 171,
-    },
-    "journal.analytics.fig": {
-      src: null,
-      alt: "Abstract plate of a falling funnel standing in for an activation drop-off.",
-      plate: "ramp",
-      tone: "dark",
-      seed: 181,
-    },
-    "journal.prototyping": {
-      src: null,
-      alt: "Abstract plate of nested panels for the prototyping-in-code journal entry.",
-      plate: "panels",
-      tone: "dark",
-      seed: 129,
+      seed: 194,
     },
     "journal.system": {
       src: null,
@@ -5577,11 +5742,35 @@ function JournalPost({ post, prev, next, onHome, flight, reduced }) {
             if (block.imageKey) {
               return (
                 <figure className="postFig reveal" key={i}>
-                  <Visual imageKey={block.imageKey} ratio={16 / 9} />
+                  <Visual
+                    imageKey={block.imageKey}
+                    ratio={block.ratio || 16 / 9}
+                  />
                   {block.caption ? (
                     <figcaption className="mono">{block.caption}</figcaption>
                   ) : null}
                 </figure>
+              );
+            }
+            if (block.list) {
+              return (
+                <ul className="postList reveal" key={i}>
+                  {block.list.map((item, j) => (
+                    <li key={j}>{item}</li>
+                  ))}
+                </ul>
+              );
+            }
+            if (block.stats) {
+              return (
+                <dl className="postStats reveal" key={i}>
+                  {block.stats.map((stat) => (
+                    <div className="postStat" key={stat.label}>
+                      <dd>{stat.value}</dd>
+                      <dt className="mono">{stat.label}</dt>
+                    </div>
+                  ))}
+                </dl>
               );
             }
             return (
@@ -5590,6 +5779,27 @@ function JournalPost({ post, prev, next, onHome, flight, reduced }) {
               </p>
             );
           })}
+
+          {post.references && post.references.length ? (
+            <div className="postRefs reveal">
+              <h2 className="postH">{CONTENT.journal.referencesLabel}</h2>
+              <ol>
+                {post.references.map((ref, i) => (
+                  <li key={ref.href}>
+                    <span className="postRefNum mono">{`[${i + 1}]`}</span>
+                    <a
+                      href={ref.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      {ref.label}
+                      <Icon name="arrowUpRight" size={13} />
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          ) : null}
         </div>
       </article>
 
@@ -5843,6 +6053,53 @@ const STYLES_POST = `
   margin-top:var(--s3);
   color:var(--muted);
 }
+.postList{
+  margin-top:var(--s5);
+  display:flex;flex-direction:column;gap:var(--s3);
+  list-style:none;
+}
+.postList li{
+  position:relative;
+  padding-left:var(--s5);
+  color:var(--ink-2);font-size:1.0625rem;line-height:1.6;
+}
+.postList li::before{
+  content:"";
+  position:absolute;left:0;top:.68em;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent);
+}
+.postStats{
+  display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,56px);
+  margin-top:clamp(32px,4.5vh,56px);
+  padding-top:var(--s5);
+  border-top:1px solid var(--hairline);
+}
+.postStat dd{
+  margin:0;
+  font-size:clamp(1.375rem,2.6vw,1.875rem);
+  font-weight:700;letter-spacing:-.025em;color:var(--ink);
+}
+.postStat dt{margin-top:var(--s2);color:var(--muted)}
+.postRefs{
+  margin-top:clamp(48px,6vh,80px);
+  padding-top:clamp(32px,4.5vh,56px);
+  border-top:1px solid var(--hairline);
+}
+.postRefs ol{
+  margin-top:var(--s4);
+  display:flex;flex-direction:column;gap:var(--s3);
+  list-style:none;counter-reset:none;
+}
+.postRefs li{display:flex;align-items:baseline;gap:var(--s3)}
+.postRefNum{color:var(--muted);flex:none}
+.postRefs a{
+  display:inline-flex;align-items:center;gap:var(--s2);
+  color:var(--ink-2);
+  border-bottom:1px solid var(--hairline-strong);
+  transition:color var(--dur-base) var(--ease-std),border-color var(--dur-base) var(--ease-std);
+}
+.postRefs a:hover{color:var(--accent);border-color:var(--accent)}
 @media (max-width:900px){
   .postBody{max-width:none}
 }
