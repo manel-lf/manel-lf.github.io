@@ -75,12 +75,13 @@ export const CONTENT = {
     rolePrefix: '',
     roles: [
       'Product Designer',
-      'UX/UI Designer',
-      'AI Prototyper',
-      'User Researcher',
-      'System Builder',
       'Engineer',
+      'Systems Designer',
+      'AI Prototyper',
+      'Gamificator',
+      'Product Thinker',
       'University Lecturer',
+      'Cat Butler',
     ],
     bio: 'Barcelona-based Senior Product Designer with an engineering background. From research and analytics to prototypes and production, I help turn ideas into products people return to.',
     scrollHint: 'Scroll',
@@ -1196,12 +1197,6 @@ body{
 .ctaBook svg{transition:transform var(--dur-base) var(--ease-out)}
 .ctaBook:hover{transform:translate3d(0,-1px,0);opacity:.92}
 .ctaBook:hover svg{transform:translateX(3px)}
-.ctaBook .ctaDot{
-  width:6px;height:6px;border-radius:50%;flex:none;
-  background:var(--accent);
-}
-[data-theme='dark'] .ctaBook .ctaDot{background:var(--accent)}
-
 /* ---- booking dialog ---- */
 .bookingScrim{
   position:fixed;inset:0;z-index:60;
@@ -2983,7 +2978,6 @@ function Nav({ theme, onToggleTheme, onHome, onBook }) {
             onBook()
           }}
         >
-          <span className="ctaDot" aria-hidden="true" />
           <span className="navLinkText">{CONTENT.nav.bookLabel}</span>
           <Icon name="arrowRight" size={14} />
         </a>
