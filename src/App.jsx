@@ -63,6 +63,16 @@ export const CONTENT = {
       "Still loading — Cal.com can be slow to warm up. Hang on, or use the link below.",
   },
 
+  // Generic copy for the same dialog when it is showing a project's
+  // Behance embed instead of the booking calendar.
+  projectEmbed: {
+    closeLabel: "Close project dialog",
+    loadingLabel: "Loading the project…",
+    stalledLabel:
+      "Still loading — Behance can be slow to warm up. Hang on, or use the link below.",
+    newTabLabel: "Open on Behance instead",
+  },
+
   nav: {
     bookLabel: "Book a call",
     themeLabelToLight: "Switch to light theme",
@@ -162,6 +172,7 @@ export const CONTENT = {
     heading: "From pixels to products.",
     spotlightSlug: "gamehouse-plus",
     viewCase: "View case",
+    viewOnBehance: "View on Behance",
   },
 
   bits: {
@@ -744,7 +755,22 @@ export const CONTENT = {
       logoAspect: 3.292,
       name: "Jesterday",
       mark: "jesterday",
-      eyebrow: "Jesterday",
+      eyebrow: "GPixel · Jesterday",
+      // A real thumbnail (an IMAGES key) instead of the centred wordmark —
+      // set only for this card. Leave unset on other projects to keep their
+      // current centred-logo treatment.
+      cardThumbnail: "card.jesterday.thumbnail",
+      // The case study is already published as a finished piece on Behance,
+      // so the card opens that instead of the internal case-study route.
+      // `embedUrl` is what actually loads in the dialog's iframe; `openUrl`
+      // is the plain link used for the "open in a new tab" escape hatch and
+      // for keyboard/no-JS/middle-click, since the <a> keeps a real href.
+      behanceEmbed: {
+        embedUrl: "https://www.behance.net/embed/project/215857737?ilo0=1",
+        openUrl: "https://www.behance.net/gallery/215857737",
+        width: 404,
+        height: 316,
+      },
       positioning:
         "An indie mobile multiplayer title, given a design system and an economy that survive production.",
       cardDescription:
@@ -1369,6 +1395,14 @@ export const CONTENT = {
       seed: 208,
     },
 
+    "card.jesterday.thumbnail": {
+      src: "img/jesterday-thumbnail.svg",
+      alt: "Jesterday: a stylised game controller held in two hands, cut by a diagonal yellow motion stripe.",
+      plate: "weave",
+      tone: "light",
+      seed: 209,
+    },
+
     "case.jesterday.hero": {
       src: null,
       alt: "Jesterday case study hero — interlocking bars over a dark grained field.",
@@ -1889,6 +1923,17 @@ body{
   width:100%;height:100%;
   border:0;
 }
+/* A fixed-size third-party embed (Behance's is literally 404x316, not
+   responsive) gets its natural size, centred, instead of being stretched
+   full-bleed or left marooned in a tall stretchy box built for the
+   calendar. */
+.bookingPanel--compact{width:min(460px,100%);max-height:none}
+.bookingFrame--fixed{
+  flex:none;min-height:0;
+  display:flex;align-items:center;justify-content:center;
+  padding:var(--s5);
+}
+.bookingFrame--fixed iframe{position:static;width:auto;height:auto;max-width:100%}
 .bookingLoading{
   position:absolute;inset:0;z-index:1;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -2156,11 +2201,26 @@ const STYLES_HOME = `
   box-shadow:var(--shadow-lift);
   border-color:var(--hairline-strong);
 }
+.cardMedia{position:relative}
+/* Only cards with a real thumbnail get a fixed box — the centred-logo
+   cards keep sizing themselves from their own padding, unchanged. */
+.cardMedia--image{aspect-ratio:5/4}
 .cardTop{
   display:flex;align-items:center;justify-content:space-between;
   gap:var(--s4);
   padding:var(--s5) var(--s5) 0;
   color:var(--muted);
+  /* 80% of the card's own surface colour. Over the plain cards below this
+     is a no-op — the same colour shows through itself. Over a full-bleed
+     thumbnail it becomes a real translucent panel, keeping the label
+     legible over busy artwork without hiding it outright. */
+  background:color-mix(in srgb, var(--surface) 80%, transparent);
+}
+/* Only set for a card with a real thumbnail: lifts the label out of flow
+   and onto the image, instead of pushing the image down to make room. */
+.cardTop--overlay{
+  position:absolute;inset:0 0 auto 0;z-index:1;
+  padding:var(--s4) var(--s5);
 }
 .cardMarkWrap{
   display:grid;place-items:center;
@@ -2169,11 +2229,13 @@ const STYLES_HOME = `
   border-radius:var(--r-md);
   overflow:hidden;
 }
-.cardMarkWrap > *{
+.cardMarkWrap > *,
+.cardMediaImg{
   transition:transform ${DUR.reveal}ms var(--ease-out);
   will-change:transform;
 }
-.projectCard:hover .cardMarkWrap > *{transform:scale(1.045)}
+.projectCard:hover .cardMarkWrap > *,
+.projectCard:hover .cardMediaImg{transform:scale(1.045)}
 .cardBody{
   padding:0 var(--s5) var(--s5);
   border-top:1px solid var(--hairline);
@@ -4021,14 +4083,36 @@ function Nav({ theme, onToggleTheme, onHome, onBook }) {
  * always-visible link to open the page in a new tab, so booking never becomes
  * a dead end.
  */
-function BookingDialog({ onClose, theme, reduced }) {
+/**
+ * Generic small-embed dialog: an iframe in an accessible modal, with a focus
+ * trap, Escape to close, scroll lock, and a stall fallback so a slow or
+ * stuck third-party embed never reads as permanently broken. Used for both
+ * the booking calendar and a project's Behance embed — the two differ only
+ * in copy, source URL, and (for a fixed-size embed like Behance's) sizing.
+ */
+function IframeDialog({
+  titleId,
+  title,
+  subtitle,
+  src,
+  frameTitle,
+  frameWidth,
+  frameHeight,
+  closeLabel,
+  loadingLabel,
+  stalledLabel,
+  newTabLabel,
+  newTabHref,
+  onClose,
+  reduced,
+}) {
   const panelRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
-  // `onLoad` only tells us the outer document has a shell — Cal's own JS
-  // still has to fetch and render actual availability after that, which can
-  // take several more seconds. If it is still not up after a while, swap the
-  // copy so the wait reads as "working, just slow" rather than "stuck", and
-  // point at the always-present new-tab link as an explicit way out.
+  // `onLoad` only tells us the outer document has a shell — the embedded
+  // page's own JS still has to fetch and render its real content after
+  // that, which can take several more seconds. If it is still not up after
+  // a while, swap the copy so the wait reads as "working, just slow" rather
+  // than "stuck", and point at the always-present new-tab link as a way out.
   const [stalled, setStalled] = useState(false);
 
   useEffect(() => {
@@ -4081,7 +4165,11 @@ function BookingDialog({ onClose, theme, reduced }) {
     };
   }, [onClose]);
 
-  const src = `${CONTENT.booking.url}?embed=&layout=month_view&theme=${theme}`;
+  // A fixed-size embed (Behance gives a literal 404x316 iframe, not a
+  // responsive one) gets a compact, content-sized panel instead of the
+  // booking calendar's large, stretchy one — otherwise it sits marooned in
+  // a mostly-empty full-width box.
+  const fixedSize = Boolean(frameWidth && frameHeight);
 
   return (
     <div
@@ -4091,70 +4179,110 @@ function BookingDialog({ onClose, theme, reduced }) {
       }}
     >
       <div
-        className="bookingPanel"
+        className={`bookingPanel${fixedSize ? " bookingPanel--compact" : ""}`}
         role="dialog"
         aria-modal="true"
-        aria-labelledby="booking-title"
+        aria-labelledby={titleId}
         ref={panelRef}
       >
         <div className="bookingHead">
           <div>
-            <h2 id="booking-title" className="bookingTitle">
-              {CONTENT.booking.title}
+            <h2 id={titleId} className="bookingTitle">
+              {title}
             </h2>
-            <p className="bookingSub">{CONTENT.booking.subtitle}</p>
+            {subtitle ? <p className="bookingSub">{subtitle}</p> : null}
           </div>
           <button
             type="button"
             className="iconBtn"
             onClick={onClose}
-            aria-label={CONTENT.booking.closeLabel}
+            aria-label={closeLabel}
           >
             <Icon name="close" size={16} />
           </button>
         </div>
 
-        <div className="bookingFrame">
+        <div
+          className={`bookingFrame${fixedSize ? " bookingFrame--fixed" : ""}`}
+        >
           {!loaded ? (
             <div className="bookingLoading" role="status">
-              <p className="mono">
-                {stalled
-                  ? CONTENT.booking.stalledLabel
-                  : CONTENT.booking.loadingLabel}
-              </p>
+              <p className="mono">{stalled ? stalledLabel : loadingLabel}</p>
               {stalled ? (
                 <a
                   className="bookingRetry mono"
-                  href={CONTENT.booking.url}
+                  href={newTabHref}
                   target="_blank"
                   rel="noreferrer noopener"
                 >
-                  {CONTENT.booking.newTabLabel}
+                  {newTabLabel}
                 </a>
               ) : null}
             </div>
           ) : null}
           <iframe
             src={src}
-            title={CONTENT.booking.title}
+            title={frameTitle || title}
             onLoad={() => setLoaded(true)}
             loading="eager"
+            {...(fixedSize ? { width: frameWidth, height: frameHeight } : {})}
           />
         </div>
 
         <div className="bookingFoot">
           <a
             className="textLink mono"
-            href={CONTENT.booking.url}
+            href={newTabHref}
             target="_blank"
             rel="noreferrer noopener"
           >
-            {CONTENT.booking.newTabLabel}
+            {newTabLabel}
             <Icon name="arrowUpRight" size={13} />
           </a>
         </div>
       </div>
     </div>
+  );
+}
+
+function BookingDialog({ onClose, theme, reduced }) {
+  const src = `${CONTENT.booking.url}?embed=&layout=month_view&theme=${theme}`;
+  return (
+    <IframeDialog
+      titleId="booking-title"
+      title={CONTENT.booking.title}
+      subtitle={CONTENT.booking.subtitle}
+      src={src}
+      closeLabel={CONTENT.booking.closeLabel}
+      loadingLabel={CONTENT.booking.loadingLabel}
+      stalledLabel={CONTENT.booking.stalledLabel}
+      newTabLabel={CONTENT.booking.newTabLabel}
+      newTabHref={CONTENT.booking.url}
+      onClose={onClose}
+      reduced={reduced}
+    />
+  );
+}
+
+/** Same dialog, showing a project's Behance embed instead of the calendar. */
+function ProjectEmbedDialog({ project, onClose, reduced }) {
+  const embed = project.behanceEmbed;
+  return (
+    <IframeDialog
+      titleId="embed-title"
+      title={`${project.name} on Behance`}
+      frameTitle={`${project.name} — Behance embed`}
+      src={embed.embedUrl}
+      frameWidth={embed.width}
+      frameHeight={embed.height}
+      closeLabel={CONTENT.projectEmbed.closeLabel}
+      loadingLabel={CONTENT.projectEmbed.loadingLabel}
+      stalledLabel={CONTENT.projectEmbed.stalledLabel}
+      newTabLabel={CONTENT.projectEmbed.newTabLabel}
+      newTabHref={embed.openUrl}
+      onClose={onClose}
+      reduced={reduced}
+    />
   );
 }
 
@@ -4491,35 +4619,64 @@ function Spotlight({ project, onCapture, reduced }) {
   );
 }
 
-function ProjectCard({ project, onCapture, index }) {
+function ProjectCard({ project, onCapture, onOpenEmbed, index }) {
   const titleRef = useRef(null);
+  const embed = project.behanceEmbed;
+
   return (
     <li>
       <a
         className="projectCard reveal"
-        href={`#/work/${project.slug}`}
+        href={embed ? embed.openUrl : `#/work/${project.slug}`}
+        target={embed ? "_blank" : undefined}
+        rel={embed ? "noreferrer noopener" : undefined}
         style={{ "--reveal-delay": `${index * 70}ms` }}
-        onClick={() => onCapture(titleRef.current)}
-        aria-label={`${project.name} — ${CONTENT.work.viewCase}`}
+        onClick={(e) => {
+          if (embed) {
+            // A modified click (middle-click, cmd/ctrl-click, etc.) should
+            // still behave like a normal link to Behance; only a plain left
+            // click opens the in-page dialog instead.
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+            e.preventDefault();
+            onOpenEmbed(project);
+            return;
+          }
+          onCapture(titleRef.current);
+        }}
+        aria-label={`${project.name} — ${embed ? CONTENT.work.viewOnBehance : CONTENT.work.viewCase}`}
       >
-        <span className="cardTop mono">
-          <span ref={titleRef}>{project.eyebrow}</span>
-          <Icon name="arrowUpRight" size={16} />
-        </span>
-        <span className="cardMarkWrap">
-          <Wordmark
-            mark={project.mark}
-            name={project.name}
-            logo={project.logo}
-            aspect={project.logoAspect}
-            scale={project.logoScale}
-            large
-          />
+        <span
+          className={`cardMedia${project.cardThumbnail ? " cardMedia--image" : ""}`}
+        >
+          {project.cardThumbnail ? (
+            <Visual
+              imageKey={project.cardThumbnail}
+              fill
+              className="cardMediaImg"
+            />
+          ) : (
+            <span className="cardMarkWrap">
+              <Wordmark
+                mark={project.mark}
+                name={project.name}
+                logo={project.logo}
+                aspect={project.logoAspect}
+                scale={project.logoScale}
+                large
+              />
+            </span>
+          )}
+          <span
+            className={`cardTop mono${project.cardThumbnail ? " cardTop--overlay" : ""}`}
+          >
+            <span ref={titleRef}>{project.eyebrow}</span>
+            <Icon name="arrowUpRight" size={16} />
+          </span>
         </span>
         <span className="cardBody">
           <span className="cardDesc">{project.cardDescription}</span>
           <span className="cardCta mono">
-            {CONTENT.work.viewCase}
+            {embed ? CONTENT.work.viewOnBehance : CONTENT.work.viewCase}
             <Icon name="arrowRight" size={14} />
           </span>
         </span>
@@ -4528,7 +4685,7 @@ function ProjectCard({ project, onCapture, index }) {
   );
 }
 
-function WorkSection({ projects, spotlight, onCapture, reduced }) {
+function WorkSection({ projects, spotlight, onCapture, onOpenEmbed, reduced }) {
   return (
     <section id="work" className="section" aria-labelledby="work-h">
       <div className="container">
@@ -4550,6 +4707,7 @@ function WorkSection({ projects, spotlight, onCapture, reduced }) {
               key={p.slug}
               project={p}
               onCapture={onCapture}
+              onOpenEmbed={onOpenEmbed}
               index={i}
             />
           ))}
@@ -5794,7 +5952,7 @@ function JournalPost({ post, prev, next, onHome, flight, reduced }) {
  * Home view
  * ========================================================================= */
 
-function HomeView({ onCapture, reduced }) {
+function HomeView({ onCapture, onOpenEmbed, reduced }) {
   const revealRef = useReveal();
   const homeIds = useMemo(() => CONTENT.footer.rail.map((r) => r.id), []);
   const activeId = useScrollSpy(homeIds, []);
@@ -5815,6 +5973,7 @@ function HomeView({ onCapture, reduced }) {
           projects={secondary}
           spotlight={spotlight}
           onCapture={onCapture}
+          onOpenEmbed={onOpenEmbed}
           reduced={reduced}
         />
         <BitsSection reduced={reduced} />
@@ -5845,6 +6004,8 @@ export default function App() {
   const route = useHashRoute();
   const [flight, setFlight] = useState(null);
   const [booking, setBooking] = useState(false);
+  // The project currently showing its Behance embed in a dialog, or null.
+  const [embedProject, setEmbedProject] = useState(null);
 
   const projects = CONTENT.projects;
   const index =
@@ -5893,6 +6054,7 @@ export default function App() {
   );
 
   const closeBooking = useCallback(() => setBooking(false), []);
+  const closeEmbed = useCallback(() => setEmbedProject(null), []);
 
   const goHome = useCallback((e) => {
     if (e) e.preventDefault();
@@ -5929,6 +6091,13 @@ export default function App() {
       {booking ? (
         <BookingDialog onClose={closeBooking} theme={theme} reduced={reduced} />
       ) : null}
+      {embedProject ? (
+        <ProjectEmbedDialog
+          project={embedProject}
+          onClose={closeEmbed}
+          reduced={reduced}
+        />
+      ) : null}
       {isPost ? (
         <JournalPost
           key={post.slug}
@@ -5951,7 +6120,11 @@ export default function App() {
           reduced={reduced}
         />
       ) : (
-        <HomeView onCapture={captureFlight} reduced={reduced} />
+        <HomeView
+          onCapture={captureFlight}
+          onOpenEmbed={setEmbedProject}
+          reduced={reduced}
+        />
       )}
     </>
   );
