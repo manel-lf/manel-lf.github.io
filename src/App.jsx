@@ -59,6 +59,8 @@ export const CONTENT = {
     closeLabel: "Close booking dialog",
     newTabLabel: "Open in a new tab instead",
     loadingLabel: "Loading available times…",
+    stalledLabel:
+      "Still loading — Cal.com can be slow to warm up. Hang on, or use the link below.",
   },
 
   nav: {
@@ -1888,10 +1890,19 @@ body{
   border:0;
 }
 .bookingLoading{
-  position:absolute;inset:0;
-  display:grid;place-items:center;
+  position:absolute;inset:0;z-index:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:var(--s3);
+  background:var(--surface);
   color:var(--muted);
+  text-align:center;
+  padding:var(--s5);
 }
+.bookingLoading .bookingRetry{
+  color:var(--ink);
+  border-bottom:1px solid var(--hairline-strong);
+}
+.bookingLoading .bookingRetry:hover{color:var(--accent);border-color:var(--accent)}
 .bookingFoot{
   padding:var(--s4) var(--s5);
   border-top:1px solid var(--hairline);
@@ -4013,6 +4024,18 @@ function Nav({ theme, onToggleTheme, onHome, onBook }) {
 function BookingDialog({ onClose, theme, reduced }) {
   const panelRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
+  // `onLoad` only tells us the outer document has a shell — Cal's own JS
+  // still has to fetch and render actual availability after that, which can
+  // take several more seconds. If it is still not up after a while, swap the
+  // copy so the wait reads as "working, just slow" rather than "stuck", and
+  // point at the always-present new-tab link as an explicit way out.
+  const [stalled, setStalled] = useState(false);
+
+  useEffect(() => {
+    if (loaded) return;
+    const id = window.setTimeout(() => setStalled(true), 6000);
+    return () => window.clearTimeout(id);
+  }, [loaded]);
 
   // Mounted only while open, so `loaded` starts fresh on every open and the
   // iframe is torn down on close rather than kept alive in the background.
@@ -4093,9 +4116,23 @@ function BookingDialog({ onClose, theme, reduced }) {
 
         <div className="bookingFrame">
           {!loaded ? (
-            <p className="bookingLoading mono" role="status">
-              {CONTENT.booking.loadingLabel}
-            </p>
+            <div className="bookingLoading" role="status">
+              <p className="mono">
+                {stalled
+                  ? CONTENT.booking.stalledLabel
+                  : CONTENT.booking.loadingLabel}
+              </p>
+              {stalled ? (
+                <a
+                  className="bookingRetry mono"
+                  href={CONTENT.booking.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  {CONTENT.booking.newTabLabel}
+                </a>
+              ) : null}
+            </div>
           ) : null}
           <iframe
             src={src}
