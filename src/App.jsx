@@ -63,16 +63,6 @@ export const CONTENT = {
       "Still loading — Cal.com can be slow to warm up. Hang on, or use the link below.",
   },
 
-  // Generic copy for the same dialog when it is showing a project's
-  // Behance embed instead of the booking calendar.
-  projectEmbed: {
-    closeLabel: "Close project dialog",
-    loadingLabel: "Loading the project…",
-    stalledLabel:
-      "Still loading — Behance can be slow to warm up. Hang on, or use the link below.",
-    newTabLabel: "Open on Behance instead",
-  },
-
   nav: {
     bookLabel: "Book a call",
     themeLabelToLight: "Switch to light theme",
@@ -761,16 +751,10 @@ export const CONTENT = {
       // current centred-logo treatment.
       cardThumbnail: "card.jesterday.thumbnail",
       // The case study is already published as a finished piece on Behance,
-      // so the card opens that instead of the internal case-study route.
-      // `embedUrl` is what actually loads in the dialog's iframe; `openUrl`
-      // is the plain link used for the "open in a new tab" escape hatch and
-      // for keyboard/no-JS/middle-click, since the <a> keeps a real href.
-      behanceEmbed: {
-        embedUrl: "https://www.behance.net/embed/project/215857737?ilo0=1",
-        openUrl: "https://www.behance.net/gallery/215857737",
-        width: 404,
-        height: 316,
-      },
+      // so the card is a plain external link there instead of the internal
+      // case-study route.
+      externalUrl:
+        "https://www.behance.net/gallery/215857737/GPixel-Arcade-Racing-Mobile-Game-UXUI-Design-Case",
       positioning:
         "An indie mobile multiplayer title, given a design system and an economy that survive production.",
       cardDescription:
@@ -2202,9 +2186,6 @@ const STYLES_HOME = `
   border-color:var(--hairline-strong);
 }
 .cardMedia{position:relative}
-/* Only cards with a real thumbnail get a fixed box — the centred-logo
-   cards keep sizing themselves from their own padding, unchanged. */
-.cardMedia--image{aspect-ratio:5/4}
 .cardTop{
   display:flex;align-items:center;justify-content:space-between;
   gap:var(--s4);
@@ -2223,6 +2204,7 @@ const STYLES_HOME = `
   padding:var(--s4) var(--s5);
 }
 .cardMarkWrap{
+  position:relative;
   display:grid;place-items:center;
   padding:clamp(40px,7vw,88px) var(--s5);
   /* fixed-radius clip: the mark scales inside, the frame never moves */
@@ -2236,6 +2218,12 @@ const STYLES_HOME = `
 }
 .projectCard:hover .cardMarkWrap > *,
 .projectCard:hover .cardMediaImg{transform:scale(1.045)}
+/* A real thumbnail ignores cardMarkWrap's own padding — it bleeds to the
+   box's full edges (and is partially covered by the label above it)
+   instead of sitting centred and inset like a wordmark. The box itself
+   still takes its height from that padding, same as every other card:
+   only the image's *content* escapes it, not the card's size. */
+.cardMediaImg{position:absolute;inset:0}
 .cardBody{
   padding:0 var(--s5) var(--s5);
   border-top:1px solid var(--hairline);
@@ -4264,28 +4252,6 @@ function BookingDialog({ onClose, theme, reduced }) {
   );
 }
 
-/** Same dialog, showing a project's Behance embed instead of the calendar. */
-function ProjectEmbedDialog({ project, onClose, reduced }) {
-  const embed = project.behanceEmbed;
-  return (
-    <IframeDialog
-      titleId="embed-title"
-      title={`${project.name} on Behance`}
-      frameTitle={`${project.name} — Behance embed`}
-      src={embed.embedUrl}
-      frameWidth={embed.width}
-      frameHeight={embed.height}
-      closeLabel={CONTENT.projectEmbed.closeLabel}
-      loadingLabel={CONTENT.projectEmbed.loadingLabel}
-      stalledLabel={CONTENT.projectEmbed.stalledLabel}
-      newTabLabel={CONTENT.projectEmbed.newTabLabel}
-      newTabHref={embed.openUrl}
-      onClose={onClose}
-      reduced={reduced}
-    />
-  );
-}
-
 function SectionHead({
   label,
   statement,
@@ -4619,43 +4585,30 @@ function Spotlight({ project, onCapture, reduced }) {
   );
 }
 
-function ProjectCard({ project, onCapture, onOpenEmbed, index }) {
+function ProjectCard({ project, onCapture, index }) {
   const titleRef = useRef(null);
-  const embed = project.behanceEmbed;
+  const isExternal = Boolean(project.externalUrl);
 
   return (
     <li>
       <a
         className="projectCard reveal"
-        href={embed ? embed.openUrl : `#/work/${project.slug}`}
-        target={embed ? "_blank" : undefined}
-        rel={embed ? "noreferrer noopener" : undefined}
+        href={isExternal ? project.externalUrl : `#/work/${project.slug}`}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noreferrer noopener" : undefined}
         style={{ "--reveal-delay": `${index * 70}ms` }}
-        onClick={(e) => {
-          if (embed) {
-            // A modified click (middle-click, cmd/ctrl-click, etc.) should
-            // still behave like a normal link to Behance; only a plain left
-            // click opens the in-page dialog instead.
-            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-            e.preventDefault();
-            onOpenEmbed(project);
-            return;
-          }
-          onCapture(titleRef.current);
-        }}
-        aria-label={`${project.name} — ${embed ? CONTENT.work.viewOnBehance : CONTENT.work.viewCase}`}
+        onClick={isExternal ? undefined : () => onCapture(titleRef.current)}
+        aria-label={`${project.name} — ${isExternal ? CONTENT.work.viewOnBehance : CONTENT.work.viewCase}`}
       >
-        <span
-          className={`cardMedia${project.cardThumbnail ? " cardMedia--image" : ""}`}
-        >
-          {project.cardThumbnail ? (
-            <Visual
-              imageKey={project.cardThumbnail}
-              fill
-              className="cardMediaImg"
-            />
-          ) : (
-            <span className="cardMarkWrap">
+        <span className="cardMedia">
+          <span className="cardMarkWrap">
+            {project.cardThumbnail ? (
+              <Visual
+                imageKey={project.cardThumbnail}
+                fill
+                className="cardMediaImg"
+              />
+            ) : (
               <Wordmark
                 mark={project.mark}
                 name={project.name}
@@ -4664,8 +4617,8 @@ function ProjectCard({ project, onCapture, onOpenEmbed, index }) {
                 scale={project.logoScale}
                 large
               />
-            </span>
-          )}
+            )}
+          </span>
           <span
             className={`cardTop mono${project.cardThumbnail ? " cardTop--overlay" : ""}`}
           >
@@ -4676,7 +4629,7 @@ function ProjectCard({ project, onCapture, onOpenEmbed, index }) {
         <span className="cardBody">
           <span className="cardDesc">{project.cardDescription}</span>
           <span className="cardCta mono">
-            {embed ? CONTENT.work.viewOnBehance : CONTENT.work.viewCase}
+            {isExternal ? CONTENT.work.viewOnBehance : CONTENT.work.viewCase}
             <Icon name="arrowRight" size={14} />
           </span>
         </span>
@@ -4685,7 +4638,7 @@ function ProjectCard({ project, onCapture, onOpenEmbed, index }) {
   );
 }
 
-function WorkSection({ projects, spotlight, onCapture, onOpenEmbed, reduced }) {
+function WorkSection({ projects, spotlight, onCapture, reduced }) {
   return (
     <section id="work" className="section" aria-labelledby="work-h">
       <div className="container">
@@ -4707,7 +4660,6 @@ function WorkSection({ projects, spotlight, onCapture, onOpenEmbed, reduced }) {
               key={p.slug}
               project={p}
               onCapture={onCapture}
-              onOpenEmbed={onOpenEmbed}
               index={i}
             />
           ))}
@@ -5952,7 +5904,7 @@ function JournalPost({ post, prev, next, onHome, flight, reduced }) {
  * Home view
  * ========================================================================= */
 
-function HomeView({ onCapture, onOpenEmbed, reduced }) {
+function HomeView({ onCapture, reduced }) {
   const revealRef = useReveal();
   const homeIds = useMemo(() => CONTENT.footer.rail.map((r) => r.id), []);
   const activeId = useScrollSpy(homeIds, []);
@@ -5973,7 +5925,6 @@ function HomeView({ onCapture, onOpenEmbed, reduced }) {
           projects={secondary}
           spotlight={spotlight}
           onCapture={onCapture}
-          onOpenEmbed={onOpenEmbed}
           reduced={reduced}
         />
         <BitsSection reduced={reduced} />
@@ -6004,8 +5955,6 @@ export default function App() {
   const route = useHashRoute();
   const [flight, setFlight] = useState(null);
   const [booking, setBooking] = useState(false);
-  // The project currently showing its Behance embed in a dialog, or null.
-  const [embedProject, setEmbedProject] = useState(null);
 
   const projects = CONTENT.projects;
   const index =
@@ -6054,7 +6003,6 @@ export default function App() {
   );
 
   const closeBooking = useCallback(() => setBooking(false), []);
-  const closeEmbed = useCallback(() => setEmbedProject(null), []);
 
   const goHome = useCallback((e) => {
     if (e) e.preventDefault();
@@ -6091,13 +6039,6 @@ export default function App() {
       {booking ? (
         <BookingDialog onClose={closeBooking} theme={theme} reduced={reduced} />
       ) : null}
-      {embedProject ? (
-        <ProjectEmbedDialog
-          project={embedProject}
-          onClose={closeEmbed}
-          reduced={reduced}
-        />
-      ) : null}
       {isPost ? (
         <JournalPost
           key={post.slug}
@@ -6120,11 +6061,7 @@ export default function App() {
           reduced={reduced}
         />
       ) : (
-        <HomeView
-          onCapture={captureFlight}
-          onOpenEmbed={setEmbedProject}
-          reduced={reduced}
-        />
+        <HomeView onCapture={captureFlight} reduced={reduced} />
       )}
     </>
   );
