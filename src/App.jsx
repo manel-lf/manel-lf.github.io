@@ -319,7 +319,7 @@ export const CONTENT = {
       {
         id: "post-grounding-ideas",
         slug: "grounding-ideas-fast",
-        date: "September 2026",
+        date: "June 2026",
         tags: ["Process", "Prototyping"],
         title: "Grounding ideas fast is changing how I design",
         dek: "The distance between a question and an answer used to be a chain of documents. Collapsing it changed what design review is even about.",
@@ -386,12 +386,12 @@ export const CONTENT = {
       {
         id: "post-toolkit",
         slug: "claude-code-toolkit",
-        date: "August 2026",
+        date: "June 2026",
         tags: ["Prototyping", "AI Tooling"],
         title: "My toolkit for prototyping with Claude Code",
-        dek: "The setup behind a working prototype: one terminal, a small stack of MCPs and skills, and a prompt framework I built to stop rewriting the same brief from scratch.",
+        dek: "The setup behind a working prototype: one terminal and a small, swappable stack of MCPs and skills layered on top of it.",
         imageKey: "journal.toolkit",
-        readMins: 8,
+        readMins: 6,
         body: [
           {
             p: "A working prototype is closer to a conversation than a construction project now. The toolkit behind it is deliberately small — each piece has exactly one job, and none of them are load-bearing enough that losing one would stop me working.",
@@ -430,9 +430,45 @@ export const CONTENT = {
             caption:
               "Four narrow tools, layered — none of them load-bearing on its own.",
           },
+          {
+            stats: [
+              { value: "4", label: "Tools layered on top of Claude Code" },
+              { value: "1", label: "Command to install the CLI" },
+              { value: "0", label: "Placeholder images allowed" },
+            ],
+          },
+          {
+            p: "The toolkit itself will keep changing — a new MCP replaces an old one, a skill gets swapped out. What does not change is how I decide what to ask any of them for in the first place: a fixed prompt framework, and lately, an agent I built to write it for me. That is its own note — from framework to agent.",
+          },
+        ],
+        references: [
+          { label: "iTerm2", href: "https://iterm2.com" },
+          {
+            label: "Install Claude Code — claude.ai",
+            href: "https://claude.ai",
+          },
+          {
+            label: "How to connect Claude to Figma",
+            href: "https://www.youtube.com/watch?v=yTFdbtHsM4o",
+          },
+        ],
+      },
+      {
+        id: "post-framework-agent",
+        slug: "framework-to-agent",
+        date: "May 2026",
+        tags: ["AI Tooling", "Process"],
+        title: "From framework to agent: automating prompt engineering",
+        dek: "A fixed five-part shape for briefing Claude Code, and the small agent I built once I got tired of assembling it by hand every time.",
+        imageKey: "journal.frameworkAgent",
+        readMins: 6,
+        body: [
+          {
+            p: "The toolkit is the easy half. The harder, more valuable habit sits underneath it: a fixed shape for saying what I want, so a tool like Claude Code has something precise to respond to instead of a paragraph it has to interpret.",
+          },
           { h: "TC-EBC: the prompt framework I actually use" },
           {
-            p: "An unstructured prompt produces an unstructured back-and-forth — you correct one thing, the model overcorrects two others, and three rounds in you are further from the brief than when you started. A well-structured prompt is worth more than a well-structured revision, almost every time [4]. So I standardised the shape of the prompt itself, into five sections I fill in every time:",
+            p: "An unstructured prompt produces an unstructured back-and-forth — you correct one thing, the model overcorrects two others, and three rounds in you are further from the brief than when you started. A well-structured prompt is worth more than a well-structured revision, almost every time [1][2]. So I standardised the shape of the prompt itself, into five sections I fill in every time:",
           },
           {
             list: [
@@ -444,7 +480,11 @@ export const CONTENT = {
             ],
           },
           {
-            p: "I built a small Claude project that writes these for me — feed it a one-line idea, it asks whatever needs clarifying before committing to anything [5], then hands back a ready-to-paste TC-EBC prompt. It is the same discipline the framework is built on, applied to writing the framework's own inputs: don't guess when a clarifying question would change the output.",
+            p: "Writing a prompt this way forces the ambiguity out before Claude Code ever sees it. Most of what used to be a correction three replies in turns out to be something I had left out of Context or Constraints the first time — the framework does not remove ambiguity, it just makes it visible to me before it becomes an expensive round trip.",
+          },
+          { h: "Turning the framework into an agent" },
+          {
+            p: "Filling in five sections by hand for every idea is still friction, and friction is exactly what gets skipped under deadline. So I built a small Claude project — a prompt-engineering agent, essentially — that writes these for me: feed it a one-line idea, it asks whatever needs clarifying before committing to anything [3], then hands back a ready-to-paste T-C-E-B-C prompt. It is the same discipline the framework is built on, applied recursively to writing the framework's own inputs: don't guess when a clarifying question would change the output.",
           },
           {
             imageKey: "journal.toolkit.tool",
@@ -452,11 +492,11 @@ export const CONTENT = {
             // interface is never cover-cropped against a mismatched ratio.
             ratio: 970 / 700,
             caption:
-              "The project I actually use — a one-line idea in, a ready-to-paste T-C-E-B-C prompt out.",
+              "The agent I actually use — a one-line idea in, a ready-to-paste T-C-E-B-C prompt out.",
           },
-          { h: "The rules baked into every prompt it writes" },
+          { h: "The rules it bakes into every prompt" },
           {
-            p: "Whatever the idea is, the generated prompt carries the same standing constraints, so quality does not depend on me remembering to ask for it each time:",
+            p: "Whatever the idea is, the agent writes the same standing constraints into the result, so output quality does not depend on me remembering to ask for them every single time:",
           },
           {
             list: [
@@ -469,29 +509,16 @@ export const CONTENT = {
           },
           {
             stats: [
-              { value: "5", label: "Tools in the loop" },
-              { value: "1", label: "Prompt framework" },
-              { value: "0", label: "Placeholder images allowed" },
+              { value: "5", label: "Sections in the T-C-E-B-C framework" },
+              { value: "1", label: "Agent that writes them for me" },
+              { value: "5", label: "Standing rules baked into every prompt" },
             ],
           },
           {
-            p: "The toolkit will keep changing — a new MCP replaces an old one, a skill gets swapped out. The framework underneath it has not needed to, because it was never really about the tools. It is a fixed shape for saying what I mean, so the tools have something precise to respond to.",
+            p: "The agent has not replaced my judgement about what to build — it still asks me before it assumes anything. What it removed is the tax of re-deriving the same five-part structure from a blank page every time, which is exactly the kind of repetitive, well-defined task worth automating so the actual thinking gets more of the time.",
           },
         ],
         references: [
-          { label: "iTerm2", href: "https://iterm2.com" },
-          {
-            label: "Install Claude Code — claude.ai",
-            href: "https://claude.ai",
-          },
-          {
-            label: "Claude Code 101",
-            href: "https://www.youtube.com/watch?v=zxMjOqM7DFs",
-          },
-          {
-            label: "How to connect Claude to Figma",
-            href: "https://www.youtube.com/watch?v=yTFdbtHsM4o",
-          },
           {
             label: "A designer's framework for better AI prompts — Figma Blog",
             href: "https://www.figma.com/blog/designer-framework-for-better-ai-prompts/",
@@ -499,6 +526,10 @@ export const CONTENT = {
           {
             label: "Figma — AI Prompting webinar",
             href: "https://fig-events.figma.com/l/event/5abaf5d1-c37f-4ac5-8bc0-f6b0d5e9e8c4/stages/c9360a2c-15ed-40fd-a303-02b615aea2f2",
+          },
+          {
+            label: "Claude Code 101",
+            href: "https://www.youtube.com/watch?v=zxMjOqM7DFs",
           },
         ],
       },
@@ -1081,7 +1112,14 @@ export const CONTENT = {
       logoAspect: 6.036,
       name: "Scavenger Hunt",
       mark: "popcore",
-      eyebrow: "Scavenger Hunt — at Popcore",
+      eyebrow: "Scavenger Hunt · Popcore",
+      // A real thumbnail (an IMAGES key) instead of the centred wordmark.
+      cardThumbnail: "card.scavengerHunt.thumbnail",
+      // This case study is already published as a finished piece on
+      // Behance, so the card is a plain external link there instead of
+      // the internal case-study route — same pattern as Jesterday.
+      externalUrl:
+        "https://www.behance.net/gallery/194452315/Scavenger-Hunt-Hyper-Casual-Mobile-Game-UXUI-Design",
       positioning: "Live-events design support on a top-grossing mobile title.",
       cardDescription:
         "Live events on a top-grossing mobile game. Designing a recurring event so it reads instantly, ships on cadence and never blocks the release train.",
@@ -1215,7 +1253,7 @@ export const CONTENT = {
     // The spotlight card's bloom, in purple rather than the site accent.
     "about.portrait": {
       src: "img/manel-portrait.jpg",
-      alt: "Manel López, photographed outdoors against a bright sky.",
+      alt: "Manel López, wearing glasses, with his grey cat perched on his shoulder.",
       plate: "portrait",
       tone: "dark",
       seed: 27,
@@ -1320,6 +1358,13 @@ export const CONTENT = {
       tone: "dark",
       seed: 194,
     },
+    "journal.frameworkAgent": {
+      src: null,
+      alt: "Abstract plate of stepped columns for the framework-to-agent journal entry.",
+      plate: "columns",
+      tone: "dark",
+      seed: 197,
+    },
     "case.gamehouse-plus.hero": {
       src: null,
       alt: "GameHouse+ case study hero — a wide gradient mesh over a modular grid, in near-black and deep purple.",
@@ -1385,6 +1430,14 @@ export const CONTENT = {
       plate: "weave",
       tone: "light",
       seed: 209,
+    },
+
+    "card.scavengerHunt.thumbnail": {
+      src: "img/scavenger-hunt-thumbnail.jpg",
+      alt: "Scavenger Hunt: a hidden-object party scene seen through a magnifying glass held over a red balloon.",
+      plate: "orbit",
+      tone: "light",
+      seed: 210,
     },
 
     "case.jesterday.hero": {
