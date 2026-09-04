@@ -2084,6 +2084,9 @@ body{
   display:grid;
   border-top:1px solid var(--hairline);
   border-bottom:1px solid var(--hairline);
+  /* Gives the flip below somewhere to happen — without it rotateX just
+     looks like a squash, not a card turning in space. */
+  perspective:1400px;
 }
 .logoRotator .logoPage{
   grid-area:1 / 1;
@@ -2094,14 +2097,19 @@ body{
   border:0;
   opacity:0;
   pointer-events:none;
-  transform:translate3d(0,6px,0);
+  transform-origin:50% 50%;
+  backface-visibility:hidden;
+  /* Split-flap style turn: the outgoing page rotates away from the viewer
+     on its X axis as the incoming one rotates in from the same angle,
+     rather than a plain fade/slide. */
+  transform:rotateX(-90deg);
   /* Longer than the 150-400ms UI band on purpose: this is an ambient reveal
      nobody triggered, so it should drift rather than snap. Driven from
      CONTENT.logos.fadeMs. */
   transition:opacity var(--logo-fade,960ms) var(--ease-std),
-             transform var(--logo-fade,960ms) var(--ease-out);
+             transform var(--logo-fade,960ms) var(--ease-std);
 }
-.logoRotator .logoPage.is-active{opacity:1;transform:none;pointer-events:auto}
+.logoRotator .logoPage.is-active{opacity:1;transform:rotateX(0deg);pointer-events:auto}
 .logoStrip li{opacity:.62;transition:opacity var(--dur-base) var(--ease-std)}
 .logoStrip li:hover{opacity:1}
 @media (max-width:640px){
@@ -2120,6 +2128,14 @@ body{
     align-items:center;justify-items:start;
     gap:var(--s6) var(--s5);
   }
+}
+@media (orientation:portrait){
+  /* Each page holds 5 marks, which wraps to 3 uneven rows in the 2-column
+     phone grid. Dropping one mark per page (MURIS from page two, SEAT CUPRA
+     from page one) leaves 4 — an even 2-row grid — without touching the
+     landscape/tablet/desktop layout, which has room for all of them. */
+  .logoStrip li[data-logo="SEAT CUPRA"],
+  .logoStrip li[data-logo="MURIS"]{display:none}
 }
 .wordmark{height:24px;width:auto;color:var(--ink)}
 /* Real brand marks: the SVG is the mask, currentColor is the paint. This is
@@ -4536,7 +4552,7 @@ function LogoStrip({ reduced }) {
       <div className="container">
         <ul className="logoStrip" aria-label={CONTENT.logos.label}>
           {items.map((logo) => (
-            <li key={logo.name}>
+            <li key={logo.name} data-logo={logo.name}>
               <Wordmark
                 mark={logo.mark}
                 name={logo.name}
@@ -4567,7 +4583,7 @@ function LogoStrip({ reduced }) {
             aria-hidden={i === page ? undefined : "true"}
           >
             {items.slice(i * perPage, i * perPage + perPage).map((logo) => (
-              <li key={logo.name}>
+              <li key={logo.name} data-logo={logo.name}>
                 <Wordmark
                   mark={logo.mark}
                   name={logo.name}
