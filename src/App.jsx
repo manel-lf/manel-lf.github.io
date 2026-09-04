@@ -2206,11 +2206,18 @@ const STYLES_HOME = `
 .cardMarkWrap{
   position:relative;
   display:grid;place-items:center;
-  padding:clamp(40px,7vw,88px) var(--s5);
+  height:clamp(140px,20vw,220px);
+  padding-inline:var(--s5);
   /* fixed-radius clip: the mark scales inside, the frame never moves */
   border-radius:var(--r-md);
   overflow:hidden;
 }
+/* The overlay label (position:absolute) takes up none of the flow height
+   that a normal, in-flow cardTop would — so a thumbnail card would end up
+   exactly that much shorter than its siblings without this. 40px is fixed
+   (padding var(--s5) plus the label's own line height), not responsive,
+   so adding it back here holds at every viewport width. */
+.cardMarkWrap--thumbnail{height:calc(clamp(140px,20vw,220px) + 40px)}
 .cardMarkWrap > *,
 .cardMediaImg{
   transition:transform ${DUR.reveal}ms var(--ease-out);
@@ -4601,7 +4608,15 @@ function ProjectCard({ project, onCapture, index }) {
         aria-label={`${project.name} — ${isExternal ? CONTENT.work.viewOnBehance : CONTENT.work.viewCase}`}
       >
         <span className="cardMedia">
-          <span className="cardMarkWrap">
+          <span
+            className={`cardTop mono${project.cardThumbnail ? " cardTop--overlay" : ""}`}
+          >
+            <span ref={titleRef}>{project.eyebrow}</span>
+            <Icon name="arrowUpRight" size={16} />
+          </span>
+          <span
+            className={`cardMarkWrap${project.cardThumbnail ? " cardMarkWrap--thumbnail" : ""}`}
+          >
             {project.cardThumbnail ? (
               <Visual
                 imageKey={project.cardThumbnail}
@@ -4618,12 +4633,6 @@ function ProjectCard({ project, onCapture, index }) {
                 large
               />
             )}
-          </span>
-          <span
-            className={`cardTop mono${project.cardThumbnail ? " cardTop--overlay" : ""}`}
-          >
-            <span ref={titleRef}>{project.eyebrow}</span>
-            <Icon name="arrowUpRight" size={16} />
           </span>
         </span>
         <span className="cardBody">
