@@ -159,7 +159,7 @@ export const CONTENT = {
 
   work: {
     eyebrow: "Recent work.",
-    heading: "From pixels to products.",
+    heading: "Selected case studies.",
     spotlightSlug: "gamehouse-plus",
     viewCase: "View case",
     viewOnBehance: "View on Behance",
@@ -645,17 +645,11 @@ export const CONTENT = {
       { id: "extend", label: "Extend" },
       { id: "impact", label: "Impact" },
     ],
-    // GameHouse+ gets its own structure (GameHousePlusCase) rather than the
-    // generic overview/process/system/extend/impact template above, so its
-    // sticky rail needs its own matching set of section ids.
-    richRail: [
-      { id: "overview", label: "Overview" },
-      { id: "shift", label: "The Shift" },
-      { id: "complexity", label: "Complexity" },
-      { id: "duality", label: "Two Ways to Play" },
-      { id: "discovery", label: "Discovery" },
-      { id: "outcomes", label: "Outcomes" },
-    ],
+    // Any project using richBody (GameHousePlusCase) instead of the generic
+    // overview/process/system/extend/impact template gets its sticky rail
+    // derived straight from its own richBody h-blocks (see slugify + the
+    // sections/railItems logic in GameHousePlusCase) — each project's
+    // outline can differ, so there is no shared rail config to keep here.
   },
 
   /* -----------------------------------------------------------------------
@@ -669,7 +663,11 @@ export const CONTENT = {
       // gradients, so it is a real <img> rather than a recoloured mask.
       spotlightLogo: "img/logos/ghplus-colored.svg",
       spotlightLogoAspect: 4.457,
-      spotlightTitle: [
+      // This project's own case-study title/subtitle (shown on its detail
+      // page). The Spotlight component on Home also falls back to this when
+      // a project has no separate positioning line — here that fallback is
+      // moot since GameHouse+ always renders through GameHousePlusCase.
+      caseTitle: [
         "From Catalog to Platform.",
         "Leading GameHouse+'s pivot to instant play.",
       ],
@@ -716,6 +714,7 @@ export const CONTENT = {
         {
           h: "Overview",
           index: "01",
+          navLabel: "Overview",
         },
         {
           list: [
@@ -737,6 +736,7 @@ export const CONTENT = {
         {
           h: "The Shift",
           index: "02",
+          navLabel: "The Shift",
           sub: "Why GameHouse+ Needed to Evolve",
         },
         {
@@ -807,6 +807,7 @@ export const CONTENT = {
         {
           h: "Designing for Complexity",
           index: "03",
+          navLabel: "Complexity",
         },
         {
           p: "A product built for one content type suddenly had two. The existing architecture was designed around downloadable games; instant play changed that. Content could now simultaneously be:",
@@ -843,6 +844,7 @@ export const CONTENT = {
         {
           h: "One Product, Two Ways to Play",
           index: "04",
+          navLabel: "Two Ways to Play",
         },
         {
           sub: "Exploring the Future of GameHouse+",
@@ -897,6 +899,7 @@ export const CONTENT = {
         {
           h: "Reimagining Discovery",
           index: "05",
+          navLabel: "Discovery",
         },
         {
           sub: "Home Becomes a Launchpad",
@@ -932,6 +935,7 @@ export const CONTENT = {
         {
           h: "Outcomes & Reflections",
           index: "06",
+          navLabel: "Outcomes",
         },
         {
           sub: "Results",
@@ -1315,114 +1319,344 @@ export const CONTENT = {
       eyebrow: "Scavenger Hunt · Popcore",
       // A real thumbnail (an IMAGES key) instead of the centred wordmark.
       cardThumbnail: "card.scavengerHunt.thumbnail",
-      // This case study is already published as a finished piece on
-      // Behance, so the card is a plain external link there instead of
-      // the internal case-study route — same pattern as Jesterday.
-      externalUrl:
-        "https://www.behance.net/gallery/194452315/Scavenger-Hunt-Hyper-Casual-Mobile-Game-UXUI-Design",
-      positioning: "Live-events design support on a top-grossing mobile title.",
+      // Was a plain external link out to Behance; the case study now lives
+      // here instead, told through its own three shipped features rather
+      // than the generic template.
+      positioning:
+        "Three engagement features built from one hyper-casual game's existing maps — no new art, no new pipeline.",
       cardDescription:
-        "Live events on a top-grossing mobile game. Designing a recurring event so it reads instantly, ships on cadence and never blocks the release train.",
-      role: "Product Designer, Live Events",
+        "Night Mode, a ticket-driven Summer Event and a daily Today's Goals loop — three retention features built from maps the game already had.",
+      role: "Main UX/UI Designer",
       years: "2023",
       skills: [
         "UX Design",
         "Live Ops",
         "Mobile Games",
+        "Monetisation Design",
         "Visual",
-        "Rapid Iteration",
       ],
       metrics: [
         { value: "Top-grossing", label: "Title the event ran on" },
         { value: "Recurring", label: "Event cadence, not a one-off" },
         { value: "Live ops", label: "Shipped inside a running game" },
       ],
+      caseTitle: [
+        "Three features, no new maps.",
+        "Retention engineering for Scavenger Hunt at Popcore.",
+      ],
       images: {
         hero: "case.scavenger-hunt.hero",
-        overview: "case.scavenger-hunt.overview",
-        system: [
-          "case.scavenger-hunt.system.1",
-          "case.scavenger-hunt.system.2",
-          "case.scavenger-hunt.system.3",
-          "case.scavenger-hunt.system.4",
-        ],
-        extend: [
-          "case.scavenger-hunt.extend.1",
-          "case.scavenger-hunt.extend.2",
-        ],
       },
-      overview: {
-        eyebrow: "Overview:",
-        heading: "Backstory of the work.",
-        body: [
-          "Popcore runs top-grossing casual mobile titles, and live events are how those games stay alive between releases. I provided design support on Scavenger Hunt, a recurring event layered onto a game already in players’ hands.",
-          "Designing into a live product is a different discipline from designing a new one. You inherit the interface, the economy and the player’s existing habits, and your event has to be understood in seconds by someone who did not ask for it.",
-        ],
+      richBody: [
+        { h: "Overview", index: "01", navLabel: "Overview" },
+        {
+          list: [
+            "Role — Main UX/UI Designer",
+            "Studio — Popcore",
+            "Status — Shipped live",
+          ],
+        },
+        {
+          stats: [
+            { value: "Top-grossing", label: "Title the event ran on" },
+            { value: "Recurring", label: "Event cadence, not a one-off" },
+            { value: "Live ops", label: "Shipped inside a running game" },
+          ],
+        },
+        {
+          p: "Scavenger Hunt is a hyper-casual hidden-object game: find a set of items in a dense, hand-illustrated map. The maps are the expensive thing — players exhaust them far faster than an art team can draw them, which is the structural economics problem of the whole genre. A player who runs out of things to do doesn't complain, they just stop opening the app.",
+        },
+        {
+          quote:
+            'The brief was never "add content." It was make the content we already have worth returning to.',
+        },
+        { p: "Three features, three mechanisms, same asset underneath." },
+
+        { h: "Night Mode", index: "02", navLabel: "Night Mode" },
+        { sub: "Re-light it, don't redraw it" },
+        {
+          p: "Replay completed maps at night. Same illustration, different lighting — and the search genuinely gets harder because you can see less of it. New content out of a rendering change.",
+        },
+        {
+          p: "I designed how it surfaces: the main menu entry point and the promotion popup that introduces it.",
+        },
+        {
+          quote:
+            "On a feature like this, the surfacing is the feature — a re-lit map nobody knows exists is a build flag, not content.",
+        },
+        {
+          imageKey: "case.scavenger-hunt.nightMode",
+          caption:
+            "The Night Mode entry point in the main menu, next to the popup that introduces it.",
+        },
+        {
+          p: "Trade-off: replaying is never as good as new, and leaned on too hard it reads as padding rather than generosity. It buys retention time very cheaply — it doesn't replace a content pipeline, and shouldn't be sold internally as if it does.",
+        },
+
+        { h: "Summer Event", index: "03", navLabel: "Summer Event" },
+        { sub: "Make the finished maps the currency" },
+        {
+          p: "A time-limited seasonal event. Tickets drop from ordinary maps, tickets open the summer map, the summer map pays out rewards.",
+        },
+        {
+          quote:
+            "The reward for replaying old content is access to new content.",
+        },
+        {
+          p: "A finished map stops being something the player has completed and becomes something they farm. The time limit supplies urgency a permanent feature can't.",
+        },
+        {
+          imageKey: "case.scavenger-hunt.summerEvent",
+          caption:
+            "The Summer Event map, unlocked by tickets earned from ordinary maps.",
+        },
+
+        { h: "Today's Goals", index: "04", navLabel: "Today's Goals" },
+        { sub: "A daily loop, with the ad as the pressure valve" },
+        {
+          p: "Daily activities paying daily rewards. I designed three flows — first contact, completing missions, claiming from the menu — plus every screen and UI asset.",
+        },
+        {
+          p: "Monetisation sits in one control: a player who can't or won't finish a mission watches a rewarded ad to skip it. Too cheap and the goals stop meaning anything, so the rewards stop feeling earned. Too hostile and a daily engagement loop quietly becomes a paywall, which the player solves by leaving.",
+        },
+        {
+          list: [
+            "Show the final reward at first contact, so the loop has a visible destination",
+            "Keep a persistent home-screen panel, so progress is ambient rather than somewhere you navigate to",
+            "Run the repeat interactions through that same panel, so there's one place to learn instead of three",
+          ],
+        },
+        {
+          imageKey: "case.scavenger-hunt.todaysGoalsFirstContact",
+          caption:
+            "The Today's Goals first-contact screen, showing the reward before a single mission starts.",
+        },
+        {
+          imageKey: "case.scavenger-hunt.todaysGoalsPanel",
+          caption:
+            "The persistent Today's Goals panel on the home screen, carrying progress and the repeat-claim flow.",
+        },
+        {
+          quote:
+            "Hyper-casual sessions are measured in seconds and the player has no investment yet — most of the design work here was removal, not addition.",
+        },
+
+        { h: "Outcome", index: "05", navLabel: "Outcome" },
+        { p: "Shipped live as part of the game." },
+
+        { h: "In Hindsight", index: "06", navLabel: "Hindsight" },
+        {
+          list: [
+            "The skip — should have shipped with an explicit daily cap and a designed non-ad path from day one, rather than relying on tuning to keep it fair.",
+            "Night Mode's difficulty — it came from reduced visibility alone. A deliberate difficulty pass (item placement, count, timer) would have made it a mode rather than a filter.",
+            "Measurement — three engagement features landed close together and their effects can't now be separated. I'd stagger them, or at minimum agree the measurement plan before the first one ships.",
+          ],
+        },
+        {
+          p: "The genre's real constraint is never the interface, it's the cost of the next map. The most useful thing I did on this game was design around that instead of asking for more of it.",
+        },
+      ],
+    },
+    {
+      slug: "dragon-city-2",
+      logo: "img/logos/socialpoint.svg",
+      logoAspect: 4.867,
+      name: "Dragon City 2",
+      mark: "socialpoint",
+      eyebrow: "Dragon City 2 · Socialpoint",
+      positioning:
+        "A cancelled midcore RPG sequel — campaign battle systems redesigned, then tested against real first-time players.",
+      cardDescription:
+        "Campaign battle redesign and first-time-user research for an unlaunched RPG sequel — what shipped in the systems, and what the research proved people actually understood.",
+      role: "Campaign Battle UX & FTUE Research",
+      years: "2020 — 2022",
+      skills: [
+        "UX Design",
+        "UX Research",
+        "Combat Systems",
+        "FTUE Research",
+        "Visual",
+      ],
+      caseTitle: [
+        "Slow down the decision, speed up the repetition.",
+        "Campaign battle UX and FTUE research for Dragon City 2.",
+      ],
+      images: {
+        hero: "case.dragon-city-2.hero",
       },
-      process: {
-        eyebrow: "Process:",
-        heading: "How I kicked things off.",
-        body: [
-          "Live ops runs on cadence, so the process has to be fast without becoming careless. I worked from the existing game language outward rather than proposing anything the player would have to learn.",
-          "The constraint I held to: the event must be comprehensible without a tutorial. If it needs explaining, it is too complicated for a live event.",
-        ],
-        cards: [
-          {
-            title: "Existing language audit",
-            meta: "Discovery",
-            body: "Catalogued the game’s existing patterns for progress, reward and time pressure so the event could reuse them instead of inventing new ones.",
-          },
-          {
-            title: "Comprehension in seconds",
-            meta: "UX design",
-            body: "Designed the entry point so a returning player understands the goal, the reward and the deadline at a glance, with no tutorial step.",
-          },
-          {
-            title: "Reward legibility",
-            meta: "Interaction design",
-            body: "Made progress and payoff visible at every moment. In a live event the player’s sense of momentum is the feature.",
-          },
-          {
-            title: "Cadence-safe scope",
-            meta: "Process",
-            body: "Scoped every element against the release train. Anything that could not ship reliably on cadence was cut rather than carried.",
-          },
-          {
-            title: "Cross-functional loop",
-            meta: "Collaboration",
-            body: "Worked in a tight loop with product, live ops and engineering, reviewing in build so the event was validated in the real game, not in isolation.",
-          },
-          {
-            title: "Post-event read",
-            meta: "Analytics",
-            body: "Reviewed participation and completion after the run so the next iteration started from evidence rather than from opinion.",
-          },
-        ],
-      },
-      system: {
-        eyebrow: "Shaping the system:",
-        heading: "An event built from the game’s own parts.",
-        body: [
-          "The event deliberately reuses the game’s existing visual and interaction vocabulary. Recognition is worth more than novelty here — a player should feel like they already know how it works, because structurally they do.",
-          "What is new is confined to the event’s own identity and its progress model, so the surrounding game stays untouched and the event can be re-run, re-skinned and re-scheduled without redesign.",
-        ],
-      },
-      extend: {
-        eyebrow: "Extend:",
-        heading: "Re-runs and promotion.",
-        body: [
-          "A live event is only economical if it comes back. The structure was built to be re-skinned and re-scheduled, so subsequent runs are a content exercise rather than a design one.",
-          "The same assets carried into in-game promotion and store surfaces, so what players were told about the event matched what they found when they opened it.",
-        ],
-      },
-      impact: {
-        eyebrow: "The impact:",
-        heading: "Shipping into a live game.",
-        body: [
-          "The event shipped on cadence into a top-grossing title and was built to be re-run rather than rebuilt, which is the outcome live ops actually needs from design.",
-          "The lasting lesson was about restraint. On a live product the best design is frequently the one that adds the least new vocabulary — reuse is not a shortcut, it is the reason the player understands you at all.",
-        ],
-      },
+      richBody: [
+        { h: "Overview", index: "01", navLabel: "Overview" },
+        {
+          list: [
+            "Role — Campaign Battle UX + FTUE Research",
+            "Studio — Socialpoint",
+            "Timeline — 2020 – 2022",
+          ],
+        },
+        {
+          p: "Dragon City 2 is a midcore RPG sequel to Dragon City: breed dragons, build an island, fight turn-based battles. I worked on the campaign battle systems, then ran the first-time-user research that tested whether players understood them.",
+        },
+
+        { h: "The Problem", index: "02", navLabel: "The Problem" },
+        {
+          p: "Two problems pulling opposite ways. Players ground the same easy encounters for resources — repetition was the price of progression, paid in attention. Meanwhile the systems that made a fight interesting went unused: they attacked whatever the interface had pre-targeted, and almost nobody checked which element beat which.",
+        },
+        {
+          quote:
+            "Too slow and too shallow at once. Fix either one naively and the other gets worse.",
+        },
+
+        {
+          h: "Target Before Attack",
+          index: "03",
+          navLabel: "Target First",
+        },
+        {
+          p: "Players never chose targets because the game chose for them, so the fastest path through a turn skipped the only real decision in it. I inverted the order — target, then attack — keeping the target step optional so the default path stays one tap.",
+        },
+        {
+          imageKey: "case.dragon-city-2.targeting",
+          caption:
+            "The reordered turn flow: choose a target, then choose an attack, with the target step optional.",
+        },
+        {
+          quote:
+            "Every battle gets slightly slower, permanently, for everyone. Worth it — a system nobody engages with is worth nothing however well it's modelled.",
+        },
+
+        {
+          h: "Speed Toggles for Everything Else",
+          index: "04",
+          navLabel: "Speed Toggles",
+        },
+        {
+          p: "2× and autobattle, so the fights that exist only to be farmed stop costing what a real fight costs. A scan across Galaxy of Heroes, Marvel Strike Force and Empires & Puzzles gave two conventions worth inheriting rather than reinventing.",
+        },
+        {
+          list: [
+            "Speed controls grouped in one corner",
+            'Autobattle labelled with the word "auto" — no icon reads reliably',
+          ],
+        },
+        {
+          imageKey: "case.dragon-city-2.speedToggles",
+          caption:
+            "The battle HUD's speed controls: a 2× toggle and an autobattle button labelled 'auto'.",
+        },
+        {
+          quote:
+            "Slow down the one turn that carries a decision, speed up the hundred that don't.",
+        },
+
+        {
+          h: "Reject the Type Matrix",
+          index: "05",
+          navLabel: "Type Matchups",
+        },
+        {
+          p: "Every dragon has an element, strong against some and weak against others. The genre answer is the full N×N grid, and on a phone it fails — find a row, find a column, hold both in your head over a five-millimetre cell.",
+        },
+        {
+          p: "I worked through the alternatives and landed on the opposite structure: pick one element, see two lists.",
+        },
+        {
+          columns: [
+            { title: "Weak Against", body: "The elements this one beats." },
+            {
+              title: "Strong Against",
+              body: "The elements that beat this one.",
+            },
+          ],
+        },
+        {
+          p: 'It answers the question players actually have, which is never "show me the system" and always "what do I bring to that fight?"',
+        },
+        {
+          imageKey: "case.dragon-city-2.typeMatchups",
+          caption:
+            "The type-matchup screen: pick one element, see two lists, instead of the full N×N grid.",
+        },
+        {
+          quote:
+            "Loses the at-a-glance overview for the minority who want to study the whole game. Not who a portrait phone screen is for.",
+        },
+
+        {
+          h: "The Cursed Boss Loop",
+          index: "06",
+          navLabel: "Boss Loop",
+        },
+        {
+          p: "Fog covers parts of the island; clearing it means fighting the boss inside. I designed the flow and both the prebattle and postbattle screens.",
+        },
+        {
+          p: "They have different jobs. Prebattle has to make a level-3 Guardivyan feel worth preparing for — it's the only moment the player decides whether they're ready. Postbattle has to connect the win back to the island: victory, then orbs to heal the cursed land, then the territory opening up with a nature egg inside.",
+        },
+        {
+          imageKey: "case.dragon-city-2.bossPrebattle",
+          caption:
+            "The Cursed Boss prebattle screen, framing a level-3 Guardivyan as worth preparing for.",
+        },
+        {
+          imageKey: "case.dragon-city-2.bossPostbattle",
+          caption:
+            "The postbattle screen: victory, orbs to heal the cursed land, and the newly opened territory.",
+        },
+        {
+          quote: "The payoff isn't the drop, it's the map getting bigger.",
+        },
+
+        {
+          h: "Then I Checked Whether Any of It Landed",
+          index: "07",
+          navLabel: "Research",
+        },
+        {
+          p: "I ran the FTUE research end to end — objectives, method, recruitment, analysis, report.",
+        },
+        {
+          list: [
+            "10 casual and midcore players, US/CA/UK, 16–25, recruited on City Sim, Resource Management and Team RPG play history",
+            "10–15 minutes of first-time play, screen and voice recorded, thinking aloud",
+            "Post-test survey built around comprehension, not satisfaction",
+          ],
+        },
+        {
+          p: "The questions were blunt on purpose: what are candies used for, how do you get orbs, how do you heal the cursed land, rate the Cursed Boss battle and why. A player who enjoyed the game but couldn't answer counted as a failure.",
+        },
+        {
+          p: "Those last two test the Cursed Boss loop directly. I designed it, then asked ten strangers to explain it back to me. Every answer was classified against three bands defined before I saw any data — success, mid success, fail — so the bar couldn't quietly move to fit the result.",
+        },
+        {
+          imageKey: "case.dragon-city-2.research",
+          caption:
+            "Ten first-time players' answers, classified into success / mid-success / fail bands defined before the data came in.",
+        },
+
+        { h: "Outcome", index: "08", navLabel: "Outcome" },
+        {
+          p: "Findings went back grouped two ways: by feature, for the owners of each, and by question, for the tutorial as a whole.",
+        },
+        {
+          quote:
+            "Watching a person fail to understand your feature does something a summary of the same fact does not.",
+        },
+        {
+          p: "The team was carrying assumptions about player behaviour that the recordings contradicted, and written findings weren't shifting them — so I cut a compendium video of players actually playing and put it in front of everyone.",
+        },
+        {
+          p: "Dragon City 2 was cancelled in beta and never launched. There are no live metrics behind any of this, and I'd rather say so than imply otherwise — the reasoning is the part that transferred.",
+        },
+
+        { h: "In Hindsight", index: "09", navLabel: "Hindsight" },
+        {
+          list: [
+            "Recruitment — 16–25 for a game with a broader commercial audience. I ran the spec as briefed; I'd argue with it now, before fieldwork rather than after.",
+            "Sequence — I tested comprehension after building. The type chart and the boss loop could each have been failed on paper, by five people, in an afternoon.",
+            "Integration — battle work and research ran as parallel tracks that happened to overlap on one feature. Designing the second to deliberately test the first would have cost nothing.",
+          ],
+        },
+      ],
     },
   ],
 
@@ -1810,54 +2044,83 @@ export const CONTENT = {
       tone: "dark",
       seed: 601,
     },
-    "case.scavenger-hunt.overview": {
+    "case.scavenger-hunt.nightMode": {
       src: null,
-      alt: "Scavenger Hunt overview visual — a wide mesh standing in for a live game surface.",
-      plate: "mesh",
+      alt: "Scavenger Hunt system panel — concentric arcs over a dark field, standing in for the Night Mode entry point and its promotion popup.",
+      plate: "orbit",
       tone: "dark",
       seed: 602,
     },
-    "case.scavenger-hunt.system.1": {
+    "case.scavenger-hunt.summerEvent": {
       src: null,
-      alt: "Scavenger Hunt system panel — concentric arcs standing in for the progress model.",
-      plate: "orbit",
-      tone: "dark",
+      alt: "Scavenger Hunt system panel — a rising ramp standing in for the ticket-driven Summer Event map.",
+      plate: "ramp",
+      tone: "accent",
       seed: 603,
     },
-    "case.scavenger-hunt.system.2": {
+    "case.scavenger-hunt.todaysGoalsFirstContact": {
       src: null,
-      alt: "Scavenger Hunt system panel — nested panels standing in for the event entry point.",
+      alt: "Scavenger Hunt system panel — nested panels standing in for the Today's Goals first-contact screen.",
       plate: "panels",
       tone: "dark",
       seed: 604,
     },
-    "case.scavenger-hunt.system.3": {
+    "case.scavenger-hunt.todaysGoalsPanel": {
       src: null,
-      alt: "Scavenger Hunt system panel — stepped columns standing in for reward legibility.",
-      plate: "columns",
+      alt: "Scavenger Hunt system panel — interlocking bars standing in for the persistent Today's Goals home panel.",
+      plate: "weave",
       tone: "dark",
       seed: 605,
     },
-    "case.scavenger-hunt.system.4": {
+
+    "case.dragon-city-2.hero": {
       src: null,
-      alt: "Scavenger Hunt system panel — a ramp standing in for time pressure and deadline.",
-      plate: "ramp",
+      alt: "Dragon City 2 case study hero — an interlocking lattice standing in for the campaign battle systems.",
+      plate: "lattice",
       tone: "dark",
-      seed: 606,
+      seed: 701,
     },
-    "case.scavenger-hunt.extend.1": {
+    "case.dragon-city-2.targeting": {
       src: null,
-      alt: "Scavenger Hunt extend visual — stacked strata standing in for re-skinned event re-runs.",
+      alt: "Dragon City 2 system panel — concentric arcs standing in for the target-then-attack turn flow.",
+      plate: "orbit",
+      tone: "light",
+      seed: 702,
+    },
+    "case.dragon-city-2.speedToggles": {
+      src: null,
+      alt: "Dragon City 2 system panel — a rising ramp standing in for the 2× and autobattle speed controls.",
+      plate: "ramp",
+      tone: "accent",
+      seed: 703,
+    },
+    "case.dragon-city-2.typeMatchups": {
+      src: null,
+      alt: "Dragon City 2 system panel — interlocking bars standing in for the two-list type-matchup screen.",
+      plate: "weave",
+      tone: "light",
+      seed: 704,
+    },
+    "case.dragon-city-2.bossPrebattle": {
+      src: null,
+      alt: "Dragon City 2 system panel — nested panels standing in for the Cursed Boss prebattle screen.",
+      plate: "panels",
+      tone: "dark",
+      seed: 705,
+    },
+    "case.dragon-city-2.bossPostbattle": {
+      src: null,
+      alt: "Dragon City 2 system panel — stacked strata standing in for the postbattle territory reveal.",
       plate: "strata",
       tone: "accent",
-      seed: 607,
+      seed: 706,
     },
-    "case.scavenger-hunt.extend.2": {
+    "case.dragon-city-2.research": {
       src: null,
-      alt: "Scavenger Hunt extend visual — interlocking bars standing in for in-game promotion surfaces.",
-      plate: "weave",
-      tone: "dark",
-      seed: 608,
+      alt: "Dragon City 2 research visual — a grid of hairline cells standing in for the FTUE classification bands.",
+      plate: "grid",
+      tone: "light",
+      seed: 707,
     },
   },
 };
@@ -3464,6 +3727,15 @@ function resolveSrc(src) {
   return `${base.replace(/\/+$/, "")}/${src.replace(/^\/+/, "")}`;
 }
 
+/** Kebab-cases a richBody section's nav label into a DOM id for scroll-spy. */
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .replace(/['']/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 /** Deterministic PRNG so a given seed always draws the same composition. */
 function mulberry32(a) {
   return function () {
@@ -4855,7 +5127,7 @@ function LogoStrip({ reduced }) {
 function Spotlight({ project, onCapture, reduced }) {
   const mediaRef = useParallax(0.1, reduced);
   const titleRef = useRef(null);
-  const lines = project.spotlightTitle || [project.positioning];
+  const lines = project.caseTitle || [project.positioning];
 
   return (
     <article className="spotlight reveal">
@@ -6232,13 +6504,15 @@ function CaseRichBlock({ block, i }) {
 }
 
 /**
- * GameHouse+'s case study argues a product strategy rather than walking
- * through screens, so it gets a dedicated renderer instead of the generic
- * overview/process/system/extend/impact template every other project uses.
- * The header (back link, hero, meta) mirrors CaseStudy's for consistency;
- * the body is a flat richBody block array, sliced into sections at each
- * numbered heading so the sticky rail (CONTENT.caseUi.richRail) has real
- * ids to scroll-spy against.
+ * Renders any project whose case study argues a strategy or a narrative
+ * rather than walking through overview/process/system/extend/impact — the
+ * generic template every other project uses. The header (back link, hero,
+ * meta) mirrors CaseStudy's for consistency; the body is a flat richBody
+ * block array, sliced into sections at each numbered heading. Each heading
+ * can carry its own `navLabel` (a short rail label distinct from the full
+ * on-page heading text — falling back to the heading itself); the rail's
+ * ids are slugified from that label, so the sticky rail always matches
+ * this project's own outline instead of a shared, hardcoded one.
  */
 function GameHousePlusCase({
   project,
@@ -6251,26 +6525,28 @@ function GameHousePlusCase({
 }) {
   const revealRef = useReveal();
   const subjectRef = useRef(null);
-  const railItems = CONTENT.caseUi.richRail;
-  const caseIds = useMemo(() => railItems.map((r) => r.id), [railItems]);
-  const activeId = useScrollSpy(caseIds, [project.slug]);
 
   const sections = useMemo(() => {
     const list = [];
     let current = null;
     project.richBody.forEach((block) => {
       if (block.h) {
-        current = {
-          id: railItems[list.length]?.id || `s${list.length}`,
-          blocks: [block],
-        };
+        const label = block.navLabel || block.h;
+        current = { id: slugify(label), label, blocks: [block] };
         list.push(current);
       } else if (current) {
         current.blocks.push(block);
       }
     });
     return list;
-  }, [project.richBody, railItems]);
+  }, [project.richBody]);
+
+  const railItems = useMemo(
+    () => sections.map((s) => ({ id: s.id, label: s.label })),
+    [sections],
+  );
+  const caseIds = useMemo(() => railItems.map((r) => r.id), [railItems]);
+  const activeId = useScrollSpy(caseIds, [project.slug]);
 
   useLayoutEffect(() => {
     const el = subjectRef.current;
@@ -6331,13 +6607,11 @@ function GameHousePlusCase({
               <span className="caseEyebrow mono">{project.eyebrow}</span>
               <h1 className="caseTitle">
                 <span className="subject" ref={subjectRef}>
-                  {project.spotlightTitle[0]}
+                  {project.caseTitle[0]}
                 </span>
               </h1>
             </div>
-            <p className="casePositioning reveal">
-              {project.spotlightTitle[1]}
-            </p>
+            <p className="casePositioning reveal">{project.caseTitle[1]}</p>
           </div>
 
           <div className="caseHeroFrame reveal">
