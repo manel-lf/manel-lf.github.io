@@ -91,6 +91,7 @@ export const CONTENT = {
 
   logos: {
     label: "Companies and teams I have designed for",
+    visitLabel: "Visit website",
     // Shown `perPage` at a time, cross-fading every `intervalMs`.
     // `fadeMs` is the length of the cross-fade itself, `intervalMs` the wait
     // between swaps — they are independent.
@@ -109,50 +110,68 @@ export const CONTENT = {
         logo: "img/logos/gamehouse.svg",
         aspect: 8.201,
         scale: 0.62,
+        url: "https://www.gamehouse.com",
       },
       {
         name: "Jesterday",
         logo: "img/logos/jesterday.svg",
         aspect: 3.292,
         scale: 1.45,
+        url: "https://jesterday.studio/en/",
       },
       {
         name: "Eunoia Digital",
         logo: "img/logos/eunoiadigital.svg",
         aspect: 12.264,
         scale: 0.45,
+        url: "https://www.eunoia.es/en",
       },
       {
         name: "Popcore Games",
         logo: "img/logos/popcore.svg",
         aspect: 6.036,
         scale: 0.9,
+        url: "https://www.popcore.com",
       },
       {
         name: "SEAT CUPRA",
         logo: "img/logos/cupra.svg",
         aspect: 7.008,
         scale: 0.85,
+        url: "https://www.cupraofficial.com",
       },
-      { name: "Socialpoint", logo: "img/logos/socialpoint.svg", aspect: 4.867 },
+      {
+        name: "Socialpoint",
+        logo: "img/logos/socialpoint.svg",
+        aspect: 4.867,
+        url: "https://www.socialpoint.es",
+      },
       {
         name: "La Salle BCN",
         logo: "img/logos/lasalle.svg",
         aspect: 3.526,
         scale: 1.4,
+        url: "https://www.salleurl.edu/en",
       },
       {
         name: "Kave Home",
         logo: "img/logos/kavehome.svg",
         aspect: 5.581,
         scale: 0.95,
+        url: "https://kavehome.com",
       },
-      { name: "MURIS", logo: "img/logos/murisbrand.svg", aspect: 4.68 },
+      {
+        name: "MURIS",
+        logo: "img/logos/murisbrand.svg",
+        aspect: 4.68,
+        url: "https://murisbrand.com",
+      },
       {
         name: "Radisson Hotels",
         logo: "img/logos/radisson.svg",
         aspect: 2.681,
         scale: 1.5,
+        url: "https://www.radissonhotels.com/en-us/",
       },
     ],
   },
@@ -2495,7 +2514,16 @@ body{
   font-size:clamp(2.75rem,9.2vw,7.5rem);
   font-weight:700;letter-spacing:-.045em;line-height:1;
   color:var(--muted);
-  min-height:1em;
+  /* A fixed height, not min-height: none of CONTENT.hero.roles ever wraps
+     to a second line at any breakpoint, so there is nothing for this box
+     to legitimately grow into. min-height still let the empty-string
+     moment between words compute a hair shorter than a populated one in
+     some engines — enough for the reflow to visibly nudge the page (most
+     noticeable as the whole viewport twitching on mobile Safari, which
+     redraws its chrome on almost any layout shift). A true height removes
+     the ambiguity outright; overflow is a safety net, not expected to clip. */
+  height:1em;
+  overflow:hidden;
 }
 .typeLine{min-width:0}
 .typeLine .typed{white-space:pre;overflow-wrap:anywhere}
@@ -2567,6 +2595,8 @@ body{
 .logoRotator .logoPage.is-active{opacity:1;transform:rotateX(0deg);pointer-events:auto}
 .logoStrip li{opacity:.62;transition:opacity var(--dur-base) var(--ease-std)}
 .logoStrip li:hover{opacity:1}
+.logoStrip a{display:block}
+.logoStrip a:focus-visible{opacity:1;outline-offset:4px}
 @media (max-width:640px){
   /* space-between plus flex-wrap on five marks of very different widths
      produces a ragged, unevenly-spaced two-row wrap on narrow screens.
@@ -5073,13 +5103,20 @@ function LogoStrip({ reduced }) {
         <ul className="logoStrip" aria-label={CONTENT.logos.label}>
           {items.map((logo) => (
             <li key={logo.name} data-logo={logo.name}>
-              <Wordmark
-                mark={logo.mark}
-                name={logo.name}
-                logo={logo.logo}
-                aspect={logo.aspect}
-                scale={logo.scale}
-              />
+              <a
+                href={logo.url}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label={`${logo.name} — ${CONTENT.logos.visitLabel}`}
+              >
+                <Wordmark
+                  mark={logo.mark}
+                  name={logo.name}
+                  logo={logo.logo}
+                  aspect={logo.aspect}
+                  scale={logo.scale}
+                />
+              </a>
             </li>
           ))}
         </ul>
@@ -5104,13 +5141,25 @@ function LogoStrip({ reduced }) {
           >
             {items.slice(i * perPage, i * perPage + perPage).map((logo) => (
               <li key={logo.name} data-logo={logo.name}>
-                <Wordmark
-                  mark={logo.mark}
-                  name={logo.name}
-                  logo={logo.logo}
-                  aspect={logo.aspect}
-                  scale={logo.scale}
-                />
+                <a
+                  href={logo.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  aria-label={`${logo.name} — ${CONTENT.logos.visitLabel}`}
+                  // Inactive pages sit behind pointer-events:none, but that
+                  // alone doesn't remove a link from the Tab order — without
+                  // this a keyboard user could focus a company name they
+                  // can't currently see.
+                  tabIndex={i === page ? undefined : -1}
+                >
+                  <Wordmark
+                    mark={logo.mark}
+                    name={logo.name}
+                    logo={logo.logo}
+                    aspect={logo.aspect}
+                    scale={logo.scale}
+                  />
+                </a>
               </li>
             ))}
           </ul>
