@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Case study" description="Editorial case-study page: eyebrow, two-tone title, hero frame, meta bar, overview, process scroller, dark system panel, impact." -->
+<helmet><script src="./ds-base.js"></script><style>body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--font-display)}</style></helmet>
+<main style="padding:112px 0 96px">
+<div style="width:100%;max-width:1240px;margin-inline:auto;padding-inline:clamp(20px,5vw,64px)">
+<a href="#/" style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-family:var(--font-mono);font-size:.6875rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-bottom:32px">Back to work</a>
+<div style="display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:48px;align-items:end">
+<div>
+<span style="display:block;color:var(--muted);font-family:var(--font-mono);font-size:.6875rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px">GameHouse+</span>
+<h1 style="font-size:clamp(2.25rem,6.2vw,5rem);font-weight:700;letter-spacing:-.042em;line-height:.98;color:var(--ink)"><span style="display:block;color:var(--muted)">End-to-End Design</span><span style="display:block">For GameHouse+</span></h1>
+</div>
+<p style="justify-self:end;max-width:42ch;color:var(--ink-2);font-size:1rem;line-height:1.62">A consumer subscription app for casual games, repositioned around instant play.</p>
+</div>
+<div style="margin-top:clamp(40px,6vh,72px);padding:clamp(12px,1.6vw,22px);background:var(--surface);border:1px solid var(--hairline);border-radius:12px;box-shadow:var(--shadow-card)">
+<div style="border-radius:8px;overflow:hidden;background:var(--surface-2);aspect-ratio:16 / 9;display:grid;place-items:center"><span style="color:var(--muted);font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase">Hero screenshot</span></div>
+</div>
+<x-import component-from-global-scope="ManelLPezPortfolioDesignSystem_30aec3.MetaBar" items="{{ meta }}" hint-size="100%,120px"></x-import>
+</div>
+
+<section style="padding-block:clamp(80px,12vh,160px)">
+<div style="width:100%;max-width:1240px;margin-inline:auto;padding-inline:clamp(20px,5vw,64px)">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.28fr);gap:clamp(32px,6vw,88px);align-items:start">
+<h2 style="max-width:22ch;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:600;letter-spacing:-.03em;line-height:1.08"><span style="display:block;color:var(--muted)">Overview:</span><span style="display:block;color:var(--ink);text-wrap:balance">Backstory of the work.</span></h2>
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="color:var(--ink-2);font-size:1rem;line-height:1.68;max-width:62ch">Say what the product is and who owns which parts of it. One paragraph, no preamble.</p>
+<p style="color:var(--ink-2);font-size:1rem;line-height:1.68;max-width:62ch">Then state the problem as an observation with a cost attached: what happened, how often, and what it was costing the business.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding-block:clamp(56px,8vh,104px)">
+<div style="width:100%;max-width:1240px;margin-inline:auto;padding-inline:clamp(20px,5vw,64px)">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.28fr);gap:clamp(32px,6vw,88px);align-items:start">
+<h2 style="max-width:22ch;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:600;letter-spacing:-.03em;line-height:1.08"><span style="display:block;color:var(--muted)">Process:</span><span style="display:block;color:var(--ink);text-wrap:balance">How I kicked things off.</span></h2>
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="color:var(--ink-2);font-size:1rem;line-height:1.68;max-width:62ch">Start where the disagreement was. Say what you measured before you proposed anything.</p>
+</div>
+</div>
+<div style="display:grid;grid-auto-flow:column;grid-auto-columns:minmax(268px,1fr);gap:24px;margin-top:24px;overflow-x:auto">
+<sc-for list="{{ steps }}" as="step" hint-placeholder-count="4">
+<x-import component-from-global-scope="ManelLPezPortfolioDesignSystem_30aec3.ProcessCard" index="{{ step.index }}" title="{{ step.title }}" meta="{{ step.meta }}" body="{{ step.body }}" hint-size="268px,236px"></x-import>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section style="padding-block:clamp(80px,12vh,160px)">
+<div style="width:100%;max-width:1240px;margin-inline:auto;padding-inline:clamp(20px,5vw,64px)">
+<div style="background:var(--panel);color:var(--panel-ink);border-radius:12px;padding:clamp(28px,4.5vw,80px);overflow:hidden">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.28fr);gap:clamp(32px,6vw,88px);align-items:start">
+<h2 style="max-width:22ch;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:600;letter-spacing:-.03em;line-height:1.08"><span style="display:block;color:var(--panel-muted)">Shaping the system:</span><span style="display:block;color:var(--panel-ink);text-wrap:balance">The system behind the work.</span></h2>
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="color:var(--panel-muted);font-size:1rem;line-height:1.68;max-width:62ch">Explain what the system had to hold and why it stayed small. Name the states each component ships with.</p>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.6vw,20px);margin-top:clamp(36px,5vh,64px)">
+<div style="grid-column:span 2;grid-row:span 2;border-radius:8px;border:1px solid var(--panel-hairline);background:#0A0A0A;aspect-ratio:4 / 3"></div>
+<div style="border-radius:8px;border:1px solid var(--panel-hairline);background:#0A0A0A;aspect-ratio:3 / 4"></div>
+<div style="border-radius:8px;border:1px solid var(--panel-hairline);background:#0A0A0A;aspect-ratio:3 / 4"></div>
+<div style="grid-column:span 2;border-radius:8px;border:1px solid var(--panel-hairline);background:#0A0A0A;aspect-ratio:16 / 9"></div>
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding-block:clamp(80px,12vh,160px)">
+<div style="width:100%;max-width:1240px;margin-inline:auto;padding-inline:clamp(20px,5vw,64px)">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.28fr);gap:clamp(32px,6vw,88px);align-items:start">
+<h2 style="max-width:22ch;font-size:clamp(1.5rem,3vw,2.5rem);font-weight:600;letter-spacing:-.03em;line-height:1.08"><span style="display:block;color:var(--muted)">The impact:</span><span style="display:block;color:var(--ink);text-wrap:balance">What changed, and what it cost.</span></h2>
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="color:var(--ink-2);font-size:1rem;line-height:1.68;max-width:62ch">Lead with the numbers you can defend. Then say what changed in how the team works, which is the more durable result.</p>
+</div>
+</div>
+<div style="margin-top:clamp(32px,5vh,56px);padding-top:24px;border-top:1px solid var(--hairline)">
+<x-import component-from-global-scope="ManelLPezPortfolioDesignSystem_30aec3.StatRow" stats="{{ stats }}" onPanel="{{ false }}" hint-size="100%,90px"></x-import>
+</div>
+</div>
+</section>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;role&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Senior Product Designer — end-to-end ownership&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Meta bar&quot;},&quot;years&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;2023 — Present&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Meta bar&quot;},&quot;skills&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;UX Design, UX Research, Product Analytics, Design Systems, Prototyping&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Meta bar&quot;},&quot;stat1Value&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;6×&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Impact stats&quot;},&quot;stat1Label&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Day-0 activation&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Impact stats&quot;},&quot;stat2Value&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;6×&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Impact stats&quot;},&quot;stat2Label&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Faster time to first session&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Impact stats&quot;},&quot;stat3Value&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;2×&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Impact stats&quot;},&quot;stat3Label&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Day-1 retention&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Impact stats&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      meta: [
+        { label: this.props.roleLabel ?? 'Role', value: this.props.role ?? 'Senior Product Designer — end-to-end ownership' },
+        { label: 'Years', value: this.props.years ?? '2023 — Present' },
+        { label: 'Skills', value: this.props.skills ?? 'UX Design, UX Research, Product Analytics, Design Systems, Prototyping' },
+      ],
+      stats: [
+        { value: this.props.stat1Value ?? '6×', label: this.props.stat1Label ?? 'Day-0 activation' },
+        { value: this.props.stat2Value ?? '6×', label: this.props.stat2Label ?? 'Faster time to first session' },
+        { value: this.props.stat3Value ?? '2×', label: this.props.stat3Label ?? 'Day-1 retention' },
+      ],
+      steps: [
+        { index: 1, title: 'Funnel teardown', meta: 'Product analytics', body: 'What you instrumented, and the thing it showed that nobody expected.' },
+        { index: 2, title: 'Moderated sessions', meta: 'UX research', body: 'Who you watched, cold, and the moment the interface lost them.' },
+        { index: 3, title: 'Problem statement', meta: 'Framing document', body: 'One page: what we observed, what it costs, what we optimise, what we explicitly do not solve.' },
+        { index: 4, title: 'Coded prototype', meta: 'Prototyping', body: 'Built as a working thing rather than a clickable mock, so latency and failure states were real.' },
+        { index: 5, title: 'Instrumented rollout', meta: 'Validation', body: 'Shipped behind a flag with the funnel already wired, so the comparison arrived in days.' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!-- @dsCard group="Components" viewport="700x400" name="Content blocks" subtitle="Section heads, spotlight, project cards, bits, process, quotes, journal rows" -->
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>body{padding:24px;background:var(--canvas)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}.stack{display:flex;flex-direction:column;gap:24px}</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const NS = window.ManelLPezPortfolioDesignSystem_30aec3;
+const { SectionHead, SpotlightCard, ProjectCard, BitTile, ProcessCard, Testimonial, JournalRow, MetaBar, StatRow, PanelCard, Button } = NS;
+function Demo(){
+  return (<div className="stack">
+    <SectionHead label="Recent work." statement="From pixels to products." />
+    <div className="grid">
+      <SpotlightCard image="../../assets/img/scavenger-hunt-thumbnail.jpg" logo="../../assets/logos/ghplus-colored.svg" logoAspect={4.457}
+        statement={["Rethinking how players start playing.","A product-wide pivot to in-app games."]}
+        stats={[{value:"6×",label:"Day-0 activation"},{value:"2×",label:"Day-1 retention"}]} href="#" />
+      <ul className="projectGrid" style={{marginTop:0}}>
+        <ProjectCard index={0} project={{slug:"seat-cupra",name:"SEAT CUPRA",eyebrow:"SEAT CUPRA",logo:"../../assets/logos/cupra.svg",logoAspect:7.008,logoScale:0.85,cardDescription:"In-car HMI for a performance brand — one type ramp from cluster to centre display."}} />
+      </ul>
+    </div>
+    <ul className="bitsRow">
+      <BitTile index={0} kicker="AI tooling" image="../../assets/img/journal-tcebc-tool.jpg" caption="A working prototype in an afternoon — Claude Code driving the build, the Figma MCP keeping it on the design system." />
+      <BitTile index={1} kicker="Design systems" caption="Design tokens as the contract between Figma and Unity, so a colour change is one commit rather than a meeting." />
+    </ul>
+    <div className="grid">
+      <ProcessCard index={1} title="Funnel teardown" meta="Product analytics" body="Instrumented the first session step by step and found the drop was in the gap between opening the app and anything being playable." />
+      <Testimonial quote="Manel combines strong design skills with genuine product thinking. He consistently keeps the user at the center, runs usability tests, and uses feedback to improve." name="Emmi Kuusikko" role="Head of Product" avatar="../../assets/img/testimonial-emmi-kuusikko.jpg" href="#" />
+    </div>
+    <ul className="journalList" style={{marginTop:0}}>
+      <JournalRow index={0} post={{slug:"grounding-ideas-fast",date:"June 2026",tags:["Process","Prototyping"],title:"Grounding ideas fast is changing how I design",dek:"The distance between a question and an answer used to be a chain of documents.",image:"../../assets/img/journal-tcebc-tool.jpg"}} />
+    </ul>
+    <MetaBar items={[{label:"Role",value:"Senior Product Designer — end-to-end ownership"},{label:"Years",value:"2023 — Present"},{label:"Skills",value:"UX Design, UX Research, Product Analytics, Design Systems"}]} />
+    <PanelCard aside={<img src="../../assets/img/manel-portrait.jpg" alt="" />}>
+      <h3>AI Native Designer. Design Thinker.</h3>
+      <div className="aboutBody"><p>I came to design through engineering. The degree gave me the systems habit — read the constraints, model the thing, then draw it.</p></div>
+      <div className="btnRow"><Button variant="panel" leadingIcon="linkedin" icon="arrowUpRight" href="#">LinkedIn</Button></div>
+    </PanelCard>
+  </div>);
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+:root{
+  --gutter:clamp(20px,5vw,64px); /* @kind spacing */
+  --maxw:1240px; /* @kind spacing */
+  --section-y:clamp(80px,12vh,160px); /* @kind spacing */
+  --section-y-tight:clamp(56px,8vh,104px); /* @kind spacing */
+  --panel-pad:clamp(28px,4.5vw,72px); /* @kind spacing */
+  --nav-offset:76px; /* @kind spacing */
+  --row-bleed:24px; /* @kind spacing */
+  --z-rail:40; /* @kind other */
+  --z-nav:50; /* @kind other */
+  --z-dialog:60; /* @kind other */
+}
+/* The journal row's hover bleed must stay inside the container gutter, or the
+   row pushes the document sideways on narrow screens. */
+@media (max-width:900px){
+  :root{
+    --row-bleed:12px; /* @kind spacing */
+  }
+}

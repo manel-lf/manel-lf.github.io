@@ -1,0 +1,13 @@
+/* Manel López — Portfolio design system. Global entry point.
+   Consumers link this one file. Order matters: fonts, then primitives, then
+   semantic themes, then the small set of global element resets. */
+@import url("tokens/fonts.css");
+@import url("tokens/typography.css");
+@import url("tokens/spacing.css");
+@import url("tokens/radius.css");
+@import url("tokens/shadow.css");
+@import url("tokens/motion.css");
+@import url("tokens/layout.css");
+@import url("tokens/colors.css");
+@import url("tokens/base.css");
+@import url("css/components.css");

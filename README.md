@@ -11,6 +11,16 @@ npm run build    # -> dist/
 npm run preview  # serve the production build locally
 ```
 
+## Design system
+
+[`design-system/`](design-system/) is the canonical source of truth for
+tokens, components and voice — read it before touching colour, type,
+spacing, radius or motion values, and before writing new copy. It's a
+synced snapshot (see `design-system/github.md` for when), so it can lag a
+commit or two behind `src/App.jsx`; if you find a real disagreement between
+the two (not just something newer), fix the code to match the design
+system, not the other way around.
+
 ## Everything editable lives in one place
 
 All copy, links, projects, case-study sections, testimonials, journal posts
@@ -25,7 +35,7 @@ change what the site says.
 | Hero bio | `CONTENT.hero.bio` |
 | The cycling roles in the headline | `CONTENT.hero.roles` |
 | Logo strip companies, and each one's brand SVG | `CONTENT.logos.items` |
-| Spotlight card title and brand lockup | `CONTENT.projects[0].spotlightTitle`, `.spotlightLogo` |
+| Spotlight card title and brand lockup | `CONTENT.projects[0].caseTitle`, `.spotlightLogo` |
 | How many logos show at once, the wait between swaps, and the cross-fade length | `CONTENT.logos.perPage`, `CONTENT.logos.intervalMs`, `CONTENT.logos.fadeMs` |
 | Booking dialog copy and the calendar URL | `CONTENT.booking` |
 | Which project is the spotlight | `CONTENT.work.spotlightSlug` |

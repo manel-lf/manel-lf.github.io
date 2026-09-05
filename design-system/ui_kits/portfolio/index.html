@@ -1,0 +1,55 @@
+<!-- @dsCard group="Portfolio site" viewport="1280x900" name="Portfolio — home" subtitle="Hero, logo rotator, spotlight, work grid, bits, about, shoutouts, journal, contact" -->
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manel López — Senior Product Designer</title>
+<link rel="icon" href="../../assets/logo.svg">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script src="data.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div id="root"></div>
+<script type="text/babel" src="HomeScreen.jsx"></script>
+<script type="text/babel" src="CaseStudyScreen.jsx"></script>
+<script type="text/babel" src="JournalPostScreen.jsx"></script>
+<script type="text/babel">
+function parseHash(hash){
+  const work=/^#\/work\/([a-z0-9-]+)/i.exec(hash||'');
+  if(work) return {view:'case',slug:work[1]};
+  const post=/^#\/journal\/([a-z0-9-]+)/i.exec(hash||'');
+  if(post) return {view:'post',slug:post[1]};
+  return {view:'home'};
+}
+function App(){
+  const [route,setRoute]=React.useState(()=>parseHash(window.location.hash));
+  const [theme,setTheme]=React.useState('light');
+  React.useEffect(()=>{
+    const onHash=()=>setRoute(parseHash(window.location.hash));
+    window.addEventListener('hashchange',onHash);
+    return ()=>window.removeEventListener('hashchange',onHash);
+  },[]);
+  React.useEffect(()=>{
+    document.documentElement.dataset.theme=theme;
+    const id=requestAnimationFrame(()=>document.documentElement.classList.add('theme-ready'));
+    return ()=>cancelAnimationFrame(id);
+  },[theme]);
+  const toggle=()=>setTheme(t=>t==='dark'?'light':'dark');
+  if(route.view==='case') return <window.CaseStudyScreen slug={route.slug} theme={theme} onToggleTheme={toggle} />;
+  if(route.view==='post') return <window.JournalPostScreen slug={route.slug} theme={theme} onToggleTheme={toggle} />;
+  return <window.HomeScreen theme={theme} onToggleTheme={toggle} />;
+}
+const mount=()=>{
+  if(!window.HomeScreen||!window.CaseStudyScreen||!window.JournalPostScreen){return setTimeout(mount,40)}
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+};
+mount();
+</script>
+</body>
+</html>
