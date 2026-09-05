@@ -163,6 +163,7 @@ export const CONTENT = {
     spotlightSlug: "gamehouse-plus",
     viewCase: "View case",
     viewOnBehance: "View on Behance",
+    underConstruction: "Case study still being written up — check back soon.",
   },
 
   bits: {
@@ -644,6 +645,17 @@ export const CONTENT = {
       { id: "extend", label: "Extend" },
       { id: "impact", label: "Impact" },
     ],
+    // GameHouse+ gets its own structure (GameHousePlusCase) rather than the
+    // generic overview/process/system/extend/impact template above, so its
+    // sticky rail needs its own matching set of section ids.
+    richRail: [
+      { id: "overview", label: "Overview" },
+      { id: "shift", label: "The Shift" },
+      { id: "complexity", label: "Complexity" },
+      { id: "duality", label: "Two Ways to Play" },
+      { id: "discovery", label: "Discovery" },
+      { id: "outcomes", label: "Outcomes" },
+    ],
   },
 
   /* -----------------------------------------------------------------------
@@ -658,9 +670,13 @@ export const CONTENT = {
       spotlightLogo: "img/logos/ghplus-colored.svg",
       spotlightLogoAspect: 4.457,
       spotlightTitle: [
-        "Rethinking how players start playing.",
-        "A product-wide pivot to in-app games.",
+        "From Catalog to Platform.",
+        "Leading GameHouse+'s pivot to instant play.",
       ],
+      // Shown next to the title on desktop only — the panel's own width
+      // can't fit it beside the statement below a certain breakpoint, and
+      // the full-bleed hero already carries the mobile layout.
+      spotlightVisual: "case.gamehouse-plus.spotlightVisual",
       name: "GameHouse+",
       mark: "gamehouse",
       eyebrow: "GameHouse+",
@@ -670,6 +686,7 @@ export const CONTENT = {
         "End-to-end ownership of a casual-games subscription app — research, product analytics, design system and the first-session rebuild.",
       role: "Senior Product Designer — end-to-end ownership",
       years: "2023 — Present",
+      team: "Product, Engineering, Content, Data",
       skills: [
         "UX Design",
         "UX Research",
@@ -685,90 +702,267 @@ export const CONTENT = {
       ],
       images: {
         hero: "case.gamehouse-plus.hero",
-        overview: "case.gamehouse-plus.overview",
-        system: [
-          "case.gamehouse-plus.system.1",
-          "case.gamehouse-plus.system.2",
-          "case.gamehouse-plus.system.3",
-          "case.gamehouse-plus.system.4",
-        ],
-        extend: [
-          "case.gamehouse-plus.extend.1",
-          "case.gamehouse-plus.extend.2",
-        ],
       },
-      overview: {
-        eyebrow: "Overview:",
-        heading: "Backstory of the work.",
-        body: [
-          "GameHouse+ is a subscription app for casual games. I own it end to end — discovery, research, interaction design, the design system, the visual language, and the analytics that tell us whether any of it worked.",
-          "The product had a catalogue people liked and a first session almost nobody finished. Installs arrived, the store loaded, and the majority of new users left before they had played anything at all. The subscription was being asked to justify itself before it had delivered a single minute of value.",
-        ],
-      },
-      process: {
-        eyebrow: "Process:",
-        heading: "How I kicked things off.",
-        body: [
-          "I started where the disagreement was: everyone had a theory about why activation was low, and none of them were written down. So I made the current state undeniable before proposing anything.",
-          "Session recordings and funnel analysis first, then a short round of moderated sessions with new users, then a written problem statement the whole team could argue with. Only after that did I start drawing.",
-        ],
-        cards: [
-          {
-            title: "Funnel teardown",
-            meta: "Product analytics",
-            body: "Instrumented the first session step by step in Amplitude and found the drop was not at paywall or signup — it was in the gap between opening the app and anything being playable.",
+      /**
+       * A different shape from every other project's overview/process/system/
+       * extend/impact fields, deliberately — this case study argues a product
+       * strategy rather than walking through screens, so it gets its own
+       * renderer (GameHousePlusCase) instead of the generic CaseStudy template.
+       * Block types: h (numbered section heading), sub (subheading), p,
+       * list, quote (pull statement), columns (2-3 up comparison),
+       * table (before/after), stats, imageKey+caption.
+       */
+      richBody: [
+        {
+          h: "Overview",
+          index: "01",
+        },
+        {
+          list: [
+            "Role — Senior Product Designer, sole UX/UI designer on the app",
+            "Timeline — 2023–Present",
+            "Team — Product, Engineering, Content, Data",
+          ],
+        },
+        {
+          stats: [
+            { value: "6×", label: "Day-0 activation" },
+            { value: "6×", label: "Faster time to first session" },
+            { value: "2×", label: "Day-1 retention" },
+          ],
+        },
+        {
+          p: "GameHouse+ was built around downloadable games. When instant-play technology became available, it created an opportunity to fundamentally rethink how players discover, access and engage with content. I led the product design work required to evolve the experience from a downloadable games catalogue into a platform that supports multiple ways to play.",
+        },
+        {
+          h: "The Shift",
+          index: "02",
+          sub: "Why GameHouse+ Needed to Evolve",
+        },
+        {
+          sub: "What GameHouse+ Was",
+        },
+        {
+          p: "A subscription service built around downloadable games and proprietary franchises. The catalogue was the product: browse it, choose something, wait for it to download, then play.",
+        },
+        {
+          sub: "What Changed",
+        },
+        {
+          p: "Instant-play technology reduced the path to play from minutes to seconds.",
+        },
+        {
+          quote:
+            "The challenge wasn't introducing a new feature. It was introducing an entirely new way to consume content.",
+        },
+        {
+          sub: "Why This Was Hard",
+        },
+        {
+          p: "Unlike many platform transitions, the downloadable games couldn't simply disappear. They represented:",
+        },
+        {
+          list: [
+            "Loyal users",
+            "Established habits",
+            "Beloved franchises",
+            "A significant part of the product's value",
+          ],
+        },
+        {
+          quote:
+            "How do we introduce instant play without making the existing ecosystem obsolete?",
+        },
+        {
+          sub: "Understanding Our Players",
+        },
+        {
+          p: "Two audiences pulled in different directions.",
+        },
+        {
+          columns: [
+            {
+              title: "Busy Moms",
+              list: [
+                "Short sessions",
+                "Looking for quick breaks",
+                "Lower commitment",
+                "Immediate gratification",
+              ],
+            },
+            {
+              title: "Empty Nesters",
+              list: [
+                "Longer sessions",
+                "Story-driven engagement",
+                "More exploration-oriented",
+                "Higher depth of play",
+              ],
+            },
+          ],
+        },
+        {
+          p: "One audience benefited enormously from instant play. The other still valued the deeper downloadable experiences that had defined GameHouse+ for years.",
+        },
+        {
+          h: "Designing for Complexity",
+          index: "03",
+        },
+        {
+          p: "A product built for one content type suddenly had two. The existing architecture was designed around downloadable games; instant play changed that. Content could now simultaneously be:",
+        },
+        {
+          list: [
+            "Downloadable or instant play",
+            "Daily or unlimited",
+            "Free or VIP",
+            "Franchise-based or standalone",
+            "A quick distraction or a deep experience",
+            "Single-genre or cross-genre",
+          ],
+        },
+        {
+          p: "These dimensions didn't exist independently — they overlapped in countless combinations. The challenge wasn't organising content. It was creating a mental model users could actually understand.",
+        },
+        {
+          imageKey: "case.gamehouse-plus.complexity",
+        },
+        {
+          sub: "Validation & Discovery",
+        },
+        {
+          p: "Amplitude funnel analysis, session recordings, moderated first-session testing and a series of scoped experiments grounded every decision from here on — not a research chapter in itself, but the evidence every subsequent design choice was checked against.",
+        },
+        {
+          sub: "Reframing the Product",
+        },
+        {
+          quote:
+            "If users can instantly access content, should GameHouse+ still behave like a downloadable game catalogue?",
+        },
+        {
+          h: "One Product, Two Ways to Play",
+          index: "04",
+        },
+        {
+          sub: "Exploring the Future of GameHouse+",
+        },
+        {
+          p: "Three directions were on the table.",
+        },
+        {
+          columns: [
+            {
+              title: "Option A",
+              body: "Unified ecosystem — one catalogue, one navigation model, instant play folded into the existing structure.",
+            },
+            {
+              title: "Option B",
+              body: "Separate products — instant play spun out as its own surface, cleanly separated from the downloadable catalogue.",
+            },
+            {
+              title: "Option C",
+              body: "Hybrid ecosystem — both models coexist deliberately, connected by a shared content hierarchy.",
+            },
+          ],
+        },
+        {
+          p: "Option A underestimated how different the two modes of play actually are. Option B solved the mental-model problem but abandoned the audience who still wanted a catalogue. Option C — a hybrid ecosystem — became the frame the rest of the work was built on.",
+        },
+        {
+          sub: "The Architecture We Landed On",
+        },
+        {
+          p: "I called the framework Content Duality: both ecosystems remain, each optimised for the way its audience actually plays, connected by a content hierarchy that lets a player move between them without feeling like they've left the app.",
+        },
+        {
+          imageKey: "case.gamehouse-plus.architecture",
+          caption:
+            "Content Duality — how the downloadable and instant-play ecosystems coexist under one hierarchy.",
+        },
+        {
+          sub: "Redefining GameHouse+",
+        },
+        {
+          table: {
+            headers: ["Before", "After"],
+            rows: [
+              ["Download games", "Play instantly or download"],
+              ["Catalogue-driven", "Discovery-driven"],
+              ["Library mentality", "Platform mentality"],
+              ["Access content", "Engage with content"],
+            ],
           },
-          {
-            title: "Moderated first sessions",
-            meta: "UX research",
-            body: "Watched new users open the app cold. The catalogue read as a decision to make rather than an invitation to play, and the download wait broke the moment of intent.",
-          },
-          {
-            title: "Problem statement",
-            meta: "Framing document",
-            body: "One page: what we observed, what it costs, what we are choosing to optimise, and what we are explicitly not solving in this cycle. Signed off by product and engineering before design started.",
-          },
-          {
-            title: "Instant-play hypothesis",
-            meta: "Concept",
-            body: "If the first thing a new user meets is content already running rather than a catalogue to browse, activation stops depending on a download completing.",
-          },
-          {
-            title: "Coded prototype",
-            meta: "Prototyping",
-            body: "Built the entry flow as a working prototype rather than a clickable mock, so latency, loading and failure states were real and could be tested honestly.",
-          },
-          {
-            title: "Instrumented rollout",
-            meta: "Validation",
-            body: "Shipped behind a flag with the funnel already wired, so the comparison against the old first session was available in days rather than after a quarter.",
-          },
-        ],
-      },
-      system: {
-        eyebrow: "Shaping the system:",
-        heading: "Shaping the system for GameHouse+.",
-        body: [
-          "The pivot only holds if the surfaces around it are consistent, so I built the design system in parallel with the flow rather than after it. Tokens for colour, type, spacing and motion; a component library with real states rather than happy-path artwork; and documented rules for how content density behaves as the catalogue grows.",
-          "The system is deliberately small. Every component in it exists because two or more surfaces needed it, and each one ships with its loading, empty, error and offline states — those are the states a games subscription actually spends its time in.",
-        ],
-      },
-      extend: {
-        eyebrow: "Extend:",
-        heading: "Store and marketing surfaces.",
-        body: [
-          "Once the in-app language settled, the same system had to carry the surfaces that sit outside the app: store listings, lifecycle email, acquisition landing pages and the in-app merchandising slots that promote new content.",
-          "Reusing the tokens and components meant the promise made in an ad matched the first screen a new user saw. That continuity is a measurable part of activation, not a brand nicety.",
-        ],
-      },
-      impact: {
-        eyebrow: "The impact:",
-        heading: "Activation, and what changed.",
-        body: [
-          "The instant-content pivot delivered six times day-0 activation, a six-fold reduction in time to first session, and double day-1 retention. The first session stopped being a decision and became an experience.",
-          "The more durable change is how the team now works. A problem statement precedes design, prototypes are functional before they are pretty, and the funnel is instrumented before a feature ships rather than after someone asks how it is doing. I have since used the same analytics to argue for redirecting a feature I had already shipped myself.",
-        ],
-      },
+        },
+        {
+          h: "Reimagining Discovery",
+          index: "05",
+        },
+        {
+          sub: "Home Becomes a Launchpad",
+        },
+        {
+          p: "If instant play was going to succeed, Home could no longer function as a catalogue.",
+        },
+        {
+          imageKey: "case.gamehouse-plus.homeBefore",
+          caption: "Before — Home as a catalogue to browse.",
+          ratio: 3 / 4,
+        },
+        {
+          imageKey: "case.gamehouse-plus.homeAfter",
+          caption: "After — Home as a launchpad into instant play.",
+          ratio: 3 / 4,
+        },
+        {
+          sub: "Discovery at Scale",
+        },
+        {
+          p: "As content complexity increased, editorial navigation alone stopped scaling. Recommendations, mood-based browsing and content collections took over the work editorial curation could no longer do by hand — surfacing instant-play content alongside the downloadable catalogue rather than as an afterthought.",
+        },
+        {
+          imageKey: "case.gamehouse-plus.discovery",
+        },
+        {
+          sub: "Navigation for Two Ecosystems",
+        },
+        {
+          p: "Information architecture had to hold two content models without asking players to think about which one they were in — kept concise on purpose, since this is a systems decision rather than a UI showcase.",
+        },
+        {
+          h: "Outcomes & Reflections",
+          index: "06",
+        },
+        {
+          sub: "Results",
+        },
+        {
+          stats: [
+            { value: "6×", label: "Day-0 activation" },
+            { value: "6×", label: "Faster time to first session" },
+            { value: "2×", label: "Day-1 retention" },
+          ],
+        },
+        {
+          p: "The instant-content pivot delivered six times day-0 activation, a six-fold reduction in time to first session, and double day-1 retention. The first session stopped being a decision and became an experience.",
+        },
+        {
+          sub: "What I Learned",
+        },
+        {
+          list: [
+            "A product's content architecture eventually becomes its strategy.",
+            "Platform transitions are information-architecture challenges before they are UI challenges.",
+            "Supporting multiple player motivations can be more effective than optimising for a single ideal user.",
+          ],
+        },
+        {
+          sub: "My Role",
+        },
+        {
+          p: "As the lead designer for GameHouse+, I helped define how a subscription app built around downloadable games could evolve into a platform supporting multiple ways to play — balancing new opportunities without losing the audience that made it successful.",
+        },
+      ],
     },
     {
       slug: "jesterday",
@@ -895,6 +1089,9 @@ export const CONTENT = {
       name: "SEAT CUPRA",
       mark: "cupra",
       eyebrow: "SEAT CUPRA",
+      // Case study isn't ready yet — the card shows a tooltip instead of
+      // navigating. See ProjectCard.
+      underConstruction: true,
       positioning:
         "In-car infotainment for connected services — enrolment, data plans and software updates, across every screen in the range.",
       cardDescription:
@@ -1004,6 +1201,9 @@ export const CONTENT = {
       name: "Radisson Hotels",
       mark: "radisson",
       eyebrow: "Radisson Hotels — via Eunoia Digital",
+      // Case study isn't ready yet — the card shows a tooltip instead of
+      // navigating. See ProjectCard.
+      underConstruction: true,
       positioning:
         "Enterprise interfaces, flows and UI kits for a global hotel group, produced at agency scale.",
       cardDescription:
@@ -1374,54 +1574,49 @@ export const CONTENT = {
       glow: "#3B3061",
       accent: "#6E5BA6",
     },
-    "case.gamehouse-plus.overview": {
+    // Real product shot — transparent PNG, sits directly on the spotlight
+    // card's dark panel. Shown only alongside the title on desktop; see
+    // .spotlightVisual.
+    "case.gamehouse-plus.spotlightVisual": {
+      src: "img/gamehouse-plus-app-visual.png",
+      alt: "GameHouse+ app screens — the instant-play Home feed with a match-3 game running, Search results, and the VIP upgrade screen.",
+    },
+    "case.gamehouse-plus.complexity": {
       src: null,
-      alt: "GameHouse+ overview visual — an isometric lattice standing in for the catalogue and content system.",
+      alt: "GameHouse+ complexity visual — an isometric lattice standing in for the overlapping content dimensions instant play introduced.",
       plate: "lattice",
       tone: "dark",
-      seed: 202,
+      seed: 220,
     },
-    "case.gamehouse-plus.system.1": {
+    "case.gamehouse-plus.architecture": {
       src: null,
-      alt: "GameHouse+ system panel — nested structural panels standing in for the component library.",
-      plate: "panels",
+      alt: "Content Duality architecture diagram — placeholder: concentric orbits standing in for how the downloadable and instant-play ecosystems coexist.",
+      plate: "orbit",
       tone: "dark",
-      seed: 203,
+      seed: 221,
+      glow: "#3B3061",
+      accent: "#6E5BA6",
     },
-    "case.gamehouse-plus.system.2": {
+    "case.gamehouse-plus.homeBefore": {
       src: null,
-      alt: "GameHouse+ system panel — a token grid standing in for colour, type and spacing tokens.",
+      alt: "Home before, placeholder — a dense modular grid standing in for the catalogue-style layout.",
       plate: "grid",
       tone: "dark",
-      seed: 204,
+      seed: 222,
     },
-    "case.gamehouse-plus.system.3": {
+    "case.gamehouse-plus.homeAfter": {
       src: null,
-      alt: "GameHouse+ system panel — stacked strata standing in for content density rules.",
-      plate: "strata",
-      tone: "dark",
-      seed: 205,
-    },
-    "case.gamehouse-plus.system.4": {
-      src: null,
-      alt: "GameHouse+ system panel — interlocking bars standing in for component state coverage.",
-      plate: "weave",
-      tone: "dark",
-      seed: 206,
-    },
-    "case.gamehouse-plus.extend.1": {
-      src: null,
-      alt: "GameHouse+ extend visual — a wide mesh standing in for store and marketing surfaces.",
+      alt: "Home after, placeholder — a wide gradient mesh standing in for the instant-play launchpad layout.",
       plate: "mesh",
       tone: "accent",
-      seed: 207,
+      seed: 223,
     },
-    "case.gamehouse-plus.extend.2": {
+    "case.gamehouse-plus.discovery": {
       src: null,
-      alt: "GameHouse+ extend visual — stepped columns standing in for merchandising slots.",
+      alt: "Discovery-at-scale visual, placeholder — stepped columns standing in for recommendation and mood-based browsing surfaces.",
       plate: "columns",
       tone: "dark",
-      seed: 208,
+      seed: 224,
     },
 
     "card.jesterday.thumbnail": {
@@ -2194,6 +2389,26 @@ const STYLES_HOME = `
 /* The second line carries the same weight but reads as the subordinate
    clause, matching the two-tone treatment used by the section headings. */
 .spotlightStatement span + span{color:var(--panel-muted)}
+/* Brand + statement sit in their own column so a visual can take the
+   second one; on narrower viewports (below) it collapses back to a
+   single stacked column and the visual drops out entirely. */
+.spotlightHead{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(200px,300px);
+  align-items:center;
+  gap:var(--s8);
+}
+.spotlightHead > div:first-child{
+  display:flex;flex-direction:column;gap:var(--s9);
+  min-width:0;
+}
+.spotlightVisual{
+  /* No box of its own on purpose — it's a transparent cutout, not a
+     screenshot in a frame, so a card treatment (radius/clip/shadow-as-box)
+     would just glue a rectangle behind it. A drop-shadow instead follows
+     the art's own silhouette. */
+  filter:drop-shadow(0 16px 28px rgba(0,0,0,.4));
+}
 .statRow{
   display:flex;flex-wrap:wrap;gap:clamp(20px,3.4vw,56px);
 }
@@ -2315,6 +2530,38 @@ const STYLES_HOME = `
 }
 .cardCta svg{transition:transform var(--dur-base) var(--ease-out)}
 .projectCard:hover .cardCta svg{transform:translateX(3px)}
+
+/* A card whose case study isn't ready yet: same look, but a plain reset
+   button standing in for the link, since nothing actually navigates. The
+   host needs its own positioning context so the tooltip below can escape
+   the card's own overflow:hidden instead of being clipped by it. */
+.projectCardHost{position:relative}
+button.projectCard{
+  appearance:none;-webkit-appearance:none;
+  padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;
+}
+.cardTip{
+  position:absolute;
+  bottom:calc(100% + 10px);
+  left:50%;
+  z-index:2;
+  max-width:min(260px,calc(100% - 16px));
+  padding:var(--s3) var(--s4);
+  border-radius:var(--r-md);
+  background:var(--ink);
+  color:var(--surface);
+  font-size:.8125rem;line-height:1.4;text-align:center;
+  box-shadow:var(--shadow-lift);
+  opacity:0;
+  transform:translate3d(-50%,4px,0);
+  pointer-events:none;
+  transition:opacity var(--dur-fast) var(--ease-std),
+             transform var(--dur-fast) var(--ease-out);
+}
+.cardTip.is-open{opacity:1;transform:translate3d(-50%,0,0)}
+@media (prefers-reduced-motion:reduce){
+  .cardTip{transition:none}
+}
 
 /* ============================== BITS ============================== */
 .bitsRows{
@@ -2853,6 +3100,9 @@ const STYLES_CASE = `
   .heroLower{grid-template-columns:1fr;gap:var(--s5)}
   .heroBio{grid-column:1;justify-self:start}
   .projectGrid{grid-template-columns:1fr}
+  .spotlightHead{display:flex;flex-direction:column;gap:var(--s9)}
+  .spotlightHead > div:first-child{gap:var(--s9)}
+  .spotlightVisual{display:none}
   .aboutCard{grid-template-columns:1fr}
   .aboutPortrait{order:-1;max-width:340px}
   .caseHeadGrid{grid-template-columns:1fr;gap:var(--s5);align-items:start}
@@ -3921,6 +4171,7 @@ const ICON_PATHS = {
   mail: "M2.5 5.5h15v9h-15zM2.5 6l7.5 5 7.5-5",
   calendar: "M4 5.5h12v11H4zM7 3v3M13 3v3M4 9h12",
   close: "M5 5l10 10M15 5L5 15",
+  clock: "M10 3a7 7 0 100 14 7 7 0 000-14zM10 6.5V10l2.7 1.6",
 };
 
 const ICON_FILLED = {
@@ -4615,26 +4866,39 @@ function Spotlight({ project, onCapture, reduced }) {
         <Visual imageKey={project.images.hero} fill />
       </div>
       <div className="spotlightInner">
-        <p className="spotlightBrand" ref={titleRef}>
-          {project.spotlightLogo ? (
-            <img
-              src={resolveSrc(project.spotlightLogo)}
-              alt={project.name}
-              style={{
-                height: "30px",
-                width: `${Math.round(30 * project.spotlightLogoAspect)}px`,
-              }}
-            />
-          ) : (
-            <span className="mono spotlightEyebrow">{project.eyebrow}</span>
-          )}
-        </p>
+        <div className="spotlightHead">
+          <div>
+            <p className="spotlightBrand" ref={titleRef}>
+              {project.spotlightLogo ? (
+                <img
+                  src={resolveSrc(project.spotlightLogo)}
+                  alt={project.name}
+                  style={{
+                    height: "30px",
+                    width: `${Math.round(30 * project.spotlightLogoAspect)}px`,
+                  }}
+                />
+              ) : (
+                <span className="mono spotlightEyebrow">{project.eyebrow}</span>
+              )}
+            </p>
 
-        <h3 className="spotlightStatement">
-          {lines.map((line, i) => (
-            <span key={i}>{line}</span>
-          ))}
-        </h3>
+            <h3 className="spotlightStatement">
+              {lines.map((line, i) => (
+                <span key={i}>{line}</span>
+              ))}
+            </h3>
+          </div>
+
+          {/* Desktop only — the panel isn't wide enough to hold this
+              beside the statement below that breakpoint, and the
+              full-bleed hero already carries the layout on mobile. */}
+          {project.spotlightVisual ? (
+            <div className="spotlightVisual" aria-hidden="true">
+              <Visual imageKey={project.spotlightVisual} ratio={900 / 962} />
+            </div>
+          ) : null}
+        </div>
 
         {/* Stats and the call to action share the bottom rail. */}
         <div className="spotFoot">
@@ -4663,7 +4927,95 @@ function Spotlight({ project, onCapture, reduced }) {
 
 function ProjectCard({ project, onCapture, index }) {
   const titleRef = useRef(null);
+  const hostRef = useRef(null);
   const isExternal = Boolean(project.externalUrl);
+  const isBlocked = Boolean(project.underConstruction);
+  const [tipOpen, setTipOpen] = useState(false);
+  const tipId = `card-tip-${project.slug}`;
+
+  // The tooltip dismisses itself: a short auto-hide, plus Escape and a
+  // click anywhere outside the card. Listeners are only live while it is
+  // actually open, so idle cards cost nothing.
+  useEffect(() => {
+    if (!tipOpen) return;
+    const hide = () => setTipOpen(false);
+    const onKey = (e) => {
+      if (e.key === "Escape") hide();
+    };
+    const onPointer = (e) => {
+      if (hostRef.current && !hostRef.current.contains(e.target)) hide();
+    };
+    const timer = window.setTimeout(hide, 2600);
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
+  }, [tipOpen]);
+
+  const media = (
+    <span className="cardMedia">
+      <span
+        className={`cardTop mono${project.cardThumbnail ? " cardTop--overlay" : ""}`}
+      >
+        <span ref={titleRef}>{project.eyebrow}</span>
+        <Icon name={isBlocked ? "clock" : "arrowUpRight"} size={16} />
+      </span>
+      <span
+        className={`cardMarkWrap${project.cardThumbnail ? " cardMarkWrap--thumbnail" : ""}`}
+      >
+        {project.cardThumbnail ? (
+          <Visual
+            imageKey={project.cardThumbnail}
+            fill
+            className="cardMediaImg"
+          />
+        ) : (
+          <Wordmark
+            mark={project.mark}
+            name={project.name}
+            logo={project.logo}
+            aspect={project.logoAspect}
+            scale={project.logoScale}
+            large
+          />
+        )}
+      </span>
+    </span>
+  );
+
+  if (isBlocked) {
+    return (
+      <li ref={hostRef} className="projectCardHost">
+        <button
+          type="button"
+          className="projectCard reveal"
+          style={{ "--reveal-delay": `${index * 70}ms` }}
+          onClick={() => setTipOpen((v) => !v)}
+          aria-describedby={tipOpen ? tipId : undefined}
+          aria-label={`${project.name} — ${CONTENT.work.underConstruction}`}
+        >
+          {media}
+          <span className="cardBody">
+            <span className="cardDesc">{project.cardDescription}</span>
+            <span className="cardCta mono">
+              {CONTENT.work.viewCase}
+              <Icon name="arrowRight" size={14} />
+            </span>
+          </span>
+        </button>
+        <span
+          id={tipId}
+          role="status"
+          className={`cardTip${tipOpen ? " is-open" : ""}`}
+        >
+          {CONTENT.work.underConstruction}
+        </span>
+      </li>
+    );
+  }
 
   return (
     <li>
@@ -4676,34 +5028,7 @@ function ProjectCard({ project, onCapture, index }) {
         onClick={isExternal ? undefined : () => onCapture(titleRef.current)}
         aria-label={`${project.name} — ${isExternal ? CONTENT.work.viewOnBehance : CONTENT.work.viewCase}`}
       >
-        <span className="cardMedia">
-          <span
-            className={`cardTop mono${project.cardThumbnail ? " cardTop--overlay" : ""}`}
-          >
-            <span ref={titleRef}>{project.eyebrow}</span>
-            <Icon name="arrowUpRight" size={16} />
-          </span>
-          <span
-            className={`cardMarkWrap${project.cardThumbnail ? " cardMarkWrap--thumbnail" : ""}`}
-          >
-            {project.cardThumbnail ? (
-              <Visual
-                imageKey={project.cardThumbnail}
-                fill
-                className="cardMediaImg"
-              />
-            ) : (
-              <Wordmark
-                mark={project.mark}
-                name={project.name}
-                logo={project.logo}
-                aspect={project.logoAspect}
-                scale={project.logoScale}
-                large
-              />
-            )}
-          </span>
-        </span>
+        {media}
         <span className="cardBody">
           <span className="cardDesc">{project.cardDescription}</span>
           <span className="cardCta mono">
@@ -5794,6 +6119,321 @@ function CaseStudy({
   );
 }
 
+/**
+ * Renders one block of a richBody array. Shares its vocabulary with the
+ * journal post block model (h/p/list/stats/imageKey) and extends it with
+ * the shapes this case study's outline actually needs: sub (a subheading
+ * under a numbered section), quote (a pull statement), columns (a 2–3up
+ * comparison) and table (a before/after).
+ */
+function CaseRichBlock({ block, i }) {
+  if (block.h) {
+    return (
+      <header className="richSectionHead reveal" key={i}>
+        {block.index ? (
+          <span className="mono richIndex">{block.index}</span>
+        ) : null}
+        <h2 className="postH" style={{ marginTop: 0 }}>
+          {block.h}
+        </h2>
+      </header>
+    );
+  }
+  if (block.sub) {
+    return (
+      <h3 className="postSubH reveal" key={i}>
+        {block.sub}
+      </h3>
+    );
+  }
+  if (block.quote) {
+    return (
+      <p className="postQuote reveal" key={i}>
+        {block.quote}
+      </p>
+    );
+  }
+  if (block.columns) {
+    return (
+      <div className="postColumns reveal" key={i}>
+        {block.columns.map((col) => (
+          <div className="postColumn" key={col.title}>
+            <h4>{col.title}</h4>
+            {col.body ? <p>{col.body}</p> : null}
+            {col.list ? (
+              <ul>
+                {col.list.map((item, j) => (
+                  <li key={j}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        ))}
+      </div>
+    );
+  }
+  if (block.table) {
+    return (
+      <div className="postTableWrap reveal" key={i}>
+        <table className="postTable">
+          <thead>
+            <tr>
+              {block.table.headers.map((h) => (
+                <th key={h}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {block.table.rows.map((row, r) => (
+              <tr key={r}>
+                {row.map((cell, c) => (
+                  <td key={c}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+  if (block.imageKey) {
+    return (
+      <figure className="postFig reveal" key={i}>
+        <Visual imageKey={block.imageKey} ratio={block.ratio || 16 / 9} />
+        {block.caption ? (
+          <figcaption className="mono">{block.caption}</figcaption>
+        ) : null}
+      </figure>
+    );
+  }
+  if (block.list) {
+    return (
+      <ul className="postList reveal" key={i}>
+        {block.list.map((item, j) => (
+          <li key={j}>{item}</li>
+        ))}
+      </ul>
+    );
+  }
+  if (block.stats) {
+    return (
+      <dl className="postStats reveal" key={i}>
+        {block.stats.map((stat) => (
+          <div className="postStat" key={stat.label}>
+            <dd>{stat.value}</dd>
+            <dt className="mono">{stat.label}</dt>
+          </div>
+        ))}
+      </dl>
+    );
+  }
+  return (
+    <p className="postP" key={i}>
+      {block.p}
+    </p>
+  );
+}
+
+/**
+ * GameHouse+'s case study argues a product strategy rather than walking
+ * through screens, so it gets a dedicated renderer instead of the generic
+ * overview/process/system/extend/impact template every other project uses.
+ * The header (back link, hero, meta) mirrors CaseStudy's for consistency;
+ * the body is a flat richBody block array, sliced into sections at each
+ * numbered heading so the sticky rail (CONTENT.caseUi.richRail) has real
+ * ids to scroll-spy against.
+ */
+function GameHousePlusCase({
+  project,
+  prev,
+  next,
+  onCapture,
+  onHome,
+  flight,
+  reduced,
+}) {
+  const revealRef = useReveal();
+  const subjectRef = useRef(null);
+  const railItems = CONTENT.caseUi.richRail;
+  const caseIds = useMemo(() => railItems.map((r) => r.id), [railItems]);
+  const activeId = useScrollSpy(caseIds, [project.slug]);
+
+  const sections = useMemo(() => {
+    const list = [];
+    let current = null;
+    project.richBody.forEach((block) => {
+      if (block.h) {
+        current = {
+          id: railItems[list.length]?.id || `s${list.length}`,
+          blocks: [block],
+        };
+        list.push(current);
+      } else if (current) {
+        current.blocks.push(block);
+      }
+    });
+    return list;
+  }, [project.richBody, railItems]);
+
+  useLayoutEffect(() => {
+    const el = subjectRef.current;
+    if (!el || !flight || reduced) return;
+    el.classList.remove("is-flying");
+    el.style.transition = "none";
+    el.style.transform = "none";
+    el.style.opacity = "";
+
+    const to = el.getBoundingClientRect();
+    if (!to.height) return;
+
+    const dx = flight.left - to.left;
+    const dy = flight.top - to.top;
+    const scale = Math.max(0.2, Math.min(1, flight.height / to.height));
+    el.style.transform = `translate3d(${dx}px, ${dy}px, 0) scale(${scale})`;
+    el.style.opacity = "0.55";
+
+    const raf = requestAnimationFrame(() => {
+      el.classList.add("is-flying");
+      el.style.transform = "none";
+      el.style.opacity = "1";
+    });
+    const clear = window.setTimeout(() => {
+      el.classList.remove("is-flying");
+      el.style.transition = "";
+      el.style.transform = "";
+      el.style.opacity = "";
+    }, DUR.hero + 80);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(clear);
+      el.classList.remove("is-flying");
+      el.style.transition = "";
+      el.style.transform = "";
+      el.style.opacity = "";
+    };
+  }, [flight, reduced, project.slug]);
+
+  const m = CONTENT.caseUi.metaLabels;
+
+  return (
+    <>
+      <main
+        id="main"
+        ref={revealRef}
+        className={reduced ? undefined : "viewFade"}
+      >
+        <div className="container caseTop">
+          <a className="backLink mono" href="#/" onClick={onHome}>
+            <Icon name="arrowLeft" size={16} />
+            {CONTENT.caseUi.backLabel}
+          </a>
+
+          <div className="caseHeadGrid">
+            <div>
+              <span className="caseEyebrow mono">{project.eyebrow}</span>
+              <h1 className="caseTitle">
+                <span className="subject" ref={subjectRef}>
+                  {project.spotlightTitle[0]}
+                </span>
+              </h1>
+            </div>
+            <p className="casePositioning reveal">
+              {project.spotlightTitle[1]}
+            </p>
+          </div>
+
+          <div className="caseHeroFrame reveal">
+            <div className="inner">
+              <Visual imageKey={project.images.hero} ratio={16 / 9} />
+            </div>
+          </div>
+
+          <dl className="metaBar">
+            <div className="metaCell">
+              <dt className="mono">{m.role}</dt>
+              <dd>{project.role}</dd>
+            </div>
+            <div className="metaCell">
+              <dt className="mono">{m.years}</dt>
+              <dd>{project.years}</dd>
+            </div>
+            <div className="metaCell">
+              <dt className="mono">{m.skills}</dt>
+              <dd>
+                <span className="chips">
+                  {project.skills.map((s) => (
+                    <span className="chip mono" key={s}>
+                      {s}
+                    </span>
+                  ))}
+                </span>
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+        <div className="container">
+          <div className="postBody richCaseBody">
+            {sections.map((section) => (
+              <section id={section.id} key={section.id}>
+                {section.blocks.map((block, i) => (
+                  <CaseRichBlock block={block} i={i} key={i} />
+                ))}
+              </section>
+            ))}
+          </div>
+        </div>
+
+        {/* Prev / next */}
+        <div className="container">
+          <nav className="caseNav" aria-label="Other case studies">
+            <a
+              className="caseNavBtn"
+              href={`#/work/${prev.slug}`}
+              onClick={(e) =>
+                onCapture(e.currentTarget.querySelector("[data-nav-name]"))
+              }
+            >
+              <span className="dir mono">
+                <Icon name="arrowLeft" size={14} />
+                {CONTENT.caseUi.prevProject}
+              </span>
+              <span className="name" data-nav-name>
+                {prev.name}
+              </span>
+            </a>
+            <a
+              className="caseNavBtn caseNavBtn--next"
+              href={`#/work/${next.slug}`}
+              onClick={(e) =>
+                onCapture(e.currentTarget.querySelector("[data-nav-name]"))
+              }
+            >
+              <span className="dir mono">
+                {CONTENT.caseUi.nextProject}
+                <Icon name="arrowRight" size={14} />
+              </span>
+              <span className="name" data-nav-name>
+                {next.name}
+              </span>
+            </a>
+          </nav>
+        </div>
+
+        <Footer />
+      </main>
+
+      <SectionRail
+        items={railItems}
+        activeId={activeId}
+        label={CONTENT.caseUi.railLabel}
+        reduced={reduced}
+      />
+    </>
+  );
+}
+
 /* =========================================================================
  * Journal post detail view
  * ========================================================================= */
@@ -6127,6 +6767,17 @@ export default function App() {
           flight={flight}
           reduced={reduced}
         />
+      ) : isCase && project.richBody ? (
+        <GameHousePlusCase
+          key={project.slug}
+          project={project}
+          prev={projects[(index - 1 + projects.length) % projects.length]}
+          next={projects[(index + 1) % projects.length]}
+          onCapture={captureFlight}
+          onHome={goHome}
+          flight={flight}
+          reduced={reduced}
+        />
       ) : isCase ? (
         <CaseStudy
           key={project.slug}
@@ -6248,8 +6899,87 @@ const STYLES_POST = `
   transition:color var(--dur-base) var(--ease-std),border-color var(--dur-base) var(--ease-std);
 }
 .postRefs a:hover{color:var(--accent);border-color:var(--accent)}
+
+/* ---- rich case-study blocks (GameHousePlusCase only) ---- */
+.richCaseBody{max-width:none}
+.richCaseBody section{max-width:68ch}
+.richCaseBody section + section{
+  margin-top:clamp(56px,7vh,96px);
+  padding-top:clamp(40px,5vh,72px);
+  border-top:1px solid var(--hairline);
+}
+.richSectionHead{
+  display:flex;align-items:baseline;gap:var(--s4);
+  margin-top:0;margin-bottom:var(--s4);
+}
+.richIndex{color:var(--muted);flex:none}
+.postSubH{
+  margin-top:clamp(32px,4vh,48px);
+  margin-bottom:var(--s3);
+  font-size:1.0625rem;font-weight:600;letter-spacing:-.01em;
+  color:var(--ink);
+}
+.postQuote{
+  margin:clamp(32px,4.5vh,56px) 0;
+  padding-left:var(--s5);
+  border-left:2px solid var(--ink);
+  font-size:clamp(1.0625rem,2vw,1.3125rem);
+  font-weight:600;letter-spacing:-.015em;line-height:1.4;
+  color:var(--ink);
+}
+.postColumns{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:var(--s5);
+  margin-top:var(--s5);
+}
+.postColumn{
+  padding:var(--s5);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-md);
+}
+.postColumn h4{
+  font-size:.9375rem;font-weight:600;letter-spacing:-.01em;color:var(--ink);
+}
+.postColumn p{
+  margin-top:var(--s3);color:var(--ink-2);font-size:.9375rem;line-height:1.6;
+}
+.postColumn ul{
+  margin-top:var(--s3);
+  display:flex;flex-direction:column;gap:var(--s2);
+  list-style:none;
+}
+.postColumn li{
+  position:relative;padding-left:var(--s4);
+  color:var(--ink-2);font-size:.9375rem;line-height:1.5;
+}
+.postColumn li::before{
+  content:"";position:absolute;left:0;top:.65em;
+  width:5px;height:5px;border-radius:50%;
+  background:var(--accent);
+}
+.postTableWrap{
+  margin-top:var(--s5);
+  overflow-x:auto;
+  border:1px solid var(--hairline);
+  border-radius:var(--r-md);
+}
+.postTable{width:100%;border-collapse:collapse;font-size:.9375rem}
+.postTable th,.postTable td{
+  padding:var(--s3) var(--s4);
+  text-align:left;
+  border-bottom:1px solid var(--hairline);
+}
+.postTable th{
+  color:var(--muted);font-weight:600;
+  font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;
+}
+.postTable tr:last-child td{border-bottom:0}
+.postTable td:first-child{color:var(--ink-2)}
+.postTable td:last-child{color:var(--ink);font-weight:500}
+
 @media (max-width:900px){
   .postBody{max-width:none}
+  .richCaseBody section{max-width:none}
 }
 `;
 
