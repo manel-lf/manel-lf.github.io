@@ -182,7 +182,7 @@ export const CONTENT = {
     spotlightSlug: "gamehouse-plus",
     viewCase: "View case",
     viewOnBehance: "View on Behance",
-    underConstruction: "Case study still being written up — check back soon.",
+    underConstruction: "WIP Case Study — Check back soon.",
   },
 
   bits: {
@@ -648,8 +648,6 @@ export const CONTENT = {
   },
 
   caseUi: {
-    eyebrow: "End-to-End Design",
-    titlePrefix: "For",
     backLabel: "Back to work",
     metaLabels: { role: "Role", years: "Years", skills: "Skills" },
     processPrev: "Previous process card",
@@ -701,8 +699,8 @@ export const CONTENT = {
         "A consumer subscription app for casual games, repositioned around instant play.",
       cardDescription:
         "End-to-end ownership of a casual-games subscription app — research, product analytics, design system and the first-session rebuild.",
-      role: "Senior Product Designer — end-to-end ownership",
-      years: "2023 — Present",
+      role: "Senior Game UX UI Designer",
+      years: "Aug 2025 — Present",
       team: "Product, Engineering, Content, Data",
       skills: [
         "UX Design",
@@ -734,13 +732,6 @@ export const CONTENT = {
           h: "Overview",
           index: "01",
           navLabel: "Overview",
-        },
-        {
-          list: [
-            "Role — Senior Product Designer, sole UX/UI designer on the app",
-            "Timeline — 2023–Present",
-            "Team — Product, Engineering, Content, Data",
-          ],
         },
         {
           stats: [
@@ -1007,8 +998,8 @@ export const CONTENT = {
         "An indie mobile multiplayer title, given a design system and an economy that survive production.",
       cardDescription:
         "Indie mobile multiplayer. Design system built from scratch, an energy economy modelled end to end, and the component library implemented in Unity.",
-      role: "Product Designer & Design System Owner",
-      years: "2022 — 2023",
+      role: "Game UX UI Designer",
+      years: "Nov 2023 — Aug 2025",
       skills: [
         "UX Design",
         "Design Systems",
@@ -1106,118 +1097,6 @@ export const CONTENT = {
       },
     },
     {
-      slug: "seat-cupra",
-      logo: "img/logos/cupra.svg",
-      logoAspect: 7.008,
-      name: "SEAT CUPRA",
-      mark: "cupra",
-      eyebrow: "SEAT CUPRA",
-      // Case study isn't ready yet — the card shows a tooltip instead of
-      // navigating. See ProjectCard.
-      underConstruction: true,
-      positioning:
-        "In-car infotainment for connected services — enrolment, data plans and software updates, across every screen in the range.",
-      cardDescription:
-        "In-car infotainment. Connected-services enrolment, data plan purchase and an update centre, designed to hold from 7-inch clusters to 15-inch displays.",
-      role: "Product Designer, Connected Services",
-      years: "2021 — 2022",
-      skills: [
-        "UX Design",
-        "UX Research",
-        "Automotive HMI",
-        "Responsive Systems",
-        "Visual",
-      ],
-      metrics: [
-        { value: '7"–15"', label: "Screen sizes supported" },
-        { value: "3", label: "Core flows owned end to end" },
-        { value: "2", label: "Brands sharing one system" },
-      ],
-      images: {
-        hero: "case.seat-cupra.hero",
-        overview: "case.seat-cupra.overview",
-        system: [
-          "case.seat-cupra.system.1",
-          "case.seat-cupra.system.2",
-          "case.seat-cupra.system.3",
-          "case.seat-cupra.system.4",
-        ],
-        extend: ["case.seat-cupra.extend.1", "case.seat-cupra.extend.2"],
-      },
-      overview: {
-        eyebrow: "Overview:",
-        heading: "Backstory of the work.",
-        body: [
-          "Connected services turn a car into a product with an account, a subscription and a software lifecycle. I designed three of those flows for SEAT and CUPRA infotainment: enrolling the vehicle, buying a data plan, and managing software updates.",
-          "The context is unforgiving. The user is in a driver’s seat, possibly parked and impatient, reading a screen at arm’s length in variable light, using a system that cannot assume a keyboard, a fast connection or a second attempt.",
-        ],
-      },
-      process: {
-        eyebrow: "Process:",
-        heading: "How I kicked things off.",
-        body: [
-          "Automotive HMI has constraints you cannot design around, only design for: legal, safety, hardware and a screen range that spans more than double in physical size. I began by writing those constraints down as design inputs.",
-          "From there the work was mostly about reduction — finding the smallest flow that survives a bad connection, a distracted user and a 7-inch display.",
-        ],
-        cards: [
-          {
-            title: "Constraint inventory",
-            meta: "Framing",
-            body: "Hardware sizes, input methods, safety rules on what may appear while moving, and connectivity assumptions — collected as a single document that every design decision was checked against.",
-          },
-          {
-            title: "Flow reduction",
-            meta: "UX design",
-            body: "Rewrote enrolment to the minimum number of decisions, deferring everything that could be completed later from a phone rather than blocking the driver in the car.",
-          },
-          {
-            title: "Type and touch ramp",
-            meta: "Responsive system",
-            body: "One type and target scale defined against viewing distance rather than pixels, so the same layout stays legible and tappable at 7 inches and does not look sparse at 15.",
-          },
-          {
-            title: "Purchase without a keyboard",
-            meta: "Interaction design",
-            body: "Designed data plan purchase to avoid text entry wherever possible, handing off to the phone for anything that genuinely needed typing.",
-          },
-          {
-            title: "Update centre",
-            meta: "UX design",
-            body: "Software updates presented as a state the driver can understand and trust: what is changing, how long it takes, and what happens if they walk away.",
-          },
-          {
-            title: "In-vehicle review",
-            meta: "Validation",
-            body: "Reviewed on real hardware in real light. Contrast and legibility decisions that looked safe on a monitor repeatedly did not survive a sunny car park.",
-          },
-        ],
-      },
-      system: {
-        eyebrow: "Shaping the system:",
-        heading: "One system, every screen size.",
-        body: [
-          "The core of the work is a responsive system keyed to viewing distance instead of viewport width. Type, touch targets, spacing and information density all step together across the screen range, so a flow designed once behaves correctly on every configuration in the line-up.",
-          "Two brands share it. SEAT and CUPRA differ in tone and palette but not in structure, which meant the flows could be designed once and themed rather than forked.",
-        ],
-      },
-      extend: {
-        eyebrow: "Extend:",
-        heading: "Beyond the head unit.",
-        body: [
-          "Several flows genuinely belong on a phone — anything involving typing, payment detail or reading terms. I designed the handoff so starting in the car and finishing on a phone is one continuous task rather than two disconnected ones.",
-          "The same system also carried the companion-app surfaces that mirror vehicle state, so the two screens agreed with each other about what the car was doing.",
-        ],
-      },
-      impact: {
-        eyebrow: "The impact:",
-        heading: "What shipped, and what it taught me.",
-        body: [
-          "Three connected-services flows shipped into production infotainment across two brands and the full screen range, on a shared responsive system rather than per-configuration designs.",
-          "Automotive changed how I design generally. When you cannot patch next week and a mistake sits in front of the user for the life of the vehicle, you get rigorous about states, about legibility, and about testing on the real thing rather than on a monitor.",
-        ],
-      },
-    },
-    {
       slug: "radisson",
       logo: "img/logos/radisson.svg",
       logoAspect: 2.681,
@@ -1231,8 +1110,12 @@ export const CONTENT = {
         "Enterprise interfaces, flows and UI kits for a global hotel group, produced at agency scale.",
       cardDescription:
         "Enterprise interfaces for a global hotel group. Flows, screens and reusable UI kits delivered at agency pace without losing consistency.",
-      role: "Product Designer, Eunoia Digital",
-      years: "2020 — 2021",
+      role: "UX UI Designer",
+      years: "May 2024 — Dec 2024",
+      caseTitle: [
+        "Consistency, under deadline.",
+        "Enterprise UI kits for Radisson Hotels, via Eunoia Digital.",
+      ],
       skills: [
         "UX Design",
         "UI Design",
@@ -1345,8 +1228,8 @@ export const CONTENT = {
         "Three engagement features built from one hyper-casual game's existing maps — no new art, no new pipeline.",
       cardDescription:
         "Night Mode, a ticket-driven Summer Event and a daily Today's Goals loop — three retention features built from maps the game already had.",
-      role: "Main UX/UI Designer",
-      years: "2023",
+      role: "Game UX UI Designer",
+      years: "May 2023 — Jul 2023",
       skills: [
         "UX Design",
         "Live Ops",
@@ -1368,13 +1251,6 @@ export const CONTENT = {
       },
       richBody: [
         { h: "Overview", index: "01", navLabel: "Overview" },
-        {
-          list: [
-            "Role — Main UX/UI Designer",
-            "Studio — Popcore",
-            "Status — Shipped live",
-          ],
-        },
         {
           stats: [
             { value: "Top-grossing", label: "Title the event ran on" },
@@ -1477,6 +1353,119 @@ export const CONTENT = {
       ],
     },
     {
+      slug: "seat-cupra",
+      logo: "img/logos/cupra.svg",
+      logoAspect: 7.008,
+      name: "SEAT CUPRA",
+      mark: "cupra",
+      eyebrow: "SEAT CUPRA",
+      positioning:
+        "In-car infotainment for connected services — enrolment, data plans and software updates, across every screen in the range.",
+      cardDescription:
+        "In-car infotainment. Connected-services enrolment, data plan purchase and an update centre, designed to hold from 7-inch clusters to 15-inch displays.",
+      role: "Junior UX UI Designer",
+      years: "Nov 2022 — Mar 2023",
+      caseTitle: [
+        "One system, every screen size.",
+        "Connected-services infotainment design for SEAT and CUPRA.",
+      ],
+      skills: [
+        "UX Design",
+        "UX Research",
+        "Automotive HMI",
+        "Responsive Systems",
+        "Visual",
+      ],
+      metrics: [
+        { value: '7"–15"', label: "Screen sizes supported" },
+        { value: "3", label: "Core flows owned end to end" },
+        { value: "2", label: "Brands sharing one system" },
+      ],
+      images: {
+        hero: "case.seat-cupra.hero",
+        overview: "case.seat-cupra.overview",
+        system: [
+          "case.seat-cupra.system.1",
+          "case.seat-cupra.system.2",
+          "case.seat-cupra.system.3",
+          "case.seat-cupra.system.4",
+        ],
+        extend: ["case.seat-cupra.extend.1", "case.seat-cupra.extend.2"],
+      },
+      overview: {
+        eyebrow: "Overview:",
+        heading: "Backstory of the work.",
+        body: [
+          "Connected services turn a car into a product with an account, a subscription and a software lifecycle. I designed three of those flows for SEAT and CUPRA infotainment: enrolling the vehicle, buying a data plan, and managing software updates.",
+          "The context is unforgiving. The user is in a driver’s seat, possibly parked and impatient, reading a screen at arm’s length in variable light, using a system that cannot assume a keyboard, a fast connection or a second attempt.",
+        ],
+      },
+      process: {
+        eyebrow: "Process:",
+        heading: "How I kicked things off.",
+        body: [
+          "Automotive HMI has constraints you cannot design around, only design for: legal, safety, hardware and a screen range that spans more than double in physical size. I began by writing those constraints down as design inputs.",
+          "From there the work was mostly about reduction — finding the smallest flow that survives a bad connection, a distracted user and a 7-inch display.",
+        ],
+        cards: [
+          {
+            title: "Constraint inventory",
+            meta: "Framing",
+            body: "Hardware sizes, input methods, safety rules on what may appear while moving, and connectivity assumptions — collected as a single document that every design decision was checked against.",
+          },
+          {
+            title: "Flow reduction",
+            meta: "UX design",
+            body: "Rewrote enrolment to the minimum number of decisions, deferring everything that could be completed later from a phone rather than blocking the driver in the car.",
+          },
+          {
+            title: "Type and touch ramp",
+            meta: "Responsive system",
+            body: "One type and target scale defined against viewing distance rather than pixels, so the same layout stays legible and tappable at 7 inches and does not look sparse at 15.",
+          },
+          {
+            title: "Purchase without a keyboard",
+            meta: "Interaction design",
+            body: "Designed data plan purchase to avoid text entry wherever possible, handing off to the phone for anything that genuinely needed typing.",
+          },
+          {
+            title: "Update centre",
+            meta: "UX design",
+            body: "Software updates presented as a state the driver can understand and trust: what is changing, how long it takes, and what happens if they walk away.",
+          },
+          {
+            title: "In-vehicle review",
+            meta: "Validation",
+            body: "Reviewed on real hardware in real light. Contrast and legibility decisions that looked safe on a monitor repeatedly did not survive a sunny car park.",
+          },
+        ],
+      },
+      system: {
+        eyebrow: "Shaping the system:",
+        heading: "One system, every screen size.",
+        body: [
+          "The core of the work is a responsive system keyed to viewing distance instead of viewport width. Type, touch targets, spacing and information density all step together across the screen range, so a flow designed once behaves correctly on every configuration in the line-up.",
+          "Two brands share it. SEAT and CUPRA differ in tone and palette but not in structure, which meant the flows could be designed once and themed rather than forked.",
+        ],
+      },
+      extend: {
+        eyebrow: "Extend:",
+        heading: "Beyond the head unit.",
+        body: [
+          "Several flows genuinely belong on a phone — anything involving typing, payment detail or reading terms. I designed the handoff so starting in the car and finishing on a phone is one continuous task rather than two disconnected ones.",
+          "The same system also carried the companion-app surfaces that mirror vehicle state, so the two screens agreed with each other about what the car was doing.",
+        ],
+      },
+      impact: {
+        eyebrow: "The impact:",
+        heading: "What shipped, and what it taught me.",
+        body: [
+          "Three connected-services flows shipped into production infotainment across two brands and the full screen range, on a shared responsive system rather than per-configuration designs.",
+          "Automotive changed how I design generally. When you cannot patch next week and a mistake sits in front of the user for the life of the vehicle, you get rigorous about states, about legibility, and about testing on the real thing rather than on a monitor.",
+        ],
+      },
+    },
+    {
       slug: "dragon-city-2",
       logo: "img/logos/socialpoint.svg",
       logoAspect: 4.867,
@@ -1487,8 +1476,8 @@ export const CONTENT = {
         "A cancelled midcore RPG sequel — campaign battle systems redesigned, then tested against real first-time players.",
       cardDescription:
         "Campaign battle redesign and first-time-user research for an unlaunched RPG sequel — what shipped in the systems, and what the research proved people actually understood.",
-      role: "Campaign Battle UX & FTUE Research",
-      years: "2020 — 2022",
+      role: "Intern Game UX UI Designer",
+      years: "Oct 2021 — Mar 2022",
       skills: [
         "UX Design",
         "UX Research",
@@ -1505,13 +1494,6 @@ export const CONTENT = {
       },
       richBody: [
         { h: "Overview", index: "01", navLabel: "Overview" },
-        {
-          list: [
-            "Role — Campaign Battle UX + FTUE Research",
-            "Studio — Socialpoint",
-            "Timeline — 2020 – 2022",
-          ],
-        },
         {
           p: "Dragon City 2 is a midcore RPG sequel to Dragon City: breed dragons, build an island, fight turn-based battles. I worked on the campaign battle systems, then ran the first-time-user research that tested whether players understood them.",
         },
@@ -2827,8 +2809,9 @@ const STYLES_HOME = `
 
 /* A card whose case study isn't ready yet: same look, but a plain reset
    button standing in for the link, since nothing actually navigates. The
-   host needs its own positioning context so the tooltip below can escape
-   the card's own overflow:hidden instead of being clipped by it. */
+   tooltip is a sibling of the button, not a child of it, so it renders on
+   top of the card's own icon instead of being clipped by the card's own
+   overflow:hidden — the host needs its own positioning context for that. */
 .projectCardHost{position:relative}
 button.projectCard{
   appearance:none;-webkit-appearance:none;
@@ -2836,8 +2819,10 @@ button.projectCard{
 }
 .cardTip{
   position:absolute;
-  bottom:calc(100% + 10px);
-  left:50%;
+  /* Anchored on the card's own icon (top-right of .cardTop) rather than
+     floating above the whole card. */
+  top:var(--s5);
+  right:var(--s5);
   z-index:2;
   max-width:min(260px,calc(100% - 16px));
   padding:var(--s3) var(--s4);
@@ -2847,12 +2832,12 @@ button.projectCard{
   font-size:.8125rem;line-height:1.4;text-align:center;
   box-shadow:var(--shadow-lift);
   opacity:0;
-  transform:translate3d(-50%,4px,0);
+  transform:translate3d(0,-4px,0);
   pointer-events:none;
   transition:opacity var(--dur-fast) var(--ease-std),
              transform var(--dur-fast) var(--ease-out);
 }
-.cardTip.is-open{opacity:1;transform:translate3d(-50%,0,0)}
+.cardTip.is-open{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
   .cardTip{transition:none}
 }
@@ -3220,16 +3205,20 @@ const STYLES_CASE = `
   gap:var(--s7);align-items:end;
 }
 .caseEyebrow{color:var(--muted);display:block;margin-bottom:var(--s4)}
-.caseTitle{
+/* Same two-part formula as .sectionHead (same size and weight, colour is
+   the only difference) — just inverted: home leads with the muted label,
+   this leads with the dark claim, so the eyebrow above it reads as the
+   muted lead-in instead. */
+.caseTitle,
+.casePositioning{
   font-size:clamp(2.25rem,6.2vw,5rem);
   font-weight:700;letter-spacing:-.042em;line-height:.98;
-  color:var(--ink);
 }
-.caseTitle .prefix{display:block;color:var(--muted)}
+.caseTitle{color:var(--ink)}
 .caseTitle .subject{display:block;transform-origin:left top}
 .casePositioning{
-  justify-self:end;max-width:42ch;
-  color:var(--ink-2);font-size:1rem;line-height:1.62;
+  justify-self:end;max-width:22ch;
+  color:var(--muted);text-wrap:balance;
 }
 
 /* shared-element flight: transform only, cloned target sits in place */
@@ -6244,13 +6233,12 @@ function CaseStudy({
             <div>
               <span className="caseEyebrow mono">{project.eyebrow}</span>
               <h1 className="caseTitle">
-                <span className="prefix">{CONTENT.caseUi.eyebrow}</span>{" "}
                 <span className="subject" ref={subjectRef}>
-                  {`${CONTENT.caseUi.titlePrefix} ${project.name}`}
+                  {project.caseTitle[0]}
                 </span>
               </h1>
             </div>
-            <p className="casePositioning reveal">{project.positioning}</p>
+            <p className="casePositioning reveal">{project.caseTitle[1]}</p>
           </div>
 
           <div className="caseHeroFrame reveal">
