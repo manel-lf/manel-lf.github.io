@@ -741,15 +741,19 @@ export const CONTENT = {
           navLabel: "Overview",
           label: "Overview:",
           body: [
-            "GameHouse+ was built around downloadable games. When instant-play technology became available, it created an opportunity to fundamentally rethink how players discover, access and engage with content. I led the product design work required to evolve the experience from a downloadable games catalogue into a platform that supports multiple ways to play.",
+            "GH+ is a subscription service for casual puzzle games. Most of its players are women over thirty in the US, and most of them play in the gaps of the day rather than in long sittings.",
+            "It launched as a catalog of downloadable titles. Find a game, install it, keep it while you subscribe. That model held for years.",
+            "Then instant play arrived, and the catalog stopped making sense.",
+            "Instant play let a game start in seconds — no install, no wait, no storage. A second kind of content in a product built to hold one, and everything downstream came loose with it: the home screen, the navigation, search, even the words we used for a game.",
+            "I led the design work that turned the catalog into a platform that could hold both.",
           ],
         },
         {
-          darkMedia: {
-            imageKey: "case.gamehouse-plus.iaDiagram",
+          wide: {
+            imageKey: "case.gamehouse-plus.oneContentType",
             ratio: 21 / 9,
             caption:
-              "Information architecture, before and after — one hierarchy learning to hold two ways to play.",
+              "One content type became two. Everything that follows is a consequence of that.",
           },
         },
 
@@ -757,204 +761,235 @@ export const CONTENT = {
           h: "When instant play arrived.",
           navLabel: "The Shift",
           label: "The shift:",
-        },
-        { sub: "What GameHouse+ Was" },
-        {
-          p: "A subscription service built around downloadable games and proprietary franchises. The catalogue was the product: browse it, choose something, wait for it to download, then play.",
-        },
-        { sub: "What Changed" },
-        {
-          p: "Instant-play technology reduced the path to play from minutes to seconds.",
-        },
-        {
-          quote:
-            "The challenge wasn't introducing a new feature. It was introducing an entirely new way to consume content.",
-        },
-        { sub: "Why This Was Hard" },
-        {
-          p: "Unlike many platform transitions, the downloadable games couldn't simply disappear. They represented:",
-        },
-        {
-          list: [
-            "Loyal users",
-            "Established habits",
-            "Beloved franchises",
-            "A significant part of the product's value",
+          body: [
+            "A downloadable game asks for a commitment before it gives you anything — a tap, a wait, storage, patience. Players who make that trade get something real back: a game that's theirs, that opens instantly ever after, that they'll return to for months.",
+            "Instant play inverts the deal. Nothing to install, nothing to own. Tap, play, leave.",
+            "Both are good, for different people at different moments. And — this is the part that broke the product — they look identical in a grid. Same tile, same art, same tap. One starts in seconds, the other in minutes, and players were the ones absorbing the difference.",
           ],
-        },
-        {
-          quote:
-            "How do we introduce instant play without making the existing ecosystem obsolete?",
         },
         { sub: "Understanding Our Players" },
-        { p: "Two audiences pulled in different directions." },
         {
-          columns: [
+          p: "The split ran by tenure, not by mood, and the two groups wanted opposite things.",
+        },
+        {
+          noteCards: [
             {
-              title: "Busy Moms",
-              list: [
-                "Short sessions",
-                "Looking for quick breaks",
-                "Lower commitment",
-                "Immediate gratification",
-              ],
+              kicker: "Where churn was highest",
+              kickerAccent: true,
+              title: "New players",
+              body: "Most of them left before a game ever opened. The install was not a wait, it was a decision, taken at the moment they were least invested. Instant play removed it, and they stayed.",
             },
             {
-              title: "Empty Nesters",
-              list: [
-                "Longer sessions",
-                "Story-driven engagement",
-                "More exploration-oriented",
-                "Higher depth of play",
-              ],
+              kicker: "Where the revenue was",
+              kickerAccent: true,
+              title: "Returning players",
+              body: "Loyal to franchises, used to downloading and buying the games they follow. For them the download is ownership rather than friction, and the new instant titles read as lighter, cheaper content beside it.",
             },
           ],
         },
         {
-          p: "One audience benefited enormously from instant play. The other still valued the deeper downloadable experiences that had defined GameHouse+ for years.",
+          p: 'Which is why "make everything instant" was never the answer. Instant play won back the players we were losing, and devalued the catalog for the players we already had.',
+        },
+        {
+          quote:
+            "The challenge was never introducing instant play. It was introducing it without making the ecosystem shallower.",
+        },
+        {
+          twoUp: [
+            {
+              imageKey: "case.gamehouse-plus.newVsReturning",
+              ratio: 4 / 3,
+              caption:
+                "The same catalog had to win over the players we were losing without devaluing it for the ones we had.",
+            },
+            {
+              imageKey: "case.gamehouse-plus.identicalTiles",
+              ratio: 4 / 3,
+              caption:
+                "Identical tiles, incompatible experiences. Nothing told players what a tap would cost them.",
+            },
+          ],
         },
 
         {
           h: "Six dimensions, one mental model.",
           navLabel: "Complexity",
           label: "Designing for complexity:",
-          dark: true,
           body: [
-            "Content type isn't a mental model — the six dimensions overlap, they don't sort into folders.",
-            "Every dimension needs a place in the system, not a rule that hides the others.",
-            "The real question wasn't how to organise more content. It was how players should think about it.",
+            "Once instant play existed, every game in GH+ sat on several axes at once:",
           ],
         },
         {
-          list: [
-            "Downloadable or instant play",
-            "Daily or unlimited",
-            "Free or VIP",
-            "Franchise-based or standalone",
-            "A quick distraction or a deep experience",
-            "Single-genre or cross-genre",
+          tags: [
+            "instant or downloadable",
+            "free or premium",
+            "quick session or long session",
+            "franchise or standalone",
+            "one genre or several",
           ],
         },
         {
-          p: "These dimensions didn't exist independently — they overlapped in countless combinations. The challenge wasn't organising content. It was creating a mental model users could actually understand.",
+          p: "Every title already carried a stack of tags, and almost none of them registered with players. Surfacing more would not have helped: expose every dimension and a catalog becomes a database — technically complete, cognitively useless. Filters multiply, the home screen turns into a control panel, and the player who had ten minutes now has eight. It had to get simpler, not more complete.",
         },
         {
-          grid: [
-            { imageKey: "case.gamehouse-plus.complexity" },
-            { imageKey: "case.gamehouse-plus.complexityDiagram1" },
-            { imageKey: "case.gamehouse-plus.complexityDiagram2" },
-          ],
+          p: "So the question stopped being how do we organise this content, and became:",
         },
-        { sub: "Validation & Discovery" },
-        {
-          p: "Amplitude funnel analysis, session recordings, moderated first-session testing and a series of scoped experiments grounded every decision from here on — not a research chapter in itself, but the evidence every subsequent design choice was checked against.",
-        },
-        { sub: "Reframing the Product" },
         {
           quote:
-            "If users can instantly access content, should GameHouse+ still behave like a downloadable game catalogue?",
+            "What mental model can someone build in three seconds, standing in a kitchen, holding a phone in one hand?",
+        },
+        { p: "Three principles came out of that. Each one closed a door." },
+        {
+          staticCards: [
+            {
+              title: "Show state, never rules.",
+              meta: "Principle",
+              body: "The interface says what a game is right now: playable, locked, installed, new. It never explains the system that produced that state. Players don't need our logic. They need to know what happens if they tap.",
+            },
+            {
+              title: "One dimension leads per surface.",
+              meta: "Principle",
+              body: "Home leads on how you want to play. Search leads on what you want to play. No surface tries to express all five axes at once.",
+            },
+            {
+              title:
+                "Format decides where a game lives, never whether a player can find it.",
+              meta: "Principle",
+              body: "We were willing to separate the two content types structurally. We were not willing to let that separation hide anything from anyone — and the data, when it came, turned that instinct into a requirement.",
+            },
+          ],
+        },
+        {
+          wide: {
+            imageKey: "case.gamehouse-plus.categoryMap",
+            ratio: 21 / 9,
+            caption:
+              "Every game belonged to several categories at once, so no single one could carry the whole catalog. Format decides the surface — Home for instant, Classics for installable — while franchise and genre stay in Search filters, where a player asks for them.",
+          },
         },
 
         {
           h: "The problem we had to name.",
           navLabel: "Duality",
           label: "Content duality:",
+          dark: true,
           body: [
-            "Two ways to play meant two possible products. The question wasn't which model to keep — it was whether GameHouse+ had to become one or the other, or something that could hold both.",
+            "Content duality was our internal term: both formats are first-class content, and the product has to hold both without asking players to understand the difference. Should they coexist in one experience, or live in separate ones?",
+            "Behavioural data answered a question we hadn't asked. The most engaged players were neither the instant-play nor the downloadable players — they were the ones who did both. Any architecture that made one half harder to reach would destroy the behaviour producing our best retention.",
+            "Three directions, judged against that.",
           ],
         },
-        { p: "Three directions were on the table." },
         {
-          carousel: {
-            unit: "DIRECTIONS",
-            cards: [
-              {
-                title: "Unified ecosystem",
-                meta: "Option A",
-                body: "One catalogue, one navigation model, instant play folded into the existing structure.",
-                dim: true,
-              },
-              {
-                title: "Separate products",
-                meta: "Option B",
-                body: "Instant play spun out as its own surface, cleanly separated from the downloadable catalogue.",
-                dim: true,
-              },
-              {
-                title: "Hybrid ecosystem",
-                meta: "Option C",
-                body: "Both models coexist deliberately, connected by a shared content hierarchy.",
-              },
-            ],
-          },
-        },
-        {
-          darkPanel: [
+          noteCards: [
             {
-              quote:
-                "“I didn't know where to look for the game I'd just played — was it in my library, or gone the moment I closed it?” — first-session playtest finding.",
+              kicker: "A — Considered",
+              title: "One catalog, format as a badge.",
+              body: "Every game in one grid, with a small marker telling you which kind it is. Cheapest to build, and it failed for a single reason: it pushed the decision onto the player at exactly the moment they wanted to play. The badge became homework.",
             },
-            { imageKey: "case.gamehouse-plus.evidenceFunnel" },
-            { imageKey: "case.gamehouse-plus.evidenceReplay" },
-            { imageKey: "case.gamehouse-plus.evidenceAbResult" },
+            {
+              kicker: "B — Considered",
+              title: "A toggle between the two.",
+              body: "One surface, switched between instant and downloadable. Tidy, and quietly dangerous: a toggle defaults, and whatever it doesn't default to disappears. Downloadables would have thinned in perception long before anything changed in fact, taking the dual-format players with them.",
+            },
+            {
+              kicker: "C — Shipped",
+              kickerAccent: true,
+              highlight: true,
+              title: "Asymmetric, but connected.",
+              body: "Home became an instant-first starting point. Classics became a dedicated home for downloadable franchises. Franchise and genre ran underneath both, through Search and My Games, so no player ever hit a wall between the two halves of the library.",
+              body2:
+                "C shipped because it gave new players the clearest first experience without hiding the downloadable ecosystem behind a control — the only direction that served acquisition and protected dual-format play at once.",
+            },
           ],
         },
+        { sub: "The Evidence" },
+        { p: "We didn't reason our way to this. We tested it." },
         {
-          p: "Option A underestimated how different the two modes of play actually are. Option B solved the mental-model problem but abandoned the audience who still wanted a catalogue. Option C — a hybrid ecosystem — became the frame the rest of the work was built on.",
-        },
-        { sub: "The Architecture We Landed On" },
-        {
-          p: "I called the framework Content Duality: both ecosystems remain, each optimised for the way its audience actually plays, connected by a content hierarchy that lets a player move between them without feeling like they've left the app.",
+          p: "An A/B test compared an installable control against two instant-play variants. The instant variants opened at more than six times the control's day-zero rate, cut the path from entry to first play by roughly six-fold, and doubled day-one ecosystem retention.",
         },
         {
-          table: {
-            headers: ["Before", "After"],
-            rows: [
-              ["Download games", "Play instantly or download"],
-              ["Catalogue-driven", "Discovery-driven"],
-              ["Library mentality", "Platform mentality"],
-              ["Access content", "Engage with content"],
-            ],
-          },
+          p: "Amplitude funnels and session replays gave us the behavioural picture underneath — including the dual-format finding that decided the architecture. An unmoderated usability study on Lysto, with six participants, tested the redesigned Home before it shipped.",
         },
         {
-          darkMedia: {
-            imageKey: "case.gamehouse-plus.architecture",
-            ratio: 16 / 9,
-            caption:
-              "Content Duality — how the downloadable and instant-play ecosystems coexist under one hierarchy.",
-          },
+          darkTwoUp: [
+            {
+              imageKey: "case.gamehouse-plus.directionsComparison",
+              ratio: 4 / 3,
+              caption:
+                "Three ways to hold two content types. Only one protected the players who used both.",
+            },
+            {
+              imageKey: "case.gamehouse-plus.architecture",
+              ratio: 4 / 3,
+              caption: "The architecture we landed on.",
+            },
+          ],
         },
 
         {
           h: "Rebuilding how people find a game.",
           navLabel: "Discovery",
-          label: "Discovery:",
-          body: [
-            "If instant play was going to succeed, Home could no longer function as a catalogue.",
-          ],
-        },
-        { sub: "Home Becomes a Launchpad" },
-        { wide: { imageKey: "case.gamehouse-plus.home", ratio: 16 / 9 } },
-        { sub: "Discovery at Scale" },
-        {
-          p: "As content complexity increased, editorial navigation alone stopped scaling. Recommendations, mood-based browsing and content collections took over the work editorial curation could no longer do by hand — surfacing instant-play content alongside the downloadable catalogue rather than as an afterthought.",
+          label: "Reimagining discovery:",
         },
         {
-          twoUp: [
-            { imageKey: "case.gamehouse-plus.classics", ratio: 4 / 3 },
-            { imageKey: "case.gamehouse-plus.search", ratio: 4 / 3 },
-          ],
+          featureRow: {
+            kicker: "Home",
+            title: "Home became a starting point, not a shelf.",
+            body: [
+              "Home stopped listing the catalog and started proposing a session. Instant-first, because that's the surface people reach for when they have a small window and no plan.",
+              "Two additions carry it. Keep Playing brings back the games a player has already engaged with, so a returning session starts where the last one stopped. A video carousel sits above it, putting featured titles in motion so players can judge a game before tapping into it.",
+            ],
+            imageKey: "case.gamehouse-plus.home",
+            ratio: 16 / 10,
+            caption:
+              "Home stopped listing the catalog and started proposing a session.",
+          },
         },
-        { sub: "My Games" },
         {
-          p: "A single shelf for everything already started or saved, instant or downloaded — the one place both audiences could find their way back to.",
+          featureRow: {
+            kicker: "Classics",
+            title: "Classics gave downloadable content a place.",
+            body: [
+              "Giving Classics its own tab in the tab bar kept downloadable franchises findable at all times, one tap from anywhere, while leaving the landing surface to the instant games that were performing best. Commitment is the point in Classics — long sessions, the series people finish — so it reads as a destination rather than a filter.",
+            ],
+            imageKey: "case.gamehouse-plus.classics",
+            ratio: 16 / 10,
+            caption: "Downloadable franchises got a home instead of a badge.",
+            imageFirst: true,
+          },
         },
-        { wide: { imageKey: "case.gamehouse-plus.myGames", ratio: 16 / 9 } },
-        { wide: { imageKey: "case.gamehouse-plus.craftPlate", ratio: 16 / 7 } },
-        { sub: "Navigation for Two Ecosystems" },
         {
-          p: "Information architecture had to hold two content models without asking players to think about which one they were in — kept concise on purpose, since this is a systems decision rather than a UI showcase.",
+          featureRow: {
+            kicker: "Search",
+            title: "Search became the connective tissue.",
+            body: [
+              "Filters run on franchise and genre, never on format. A player looking for a series gets all of it — instant and downloadable, side by side. It keeps the catalog whole after splitting the front door, and makes dual-format play deliberate rather than accidental.",
+            ],
+            imageKey: "case.gamehouse-plus.search",
+            ratio: 16 / 10,
+            caption:
+              "Filters cross content types, so the library never feels split.",
+          },
+        },
+        {
+          featureRow: {
+            kicker: "My Games",
+            title: "My Games reconciled the two.",
+            body: [
+              "Whatever a player has saved or installed sits in one library, in one list, regardless of how each title loads. The distinction that structures the entire product disappears in the one place players think of as theirs.",
+            ],
+            imageKey: "case.gamehouse-plus.myGames",
+            ratio: 16 / 10,
+            caption: "One library, regardless of how each game loads.",
+            imageFirst: true,
+          },
+        },
+        {
+          wide: {
+            imageKey: "case.gamehouse-plus.craftPlate",
+            ratio: 21 / 9,
+            caption: "States, empty cases and system messaging.",
+          },
         },
 
         {
@@ -962,27 +997,41 @@ export const CONTENT = {
           navLabel: "Impact",
           label: "The impact:",
         },
+        { sub: "Results" },
         {
-          stats: [
-            { value: "6×", label: "Day-0 activation" },
-            { value: "6×", label: "Faster time to first session" },
-            { value: "2×", label: "Day-1 retention" },
+          p: "Measured against the installable control, at day zero and day one:",
+        },
+        {
+          noteCards: [
+            {
+              value: "6×",
+              title: "Day-zero open rate",
+              body: "Instant play measured against the installable control.",
+            },
+            {
+              value: "2×",
+              title: "Day-one ecosystem retention",
+              body: "Players coming back the next day, across both formats.",
+            },
+            {
+              value: "~6× faster",
+              title: "Entry to first play",
+              body: "Time from opening GH+ to a game actually running.",
+            },
           ],
         },
         {
-          p: "The instant-content pivot delivered six times day-0 activation, a six-fold reduction in time to first session, and double day-1 retention. The first session stopped being a decision and became an experience.",
+          p: "Three connected-content surfaces shipped on the architecture above: an instant-first Home, Classics as a dedicated downloadable destination, and format-agnostic discovery across Search and My Games.",
         },
-        { sub: "What I Learned" },
         {
-          list: [
-            "A product's content architecture eventually becomes its strategy.",
-            "Platform transitions are information-architecture challenges before they are UI challenges.",
-            "Supporting multiple player motivations can be more effective than optimising for a single ideal user.",
-          ],
-        },
-        { sub: "My Role" },
-        {
-          p: "As the lead designer for GameHouse+, I helped define how a subscription app built around downloadable games could evolve into a platform supporting multiple ways to play — balancing new opportunities without losing the audience that made it successful.",
+          subSection: {
+            label: "What I learned",
+            statement: "Where things live decides what players do.",
+            body: [
+              "Platform transformations are information-architecture problems long before they're UI problems. We spent more time deciding where things live than deciding how they look, and that turned out to be the right ratio.",
+              "Two audiences with opposite needs can share a product, but not one flat hierarchy. They need separate front doors and a shared library underneath — and the players who cross between them are worth designing for directly.",
+            ],
+          },
         },
       ],
     },
@@ -1821,95 +1870,81 @@ export const CONTENT = {
       src: "img/gamehouse-plus-app-visual.png",
       alt: "GameHouse+ app screens — the instant-play Home feed with a match-3 game running, Search results, and the VIP upgrade screen.",
     },
-    "case.gamehouse-plus.complexity": {
-      src: null,
-      alt: "GameHouse+ complexity visual — an isometric lattice standing in for the overlapping content dimensions instant play introduced.",
-      plate: "lattice",
-      tone: "dark",
-      seed: 220,
-    },
     "case.gamehouse-plus.architecture": {
       src: null,
-      alt: "Content Duality architecture diagram — placeholder: concentric orbits standing in for how the downloadable and instant-play ecosystems coexist.",
+      alt: "The architecture GH+ landed on, placeholder — concentric orbits standing in for how the downloadable and instant-play ecosystems coexist.",
       plate: "orbit",
       tone: "dark",
       seed: 221,
       glow: "#3B3061",
       accent: "#6E5BA6",
     },
-    "case.gamehouse-plus.iaDiagram": {
+    "case.gamehouse-plus.oneContentType": {
       src: null,
-      alt: "Information architecture, before and after, placeholder — nested panels standing in for the hierarchy that learned to hold two ways to play.",
+      alt: "One content type became two, placeholder — nested panels standing in for the catalog splitting into downloadable and instant formats.",
       plate: "panels",
-      tone: "dark",
+      tone: "light",
       seed: 550,
     },
-    "case.gamehouse-plus.complexityDiagram1": {
+    "case.gamehouse-plus.newVsReturning": {
       src: null,
-      alt: "Complexity supporting diagram, placeholder — a modular grid standing in for one of the overlapping content dimensions.",
+      alt: "New vs returning players, placeholder — a modular grid standing in for the two audiences the catalog had to win over.",
       plate: "grid",
-      tone: "dark",
+      tone: "light",
       seed: 551,
     },
-    "case.gamehouse-plus.complexityDiagram2": {
+    "case.gamehouse-plus.identicalTiles": {
       src: null,
-      alt: "Complexity supporting diagram, placeholder — stacked strata standing in for another overlapping content dimension.",
+      alt: "Identical tiles, placeholder — stacked strata standing in for a grid where instant and downloadable games look the same.",
       plate: "strata",
-      tone: "dark",
+      tone: "light",
       seed: 552,
     },
-    "case.gamehouse-plus.evidenceFunnel": {
+    "case.gamehouse-plus.categoryMap": {
       src: null,
-      alt: "Amplitude funnel analysis, placeholder — a horizontal ramp standing in for a drop-off chart.",
-      plate: "ramp",
+      alt: "Overlapping category map, placeholder — an isometric lattice standing in for a game belonging to several categories at once.",
+      plate: "lattice",
       tone: "dark",
       seed: 553,
     },
-    "case.gamehouse-plus.evidenceReplay": {
+    "case.gamehouse-plus.directionsComparison": {
       src: null,
-      alt: "Session-replay still, placeholder — a portrait frame standing in for a recorded first session.",
-      plate: "portrait",
+      alt: "Directions A, B and C compared, placeholder — a horizontal ramp standing in for the three architectures weighed against each other.",
+      plate: "ramp",
       tone: "dark",
       seed: 554,
     },
-    "case.gamehouse-plus.evidenceAbResult": {
-      src: null,
-      alt: "A/B test result, placeholder — interlocking bars standing in for the two compared variants.",
-      plate: "weave",
-      tone: "accent",
-      seed: 555,
-    },
     "case.gamehouse-plus.home": {
       src: null,
-      alt: "Home, rebuilt as a launchpad, placeholder — a wide gradient mesh standing in for the instant-play entry screen.",
+      alt: "Home, rebuilt as an instant-first starting point, placeholder — a wide gradient mesh standing in for the redesigned entry screen.",
       plate: "mesh",
       tone: "light",
       seed: 556,
     },
     "case.gamehouse-plus.classics": {
       src: null,
-      alt: "Classics screen, placeholder — stepped columns standing in for the downloadable-catalogue surface.",
+      alt: "Classics, placeholder — stepped columns standing in for the dedicated downloadable-franchise surface.",
       plate: "columns",
       tone: "light",
       seed: 557,
     },
     "case.gamehouse-plus.search": {
       src: null,
-      alt: "Search screen, placeholder — an isometric lattice standing in for cross-catalogue results.",
+      alt: "Search filters, placeholder — an isometric lattice standing in for franchise and genre results spanning both formats.",
       plate: "lattice",
       tone: "light",
       seed: 558,
     },
     "case.gamehouse-plus.myGames": {
       src: null,
-      alt: "My Games shelf, placeholder — a modular grid standing in for saved and in-progress titles, instant and downloaded together.",
+      alt: "My Games, placeholder — a modular grid standing in for one library regardless of how each game loads.",
       plate: "grid",
       tone: "light",
       seed: 559,
     },
     "case.gamehouse-plus.craftPlate": {
       src: null,
-      alt: "Component states craft plate, placeholder — nested panels standing in for a dense grid of states, empty states and onboarding copy.",
+      alt: "Component states craft plate, placeholder — nested panels standing in for a dense grid of states, empty cases and system messaging.",
       plate: "panels",
       tone: "light",
       seed: 560,
@@ -3323,6 +3358,7 @@ const STYLES_CASE = `
   border-radius:var(--r-lg);overflow:hidden;
   border:1px solid var(--hairline);
 }
+.wideCaption{margin-top:var(--s3);color:var(--muted);max-width:62ch}
 
 /* ---- process scroller ---- */
 .scrollerHead{
@@ -3363,6 +3399,63 @@ const STYLES_CASE = `
 /* An option the case study didn't pick — kept in the carousel for context,
    dimmed so the chosen direction reads as the obvious one without a caption. */
 .processCard--dim{opacity:.55}
+
+/* ---- static card grid: no scroll, no counter — a fixed set of cards
+   (principles, player segments, options, stats) rather than a sequence ---- */
+.cardGrid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:clamp(12px,1.6vw,24px);
+  margin-top:clamp(32px,5vh,56px);
+}
+.noteCard{
+  display:flex;flex-direction:column;gap:var(--s2);
+  padding:var(--s5);
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-lg);
+  box-shadow:var(--shadow-card);
+}
+.noteCard .kicker{color:var(--muted)}
+.noteCard .kicker--accent{color:var(--accent)}
+.noteCard .statValue{
+  font-size:clamp(1.75rem,3.2vw,2.75rem);font-weight:700;
+  letter-spacing:-.03em;line-height:1;color:var(--ink);
+}
+.noteCard h4{font-size:1.0625rem;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
+.noteCard p{color:var(--ink-2);font-size:.9375rem;line-height:1.6}
+.noteCard p ~ p{color:var(--ink)}
+.noteCard--highlight{border-color:var(--ink)}
+/* Inside a dark panel the card loses its own background and takes the
+   panel's hairline instead — the same ancestor-driven swap .postP etc. use. */
+.systemPanel .noteCard{background:transparent;border-color:var(--panel-hairline);box-shadow:none}
+.systemPanel .noteCard--highlight{border-color:var(--panel-ink)}
+.systemPanel .noteCard .kicker{color:var(--panel-muted)}
+.systemPanel .noteCard .statValue,
+.systemPanel .noteCard h4{color:var(--panel-ink)}
+.systemPanel .noteCard p{color:var(--panel-muted)}
+.systemPanel .noteCard p ~ p{color:var(--panel-ink)}
+
+/* ---- media + copy, alternating sides ---- */
+.featureRow{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:clamp(24px,4vw,56px);
+  align-items:center;
+}
+.featureRow + .featureRow{margin-top:clamp(40px,6vh,80px)}
+.featureCopy{display:flex;flex-direction:column;gap:var(--s3)}
+.featureCopy h3{
+  font-size:1.25rem;font-weight:600;letter-spacing:-.02em;color:var(--ink);
+  max-width:22ch;
+}
+.featureCopy p{color:var(--ink-2);font-size:1rem;line-height:1.68;max-width:62ch}
+
+/* ---- two visuals side by side, each in its own inset frame ---- */
+.twoUpGrid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:clamp(20px,3vw,32px);
+  margin-top:clamp(36px,5vh,64px);
+}
+.twoUpGrid .caseHeroFrame{margin-top:0}
 
 /* ---- system: dark full-bleed panel with a dense screen grid ---- */
 .systemPanel{
@@ -6706,22 +6799,153 @@ function CaseRichBlock({ block, i, reduced }) {
   }
   if (block.twoUp) {
     return (
-      <ul className="extendGrid reveal" key={i}>
+      <div className="twoUpGrid reveal" key={i}>
         {block.twoUp.map((cell, j) => (
-          <li className="extendCell reveal" key={j}>
-            <Visual imageKey={cell.imageKey} ratio={cell.ratio || 4 / 3} />
-          </li>
+          <figure className="caseHeroFrame" key={j}>
+            <div className="inner">
+              <Visual imageKey={cell.imageKey} ratio={cell.ratio || 4 / 3} />
+            </div>
+            {cell.caption ? (
+              <figcaption className="mono wideCaption">
+                {cell.caption}
+              </figcaption>
+            ) : null}
+          </figure>
         ))}
-      </ul>
+      </div>
+    );
+  }
+  // Same two-up idea, but flush dark tiles (systemCell) instead of the light
+  // inset frame — for evidence dropped inside a dark section.
+  if (block.darkTwoUp) {
+    return (
+      <div className="twoUpGrid reveal" key={i}>
+        {block.darkTwoUp.map((cell, j) => (
+          <figure key={j}>
+            <div className="systemCell">
+              <Visual imageKey={cell.imageKey} ratio={cell.ratio || 4 / 3} />
+            </div>
+            {cell.caption ? (
+              <figcaption className="mono wideCaption">
+                {cell.caption}
+              </figcaption>
+            ) : null}
+          </figure>
+        ))}
+      </div>
     );
   }
   if (block.wide) {
     return (
-      <div className="wideVisual reveal" key={i}>
-        <Visual
-          imageKey={block.wide.imageKey}
-          ratio={block.wide.ratio || 16 / 7}
+      <figure className="caseHeroFrame reveal" key={i}>
+        <div className="inner">
+          <Visual
+            imageKey={block.wide.imageKey}
+            ratio={block.wide.ratio || 16 / 7}
+          />
+        </div>
+        {block.wide.caption ? (
+          <figcaption className="mono wideCaption">
+            {block.wide.caption}
+          </figcaption>
+        ) : null}
+      </figure>
+    );
+  }
+  // A fixed set of cards — principles, player segments, options, stats —
+  // rather than a sequence, so no scroller chrome (counter, arrows).
+  if (block.staticCards) {
+    return (
+      <div className="cardGrid reveal" key={i}>
+        {block.staticCards.map((c, j) => (
+          <div className="processCard" key={c.title}>
+            <span className="idx mono">{String(j + 1).padStart(2, "0")}</span>
+            <h3>{c.title}</h3>
+            <span className="meta mono">{c.meta}</span>
+            <p>{c.body}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  if (block.noteCards) {
+    return (
+      <div className="cardGrid reveal" key={i}>
+        {block.noteCards.map((c, j) => (
+          <div
+            className={`noteCard${c.highlight ? " noteCard--highlight" : ""}`}
+            key={j}
+          >
+            {c.value ? <span className="statValue">{c.value}</span> : null}
+            {c.kicker ? (
+              <span
+                className={`mono kicker${c.kickerAccent ? " kicker--accent" : ""}`}
+              >
+                {c.kicker}
+              </span>
+            ) : null}
+            <h4>{c.title}</h4>
+            <p>{c.body}</p>
+            {c.body2 ? <p>{c.body2}</p> : null}
+          </div>
+        ))}
+      </div>
+    );
+  }
+  if (block.tags) {
+    return (
+      <span className="chips reveal" key={i}>
+        {block.tags.map((t) => (
+          <span className="chip mono" key={t}>
+            {t}
+          </span>
+        ))}
+      </span>
+    );
+  }
+  // A closing statement with its own small header — the same label+statement
+  // pairing as a section head, nested as one beat within a larger section.
+  if (block.subSection) {
+    return (
+      <div className="richSubSection" key={i}>
+        <CaseSection
+          label={block.subSection.label}
+          statement={block.subSection.statement}
+          body={block.subSection.body}
         />
+      </div>
+    );
+  }
+  // Media and copy side by side, alternating which side the image sits on.
+  if (block.featureRow) {
+    const { kicker, title, body, imageKey, ratio, caption, imageFirst } =
+      block.featureRow;
+    const copy = (
+      <div className="featureCopy" key="copy">
+        {kicker ? (
+          <span className="mono" style={{ color: "var(--muted)" }}>
+            {kicker}
+          </span>
+        ) : null}
+        <h3>{title}</h3>
+        {body.map((p, k) => (
+          <p key={k}>{p}</p>
+        ))}
+      </div>
+    );
+    const figure = (
+      <figure className="caseHeroFrame" key="fig" style={{ margin: 0 }}>
+        <div className="inner">
+          <Visual imageKey={imageKey} ratio={ratio || 16 / 10} />
+        </div>
+        {caption ? (
+          <figcaption className="mono wideCaption">{caption}</figcaption>
+        ) : null}
+      </figure>
+    );
+    return (
+      <div className="featureRow reveal" key={i}>
+        {imageFirst ? [figure, copy] : [copy, figure]}
       </div>
     );
   }
@@ -7478,6 +7702,13 @@ const STYLES_POST = `
 .richCaseBody section + section{
   margin-top:clamp(56px,7vh,96px);
   padding-top:clamp(40px,5vh,72px);
+  border-top:1px solid var(--hairline);
+}
+/* A closing statement, set off from the rest of its section the same way
+   sections are set off from each other, just a size down. */
+.richSubSection{
+  margin-top:clamp(48px,7vh,88px);
+  padding-top:clamp(28px,4vh,48px);
   border-top:1px solid var(--hairline);
 }
 .richCaseBody .postP,
