@@ -700,7 +700,7 @@ export const CONTENT = {
       cardDescription:
         "End-to-end ownership of a casual-games subscription app — research, product analytics, design system and the first-session rebuild.",
       role: "Senior Game UX UI Designer",
-      years: "Aug 2025 — Present",
+      years: "2025 — 2026",
       team: "Product, Engineering, Content, Data",
       skills: [
         "UX Design",
@@ -999,7 +999,7 @@ export const CONTENT = {
       cardDescription:
         "Indie mobile multiplayer. Design system built from scratch, an energy economy modelled end to end, and the component library implemented in Unity.",
       role: "Game UX UI Designer",
-      years: "Nov 2023 — Aug 2025",
+      years: "2023 — 2025",
       skills: [
         "UX Design",
         "Design Systems",
@@ -1111,7 +1111,7 @@ export const CONTENT = {
       cardDescription:
         "Enterprise interfaces for a global hotel group. Flows, screens and reusable UI kits delivered at agency pace without losing consistency.",
       role: "UX UI Designer",
-      years: "May 2024 — Dec 2024",
+      years: "2024",
       caseTitle: [
         "Consistency, under deadline.",
         "Enterprise UI kits for Radisson Hotels, via Eunoia Digital.",
@@ -1229,7 +1229,7 @@ export const CONTENT = {
       cardDescription:
         "Night Mode, a ticket-driven Summer Event and a daily Today's Goals loop — three retention features built from maps the game already had.",
       role: "Game UX UI Designer",
-      years: "May 2023 — Jul 2023",
+      years: "2023",
       skills: [
         "UX Design",
         "Live Ops",
@@ -1364,7 +1364,7 @@ export const CONTENT = {
       cardDescription:
         "In-car infotainment. Connected-services enrolment, data plan purchase and an update centre, designed to hold from 7-inch clusters to 15-inch displays.",
       role: "Junior UX UI Designer",
-      years: "Nov 2022 — Mar 2023",
+      years: "2022 — 2023",
       caseTitle: [
         "One system, every screen size.",
         "Connected-services infotainment design for SEAT and CUPRA.",
@@ -1477,7 +1477,7 @@ export const CONTENT = {
       cardDescription:
         "Campaign battle redesign and first-time-user research for an unlaunched RPG sequel — what shipped in the systems, and what the research proved people actually understood.",
       role: "Intern Game UX UI Designer",
-      years: "Oct 2021 — Mar 2022",
+      years: "2021 — 2022",
       skills: [
         "UX Design",
         "UX Research",
@@ -3200,26 +3200,21 @@ const STYLES_CASE = `
 .backLink:hover{color:var(--ink)}
 .backLink:hover svg{transform:translateX(-3px)}
 
-.caseHeadGrid{
-  display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
-  gap:var(--s7);align-items:end;
-}
 .caseEyebrow{color:var(--muted);display:block;margin-bottom:var(--s4)}
 /* Same two-part formula as .sectionHead (same size and weight, colour is
    the only difference) — just inverted: home leads with the muted label,
    this leads with the dark claim, so the eyebrow above it reads as the
-   muted lead-in instead. */
+   muted lead-in instead. Title over subtitle, both full width, exactly
+   like label-over-statement in .sectionHead — no side-by-side columns. */
 .caseTitle,
 .casePositioning{
+  display:block;width:100%;
   font-size:clamp(2.25rem,6.2vw,5rem);
   font-weight:700;letter-spacing:-.042em;line-height:.98;
 }
 .caseTitle{color:var(--ink)}
 .caseTitle .subject{display:block;transform-origin:left top}
-.casePositioning{
-  justify-self:end;max-width:22ch;
-  color:var(--muted);text-wrap:balance;
-}
+.casePositioning{color:var(--muted);text-wrap:balance}
 
 /* shared-element flight: transform only, cloned target sits in place */
 .subject.is-flying{
@@ -3385,8 +3380,6 @@ const STYLES_CASE = `
   .spotlightVisual{display:none}
   .aboutCard{grid-template-columns:1fr}
   .aboutPortrait{order:-1;max-width:340px}
-  .caseHeadGrid{grid-template-columns:1fr;gap:var(--s5);align-items:start}
-  .casePositioning{justify-self:start}
   .caseSplit{grid-template-columns:1fr;gap:var(--s5)}
   .extendGrid{grid-template-columns:1fr}
   .caseNav{grid-template-columns:1fr}
