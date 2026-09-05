@@ -685,8 +685,8 @@ export const CONTENT = {
       // a project has no separate positioning line — here that fallback is
       // moot since GameHouse+ always renders through GameHousePlusCase.
       caseTitle: [
-        "From Catalog to Platform.",
-        "Leading GameHouse+'s pivot to instant play.",
+        "From catalog to platform.",
+        "Redesigning GH+'s content architecture for instant play.",
       ],
       // Shown next to the title on desktop only — the panel's own width
       // can't fit it beside the statement below a certain breakpoint, and
@@ -699,16 +699,15 @@ export const CONTENT = {
         "A consumer subscription app for casual games, repositioned around instant play.",
       cardDescription:
         "End-to-end ownership of a casual-games subscription app — research, product analytics, design system and the first-session rebuild.",
-      role: "Senior Game UX UI Designer",
+      role: "Senior Product Designer, sole designer on GH+",
       years: "2025 — 2026",
       team: "Product, Engineering, Content, Data",
       skills: [
-        "UX Design",
+        "Product Strategy",
+        "Information Architecture",
         "UX Research",
-        "Product Analytics",
         "Design Systems",
         "Prototyping",
-        "Visual",
       ],
       metrics: [
         { value: "6×", label: "Day-0 activation" },
@@ -723,41 +722,47 @@ export const CONTENT = {
        * extend/impact fields, deliberately — this case study argues a product
        * strategy rather than walking through screens, so it gets its own
        * renderer (GameHousePlusCase) instead of the generic CaseStudy template.
-       * Block types: h (numbered section heading), sub (subheading), p,
-       * list, quote (pull statement), columns (2-3 up comparison),
-       * table (before/after), stats, imageKey+caption.
+       * Rebuilt onto the same shared components as CaseStudy: a numbered
+       * heading needs `label` (the eyebrow) alongside `h` (the statement) to
+       * render as a real SectionHead + prose pair — `dark: true` puts that
+       * whole section on a system-panel background instead of the light
+       * canvas. Block types beyond the plain ones (sub, p, list, quote,
+       * columns, table, stats, imageKey+caption): grid (a systemGrid bento —
+       * cells are {imageKey,ratio} or {quote} for a pulled finding),
+       * darkPanel (a bare, header-less grid dropped inside a light section),
+       * darkMedia (a full-bleed dark visual, no header), carousel (the
+       * numbered ProcessScroller — cards can set `dim` to mute an option that
+       * wasn't chosen), twoUp (two visuals side by side), wide (one
+       * full-width visual, no caption).
        */
       richBody: [
         {
-          h: "Overview",
-          index: "01",
+          h: "What GH+ was.",
           navLabel: "Overview",
-        },
-        {
-          stats: [
-            { value: "6×", label: "Day-0 activation" },
-            { value: "6×", label: "Faster time to first session" },
-            { value: "2×", label: "Day-1 retention" },
+          label: "Overview:",
+          body: [
+            "GameHouse+ was built around downloadable games. When instant-play technology became available, it created an opportunity to fundamentally rethink how players discover, access and engage with content. I led the product design work required to evolve the experience from a downloadable games catalogue into a platform that supports multiple ways to play.",
           ],
         },
         {
-          p: "GameHouse+ was built around downloadable games. When instant-play technology became available, it created an opportunity to fundamentally rethink how players discover, access and engage with content. I led the product design work required to evolve the experience from a downloadable games catalogue into a platform that supports multiple ways to play.",
+          darkMedia: {
+            imageKey: "case.gamehouse-plus.iaDiagram",
+            ratio: 21 / 9,
+            caption:
+              "Information architecture, before and after — one hierarchy learning to hold two ways to play.",
+          },
         },
+
         {
-          h: "The Shift",
-          index: "02",
+          h: "When instant play arrived.",
           navLabel: "The Shift",
-          sub: "Why GameHouse+ Needed to Evolve",
+          label: "The shift:",
         },
-        {
-          sub: "What GameHouse+ Was",
-        },
+        { sub: "What GameHouse+ Was" },
         {
           p: "A subscription service built around downloadable games and proprietary franchises. The catalogue was the product: browse it, choose something, wait for it to download, then play.",
         },
-        {
-          sub: "What Changed",
-        },
+        { sub: "What Changed" },
         {
           p: "Instant-play technology reduced the path to play from minutes to seconds.",
         },
@@ -765,9 +770,7 @@ export const CONTENT = {
           quote:
             "The challenge wasn't introducing a new feature. It was introducing an entirely new way to consume content.",
         },
-        {
-          sub: "Why This Was Hard",
-        },
+        { sub: "Why This Was Hard" },
         {
           p: "Unlike many platform transitions, the downloadable games couldn't simply disappear. They represented:",
         },
@@ -783,12 +786,8 @@ export const CONTENT = {
           quote:
             "How do we introduce instant play without making the existing ecosystem obsolete?",
         },
-        {
-          sub: "Understanding Our Players",
-        },
-        {
-          p: "Two audiences pulled in different directions.",
-        },
+        { sub: "Understanding Our Players" },
+        { p: "Two audiences pulled in different directions." },
         {
           columns: [
             {
@@ -814,13 +813,17 @@ export const CONTENT = {
         {
           p: "One audience benefited enormously from instant play. The other still valued the deeper downloadable experiences that had defined GameHouse+ for years.",
         },
+
         {
-          h: "Designing for Complexity",
-          index: "03",
+          h: "Six dimensions, one mental model.",
           navLabel: "Complexity",
-        },
-        {
-          p: "A product built for one content type suddenly had two. The existing architecture was designed around downloadable games; instant play changed that. Content could now simultaneously be:",
+          label: "Designing for complexity:",
+          dark: true,
+          body: [
+            "Content type isn't a mental model — the six dimensions overlap, they don't sort into folders.",
+            "Every dimension needs a place in the system, not a rule that hides the others.",
+            "The real question wasn't how to organise more content. It was how players should think about it.",
+          ],
         },
         {
           list: [
@@ -836,64 +839,72 @@ export const CONTENT = {
           p: "These dimensions didn't exist independently — they overlapped in countless combinations. The challenge wasn't organising content. It was creating a mental model users could actually understand.",
         },
         {
-          imageKey: "case.gamehouse-plus.complexity",
+          grid: [
+            { imageKey: "case.gamehouse-plus.complexity" },
+            { imageKey: "case.gamehouse-plus.complexityDiagram1" },
+            { imageKey: "case.gamehouse-plus.complexityDiagram2" },
+          ],
         },
-        {
-          sub: "Validation & Discovery",
-        },
+        { sub: "Validation & Discovery" },
         {
           p: "Amplitude funnel analysis, session recordings, moderated first-session testing and a series of scoped experiments grounded every decision from here on — not a research chapter in itself, but the evidence every subsequent design choice was checked against.",
         },
-        {
-          sub: "Reframing the Product",
-        },
+        { sub: "Reframing the Product" },
         {
           quote:
             "If users can instantly access content, should GameHouse+ still behave like a downloadable game catalogue?",
         },
+
         {
-          h: "One Product, Two Ways to Play",
-          index: "04",
-          navLabel: "Two Ways to Play",
+          h: "The problem we had to name.",
+          navLabel: "Duality",
+          label: "Content duality:",
+          body: [
+            "Two ways to play meant two possible products. The question wasn't which model to keep — it was whether GameHouse+ had to become one or the other, or something that could hold both.",
+          ],
+        },
+        { p: "Three directions were on the table." },
+        {
+          carousel: {
+            unit: "DIRECTIONS",
+            cards: [
+              {
+                title: "Unified ecosystem",
+                meta: "Option A",
+                body: "One catalogue, one navigation model, instant play folded into the existing structure.",
+                dim: true,
+              },
+              {
+                title: "Separate products",
+                meta: "Option B",
+                body: "Instant play spun out as its own surface, cleanly separated from the downloadable catalogue.",
+                dim: true,
+              },
+              {
+                title: "Hybrid ecosystem",
+                meta: "Option C",
+                body: "Both models coexist deliberately, connected by a shared content hierarchy.",
+              },
+            ],
+          },
         },
         {
-          sub: "Exploring the Future of GameHouse+",
-        },
-        {
-          p: "Three directions were on the table.",
-        },
-        {
-          columns: [
+          darkPanel: [
             {
-              title: "Option A",
-              body: "Unified ecosystem — one catalogue, one navigation model, instant play folded into the existing structure.",
+              quote:
+                "“I didn't know where to look for the game I'd just played — was it in my library, or gone the moment I closed it?” — first-session playtest finding.",
             },
-            {
-              title: "Option B",
-              body: "Separate products — instant play spun out as its own surface, cleanly separated from the downloadable catalogue.",
-            },
-            {
-              title: "Option C",
-              body: "Hybrid ecosystem — both models coexist deliberately, connected by a shared content hierarchy.",
-            },
+            { imageKey: "case.gamehouse-plus.evidenceFunnel" },
+            { imageKey: "case.gamehouse-plus.evidenceReplay" },
+            { imageKey: "case.gamehouse-plus.evidenceAbResult" },
           ],
         },
         {
           p: "Option A underestimated how different the two modes of play actually are. Option B solved the mental-model problem but abandoned the audience who still wanted a catalogue. Option C — a hybrid ecosystem — became the frame the rest of the work was built on.",
         },
-        {
-          sub: "The Architecture We Landed On",
-        },
+        { sub: "The Architecture We Landed On" },
         {
           p: "I called the framework Content Duality: both ecosystems remain, each optimised for the way its audience actually plays, connected by a content hierarchy that lets a player move between them without feeling like they've left the app.",
-        },
-        {
-          imageKey: "case.gamehouse-plus.architecture",
-          caption:
-            "Content Duality — how the downloadable and instant-play ecosystems coexist under one hierarchy.",
-        },
-        {
-          sub: "Redefining GameHouse+",
         },
         {
           table: {
@@ -907,48 +918,49 @@ export const CONTENT = {
           },
         },
         {
-          h: "Reimagining Discovery",
-          index: "05",
+          darkMedia: {
+            imageKey: "case.gamehouse-plus.architecture",
+            ratio: 16 / 9,
+            caption:
+              "Content Duality — how the downloadable and instant-play ecosystems coexist under one hierarchy.",
+          },
+        },
+
+        {
+          h: "Rebuilding how people find a game.",
           navLabel: "Discovery",
+          label: "Discovery:",
+          body: [
+            "If instant play was going to succeed, Home could no longer function as a catalogue.",
+          ],
         },
-        {
-          sub: "Home Becomes a Launchpad",
-        },
-        {
-          p: "If instant play was going to succeed, Home could no longer function as a catalogue.",
-        },
-        {
-          imageKey: "case.gamehouse-plus.homeBefore",
-          caption: "Before — Home as a catalogue to browse.",
-          ratio: 3 / 4,
-        },
-        {
-          imageKey: "case.gamehouse-plus.homeAfter",
-          caption: "After — Home as a launchpad into instant play.",
-          ratio: 3 / 4,
-        },
-        {
-          sub: "Discovery at Scale",
-        },
+        { sub: "Home Becomes a Launchpad" },
+        { wide: { imageKey: "case.gamehouse-plus.home", ratio: 16 / 9 } },
+        { sub: "Discovery at Scale" },
         {
           p: "As content complexity increased, editorial navigation alone stopped scaling. Recommendations, mood-based browsing and content collections took over the work editorial curation could no longer do by hand — surfacing instant-play content alongside the downloadable catalogue rather than as an afterthought.",
         },
         {
-          imageKey: "case.gamehouse-plus.discovery",
+          twoUp: [
+            { imageKey: "case.gamehouse-plus.classics", ratio: 4 / 3 },
+            { imageKey: "case.gamehouse-plus.search", ratio: 4 / 3 },
+          ],
         },
+        { sub: "My Games" },
         {
-          sub: "Navigation for Two Ecosystems",
+          p: "A single shelf for everything already started or saved, instant or downloaded — the one place both audiences could find their way back to.",
         },
+        { wide: { imageKey: "case.gamehouse-plus.myGames", ratio: 16 / 9 } },
+        { wide: { imageKey: "case.gamehouse-plus.craftPlate", ratio: 16 / 7 } },
+        { sub: "Navigation for Two Ecosystems" },
         {
           p: "Information architecture had to hold two content models without asking players to think about which one they were in — kept concise on purpose, since this is a systems decision rather than a UI showcase.",
         },
+
         {
-          h: "Outcomes & Reflections",
-          index: "06",
-          navLabel: "Outcomes",
-        },
-        {
-          sub: "Results",
+          h: "What shipped, and what it taught me.",
+          navLabel: "Impact",
+          label: "The impact:",
         },
         {
           stats: [
@@ -960,9 +972,7 @@ export const CONTENT = {
         {
           p: "The instant-content pivot delivered six times day-0 activation, a six-fold reduction in time to first session, and double day-1 retention. The first session stopped being a decision and became an experience.",
         },
-        {
-          sub: "What I Learned",
-        },
+        { sub: "What I Learned" },
         {
           list: [
             "A product's content architecture eventually becomes its strategy.",
@@ -970,9 +980,7 @@ export const CONTENT = {
             "Supporting multiple player motivations can be more effective than optimising for a single ideal user.",
           ],
         },
-        {
-          sub: "My Role",
-        },
+        { sub: "My Role" },
         {
           p: "As the lead designer for GameHouse+, I helped define how a subscription app built around downloadable games could evolve into a platform supporting multiple ways to play — balancing new opportunities without losing the audience that made it successful.",
         },
@@ -1829,26 +1837,82 @@ export const CONTENT = {
       glow: "#3B3061",
       accent: "#6E5BA6",
     },
-    "case.gamehouse-plus.homeBefore": {
+    "case.gamehouse-plus.iaDiagram": {
       src: null,
-      alt: "Home before, placeholder — a dense modular grid standing in for the catalogue-style layout.",
+      alt: "Information architecture, before and after, placeholder — nested panels standing in for the hierarchy that learned to hold two ways to play.",
+      plate: "panels",
+      tone: "dark",
+      seed: 550,
+    },
+    "case.gamehouse-plus.complexityDiagram1": {
+      src: null,
+      alt: "Complexity supporting diagram, placeholder — a modular grid standing in for one of the overlapping content dimensions.",
       plate: "grid",
       tone: "dark",
-      seed: 222,
+      seed: 551,
     },
-    "case.gamehouse-plus.homeAfter": {
+    "case.gamehouse-plus.complexityDiagram2": {
       src: null,
-      alt: "Home after, placeholder — a wide gradient mesh standing in for the instant-play launchpad layout.",
-      plate: "mesh",
-      tone: "accent",
-      seed: 223,
-    },
-    "case.gamehouse-plus.discovery": {
-      src: null,
-      alt: "Discovery-at-scale visual, placeholder — stepped columns standing in for recommendation and mood-based browsing surfaces.",
-      plate: "columns",
+      alt: "Complexity supporting diagram, placeholder — stacked strata standing in for another overlapping content dimension.",
+      plate: "strata",
       tone: "dark",
-      seed: 224,
+      seed: 552,
+    },
+    "case.gamehouse-plus.evidenceFunnel": {
+      src: null,
+      alt: "Amplitude funnel analysis, placeholder — a horizontal ramp standing in for a drop-off chart.",
+      plate: "ramp",
+      tone: "dark",
+      seed: 553,
+    },
+    "case.gamehouse-plus.evidenceReplay": {
+      src: null,
+      alt: "Session-replay still, placeholder — a portrait frame standing in for a recorded first session.",
+      plate: "portrait",
+      tone: "dark",
+      seed: 554,
+    },
+    "case.gamehouse-plus.evidenceAbResult": {
+      src: null,
+      alt: "A/B test result, placeholder — interlocking bars standing in for the two compared variants.",
+      plate: "weave",
+      tone: "accent",
+      seed: 555,
+    },
+    "case.gamehouse-plus.home": {
+      src: null,
+      alt: "Home, rebuilt as a launchpad, placeholder — a wide gradient mesh standing in for the instant-play entry screen.",
+      plate: "mesh",
+      tone: "light",
+      seed: 556,
+    },
+    "case.gamehouse-plus.classics": {
+      src: null,
+      alt: "Classics screen, placeholder — stepped columns standing in for the downloadable-catalogue surface.",
+      plate: "columns",
+      tone: "light",
+      seed: 557,
+    },
+    "case.gamehouse-plus.search": {
+      src: null,
+      alt: "Search screen, placeholder — an isometric lattice standing in for cross-catalogue results.",
+      plate: "lattice",
+      tone: "light",
+      seed: 558,
+    },
+    "case.gamehouse-plus.myGames": {
+      src: null,
+      alt: "My Games shelf, placeholder — a modular grid standing in for saved and in-progress titles, instant and downloaded together.",
+      plate: "grid",
+      tone: "light",
+      seed: 559,
+    },
+    "case.gamehouse-plus.craftPlate": {
+      src: null,
+      alt: "Component states craft plate, placeholder — nested panels standing in for a dense grid of states, empty states and onboarding copy.",
+      plate: "panels",
+      tone: "light",
+      seed: 560,
     },
 
     "card.jesterday.thumbnail": {
@@ -3296,6 +3360,9 @@ const STYLES_CASE = `
 }
 .processCard .meta{color:var(--muted)}
 .processCard p{color:var(--ink-2);font-size:.875rem;line-height:1.6;margin-top:auto}
+/* An option the case study didn't pick — kept in the carousel for context,
+   dimmed so the chosen direction reads as the obvious one without a caption. */
+.processCard--dim{opacity:.55}
 
 /* ---- system: dark full-bleed panel with a dense screen grid ---- */
 .systemPanel{
@@ -3321,6 +3388,50 @@ const STYLES_CASE = `
 .systemCell:hover > *{transform:scale(1.03)}
 .systemCell:nth-child(1){grid-column:span 2;grid-row:span 2}
 .systemCell:nth-child(4){grid-column:span 2}
+/* A 3-cell grid (one hero image, two supporting ones) has no fourth cell to
+   fill the gap the hero's 2x2 span leaves — stack the other two instead of
+   leaving it empty. */
+.systemGrid--triad .systemCell:nth-child(2),
+.systemGrid--triad .systemCell:nth-child(3){grid-column:span 2}
+.systemCell--quote{
+  display:flex;align-items:center;
+  padding:clamp(20px,3vw,32px);
+}
+.systemCell--quote p{
+  color:var(--panel-ink);
+  font-size:clamp(1rem,1.7vw,1.375rem);
+  font-weight:600;letter-spacing:-.02em;line-height:1.4;
+}
+/* ---- rich case-study blocks reused inside a dark panel ---- */
+.systemPanel .postP,
+.systemPanel .postList li{color:var(--panel-muted)}
+.systemPanel .postSubH{color:var(--panel-ink)}
+.systemPanel .postQuote{color:var(--panel-ink);border-left-color:var(--panel-ink)}
+.systemPanel .postColumn{border-color:var(--panel-hairline)}
+.systemPanel .postColumn h4{color:var(--panel-ink)}
+.systemPanel .postColumn p,
+.systemPanel .postColumn li{color:var(--panel-muted)}
+.systemPanel .postFig > .vis{border-color:var(--panel-hairline)}
+.systemPanel .postFig figcaption{color:var(--panel-muted)}
+.systemPanel .postTableWrap{border-color:var(--panel-hairline)}
+.systemPanel .postTable th{color:var(--panel-muted)}
+.systemPanel .postTable td:first-child{color:var(--panel-muted)}
+.systemPanel .postTable td:last-child{color:var(--panel-ink)}
+.systemPanel .postTable th,
+.systemPanel .postTable td{border-color:var(--panel-hairline)}
+
+/* ---- full-bleed dark media, no header — a standalone dark twin of
+   .wideVisual for a diagram or screenshot that needs no argument beside it ---- */
+.darkMediaFrame{
+  margin-block:clamp(40px,6vh,72px);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  background:var(--panel);
+}
+.darkMediaFrame figcaption{
+  margin-top:var(--s3);
+  color:var(--muted);
+}
 
 /* ---- extend ---- */
 .extendGrid{
@@ -6100,13 +6211,13 @@ function CaseSection({
   );
 }
 
-function ProcessScroller({ cards, reduced }) {
+function ProcessScroller({ cards, reduced, unit = "steps" }) {
   const { ref, atStart, atEnd, scrollBy } = useScrollerControls();
   return (
     <>
       <div className="scrollerHead">
         <span className="mono" style={{ color: "var(--muted)" }}>
-          {`${cards.length} steps`}
+          {`${cards.length} ${unit}`}
         </span>
         <span className="arrowPair">
           <button
@@ -6131,7 +6242,10 @@ function ProcessScroller({ cards, reduced }) {
       </div>
       <ul className="scroller" ref={ref}>
         {cards.map((c, i) => (
-          <li className="processCard" key={c.title}>
+          <li
+            className={`processCard${c.dim ? " processCard--dim" : ""}`}
+            key={c.title}
+          >
             <span className="idx mono">{String(i + 1).padStart(2, "0")}</span>
             <h3>{c.title}</h3>
             <span className="meta mono">{c.meta}</span>
@@ -6140,6 +6254,58 @@ function ProcessScroller({ cards, reduced }) {
         ))}
       </ul>
     </>
+  );
+}
+
+/**
+ * A dense bento of screens/diagrams inside a dark panel. A 3-cell grid gets
+ * an L-shaped layout (one hero cell, two stacked beside it) since the usual
+ * 4-cell asymmetry would otherwise leave a gap; any other count falls back
+ * to plain 1x1 tiles. A cell can carry a pulled quote instead of an image —
+ * used for evidence that's a finding, not a screenshot.
+ */
+function GridCells({ cells }) {
+  return (
+    <ul
+      className={`systemGrid reveal${cells.length === 3 ? " systemGrid--triad" : ""}`}
+    >
+      {cells.map((cell, j) => (
+        <li
+          className={`systemCell${cell.quote ? " systemCell--quote" : ""}`}
+          key={j}
+        >
+          {cell.quote ? (
+            <p>{cell.quote}</p>
+          ) : (
+            <Visual
+              imageKey={cell.imageKey}
+              ratio={cell.ratio || (j === 0 ? 4 / 3 : 3 / 4)}
+            />
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** The dark full-bleed wrapper shared by every inverted section — just the
+ * panel itself; compose a CaseSection (onPanel) and/or a GridCells inside. */
+function DarkPanel({ id, children }) {
+  return (
+    <div className="systemPanel reveal" id={id}>
+      {children}
+    </div>
+  );
+}
+
+/** A standalone dark full-bleed visual with no header — a diagram or
+ * screenshot that argues its own point, closing out a beat of the story. */
+function DarkMediaFrame({ imageKey, ratio = 16 / 9, caption }) {
+  return (
+    <figure className="darkMediaFrame reveal">
+      <Visual imageKey={imageKey} ratio={ratio} />
+      {caption ? <figcaption className="mono">{caption}</figcaption> : null}
+    </figure>
   );
 }
 
@@ -6305,31 +6471,21 @@ function CaseStudy({
         {/* Shaping the system — dark full-bleed panel */}
         <section className="section" aria-labelledby="case-system-h">
           <div className="container">
-            <div className="systemPanel reveal" id="system">
-              <div className="caseSplit">
-                <SectionHead
-                  headingId="case-system-h"
-                  label={project.system.eyebrow}
-                  statement={project.system.heading}
-                  onPanel
+            <DarkPanel id="system">
+              <CaseSection
+                headingId="case-system-h"
+                label={project.system.eyebrow}
+                statement={project.system.heading}
+                body={project.system.body}
+                onPanel
+              >
+                <GridCells
+                  cells={project.images.system.map((key) => ({
+                    imageKey: key,
+                  }))}
                 />
-                <div
-                  className="prose prose--onPanel reveal"
-                  style={{ "--reveal-delay": "120ms" }}
-                >
-                  {project.system.body.map((para, i) => (
-                    <p key={i}>{para}</p>
-                  ))}
-                </div>
-              </div>
-              <ul className="systemGrid">
-                {project.images.system.map((key, i) => (
-                  <li className="systemCell" key={key}>
-                    <Visual imageKey={key} ratio={i === 0 ? 4 / 3 : 3 / 4} />
-                  </li>
-                ))}
-              </ul>
-            </div>
+              </CaseSection>
+            </DarkPanel>
           </div>
         </section>
 
@@ -6426,19 +6582,7 @@ function CaseStudy({
  * under a numbered section), quote (a pull statement), columns (a 2–3up
  * comparison) and table (a before/after).
  */
-function CaseRichBlock({ block, i }) {
-  if (block.h) {
-    return (
-      <header className="richSectionHead reveal" key={i}>
-        {block.index ? (
-          <span className="mono richIndex">{block.index}</span>
-        ) : null}
-        <h2 className="postH" style={{ marginTop: 0 }}>
-          {block.h}
-        </h2>
-      </header>
-    );
-  }
+function CaseRichBlock({ block, i, reduced }) {
   if (block.sub) {
     return (
       <h3 className="postSubH reveal" key={i}>
@@ -6525,6 +6669,60 @@ function CaseRichBlock({ block, i }) {
           </div>
         ))}
       </dl>
+    );
+  }
+  // ---- shared with the generic CaseStudy template ----
+  if (block.grid) {
+    return <GridCells cells={block.grid} key={i} />;
+  }
+  // A bare dark panel with no header of its own — evidence dropped straight
+  // into a bento, no research chapter to introduce it.
+  if (block.darkPanel) {
+    return (
+      <DarkPanel key={i}>
+        <GridCells cells={block.darkPanel} />
+      </DarkPanel>
+    );
+  }
+  if (block.darkMedia) {
+    return (
+      <DarkMediaFrame
+        key={i}
+        imageKey={block.darkMedia.imageKey}
+        ratio={block.darkMedia.ratio}
+        caption={block.darkMedia.caption}
+      />
+    );
+  }
+  if (block.carousel) {
+    return (
+      <ProcessScroller
+        key={i}
+        cards={block.carousel.cards}
+        unit={block.carousel.unit}
+        reduced={reduced}
+      />
+    );
+  }
+  if (block.twoUp) {
+    return (
+      <ul className="extendGrid reveal" key={i}>
+        {block.twoUp.map((cell, j) => (
+          <li className="extendCell reveal" key={j}>
+            <Visual imageKey={cell.imageKey} ratio={cell.ratio || 4 / 3} />
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  if (block.wide) {
+    return (
+      <div className="wideVisual reveal" key={i}>
+        <Visual
+          imageKey={block.wide.imageKey}
+          ratio={block.wide.ratio || 16 / 7}
+        />
+      </div>
     );
   }
   return (
@@ -6677,13 +6875,83 @@ function GameHousePlusCase({
 
         <div className="container">
           <div className="postBody richCaseBody">
-            {sections.map((section) => (
-              <section id={section.id} key={section.id}>
-                {section.blocks.map((block, i) => (
-                  <CaseRichBlock block={block} i={i} key={i} />
-                ))}
-              </section>
-            ))}
+            {sections.map((section) => {
+              const [head, ...rest] = section.blocks;
+              // A dark section's own principles (its `body`) are pulled
+              // statements, not the plain-paragraph prose CaseSection's
+              // `body` prop expects — render them as leading quote blocks
+              // instead, ahead of the rest of the section's content.
+              const leadQuotes = head.dark
+                ? (head.body || []).map((q, i) => (
+                    <CaseRichBlock
+                      block={{ quote: q }}
+                      i={`lead${i}`}
+                      key={`lead${i}`}
+                    />
+                  ))
+                : [];
+              const children = [
+                ...leadQuotes,
+                ...rest.map((block, i) => (
+                  <CaseRichBlock
+                    block={block}
+                    i={i}
+                    key={i}
+                    reduced={reduced}
+                  />
+                )),
+              ];
+              // A heading with no `label` is a project that hasn't been
+              // rebuilt onto the shared SectionHead/CaseSection pairing yet —
+              // fall back to the flat numbered title it was written with,
+              // rather than half-rendering an empty eyebrow line.
+              if (!head.label) {
+                return (
+                  <section id={section.id} key={section.id}>
+                    <header className="richSectionHead reveal">
+                      {head.index ? (
+                        <span className="mono richIndex">{head.index}</span>
+                      ) : null}
+                      <h2 className="postH" style={{ marginTop: 0 }}>
+                        {head.h}
+                      </h2>
+                    </header>
+                    {children}
+                  </section>
+                );
+              }
+              const headingId = `case-${section.id}-h`;
+              // A numbered section can argue its point on the dark panel
+              // instead of the light canvas — same header-pair shape
+              // (SectionHead + prose), just inverted, same as CaseStudy's
+              // own "system" section.
+              return (
+                <section id={section.id} key={section.id}>
+                  {head.dark ? (
+                    <DarkPanel>
+                      <CaseSection
+                        headingId={headingId}
+                        label={head.label}
+                        statement={head.h}
+                        body={[]}
+                        onPanel
+                      >
+                        {children}
+                      </CaseSection>
+                    </DarkPanel>
+                  ) : (
+                    <CaseSection
+                      headingId={headingId}
+                      label={head.label}
+                      statement={head.h}
+                      body={head.body || []}
+                    >
+                      {children}
+                    </CaseSection>
+                  )}
+                </section>
+              );
+            })}
           </div>
         </div>
 
@@ -7202,14 +7470,22 @@ const STYLES_POST = `
 }
 .postRefs a:hover{color:var(--accent);border-color:var(--accent)}
 
-/* ---- rich case-study blocks (GameHousePlusCase only) ---- */
+/* ---- rich case-study blocks (any project with a richBody) ----
+   No max-width here: sections carry the same wide components as the generic
+   CaseStudy template (carousels, dark panels, full-bleed media), so only the
+   reading-width elements below cap their own measure. */
 .richCaseBody{max-width:none}
-.richCaseBody section{max-width:68ch}
 .richCaseBody section + section{
   margin-top:clamp(56px,7vh,96px);
   padding-top:clamp(40px,5vh,72px);
   border-top:1px solid var(--hairline);
 }
+.richCaseBody .postP,
+.richCaseBody .postList,
+.richCaseBody .postQuote,
+.richCaseBody .postFig{max-width:62ch}
+/* Legacy flat heading — a project whose h-blocks carry no label field falls
+   back to a plain numbered title instead of the SectionHead pairing above. */
 .richSectionHead{
   display:flex;align-items:baseline;gap:var(--s4);
   margin-top:0;margin-bottom:var(--s4);
@@ -7281,7 +7557,6 @@ const STYLES_POST = `
 
 @media (max-width:900px){
   .postBody{max-width:none}
-  .richCaseBody section{max-width:none}
 }
 `;
 
