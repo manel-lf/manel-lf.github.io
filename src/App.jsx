@@ -194,7 +194,7 @@ export const CONTENT = {
         id: "bit-teaching",
         kicker: "Teaching",
         caption:
-          "Research-methods material for a UX course inside an AI and Data Science degree at La Salle URL.",
+          "Meet Rubriq, my rubric-based grading tool! It catches formatting mistakes, organizes submissions, and builds student progression — every grade is still mine.",
         imageKey: "bits.teaching",
       },
       {
@@ -1474,11 +1474,8 @@ export const CONTENT = {
       seed: 52,
     },
     "bits.teaching": {
-      src: null,
-      alt: "A grid of hairline cells with a few filled, standing in for teaching material and research methods.",
-      plate: "grid",
-      tone: "light",
-      seed: 63,
+      src: "img/bits-rubriq.jpg",
+      alt: "Rubriq, a rubric-based grading tool: a session-setup screen for uploading a submission screenshot and listing filenames to grade.",
     },
     "bits.instant": {
       src: null,
