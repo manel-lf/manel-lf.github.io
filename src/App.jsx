@@ -688,10 +688,13 @@ export const CONTENT = {
         "From catalog to platform.",
         "Redesigning GH+'s content architecture for instant play.",
       ],
-      // Shown next to the title on desktop only — the panel's own width
-      // can't fit it beside the statement below a certain breakpoint, and
-      // the full-bleed hero already carries the mobile layout.
-      spotlightVisual: "case.gamehouse-plus.spotlightVisual",
+      // The spotlight card's own background — a looping muted clip instead
+      // of the static hero plate, rotated for a bit of energy. `poster`
+      // covers the gap before the first frame decodes.
+      spotlightVideo: {
+        src: "video/gamehouse-plus-bg.mp4",
+        poster: "img/gamehouse-plus-bg-poster.jpg",
+      },
       name: "GameHouse+",
       mark: "gamehouse",
       eyebrow: "GameHouse+",
@@ -1870,13 +1873,6 @@ export const CONTENT = {
       glow: "#3B3061",
       accent: "#6E5BA6",
     },
-    // Real product shot — transparent PNG, sits directly on the spotlight
-    // card's dark panel. Shown only alongside the title on desktop; see
-    // .spotlightVisual.
-    "case.gamehouse-plus.spotlightVisual": {
-      src: "img/gamehouse-plus-app-visual.png",
-      alt: "GameHouse+ app screens — the instant-play Home feed with a match-3 game running, Search results, and the VIP upgrade screen.",
-    },
     "case.gamehouse-plus.architecture": {
       src: null,
       alt: "The architecture GH+ landed on, placeholder — concentric orbits standing in for how the downloadable and instant-play ecosystems coexist.",
@@ -2748,9 +2744,12 @@ const STYLES_HOME = `
   will-change:transform;
 }
 .spotlightMedia > *{width:100%;height:100%;object-fit:cover}
+/* Rotated and oversized so the corners a plain rotate would expose stay
+   covered — the wrapper above still owns the scroll parallax transform. */
+.spotlightVideo{transform:rotate(15deg) scale(1.5)}
 .spotlightMedia::after{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(5,5,5,.55) 0%,rgba(5,5,5,.35) 45%,rgba(5,5,5,.9) 100%);
+  background:linear-gradient(180deg,rgba(5,5,5,.7) 0%,rgba(5,5,5,.55) 45%,rgba(5,5,5,.92) 100%);
 }
 .spotlightInner{
   position:relative;z-index:1;
@@ -2771,26 +2770,7 @@ const STYLES_HOME = `
 /* The second line carries the same weight but reads as the subordinate
    clause, matching the two-tone treatment used by the section headings. */
 .spotlightStatement span + span{color:var(--panel-muted)}
-/* Brand + statement sit in their own column so a visual can take the
-   second one; on narrower viewports (below) it collapses back to a
-   single stacked column and the visual drops out entirely. */
-.spotlightHead{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(200px,300px);
-  align-items:center;
-  gap:var(--s8);
-}
-.spotlightHead > div:first-child{
-  display:flex;flex-direction:column;gap:var(--s9);
-  min-width:0;
-}
-.spotlightVisual{
-  /* No box of its own on purpose — it's a transparent cutout, not a
-     screenshot in a frame, so a card treatment (radius/clip/shadow-as-box)
-     would just glue a rectangle behind it. A drop-shadow instead follows
-     the art's own silhouette. */
-  filter:drop-shadow(0 16px 28px rgba(0,0,0,.4));
-}
+.spotlightHead{display:flex;flex-direction:column;gap:var(--s9);min-width:0}
 .statRow{
   display:flex;flex-wrap:wrap;gap:clamp(20px,3.4vw,56px);
 }
@@ -3606,9 +3586,6 @@ const STYLES_CASE = `
   .heroLower{grid-template-columns:1fr;gap:var(--s5)}
   .heroBio{grid-column:1;justify-self:start}
   .projectGrid{grid-template-columns:1fr}
-  .spotlightHead{display:flex;flex-direction:column;gap:var(--s9)}
-  .spotlightHead > div:first-child{gap:var(--s9)}
-  .spotlightVisual{display:none}
   .aboutCard{grid-template-columns:1fr}
   .aboutPortrait{order:-1;max-width:340px}
   .caseSplit{grid-template-columns:1fr;gap:var(--s5)}
@@ -5395,41 +5372,55 @@ function Spotlight({ project, onCapture, reduced }) {
   return (
     <article className="spotlight reveal">
       <div className="spotlightMedia" ref={mediaRef} aria-hidden="true">
-        <Visual imageKey={project.images.hero} fill />
+        {project.spotlightVideo ? (
+          reduced ? (
+            <img
+              src={resolveSrc(project.spotlightVideo.poster)}
+              alt=""
+              className="spotlightVideo"
+            />
+          ) : (
+            <video
+              className="spotlightVideo"
+              poster={resolveSrc(project.spotlightVideo.poster)}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+            >
+              <source
+                src={resolveSrc(project.spotlightVideo.src)}
+                type="video/mp4"
+              />
+            </video>
+          )
+        ) : (
+          <Visual imageKey={project.images.hero} fill />
+        )}
       </div>
       <div className="spotlightInner">
         <div className="spotlightHead">
-          <div>
-            <p className="spotlightBrand" ref={titleRef}>
-              {project.spotlightLogo ? (
-                <img
-                  src={resolveSrc(project.spotlightLogo)}
-                  alt={project.name}
-                  style={{
-                    height: "30px",
-                    width: `${Math.round(30 * project.spotlightLogoAspect)}px`,
-                  }}
-                />
-              ) : (
-                <span className="mono spotlightEyebrow">{project.eyebrow}</span>
-              )}
-            </p>
+          <p className="spotlightBrand" ref={titleRef}>
+            {project.spotlightLogo ? (
+              <img
+                src={resolveSrc(project.spotlightLogo)}
+                alt={project.name}
+                style={{
+                  height: "30px",
+                  width: `${Math.round(30 * project.spotlightLogoAspect)}px`,
+                }}
+              />
+            ) : (
+              <span className="mono spotlightEyebrow">{project.eyebrow}</span>
+            )}
+          </p>
 
-            <h3 className="spotlightStatement">
-              {lines.map((line, i) => (
-                <span key={i}>{line}</span>
-              ))}
-            </h3>
-          </div>
-
-          {/* Desktop only — the panel isn't wide enough to hold this
-              beside the statement below that breakpoint, and the
-              full-bleed hero already carries the layout on mobile. */}
-          {project.spotlightVisual ? (
-            <div className="spotlightVisual" aria-hidden="true">
-              <Visual imageKey={project.spotlightVisual} ratio={900 / 962} />
-            </div>
-          ) : null}
+          <h3 className="spotlightStatement">
+            {lines.map((line, i) => (
+              <span key={i}>{line}</span>
+            ))}
+          </h3>
         </div>
 
         {/* Stats and the call to action share the bottom rail. */}
