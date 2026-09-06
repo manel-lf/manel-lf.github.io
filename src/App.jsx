@@ -1560,14 +1560,22 @@ export const CONTENT = {
         hero: "case.dragon-city-2.hero",
       },
       richBody: [
-        { h: "Overview", index: "01", navLabel: "Overview" },
         {
-          p: "Dragon City 2 is a midcore RPG sequel to Dragon City: breed dragons, build an island, fight turn-based battles. I worked on the campaign battle systems, then ran the first-time-user research that tested whether players understood them.",
+          h: "A sequel built to prove the battles were worth repeating.",
+          navLabel: "Overview",
+          label: "Overview:",
+          body: [
+            "Dragon City 2 is a midcore RPG sequel to Dragon City: breed dragons, build an island, fight turn-based battles. I worked on the campaign battle systems, then ran the first-time-user research that tested whether players understood them.",
+          ],
         },
 
-        { h: "The Problem", index: "02", navLabel: "The Problem" },
         {
-          p: "Two problems pulling opposite ways. Players ground the same easy encounters for resources — repetition was the price of progression, paid in attention. Meanwhile the systems that made a fight interesting went unused: they attacked whatever the interface had pre-targeted, and almost nobody checked which element beat which.",
+          h: "Too slow and too shallow at once.",
+          navLabel: "The Problem",
+          label: "The problem:",
+          body: [
+            "Two problems pulling opposite ways. Players ground the same easy encounters for resources — repetition was the price of progression, paid in attention. Meanwhile the systems that made a fight interesting went unused: they attacked whatever the interface had pre-targeted, and almost nobody checked which element beat which.",
+          ],
         },
         {
           quote:
@@ -1575,17 +1583,20 @@ export const CONTENT = {
         },
 
         {
-          h: "Target Before Attack",
-          index: "03",
+          h: "Target, then attack — reordering the one real decision.",
           navLabel: "Target First",
+          label: "Target before attack:",
+          body: [
+            "Players never chose targets because the game chose for them, so the fastest path through a turn skipped the only real decision in it. I inverted the order — target, then attack — keeping the target step optional so the default path stays one tap.",
+          ],
         },
         {
-          p: "Players never chose targets because the game chose for them, so the fastest path through a turn skipped the only real decision in it. I inverted the order — target, then attack — keeping the target step optional so the default path stays one tap.",
-        },
-        {
-          imageKey: "case.dragon-city-2.targeting",
-          caption:
-            "The reordered turn flow: choose a target, then choose an attack, with the target step optional.",
+          wide: {
+            imageKey: "case.dragon-city-2.targeting",
+            ratio: 3 / 4,
+            caption:
+              "The reordered turn flow: choose a target, then choose an attack, with the target step optional.",
+          },
         },
         {
           quote:
@@ -1593,12 +1604,12 @@ export const CONTENT = {
         },
 
         {
-          h: "Speed Toggles for Everything Else",
-          index: "04",
+          h: "Slow down the one turn that matters. Speed up the rest.",
           navLabel: "Speed Toggles",
-        },
-        {
-          p: "2× and autobattle, so the fights that exist only to be farmed stop costing what a real fight costs. A scan across Galaxy of Heroes, Marvel Strike Force and Empires & Puzzles gave two conventions worth inheriting rather than reinventing.",
+          label: "Speed toggles:",
+          body: [
+            "2× and autobattle, so the fights that exist only to be farmed stop costing what a real fight costs. A scan across Galaxy of Heroes, Marvel Strike Force and Empires & Puzzles gave two conventions worth inheriting rather than reinventing.",
+          ],
         },
         {
           list: [
@@ -1607,9 +1618,12 @@ export const CONTENT = {
           ],
         },
         {
-          imageKey: "case.dragon-city-2.speedToggles",
-          caption:
-            "The battle HUD's speed controls: a 2× toggle and an autobattle button labelled 'auto'.",
+          wide: {
+            imageKey: "case.dragon-city-2.speedToggles",
+            ratio: 16 / 9,
+            caption:
+              "The battle HUD's speed controls: a 2× toggle and an autobattle button labelled 'auto'.",
+          },
         },
         {
           quote:
@@ -1617,18 +1631,16 @@ export const CONTENT = {
         },
 
         {
-          h: "Reject the Type Matrix",
-          index: "05",
+          h: "Pick one element, see two lists.",
           navLabel: "Type Matchups",
+          label: "Type matchups:",
+          body: [
+            "Every dragon has an element, strong against some and weak against others. The genre answer is the full N×N grid, and on a phone it fails — find a row, find a column, hold both in your head over a five-millimetre cell.",
+            "I worked through the alternatives and landed on the opposite structure: pick one element, see two lists.",
+          ],
         },
         {
-          p: "Every dragon has an element, strong against some and weak against others. The genre answer is the full N×N grid, and on a phone it fails — find a row, find a column, hold both in your head over a five-millimetre cell.",
-        },
-        {
-          p: "I worked through the alternatives and landed on the opposite structure: pick one element, see two lists.",
-        },
-        {
-          columns: [
+          noteCards: [
             { title: "Weak Against", body: "The elements this one beats." },
             {
               title: "Strong Against",
@@ -1640,9 +1652,12 @@ export const CONTENT = {
           p: 'It answers the question players actually have, which is never "show me the system" and always "what do I bring to that fight?"',
         },
         {
-          imageKey: "case.dragon-city-2.typeMatchups",
-          caption:
-            "The type-matchup screen: pick one element, see two lists, instead of the full N×N grid.",
+          wide: {
+            imageKey: "case.dragon-city-2.typeMatchups",
+            ratio: 3 / 4,
+            caption:
+              "The type-matchup screen: pick one element, see two lists, instead of the full N×N grid.",
+          },
         },
         {
           quote:
@@ -1650,37 +1665,41 @@ export const CONTENT = {
         },
 
         {
-          h: "The Cursed Boss Loop",
-          index: "06",
+          h: "Fog with a payoff on both sides of the fight.",
           navLabel: "Boss Loop",
+          label: "The cursed boss loop:",
+          body: [
+            "Fog covers parts of the island; clearing it means fighting the boss inside. I designed the flow and both the prebattle and postbattle screens.",
+            "They have different jobs. Prebattle has to make a level-3 Guardivyan feel worth preparing for — it's the only moment the player decides whether they're ready. Postbattle has to connect the win back to the island: victory, then orbs to heal the cursed land, then the territory opening up with a nature egg inside.",
+          ],
         },
         {
-          p: "Fog covers parts of the island; clearing it means fighting the boss inside. I designed the flow and both the prebattle and postbattle screens.",
-        },
-        {
-          p: "They have different jobs. Prebattle has to make a level-3 Guardivyan feel worth preparing for — it's the only moment the player decides whether they're ready. Postbattle has to connect the win back to the island: victory, then orbs to heal the cursed land, then the territory opening up with a nature egg inside.",
-        },
-        {
-          imageKey: "case.dragon-city-2.bossPrebattle",
-          caption:
-            "The Cursed Boss prebattle screen, framing a level-3 Guardivyan as worth preparing for.",
-        },
-        {
-          imageKey: "case.dragon-city-2.bossPostbattle",
-          caption:
-            "The postbattle screen: victory, orbs to heal the cursed land, and the newly opened territory.",
+          twoUp: [
+            {
+              imageKey: "case.dragon-city-2.bossPrebattle",
+              ratio: 3 / 4,
+              caption:
+                "The Cursed Boss prebattle screen, framing a level-3 Guardivyan as worth preparing for.",
+            },
+            {
+              imageKey: "case.dragon-city-2.bossPostbattle",
+              ratio: 3 / 4,
+              caption:
+                "The postbattle screen: victory, orbs to heal the cursed land, and the newly opened territory.",
+            },
+          ],
         },
         {
           quote: "The payoff isn't the drop, it's the map getting bigger.",
         },
 
         {
-          h: "Then I Checked Whether Any of It Landed",
-          index: "07",
+          h: "I designed it, then asked ten strangers to explain it back.",
           navLabel: "Research",
-        },
-        {
-          p: "I ran the FTUE research end to end — objectives, method, recruitment, analysis, report.",
+          label: "Then I checked whether it landed:",
+          body: [
+            "I ran the FTUE research end to end — objectives, method, recruitment, analysis, report.",
+          ],
         },
         {
           list: [
@@ -1696,14 +1715,21 @@ export const CONTENT = {
           p: "Those last two test the Cursed Boss loop directly. I designed it, then asked ten strangers to explain it back to me. Every answer was classified against three bands defined before I saw any data — success, mid success, fail — so the bar couldn't quietly move to fit the result.",
         },
         {
-          imageKey: "case.dragon-city-2.research",
-          caption:
-            "Ten first-time players' answers, classified into success / mid-success / fail bands defined before the data came in.",
+          wide: {
+            imageKey: "case.dragon-city-2.research",
+            ratio: 16 / 9,
+            caption:
+              "Ten first-time players' answers, classified into success / mid-success / fail bands defined before the data came in.",
+          },
         },
 
-        { h: "Outcome", index: "08", navLabel: "Outcome" },
         {
-          p: "Findings went back grouped two ways: by feature, for the owners of each, and by question, for the tutorial as a whole.",
+          h: "Cancelled in beta. The reasoning still shipped.",
+          navLabel: "Outcome",
+          label: "Outcome:",
+          body: [
+            "Findings went back grouped two ways: by feature, for the owners of each, and by question, for the tutorial as a whole.",
+          ],
         },
         {
           quote:
@@ -1716,7 +1742,11 @@ export const CONTENT = {
           p: "Dragon City 2 was cancelled in beta and never launched. There are no live metrics behind any of this, and I'd rather say so than imply otherwise — the reasoning is the part that transferred.",
         },
 
-        { h: "In Hindsight", index: "09", navLabel: "Hindsight" },
+        {
+          h: "What I'd change before the fieldwork, not after.",
+          navLabel: "Hindsight",
+          label: "In hindsight:",
+        },
         {
           list: [
             "Recruitment — 16–25 for a game with a broader commercial audience. I ran the spec as briefed; I'd argue with it now, before fieldwork rather than after.",
