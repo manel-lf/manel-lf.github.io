@@ -743,7 +743,9 @@ export const CONTENT = {
           body: [
             "GH+ is a subscription service for casual puzzle games. Most of its players are women over thirty in the US, and most of them play in the gaps of the day rather than in long sittings.",
             "It launched as a catalog of downloadable titles. Find a game, install it, keep it while you subscribe. That model held for years.",
-            "Then instant play arrived, and the catalog stopped making sense.",
+            {
+              bold: "Then instant play arrived, and the catalog stopped making sense.",
+            },
             "Instant play let a game start in seconds — no install, no wait, no storage. A second kind of content in a product built to hold one, and everything downstream came loose with it: the home screen, the navigation, search, even the words we used for a game.",
             "I led the design work that turned the catalog into a platform that could hold both.",
           ],
@@ -767,32 +769,34 @@ export const CONTENT = {
             "Both are good, for different people at different moments. And — this is the part that broke the product — they look identical in a grid. Same tile, same art, same tap. One starts in seconds, the other in minutes, and players were the ones absorbing the difference.",
           ],
         },
-        { sub: "Understanding Our Players" },
         {
-          p: "The split ran by tenure, not by mood, and the two groups wanted opposite things.",
-        },
-        {
-          noteCards: [
-            {
-              kicker: "Where churn was highest",
-              kickerAccent: true,
-              title: "New players",
-              body: "Most of them left before a game ever opened. The install was not a wait, it was a decision, taken at the moment they were least invested. Instant play removed it, and they stayed.",
-            },
-            {
-              kicker: "Where the revenue was",
-              kickerAccent: true,
-              title: "Returning players",
-              body: "Loyal to franchises, used to downloading and buying the games they follow. For them the download is ownership rather than friction, and the new instant titles read as lighter, cheaper content beside it.",
-            },
-          ],
-        },
-        {
-          p: 'Which is why "make everything instant" was never the answer. Instant play won back the players we were losing, and devalued the catalog for the players we already had.',
-        },
-        {
-          quote:
-            "The challenge was never introducing instant play. It was introducing it without making the ecosystem shallower.",
+          innerSplit: {
+            label: "Understanding our players",
+            items: [
+              "The split ran by tenure, not by mood, and the two groups wanted opposite things.",
+              {
+                noteCards: [
+                  {
+                    kicker: "Where churn was highest",
+                    kickerAccent: true,
+                    title: "New players",
+                    body: "Most of them left before a game ever opened. The install was not a wait, it was a decision, taken at the moment they were least invested. Instant play removed it, and they stayed.",
+                  },
+                  {
+                    kicker: "Where the revenue was",
+                    kickerAccent: true,
+                    title: "Returning players",
+                    body: "Loyal to franchises, used to downloading and buying the games they follow. For them the download is ownership rather than friction, and the new instant titles read as lighter, cheaper content beside it.",
+                  },
+                ],
+              },
+              'Which is why "make everything instant" was never the answer. Instant play won back the players we were losing, and devalued the catalog for the players we already had.',
+              {
+                quote:
+                  "The challenge was never introducing instant play. It was introducing it without making the ecosystem shallower.",
+              },
+            ],
+          },
         },
         {
           twoUp: [
@@ -817,28 +821,24 @@ export const CONTENT = {
           label: "Designing for complexity:",
           body: [
             "Once instant play existed, every game in GH+ sat on several axes at once:",
+            {
+              tags: [
+                "instant or downloadable",
+                "free or premium",
+                "quick session or long session",
+                "franchise or standalone",
+                "one genre or several",
+              ],
+            },
+            "Every title already carried a stack of tags, and almost none of them registered with players. Surfacing more would not have helped: expose every dimension and a catalog becomes a database — technically complete, cognitively useless. Filters multiply, the home screen turns into a control panel, and the player who had ten minutes now has eight. It had to get simpler, not more complete.",
+            "So the question stopped being how do we organise this content, and became:",
+            {
+              quote:
+                "What mental model can someone build in three seconds, standing in a kitchen, holding a phone in one hand?",
+            },
+            "Three principles came out of that. Each one closed a door.",
           ],
         },
-        {
-          tags: [
-            "instant or downloadable",
-            "free or premium",
-            "quick session or long session",
-            "franchise or standalone",
-            "one genre or several",
-          ],
-        },
-        {
-          p: "Every title already carried a stack of tags, and almost none of them registered with players. Surfacing more would not have helped: expose every dimension and a catalog becomes a database — technically complete, cognitively useless. Filters multiply, the home screen turns into a control panel, and the player who had ten minutes now has eight. It had to get simpler, not more complete.",
-        },
-        {
-          p: "So the question stopped being how do we organise this content, and became:",
-        },
-        {
-          quote:
-            "What mental model can someone build in three seconds, standing in a kitchen, holding a phone in one hand?",
-        },
-        { p: "Three principles came out of that. Each one closed a door." },
         {
           staticCards: [
             {
@@ -874,7 +874,10 @@ export const CONTENT = {
           label: "Content duality:",
           dark: true,
           body: [
-            "Content duality was our internal term: both formats are first-class content, and the product has to hold both without asking players to understand the difference. Should they coexist in one experience, or live in separate ones?",
+            {
+              emphasisLead: "Content duality",
+              rest: " was our internal term: both formats are first-class content, and the product has to hold both without asking players to understand the difference. Should they coexist in one experience, or live in separate ones?",
+            },
             "Behavioural data answered a question we hadn't asked. The most engaged players were neither the instant-play nor the downloadable players — they were the ones who did both. Any architecture that made one half harder to reach would destroy the behaviour producing our best retention.",
             "Three directions, judged against that.",
           ],
@@ -902,13 +905,17 @@ export const CONTENT = {
             },
           ],
         },
-        { sub: "The Evidence" },
-        { p: "We didn't reason our way to this. We tested it." },
         {
-          p: "An A/B test compared an installable control against two instant-play variants. The instant variants opened at more than six times the control's day-zero rate, cut the path from entry to first play by roughly six-fold, and doubled day-one ecosystem retention.",
-        },
-        {
-          p: "Amplitude funnels and session replays gave us the behavioural picture underneath — including the dual-format finding that decided the architecture. An unmoderated usability study on Lysto, with six participants, tested the redesigned Home before it shipped.",
+          innerSplit: {
+            label: "The evidence",
+            onPanel: true,
+            divider: true,
+            items: [
+              "We didn't reason our way to this. We tested it.",
+              "An A/B test compared an installable control against two instant-play variants. The instant variants opened at more than six times the control's day-zero rate, cut the path from entry to first play by roughly six-fold, and doubled day-one ecosystem retention.",
+              "Amplitude funnels and session replays gave us the behavioural picture underneath — including the dual-format finding that decided the architecture. An unmoderated usability study on Lysto, with six participants, tested the redesigned Home before it shipped.",
+            ],
+          },
         },
         {
           darkTwoUp: [
@@ -996,10 +1003,10 @@ export const CONTENT = {
           h: "What shipped, and what it taught me.",
           navLabel: "Impact",
           label: "The impact:",
-        },
-        { sub: "Results" },
-        {
-          p: "Measured against the installable control, at day zero and day one:",
+          body: [
+            { smallLabel: "Results" },
+            "Measured against the installable control, at day zero and day one:",
+          ],
         },
         {
           noteCards: [
@@ -3353,6 +3360,26 @@ const STYLES_CASE = `
 .prose{display:flex;flex-direction:column;gap:var(--s4)}
 .prose p{color:var(--ink-2);font-size:1rem;line-height:1.68;max-width:62ch}
 .prose--onPanel p{color:var(--panel-muted)}
+/* A single emphasised line inside a prose column — one beat heavier than
+   the paragraphs around it, without becoming a pulled quote. */
+.bodyEmphasis{color:var(--ink);font-weight:600}
+.prose--onPanel .bodyEmphasis{color:var(--panel-ink)}
+.bodyEmphasisInline{color:var(--ink);font-style:normal}
+.prose--onPanel .bodyEmphasisInline{color:var(--panel-ink)}
+/* A standalone mono kicker line, same colour as a section label, sitting
+   inline in the flow rather than paired with a statement. */
+.bodyLabel{display:block;color:var(--muted)}
+.prose--onPanel .bodyLabel{color:var(--panel-muted)}
+/* A second, narrower caseSplit nested inside a section: a bare label (no
+   statement) beside its own prose column. */
+.innerSplit{margin-top:clamp(40px,6vh,72px)}
+.innerSplit--divider{
+  padding-top:clamp(28px,4vh,48px);
+  border-top:1px solid var(--hairline);
+}
+.systemPanel .innerSplit--divider{border-color:var(--panel-hairline)}
+.innerSplitLabel{margin:0;color:var(--muted)}
+.innerSplitLabel--onPanel{color:var(--panel-muted)}
 .wideVisual{
   margin-top:clamp(32px,5vh,64px);
   border-radius:var(--r-lg);overflow:hidden;
@@ -6272,6 +6299,41 @@ function Footer() {
  * Case study detail view
  * ========================================================================= */
 
+/**
+ * A prose column's items are usually just paragraph strings, but a couple of
+ * recurring shapes need more: `bold` for a single emphasised line,
+ * `emphasisLead` (+ `rest`) for a paragraph whose opening phrase is
+ * italicised, `smallLabel` for a standalone mono kicker line. Anything else
+ * is a real block (tags, a pulled quote, a card grid…) and goes through
+ * CaseRichBlock, so a prose column can hold the same vocabulary as the
+ * full-width flow beneath it.
+ */
+function renderProseItems(items, reduced) {
+  return items.map((item, i) => {
+    if (typeof item === "string") return <p key={i}>{item}</p>;
+    if (item.bold)
+      return (
+        <p className="bodyEmphasis" key={i}>
+          {item.bold}
+        </p>
+      );
+    if (item.emphasisLead)
+      return (
+        <p key={i}>
+          <em className="bodyEmphasisInline">{item.emphasisLead}</em>
+          {item.rest}
+        </p>
+      );
+    if (item.smallLabel)
+      return (
+        <span className="mono bodyLabel" key={i}>
+          {item.smallLabel}
+        </span>
+      );
+    return <CaseRichBlock block={item} i={i} key={i} reduced={reduced} />;
+  });
+}
+
 function CaseSection({
   id,
   label,
@@ -6280,6 +6342,7 @@ function CaseSection({
   children,
   onPanel,
   headingId,
+  reduced,
 }) {
   return (
     <div id={id}>
@@ -6294,9 +6357,7 @@ function CaseSection({
           className={`prose${onPanel ? " prose--onPanel" : ""} reveal`}
           style={{ "--reveal-delay": "120ms" }}
         >
-          {body.map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
+          {renderProseItems(body, reduced)}
         </div>
       </div>
       {children}
@@ -6916,6 +6977,30 @@ function CaseRichBlock({ block, i, reduced }) {
       </div>
     );
   }
+  // A second, narrower caseSplit nested inside a section — a bare mono label
+  // (no statement partner) beside its own prose column. Used when a section
+  // has more than one beat that needs the label/body two-column treatment.
+  if (block.innerSplit) {
+    const { label, onPanel, divider, items } = block.innerSplit;
+    return (
+      <div
+        className={`caseSplit innerSplit${divider ? " innerSplit--divider" : ""}`}
+        key={i}
+      >
+        <h3
+          className={`mono innerSplitLabel${onPanel ? " innerSplitLabel--onPanel" : ""}`}
+        >
+          {label}
+        </h3>
+        <div
+          className={`prose${onPanel ? " prose--onPanel" : ""} reveal`}
+          style={{ "--reveal-delay": "120ms" }}
+        >
+          {renderProseItems(items, reduced)}
+        </div>
+      </div>
+    );
+  }
   // Media and copy side by side, alternating which side the image sits on.
   if (block.featureRow) {
     const { kicker, title, body, imageKey, ratio, caption, imageFirst } =
@@ -6928,9 +7013,7 @@ function CaseRichBlock({ block, i, reduced }) {
           </span>
         ) : null}
         <h3>{title}</h3>
-        {body.map((p, k) => (
-          <p key={k}>{p}</p>
-        ))}
+        {renderProseItems(body, reduced)}
       </div>
     );
     const figure = (
@@ -7101,30 +7184,9 @@ function GameHousePlusCase({
           <div className="postBody richCaseBody">
             {sections.map((section) => {
               const [head, ...rest] = section.blocks;
-              // A dark section's own principles (its `body`) are pulled
-              // statements, not the plain-paragraph prose CaseSection's
-              // `body` prop expects — render them as leading quote blocks
-              // instead, ahead of the rest of the section's content.
-              const leadQuotes = head.dark
-                ? (head.body || []).map((q, i) => (
-                    <CaseRichBlock
-                      block={{ quote: q }}
-                      i={`lead${i}`}
-                      key={`lead${i}`}
-                    />
-                  ))
-                : [];
-              const children = [
-                ...leadQuotes,
-                ...rest.map((block, i) => (
-                  <CaseRichBlock
-                    block={block}
-                    i={i}
-                    key={i}
-                    reduced={reduced}
-                  />
-                )),
-              ];
+              const children = rest.map((block, i) => (
+                <CaseRichBlock block={block} i={i} key={i} reduced={reduced} />
+              ));
               // A heading with no `label` is a project that hasn't been
               // rebuilt onto the shared SectionHead/CaseSection pairing yet —
               // fall back to the flat numbered title it was written with,
@@ -7157,7 +7219,8 @@ function GameHousePlusCase({
                         headingId={headingId}
                         label={head.label}
                         statement={head.h}
-                        body={[]}
+                        body={head.body || []}
+                        reduced={reduced}
                         onPanel
                       >
                         {children}
@@ -7169,6 +7232,7 @@ function GameHousePlusCase({
                       label={head.label}
                       statement={head.h}
                       body={head.body || []}
+                      reduced={reduced}
                     >
                       {children}
                     </CaseSection>
