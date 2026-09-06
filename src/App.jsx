@@ -845,20 +845,23 @@ export const CONTENT = {
         {
           staticCards: [
             {
+              thumb: "img/gh-principle-state.png",
               title: "Show state, never rules.",
               meta: "Principle",
               body: "The interface says what a game is right now: playable, locked, installed, new. It never explains the system that produced that state. Players don't need our logic. They need to know what happens if they tap.",
             },
             {
+              thumb: "img/gh-principle-surface.png",
               title: "One dimension leads per surface.",
               meta: "Principle",
-              body: "Home leads on how you want to play. Search leads on what you want to play. No surface tries to express all five axes at once.",
+              body: "Home surfaces whichever games play fastest and feel freshest right now. Classics holds the downloadable catalog that complements and extends it. Search finds one specific game a player already has in mind, wherever it lives.",
             },
             {
+              thumb: "img/gh-principle-format.png",
               title:
                 "Format decides where a game lives, never whether a player can find it.",
               meta: "Principle",
-              body: "We were willing to separate the two content types structurally. We were not willing to let that separation hide anything from anyone — and the data, when it came, turned that instinct into a requirement.",
+              body: "We were willing to separate the two content types structurally — never willing to let that separation hide one from the other. The data later confirmed the instinct: players who engaged with both instant and downloadable content consistently outperformed those who stuck to just one.",
             },
           ],
         },
@@ -3433,6 +3436,17 @@ const STYLES_CASE = `
 }
 .processCard .meta{color:var(--muted)}
 .processCard p{color:var(--ink-2);font-size:.875rem;line-height:1.6;margin-top:auto}
+.cardThumb{
+  height:40px;width:auto;max-width:100%;
+  object-fit:contain;object-position:left center;
+  margin-bottom:var(--s2);
+}
+/* A static grid (not the scroller) top-aligns its cards instead of
+   anchoring body copy to the bottom, and reserves enough title height for
+   the longest sibling so every card's body starts on the same row —
+   grid stretch then equalizes the cards themselves to the tallest one. */
+.cardGrid .processCard p{margin-top:0}
+.cardGrid .processCard h3{min-height:3.9rem}
 /* An option the case study didn't pick — kept in the carousel for context,
    dimmed so the chosen direction reads as the obvious one without a caption. */
 .processCard--dim{opacity:.55}
@@ -4671,6 +4685,53 @@ function Visual({ imageKey, ratio = 16 / 9, fill = false, className, style }) {
           glow={entry.glow}
           accent={entry.accent}
         />
+      )}
+    </div>
+  );
+}
+
+/**
+ * A project's hero visual — a looping muted video when the project has one
+ * (its own case-study banner, not just the home spotlight card), falling
+ * back to the plain static image otherwise. Pauses on `prefers-reduced-
+ * motion` in favour of the poster frame, same as the spotlight card.
+ */
+function HeroMedia({ project, reduced, ratio = 16 / 9, className }) {
+  if (!project.spotlightVideo) {
+    return (
+      <Visual
+        imageKey={project.images.hero}
+        ratio={ratio}
+        className={className}
+      />
+    );
+  }
+  return (
+    <div
+      className={className ? `${className} vis` : "vis"}
+      style={{ aspectRatio: String(ratio), overflow: "hidden" }}
+    >
+      {reduced ? (
+        <img
+          src={resolveSrc(project.spotlightVideo.poster)}
+          alt=""
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      ) : (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={resolveSrc(project.spotlightVideo.poster)}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        >
+          <source
+            src={resolveSrc(project.spotlightVideo.src)}
+            type="video/mp4"
+          />
+        </video>
       )}
     </div>
   );
@@ -6577,7 +6638,7 @@ function CaseStudy({
 
           <div className="caseHeroFrame reveal">
             <div className="inner">
-              <Visual imageKey={project.images.hero} ratio={16 / 9} />
+              <HeroMedia project={project} reduced={reduced} ratio={16 / 9} />
             </div>
           </div>
 
@@ -6941,6 +7002,14 @@ function CaseRichBlock({ block, i, reduced }) {
       <div className="cardGrid reveal" key={i}>
         {block.staticCards.map((c, j) => (
           <div className="processCard" key={c.title}>
+            {c.thumb ? (
+              <img
+                className="cardThumb"
+                src={resolveSrc(c.thumb)}
+                alt=""
+                loading="lazy"
+              />
+            ) : null}
             <span className="idx mono">{String(j + 1).padStart(2, "0")}</span>
             <h3>{c.title}</h3>
             <span className="meta mono">{c.meta}</span>
@@ -7173,7 +7242,7 @@ function GameHousePlusCase({
 
           <div className="caseHeroFrame reveal">
             <div className="inner">
-              <Visual imageKey={project.images.hero} ratio={16 / 9} />
+              <HeroMedia project={project} reduced={reduced} ratio={16 / 9} />
             </div>
           </div>
 
