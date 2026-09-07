@@ -197,9 +197,9 @@ export const CONTENT = {
     items: [
       {
         id: "bit-claude-figma",
-        kicker: "AI tooling",
+        kicker: "Coming soon",
         caption:
-          "A working prototype in an afternoon — Claude Code driving the build, the Figma MCP keeping it on the design system.",
+          "The GH+ Battle Pass product design case study will be revealed upon launch.",
         imageKey: "bits.claudeFigma",
       },
       {
@@ -218,9 +218,9 @@ export const CONTENT = {
       },
       {
         id: "bit-instant",
-        kicker: "Prototype",
+        kicker: "Brand social",
         caption:
-          "Five entry-point variants for instant play, narrowed to one by putting a real build in front of players.",
+          "Social media content for Exclusive Traveler Club — a brief where the whole craft sits in type, spacing and restraint.",
         imageKey: "bits.instant",
       },
     ],
@@ -1782,29 +1782,20 @@ export const CONTENT = {
     },
 
     "bits.claudeFigma": {
-      src: null,
-      alt: "Overlapping structured panels suggesting a prototype assembled from a design system.",
-      plate: "panels",
-      tone: "dark",
-      seed: 41,
+      src: "img/bit-battlepass-comingsoon.png",
+      alt: "Blurred, obscured preview screens standing in for the GH+ Battle Pass case study, still under wraps.",
     },
     "bits.energy": {
-      src: null,
-      alt: "A decaying and refilling waveform standing in for an energy economy model.",
-      plate: "ramp",
-      tone: "light",
-      seed: 52,
+      src: "img/bit-game-economy.png",
+      alt: "A tier-by-tier XP and spark cost table from the Jesterday energy economy model.",
     },
     "bits.teaching": {
       src: "img/bits-rubriq.jpg",
       alt: "Rubriq, a rubric-based grading tool: a session-setup screen for uploading a submission screenshot and listing filenames to grade.",
     },
     "bits.instant": {
-      src: null,
-      alt: "Five stacked variants converging on one, standing in for prototype iterations.",
-      plate: "strata",
-      tone: "accent",
-      seed: 74,
+      src: "img/bit-brand-social.png",
+      alt: "A Best Traveler Club award graphic from the Exclusive Traveler Club social content.",
     },
     "bits.tokens": {
       src: null,
