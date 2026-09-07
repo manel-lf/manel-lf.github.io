@@ -415,11 +415,21 @@ export const CONTENT = {
             p: "None of this is Claude Code out of the box. What makes it usable for interface work specifically is a short list of MCPs and skills layered on top:",
           },
           {
-            list: [
-              "Stitch MCP — generates and composes actual screens from a prompt, so layout is not hand-rolled from a blank div [3]",
-              "Nanobanana MCP — generates and edits the imagery, so nothing ships as a grey box or a stock photo standing in for the real thing",
-              "UI UX Pro Max skill — a second pass on spacing, hierarchy and component consistency once the first draft exists",
-              "Emil Kowalski skill — production-grade motion: correct easing, sane durations, respects prefers-reduced-motion, installed with npx skills add emilkowalski/skill",
+            columns: [
+              {
+                title: "MCPs",
+                list: [
+                  "Stitch MCP — generates and composes actual screens from a prompt, so layout is not hand-rolled from a blank div [3]",
+                  "Nanobanana MCP — generates and edits the imagery, so nothing ships as a grey box or a stock photo standing in for the real thing",
+                ],
+              },
+              {
+                title: "Skills",
+                list: [
+                  "UI UX Pro Max — a second pass on spacing, hierarchy and component consistency once the first draft exists",
+                  "Emil Kowalski — production-grade motion: correct easing, sane durations, respects prefers-reduced-motion, installed with npx skills add emilkowalski/skill",
+                ],
+              },
             ],
           },
           {
@@ -7575,6 +7585,25 @@ function JournalPost({ post, prev, next, onHome, flight, reduced }) {
                     <li key={j}>{item}</li>
                   ))}
                 </ul>
+              );
+            }
+            if (block.columns) {
+              return (
+                <div className="postColumns reveal" key={i}>
+                  {block.columns.map((col) => (
+                    <div className="postColumn" key={col.title}>
+                      <h4>{col.title}</h4>
+                      {col.body ? <p>{col.body}</p> : null}
+                      {col.list ? (
+                        <ul>
+                          {col.list.map((item, j) => (
+                            <li key={j}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
               );
             }
             if (block.stats) {
