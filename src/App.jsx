@@ -70,6 +70,11 @@ export const CONTENT = {
     homeLabel: "Manel López — back to home",
   },
 
+  wipBanner: {
+    title: "Work in progress. Sorry about the sawdust.",
+    body: "A few sections here are still half-built. I'm not actively applying to new roles — yet. So if you got here, it means I'm REALLY interested in the role you're offering and didn't want to miss my chance :)",
+  },
+
   hero: {
     // Line one: masks up per word on load.
     name: "Manel López",
@@ -2318,6 +2323,9 @@ input,textarea{font:inherit;color:inherit}
   --accent:#2145E6;
   --accent-ink:#FFFFFF;
   --danger:#C0392B;
+  --warn-bg:#FBF1D6;
+  --warn-border:#E9D8A0;
+  --warn-icon:#B7791F;
   --shadow-card:0 1px 2px rgba(10,10,10,.04);
   --shadow-lift:0 18px 40px -18px rgba(10,10,10,.22);
   color-scheme:light;
@@ -2340,6 +2348,9 @@ input,textarea{font:inherit;color:inherit}
   --accent:#5B77FF;
   --accent-ink:#08080C;
   --danger:#FF6B5B;
+  --warn-bg:#2A2410;
+  --warn-border:#4A3F1B;
+  --warn-icon:#E8B84B;
   --shadow-card:0 1px 2px rgba(0,0,0,.5);
   --shadow-lift:0 18px 40px -18px rgba(0,0,0,.7);
   color-scheme:dark;
@@ -2590,7 +2601,18 @@ body{
 [data-theme='dark'] .themeToggle .knob{transform:translateX(20px)}
 
 /* =============================== HERO =============================== */
-.hero{padding-top:clamp(112px,18vh,200px);padding-bottom:clamp(48px,7vh,88px)}
+.wipBanner{
+  display:flex;gap:var(--s3);align-items:flex-start;
+  margin-top:clamp(88px,15vh,160px);padding:var(--s4) var(--s5);
+  background:var(--warn-bg);border:1px solid var(--warn-border);
+  border-radius:var(--r-md);
+}
+.wipBanner__icon{flex:none;margin-top:2px;color:var(--warn-icon)}
+.wipBanner__copy{display:flex;flex-direction:column;gap:var(--s1)}
+.wipBanner__title{font-weight:600;color:var(--ink)}
+.wipBanner__body{color:var(--ink-2);font-size:.9375rem;line-height:1.5}
+
+.hero{padding-top:clamp(48px,7vh,88px);padding-bottom:clamp(48px,7vh,88px)}
 .heroName{
   font-size:clamp(2.75rem,9.2vw,7.5rem);
   font-weight:700;letter-spacing:-.045em;line-height:.92;
@@ -4744,6 +4766,7 @@ const ICON_PATHS = {
   calendar: "M4 5.5h12v11H4zM7 3v3M13 3v3M4 9h12",
   close: "M5 5l10 10M15 5L5 15",
   clock: "M10 3a7 7 0 100 14 7 7 0 000-14zM10 6.5V10l2.7 1.6",
+  alert: "M10 2.7L1.8 17h16.4zM10 8v4M10 14.5h.01",
 };
 
 const ICON_FILLED = {
@@ -5314,6 +5337,20 @@ function useEqualHeight(selector) {
 /* =========================================================================
  * HOME — hero
  * ========================================================================= */
+
+function WipBanner() {
+  return (
+    <div className="container">
+      <div className="wipBanner" role="note">
+        <Icon name="alert" size={18} className="wipBanner__icon" />
+        <div className="wipBanner__copy">
+          <p className="wipBanner__title">{CONTENT.wipBanner.title}</p>
+          <p className="wipBanner__body">{CONTENT.wipBanner.body}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function Hero({ reduced }) {
   const [loaded, setLoaded] = useState(false);
@@ -7628,6 +7665,7 @@ function HomeView({ onCapture, reduced }) {
   return (
     <>
       <main id="main" ref={revealRef}>
+        <WipBanner />
         <Hero reduced={reduced} />
         <LogoStrip reduced={reduced} />
         <WorkSection
