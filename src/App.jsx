@@ -558,7 +558,7 @@ export const CONTENT = {
     fields: {
       name: {
         label: "Your name",
-        placeholder: "Hiring Manager",
+        placeholder: "Max Power",
         required: true,
       },
       email: {
@@ -568,7 +568,7 @@ export const CONTENT = {
       },
       subject: {
         label: "Subject",
-        placeholder: "Senior Product Designer role",
+        placeholder: "Opportunity at @company",
         required: true,
       },
       message: {
