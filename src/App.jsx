@@ -3437,16 +3437,18 @@ const STYLES_CASE = `
 .processCard .meta{color:var(--muted)}
 .processCard p{color:var(--ink-2);font-size:.875rem;line-height:1.6;margin-top:auto}
 .cardThumb{
-  height:40px;width:auto;max-width:100%;
+  height:44px;width:auto;max-width:100%;
   object-fit:contain;object-position:left center;
-  margin-bottom:var(--s2);
+  border-radius:var(--r-sm);
+  border:1px solid var(--hairline);
+  margin-bottom:var(--s3);
 }
 /* A static grid (not the scroller) top-aligns its cards instead of
-   anchoring body copy to the bottom, and reserves enough title height for
-   the longest sibling so every card's body starts on the same row —
-   grid stretch then equalizes the cards themselves to the tallest one. */
+   anchoring body copy to the bottom — StaticCardsGrid measures each
+   title's real height at render and matches them all to the tallest, so
+   this never guesses a fixed reservation that's wrong for the actual copy.
+   Grid stretch then equalizes the cards themselves to the tallest one. */
 .cardGrid .processCard p{margin-top:0}
-.cardGrid .processCard h3{min-height:3.9rem}
 /* An option the case study didn't pick — kept in the carousel for context,
    dimmed so the chosen direction reads as the obvious one without a caption. */
 .processCard--dim{opacity:.55}
@@ -5289,6 +5291,37 @@ function useScrollerControls() {
   return { ref, ...state, scrollBy };
 }
 
+/**
+ * Matches a set of siblings (e.g. every card's title in a row) to the
+ * tallest one actually rendered, so body copy below them starts on the same
+ * line — without guessing a fixed height that's wrong the moment the text,
+ * the viewport, or the card count changes. Re-measures on resize.
+ */
+function useEqualHeight(selector) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    const measure = () => {
+      const els = Array.from(root.querySelectorAll(selector));
+      if (!els.length) return;
+      els.forEach((el) => {
+        el.style.minHeight = "";
+      });
+      const max = Math.max(
+        ...els.map((el) => el.getBoundingClientRect().height),
+      );
+      els.forEach((el) => {
+        el.style.minHeight = `${max}px`;
+      });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [selector]);
+  return ref;
+}
+
 /* =========================================================================
  * HOME — hero
  * ========================================================================= */
@@ -6545,6 +6578,33 @@ function DarkMediaFrame({ imageKey, ratio = 16 / 9, caption }) {
   );
 }
 
+/** A fixed set of cards — principles, steps — with no scroller chrome.
+ * Titles are equal-height-matched at render so body copy always starts on
+ * the same line, however many lines the longest title itself wraps to. */
+function StaticCardsGrid({ cards }) {
+  const gridRef = useEqualHeight(".processCard h3");
+  return (
+    <div className="cardGrid reveal" ref={gridRef}>
+      {cards.map((c, j) => (
+        <div className="processCard" key={c.title}>
+          {c.thumb ? (
+            <img
+              className="cardThumb"
+              src={resolveSrc(c.thumb)}
+              alt=""
+              loading="lazy"
+            />
+          ) : null}
+          <span className="idx mono">{String(j + 1).padStart(2, "0")}</span>
+          <h3>{c.title}</h3>
+          <span className="meta mono">{c.meta}</span>
+          <p>{c.body}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function CaseStudy({
   project,
   prev,
@@ -6998,26 +7058,7 @@ function CaseRichBlock({ block, i, reduced }) {
   // A fixed set of cards — principles, player segments, options, stats —
   // rather than a sequence, so no scroller chrome (counter, arrows).
   if (block.staticCards) {
-    return (
-      <div className="cardGrid reveal" key={i}>
-        {block.staticCards.map((c, j) => (
-          <div className="processCard" key={c.title}>
-            {c.thumb ? (
-              <img
-                className="cardThumb"
-                src={resolveSrc(c.thumb)}
-                alt=""
-                loading="lazy"
-              />
-            ) : null}
-            <span className="idx mono">{String(j + 1).padStart(2, "0")}</span>
-            <h3>{c.title}</h3>
-            <span className="meta mono">{c.meta}</span>
-            <p>{c.body}</p>
-          </div>
-        ))}
-      </div>
-    );
+    return <StaticCardsGrid cards={block.staticCards} key={i} />;
   }
   if (block.noteCards) {
     return (
