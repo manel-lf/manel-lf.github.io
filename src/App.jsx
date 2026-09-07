@@ -675,13 +675,6 @@ export const CONTENT = {
         "From catalog to platform.",
         "Redesigning GH+'s content architecture for instant play.",
       ],
-      // The spotlight card's own background — a looping muted clip instead
-      // of the static hero plate, rotated for a bit of energy. `poster`
-      // covers the gap before the first frame decodes.
-      spotlightVideo: {
-        src: "video/gamehouse-plus-bg.mp4",
-        poster: "img/gamehouse-plus-bg-poster.jpg",
-      },
       name: "GameHouse+",
       mark: "gamehouse",
       eyebrow: "GameHouse+",
@@ -742,7 +735,11 @@ export const CONTENT = {
         },
         {
           wide: {
-            imageKey: "case.gamehouse-plus.oneContentType",
+            video: {
+              src: "video/gamehouse-plus-bg.mp4",
+              poster: "img/gamehouse-plus-bg-poster.jpg",
+            },
+            onPanel: true,
             ratio: 21 / 9,
             caption:
               "One content type became two. Everything that follows is a consequence of that.",
@@ -1891,13 +1888,8 @@ export const CONTENT = {
       seed: 197,
     },
     "case.gamehouse-plus.hero": {
-      src: null,
-      alt: "GameHouse+ case study hero — a wide gradient mesh over a modular grid, in near-black and deep purple.",
-      plate: "mesh",
-      tone: "dark",
-      seed: 201,
-      glow: "#3B3061",
-      accent: "#6E5BA6",
+      src: "img/case-gamehouse-plus-hero.jpg",
+      alt: "Two phones floating over a deep-purple gradient, showing GameHouse+'s For You feed and an instant-play match-3 game in progress.",
     },
     "case.gamehouse-plus.architecture": {
       src: null,
@@ -1907,13 +1899,6 @@ export const CONTENT = {
       seed: 221,
       glow: "#3B3061",
       accent: "#6E5BA6",
-    },
-    "case.gamehouse-plus.oneContentType": {
-      src: null,
-      alt: "One content type became two, placeholder — nested panels standing in for the catalog splitting into downloadable and instant formats.",
-      plate: "panels",
-      tone: "light",
-      seed: 550,
     },
     "case.gamehouse-plus.newVsReturning": {
       src: null,
@@ -3360,6 +3345,10 @@ const STYLES_CASE = `
   box-shadow:var(--shadow-card);
 }
 .caseHeroFrame .inner{border-radius:var(--r-md);overflow:hidden}
+/* A wide visual that wants a dark card instead of the light default — e.g.
+   a video demo, where a black frame reads better than a white one. */
+.caseHeroFrame--onPanel{background:var(--panel);border-color:var(--panel-hairline)}
+.wideCaption--onPanel{color:var(--panel-muted)}
 
 .metaBar{
   display:grid;
@@ -7088,16 +7077,38 @@ function CaseRichBlock({ block, i, reduced }) {
     );
   }
   if (block.wide) {
+    const ratio = block.wide.ratio || 16 / 7;
     return (
-      <figure className="caseHeroFrame reveal" key={i}>
+      <figure
+        className={`caseHeroFrame reveal${block.wide.onPanel ? " caseHeroFrame--onPanel" : ""}`}
+        key={i}
+      >
         <div className="inner">
-          <Visual
-            imageKey={block.wide.imageKey}
-            ratio={block.wide.ratio || 16 / 7}
-          />
+          {block.wide.video ? (
+            <div className="vis" style={{ aspectRatio: String(ratio) }}>
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                poster={resolveSrc(block.wide.video.poster)}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              >
+                <source
+                  src={resolveSrc(block.wide.video.src)}
+                  type="video/mp4"
+                />
+              </video>
+            </div>
+          ) : (
+            <Visual imageKey={block.wide.imageKey} ratio={ratio} />
+          )}
         </div>
         {block.wide.caption ? (
-          <figcaption className="mono wideCaption">
+          <figcaption
+            className={`mono wideCaption${block.wide.onPanel ? " wideCaption--onPanel" : ""}`}
+          >
             {block.wide.caption}
           </figcaption>
         ) : null}
