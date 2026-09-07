@@ -797,7 +797,7 @@ export const CONTENT = {
               imageKey: "case.gamehouse-plus.identicalTiles",
               ratio: 4 / 3,
               caption:
-                "Identical tiles, incompatible experiences. Nothing told players what a tap would cost them.",
+                "Identical tiles, incompatible experiences. We even ported existing installable games to in-app.",
             },
           ],
         },
@@ -1901,18 +1901,12 @@ export const CONTENT = {
       accent: "#6E5BA6",
     },
     "case.gamehouse-plus.newVsReturning": {
-      src: null,
-      alt: "New vs returning players, placeholder — a modular grid standing in for the two audiences the catalog had to win over.",
-      plate: "grid",
-      tone: "light",
-      seed: 551,
+      src: "img/case-gamehouse-plus-new-vs-returning.png",
+      alt: "Two emoji-style stickers — a younger woman and an older woman — standing in for the two audiences the catalog had to win over.",
     },
     "case.gamehouse-plus.identicalTiles": {
-      src: null,
-      alt: "Identical tiles, placeholder — stacked strata standing in for a grid where instant and downloadable games look the same.",
-      plate: "strata",
-      tone: "light",
-      seed: 552,
+      src: "img/case-gamehouse-plus-identical-tiles.png",
+      alt: "The same game icon shown twice, once with a 'NEW' badge and once without — identical tiles for an instant and a downloadable experience.",
     },
     "case.gamehouse-plus.categoryMap": {
       src: null,
