@@ -191,7 +191,7 @@ export const CONTENT = {
     prevLabel: "Previous bits",
     nextLabel: "Next bits",
     // One label per row of four items below.
-    rowLabels: ["Prototypes and tooling", "Systems and analysis"],
+    rowLabels: ["Prototypes and tooling"],
     // Every tile uses this ratio, so the cards line up as an even grid.
     mediaRatio: 4 / 3,
     items: [
@@ -222,34 +222,6 @@ export const CONTENT = {
         caption:
           "Five entry-point variants for instant play, narrowed to one by putting a real build in front of players.",
         imageKey: "bits.instant",
-      },
-      {
-        id: "bit-tokens",
-        kicker: "Design systems",
-        caption:
-          "Design tokens as the contract between Figma and Unity, so a colour change is one commit rather than a meeting.",
-        imageKey: "bits.tokens",
-      },
-      {
-        id: "bit-typeramp",
-        kicker: "Automotive",
-        caption:
-          "One type ramp that has to stay legible from a 7-inch cluster to a 15-inch centre display, at arm’s length, in sunlight.",
-        imageKey: "bits.typeRamp",
-      },
-      {
-        id: "bit-analytics",
-        kicker: "Product analytics",
-        caption:
-          "The funnel that told me a feature I had already shipped was solving the wrong half of the problem.",
-        imageKey: "bits.analytics",
-      },
-      {
-        id: "bit-componentapi",
-        kicker: "Craft",
-        caption:
-          "Sketching the component API before the component — props first, pixels second.",
-        imageKey: "bits.componentApi",
       },
     ],
   },
@@ -1182,9 +1154,11 @@ export const CONTENT = {
       name: "Radisson Hotels",
       mark: "radisson",
       eyebrow: "Radisson Hotels — via Eunoia Digital",
-      // Case study isn't ready yet — the card shows a tooltip instead of
-      // navigating. See ProjectCard.
+      // Case study isn't ready yet — same gating as any other WIP project
+      // (see ProjectCard / App's routing guard) — plus pulled from the grid
+      // entirely for now. Drop `hidden` to bring the card back.
       underConstruction: true,
+      hidden: true,
       positioning:
         "Enterprise interfaces, flows and UI kits for a global hotel group, produced at agency scale.",
       cardDescription:
@@ -1438,6 +1412,10 @@ export const CONTENT = {
       name: "SEAT CUPRA",
       mark: "cupra",
       eyebrow: "SEAT CUPRA",
+      // Case study isn't ready yet — the card shows a tooltip instead of
+      // navigating, and the route itself redirects home. See ProjectCard
+      // and App's routing guard.
+      underConstruction: true,
       positioning:
         "In-car infotainment for connected services — enrolment, data plans and software updates, across every screen in the range.",
       cardDescription:
@@ -7653,7 +7631,7 @@ function HomeView({ onCapture, reduced }) {
     (p) => p.slug === CONTENT.work.spotlightSlug,
   );
   const secondary = CONTENT.projects.filter(
-    (p) => p.slug !== CONTENT.work.spotlightSlug,
+    (p) => p.slug !== CONTENT.work.spotlightSlug && !p.hidden,
   );
 
   return (
@@ -7697,11 +7675,18 @@ export default function App() {
   const [booking, setBooking] = useState(false);
 
   const projects = CONTENT.projects;
+  // WIP and hidden projects don't get a route either — a direct link to one
+  // is treated exactly like an unknown slug (see the redirect-home effect
+  // below), and prev/next only ever cycles through what's actually reachable.
+  const navigableProjects = useMemo(
+    () => projects.filter((p) => !p.underConstruction && !p.hidden),
+    [projects],
+  );
   const index =
     route.view === "case" && route.slug
-      ? projects.findIndex((p) => p.slug === route.slug)
+      ? navigableProjects.findIndex((p) => p.slug === route.slug)
       : -1;
-  const project = index >= 0 ? projects[index] : null;
+  const project = index >= 0 ? navigableProjects[index] : null;
   const isCase = route.view === "case" && project;
 
   const posts = CONTENT.journal.posts;
@@ -7793,8 +7778,12 @@ export default function App() {
         <GameHousePlusCase
           key={project.slug}
           project={project}
-          prev={projects[(index - 1 + projects.length) % projects.length]}
-          next={projects[(index + 1) % projects.length]}
+          prev={
+            navigableProjects[
+              (index - 1 + navigableProjects.length) % navigableProjects.length
+            ]
+          }
+          next={navigableProjects[(index + 1) % navigableProjects.length]}
           onCapture={captureFlight}
           onHome={goHome}
           flight={flight}
@@ -7804,8 +7793,12 @@ export default function App() {
         <CaseStudy
           key={project.slug}
           project={project}
-          prev={projects[(index - 1 + projects.length) % projects.length]}
-          next={projects[(index + 1) % projects.length]}
+          prev={
+            navigableProjects[
+              (index - 1 + navigableProjects.length) % navigableProjects.length
+            ]
+          }
+          next={navigableProjects[(index + 1) % navigableProjects.length]}
           onCapture={captureFlight}
           onHome={goHome}
           flight={flight}
