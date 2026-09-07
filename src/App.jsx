@@ -603,10 +603,10 @@ export const CONTENT = {
   footer: {
     rail: [
       { id: "work", label: "Work" },
-      { id: "bits", label: "Bits" },
       { id: "about", label: "About" },
       { id: "shoutouts", label: "Shoutouts" },
       { id: "journal", label: "Journal" },
+      { id: "bits", label: "Bits" },
       { id: "contact", label: "Contact" },
     ],
     railLabel: "Sections on this page",
@@ -7636,10 +7636,10 @@ function HomeView({ onCapture, reduced }) {
           onCapture={onCapture}
           reduced={reduced}
         />
-        <BitsSection reduced={reduced} />
         <AboutSection />
         <Testimonials />
         <JournalSection onCapture={onCapture} />
+        <BitsSection reduced={reduced} />
         <ContactSection />
         <Footer />
       </main>
