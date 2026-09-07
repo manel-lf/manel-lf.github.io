@@ -837,7 +837,7 @@ export const CONTENT = {
             "So the question stopped being how do we organise this content, and became:",
             {
               quote:
-                "What mental model can someone build in three seconds, standing in a kitchen, holding a phone in one hand?",
+                "What mental model can someone build in three seconds, one hand on a subway pole, the other holding a phone?",
             },
             "Three principles came out of that. Each one closed a door.",
           ],
@@ -845,19 +845,28 @@ export const CONTENT = {
         {
           staticCards: [
             {
-              thumb: "img/gh-principle-state.png",
+              thumb: {
+                light: "img/gh-principle-state-light.png",
+                dark: "img/gh-principle-state-dark.png",
+              },
               title: "Show state, never rules.",
               meta: "Principle",
               body: "The interface says what a game is right now: playable, locked, installed, new. It never explains the system that produced that state. Players don't need our logic. They need to know what happens if they tap.",
             },
             {
-              thumb: "img/gh-principle-surface.png",
+              thumb: {
+                light: "img/gh-principle-surface-light.png",
+                dark: "img/gh-principle-surface-dark.png",
+              },
               title: "One dimension leads per surface.",
               meta: "Principle",
               body: "Home surfaces whichever games play fastest and feel freshest right now. Classics holds the downloadable catalog that complements and extends it. Search finds one specific game a player already has in mind, wherever it lives.",
             },
             {
-              thumb: "img/gh-principle-format.png",
+              thumb: {
+                light: "img/gh-principle-format-light.png",
+                dark: "img/gh-principle-format-dark.png",
+              },
               title:
                 "Format decides where a game lives, never whether a player can find it.",
               meta: "Principle",
@@ -3436,12 +3445,23 @@ const STYLES_CASE = `
 }
 .processCard .meta{color:var(--muted)}
 .processCard p{color:var(--ink-2);font-size:.875rem;line-height:1.6;margin-top:auto}
-.cardThumb{
-  height:44px;width:auto;max-width:100%;
-  object-fit:contain;object-position:left center;
-  border-radius:var(--r-sm);
-  border:1px solid var(--hairline);
-  margin-bottom:var(--s3);
+/* A card with a thumbnail bleeds it full-width across the top instead of
+   sitting inside the card's own padding — the padding moves to the body
+   below it, same split as .bitTile/.bitMedia. */
+.processCard--media{padding:0;overflow:hidden}
+.processCardMedia{position:relative;aspect-ratio:2.1}
+.cardThumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* Each thumbnail ships as a light- and a dark-mode render (the source art
+   is transparent everywhere but the artwork itself, so this only swaps
+   which one is visible — not a background) — the card's own --surface
+   shows through either way, so no separate fill is needed here. */
+.cardThumb--dark{display:none}
+[data-theme='dark'] .cardThumb--light{display:none}
+[data-theme='dark'] .cardThumb--dark{display:block}
+.processCardBody{
+  padding:var(--s5);
+  display:flex;flex-direction:column;gap:var(--s3);
+  flex:1;
 }
 /* A static grid (not the scroller) top-aligns its cards instead of
    anchoring body copy to the bottom — StaticCardsGrid measures each
@@ -6586,19 +6606,32 @@ function StaticCardsGrid({ cards }) {
   return (
     <div className="cardGrid reveal" ref={gridRef}>
       {cards.map((c, j) => (
-        <div className="processCard" key={c.title}>
+        <div
+          className={`processCard${c.thumb ? " processCard--media" : ""}`}
+          key={c.title}
+        >
           {c.thumb ? (
-            <img
-              className="cardThumb"
-              src={resolveSrc(c.thumb)}
-              alt=""
-              loading="lazy"
-            />
+            <div className="processCardMedia">
+              <img
+                className="cardThumb cardThumb--light"
+                src={resolveSrc(c.thumb.light)}
+                alt=""
+                loading="lazy"
+              />
+              <img
+                className="cardThumb cardThumb--dark"
+                src={resolveSrc(c.thumb.dark)}
+                alt=""
+                loading="lazy"
+              />
+            </div>
           ) : null}
-          <span className="idx mono">{String(j + 1).padStart(2, "0")}</span>
-          <h3>{c.title}</h3>
-          <span className="meta mono">{c.meta}</span>
-          <p>{c.body}</p>
+          <div className="processCardBody">
+            <span className="idx mono">{String(j + 1).padStart(2, "0")}</span>
+            <h3>{c.title}</h3>
+            <span className="meta mono">{c.meta}</span>
+            <p>{c.body}</p>
+          </div>
         </div>
       ))}
     </div>
