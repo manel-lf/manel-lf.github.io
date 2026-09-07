@@ -568,7 +568,7 @@ export const CONTENT = {
     fields: {
       name: {
         label: "Your name",
-        placeholder: "Max Power",
+        placeholder: "Toby Flenderson",
         required: true,
       },
       email: {
