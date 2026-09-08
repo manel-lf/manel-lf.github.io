@@ -1909,19 +1909,16 @@ export const CONTENT = {
       accent: "#6E5BA6",
     },
     "case.gamehouse-plus.oneContentType": {
-      src: null,
-      alt: "One content type became two, placeholder — nested panels standing in for the catalog splitting into downloadable and instant formats.",
-      plate: "panels",
-      tone: "light",
-      seed: 550,
+      src: "img/case-gamehouse-plus-one-content-type.png",
+      alt: "A single game tile splitting into two — one leading to a download icon, the other to a play icon — standing in for the catalog splitting into downloadable and instant formats.",
     },
     "case.gamehouse-plus.newVsReturning": {
       src: "img/case-gamehouse-plus-new-vs-returning.png",
-      alt: "Two emoji-style stickers — a younger woman and an older woman — standing in for the two audiences the catalog had to win over.",
+      alt: "Two players browsing a game catalog on their phones, standing in for the two audiences the catalog had to win over.",
     },
     "case.gamehouse-plus.identicalTiles": {
       src: "img/case-gamehouse-plus-identical-tiles.png",
-      alt: "The same game icon shown twice, once with a 'NEW' badge and once without — identical tiles for an instant and a downloadable experience.",
+      alt: "The same game tile shown twice, once with a lightning-bolt instant-play badge and once with a download badge — identical tiles for two different experiences.",
     },
     "case.gamehouse-plus.categoryMap": {
       src: null,
