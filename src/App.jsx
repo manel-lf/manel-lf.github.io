@@ -948,6 +948,7 @@ export const CONTENT = {
               "Home stopped listing the catalog and started proposing a session. Instant-first, because that's the surface people reach for when they have a small window and no plan.",
               "Two additions carry it. Keep Playing brings back the games a player has already engaged with, so a returning session starts where the last one stopped. A video carousel sits above it, putting featured titles in motion so players can judge a game before tapping into it.",
             ],
+            mock: "home",
             imageKey: "case.gamehouse-plus.home",
             ratio: 16 / 10,
             caption:
@@ -3732,6 +3733,109 @@ const STYLES_CASE = `
 `;
 
 /* =========================================================================
+ * GH+ app mock — a stylised, flat, purple-keyed stand-in for a real
+ * screenshot (same intent as the plates): true layout and real labels, none
+ * of the painted game art, so it sits in the site's own visual language
+ * rather than fighting it. Deliberately not theme-reactive — a self-
+ * contained dark object on any ground, like .systemCell. One motion only:
+ * the featured carousel cross-fades on a timer. The JS gate stops the timer
+ * under reduced motion; the global transition-kill above freezes the fade.
+ * ========================================================================= */
+
+const STYLES_GHMOCK = `
+.ghm{
+  width:100%;aspect-ratio:1 / 1;
+  display:grid;place-items:center;
+  padding:clamp(16px,3.5vw,36px);
+  background:
+    radial-gradient(58% 52% at 50% 44%, rgba(120,99,178,.45), transparent 72%),
+    linear-gradient(150deg,#2A2444,#161327);
+}
+.ghm-phone{
+  height:100%;max-height:100%;max-width:100%;
+  aspect-ratio:9 / 17.5;
+  background:#0E0C16;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:clamp(18px,3vw,28px);
+  box-shadow:0 26px 54px -22px rgba(0,0,0,.72);
+  padding:clamp(8px,1.4vw,12px);
+}
+.ghm-screen{
+  height:100%;display:flex;flex-direction:column;gap:clamp(9px,1.7vw,15px);
+  background:#141020;border-radius:clamp(13px,2.3vw,20px);
+  padding:clamp(11px,1.9vw,17px);
+  color:#EEECF6;font-family:var(--font-display);overflow:hidden;
+}
+.ghm-head{display:flex;align-items:baseline;justify-content:space-between}
+.ghm-title{font-size:clamp(.9rem,1.9vw,1.1rem);font-weight:700;letter-spacing:-.02em}
+.ghm-brand{
+  font-family:var(--font-mono);font-size:.55rem;letter-spacing:.14em;
+  text-transform:uppercase;color:#9C93BE;
+}
+.ghm-hero{position:relative;border-radius:13px;overflow:hidden;aspect-ratio:1 / 0.94;flex:0 0 auto}
+.ghm-slide{
+  position:absolute;inset:0;opacity:0;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:clamp(9px,1.7vw,13px);
+  transition:opacity 620ms var(--ease-std);
+}
+.ghm-slide.is-active{opacity:1}
+.ghm-slide[data-g="a"]{background:linear-gradient(160deg,#4B7A55,#2B4A39)}
+.ghm-slide[data-g="b"]{background:linear-gradient(160deg,#3C6076,#243A4E)}
+.ghm-slide[data-g="c"]{background:linear-gradient(160deg,#5B4A86,#33285A)}
+.ghm-slide-foot{display:flex;align-items:center;gap:8px}
+.ghm-chip{
+  width:clamp(22px,4.2vw,32px);height:clamp(22px,4.2vw,32px);border-radius:8px;
+  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);flex:0 0 auto;
+}
+.ghm-game{
+  font-size:clamp(.62rem,1.35vw,.8rem);font-weight:600;flex:1;min-width:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ghm-play{
+  display:inline-flex;align-items:center;gap:5px;background:#F4F2FA;color:#1A1626;
+  font-size:clamp(.56rem,1.25vw,.7rem);font-weight:700;padding:5px 10px;
+  border-radius:999px;flex:0 0 auto;
+}
+.ghm-play svg{width:8px;height:8px;fill:currentColor}
+.ghm-dots{display:flex;gap:5px;justify-content:center}
+.ghm-dot{
+  width:5px;height:5px;border-radius:999px;background:rgba(255,255,255,.22);
+  transition:width 320ms var(--ease-out),background 320ms var(--ease-out);
+}
+.ghm-dot.is-active{width:15px;background:rgba(255,255,255,.72)}
+.ghm-sec{display:flex;align-items:baseline;justify-content:space-between;margin-top:1px}
+.ghm-sec-label{font-size:clamp(.78rem,1.6vw,.98rem);font-weight:700;letter-spacing:-.02em}
+.ghm-more{
+  font-family:var(--font-mono);font-size:.5rem;letter-spacing:.12em;
+  text-transform:uppercase;color:#9C93BE;
+}
+.ghm-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(6px,1.3vw,10px)}
+.ghm-tile{display:flex;flex-direction:column;gap:5px;min-width:0}
+.ghm-tile-art{aspect-ratio:1;border-radius:10px;border:1px solid rgba(255,255,255,.05)}
+.ghm-tile:nth-child(1) .ghm-tile-art{background:linear-gradient(150deg,#7A5A3A,#3A2A22)}
+.ghm-tile:nth-child(2) .ghm-tile-art{background:linear-gradient(150deg,#2F6076,#22384C)}
+.ghm-tile:nth-child(3) .ghm-tile-art{background:linear-gradient(150deg,#4B7A55,#2B4A39)}
+.ghm-tile-label{
+  font-size:.5rem;line-height:1.3;color:#B8B1CE;overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+}
+.ghm-tabs{
+  margin-top:auto;display:flex;align-items:center;justify-content:space-between;
+  background:#1C1730;border:1px solid rgba(255,255,255,.06);border-radius:999px;
+  padding:7px clamp(5px,1.1vw,9px);
+}
+.ghm-tab{display:flex;flex-direction:column;align-items:center;gap:3px;color:#7C749A;flex:1;min-width:0}
+.ghm-tab svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6}
+.ghm-tab-label{
+  font-size:.4rem;letter-spacing:.02em;text-transform:uppercase;
+  font-family:var(--font-mono);white-space:nowrap;
+}
+.ghm-tab.is-active{color:#EEECF6}
+.ghm-tab.is-active svg{stroke:#C9BEF0}
+`;
+
+/* =========================================================================
  * Hooks
  * ========================================================================= */
 
@@ -3740,7 +3844,12 @@ function useStyleSheet() {
     const el = document.createElement("style");
     el.setAttribute("data-portfolio", "");
     el.textContent =
-      STYLES + STYLES_HOME + STYLES_CASE + STYLES_POST + STYLES_UTIL;
+      STYLES +
+      STYLES_HOME +
+      STYLES_CASE +
+      STYLES_GHMOCK +
+      STYLES_POST +
+      STYLES_UTIL;
     document.head.appendChild(el);
     return () => el.remove();
   }, []);
@@ -6912,6 +7021,130 @@ function CaseStudy({
 }
 
 /**
+ * A stylised GH+ screen, standing in for a screenshot inside a featureRow
+ * (`mock: "home"` instead of `imageKey`). `screen` picks which one — only
+ * "home" exists so far. The one timed motion is the featured carousel
+ * cross-fade, matching the Home copy ("a video carousel ... putting featured
+ * titles in motion"); under reduced motion the timer never starts and it
+ * pins to the first slide. Labels are the app's real ones, so nothing here
+ * is invented. Styles: STYLES_GHMOCK.
+ */
+const GHM_TABS = [
+  ["profile", "Profile"],
+  ["bookmark", "My Games"],
+  ["home", "Home"],
+  ["classics", "Classics"],
+  ["search", "Search"],
+];
+const GHM_ICONS = {
+  profile: "M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM5 20a7 7 0 0 1 14 0",
+  bookmark: "M6 3h12v18l-6-4-6 4Z",
+  home: "M4 11l8-7 8 7M6 10v9h12v-9",
+  classics: "M5 4h3v16H5zM10.5 4h3l3 15-3 .6zM16 4h3v16h-3z",
+  search: "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14ZM16.5 16.5L21 21",
+};
+
+function GhAppMock({ screen = "home", reduced }) {
+  const slides = [
+    { g: "a", game: "Fluffles Match 3" },
+    { g: "b", game: "Match Shapes Go" },
+    { g: "c", game: "Quiz Star" },
+  ];
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    if (reduced) return;
+    const id = window.setInterval(
+      () => setIdx((n) => (n + 1) % slides.length),
+      3200,
+    );
+    return () => window.clearInterval(id);
+  }, [reduced, slides.length]);
+  const active = reduced ? 0 : idx;
+
+  return (
+    <div
+      className="ghm"
+      data-screen={screen}
+      role="img"
+      aria-label="GameHouse+ Home, rebuilt as an instant-first starting point: a featured carousel, a Keep Playing row, and a five-tab bar with Home and Classics as separate destinations."
+    >
+      <div className="ghm-phone">
+        <div className="ghm-screen">
+          <div className="ghm-head">
+            <span className="ghm-title">Home</span>
+            <span className="ghm-brand">gamehouse+</span>
+          </div>
+
+          <div className="ghm-hero">
+            {slides.map((s, i) => (
+              <div
+                key={s.game}
+                className={`ghm-slide${i === active ? " is-active" : ""}`}
+                data-g={s.g}
+              >
+                <div className="ghm-slide-foot">
+                  <span className="ghm-chip" />
+                  <span className="ghm-game">{s.game}</span>
+                  <span className="ghm-play">
+                    Play
+                    <svg viewBox="0 0 12 12" aria-hidden="true">
+                      <path d="M3 2l7 4-7 4z" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="ghm-dots">
+            {slides.map((s, i) => (
+              <span
+                key={s.game}
+                className={`ghm-dot${i === active ? " is-active" : ""}`}
+              />
+            ))}
+          </div>
+
+          <div className="ghm-sec">
+            <span className="ghm-sec-label">Keep Playing</span>
+            <span className="ghm-more">See more ›</span>
+          </div>
+          <div className="ghm-tiles">
+            {[
+              "Delicious Emily: First Course",
+              "Match Shapes Go",
+              "Fluffles Match 3",
+            ].map((t) => (
+              <div className="ghm-tile" key={t}>
+                <div className="ghm-tile-art" />
+                <span className="ghm-tile-label">{t}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="ghm-tabs">
+            {GHM_TABS.map(([key, label]) => (
+              <span
+                key={key}
+                className={`ghm-tab${key === "home" ? " is-active" : ""}`}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d={GHM_ICONS[key]}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className="ghm-tab-label">{label}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
  * Renders one block of a richBody array. Shares its vocabulary with the
  * journal post block model (h/p/list/stats/imageKey) and extends it with
  * the shapes this case study's outline actually needs: sub (a subheading
@@ -7174,7 +7407,7 @@ function CaseRichBlock({ block, i, reduced }) {
   }
   // Media and copy side by side, alternating which side the image sits on.
   if (block.featureRow) {
-    const { kicker, title, body, imageKey, ratio, caption, imageFirst } =
+    const { kicker, title, body, imageKey, ratio, caption, imageFirst, mock } =
       block.featureRow;
     const copy = (
       <div className="featureCopy" key="copy">
@@ -7190,7 +7423,11 @@ function CaseRichBlock({ block, i, reduced }) {
     const figure = (
       <figure className="caseHeroFrame" key="fig" style={{ margin: 0 }}>
         <div className="inner">
-          <Visual imageKey={imageKey} ratio={ratio || 16 / 10} />
+          {mock ? (
+            <GhAppMock screen={mock} reduced={reduced} />
+          ) : (
+            <Visual imageKey={imageKey} ratio={ratio || 16 / 10} />
+          )}
         </div>
         {caption ? (
           <figcaption className="mono wideCaption">{caption}</figcaption>
