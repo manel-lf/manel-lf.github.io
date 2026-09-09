@@ -737,7 +737,7 @@ export const CONTENT = {
               bold: "Then instant play arrived, and the catalog stopped making sense.",
             },
             "Instant play let a game start in seconds — no install, no wait, no storage. A second kind of content in a product built to hold one, and everything downstream came loose with it: the home screen, the navigation, search, even the words we used for a game.",
-            "I led the design work that turned the catalog into a platform that could hold both.",
+            "I led the design work that turned the catalog into a platform that could hold both. I was the only designer on GH+, working end to end — research, content architecture, the design system, and the rebuilt surfaces — with product, data and engineering alongside.",
           ],
         },
         {
@@ -793,8 +793,7 @@ export const CONTENT = {
             {
               imageKey: "case.gamehouse-plus.newVsReturning",
               ratio: 4 / 3,
-              caption:
-                "The same catalog had to win over the players we were losing without devaluing it for the ones we had.",
+              caption: "The two players the redesign had to serve at once.",
             },
             {
               imageKey: "case.gamehouse-plus.identicalTiles",
@@ -914,8 +913,9 @@ export const CONTENT = {
             divider: true,
             items: [
               "We didn't reason our way to this. We tested it.",
-              "An A/B test compared an installable control against two instant-play variants. The instant variants opened at more than six times the control's day-zero rate, cut the path from entry to first play by roughly six-fold, and doubled day-one ecosystem retention.",
-              "Amplitude funnels and session replays gave us the behavioural picture underneath — including the dual-format finding that decided the architecture. An unmoderated usability study on Lysto, with six participants, tested the redesigned Home before it shipped.",
+              "An A/B test put an installable control against two instant-play variants — one plain, one with a forced video trailer on launch. Both instant variants opened at more than six times the control's day-zero rate and cut the path from entry to first play by roughly six-fold.",
+              "Day-one retention was the tiebreak. Forcing the video trailer bought a little more day-zero engagement and gave part of it back the next day; the plain variant held retention best, so it shipped. The metric that moves first is rarely the one that matters.",
+              "Amplitude funnels and session replays gave us the behavioural picture underneath — including the dual-format finding that decided the architecture. An unmoderated usability study, six participants, tested the redesigned Home before it shipped.",
             ],
           },
         },
