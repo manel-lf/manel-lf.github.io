@@ -920,9 +920,7 @@ export const CONTENT = {
           },
         },
         {
-          darkMedia: {
-            imageKey: "case.gamehouse-plus.architecture",
-            ratio: 16 / 9,
+          archTree: {
             caption:
               "Asymmetric, but connected — the architecture we landed on.",
           },
@@ -1889,15 +1887,6 @@ export const CONTENT = {
       plate: "mesh",
       tone: "dark",
       seed: 201,
-      glow: "#3B3061",
-      accent: "#6E5BA6",
-    },
-    "case.gamehouse-plus.architecture": {
-      src: null,
-      alt: "The architecture GH+ landed on, placeholder — concentric orbits standing in for how the downloadable and instant-play ecosystems coexist.",
-      plate: "orbit",
-      tone: "dark",
-      seed: 221,
       glow: "#3B3061",
       accent: "#6E5BA6",
     },
@@ -3717,6 +3706,37 @@ const STYLES_CASE = `
 }
 `;
 
+/* Architecture tree — a single bespoke diagram for the GH+ Duality section.
+ * Lives on the dark .darkMediaFrame, so every colour is a --panel-* token or
+ * a mix of the accent; nothing here is theme-reactive on its own. Static: no
+ * timed motion, only the inherited scroll reveal. */
+const STYLES_ARCH = `
+.archTree{padding:clamp(20px,3.4vw,36px) clamp(10px,2vw,22px) clamp(6px,1.4vw,14px)}
+.archTree svg{display:block;width:100%;height:auto;overflow:visible}
+.archGridDot{fill:rgba(255,255,255,0.05)}
+.archKick{fill:var(--panel-muted);font-family:var(--font-mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.archKickSub{fill:rgba(255,255,255,0.34);font-family:var(--font-mono);font-size:11px;letter-spacing:.05em}
+.archDot{fill:var(--accent)}
+.archEdge{fill:none;stroke:rgba(255,255,255,0.18);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.archEdge--accent{stroke:var(--accent);stroke-width:2}
+.archHeadFill{fill:rgba(255,255,255,0.34)}
+.archHeadFill--accent{fill:var(--accent)}
+.archNode{fill:rgba(255,255,255,0.02);stroke:rgba(255,255,255,0.16);stroke-width:1}
+.archNode--key{fill:color-mix(in srgb, var(--accent) 9%, transparent);stroke:var(--accent);stroke-width:1.5}
+.archNodeLabel{fill:var(--panel-muted);font-family:var(--font-mono);font-size:14px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-anchor:middle;dominant-baseline:central}
+.archNodeLabel--key{fill:var(--panel-ink);font-weight:600}
+.archLeaf{fill:rgba(255,255,255,0.04);stroke:rgba(255,255,255,0.10);stroke-width:1}
+.archLeaf--key{fill:color-mix(in srgb, var(--accent) 11%, transparent);stroke:color-mix(in srgb, var(--accent) 36%, transparent)}
+.archLeafLabel{fill:var(--panel-muted);font-family:var(--font-display);font-size:13px;letter-spacing:.01em;text-anchor:middle;dominant-baseline:central}
+.archLeafLabel--key{fill:var(--panel-ink)}
+@media (max-width:640px){
+  .archNodeLabel{font-size:17px}
+  .archLeafLabel{font-size:16px}
+  .archKick{font-size:15px}
+  .archKickSub{font-size:13px}
+}
+`;
+
 /* =========================================================================
  * Hooks
  * ========================================================================= */
@@ -3726,7 +3746,12 @@ function useStyleSheet() {
     const el = document.createElement("style");
     el.setAttribute("data-portfolio", "");
     el.textContent =
-      STYLES + STYLES_HOME + STYLES_CASE + STYLES_POST + STYLES_UTIL;
+      STYLES +
+      STYLES_HOME +
+      STYLES_CASE +
+      STYLES_ARCH +
+      STYLES_POST +
+      STYLES_UTIL;
     document.head.appendChild(el);
     return () => el.remove();
   }, []);
@@ -6591,6 +6616,139 @@ function DarkMediaFrame({ imageKey, ratio = 16 / 9, caption }) {
   );
 }
 
+/**
+ * The one hand-drawn diagram in the case study: GH+'s post-transformation
+ * information architecture. Home and Classics — the two surfaces this project
+ * actually rebuilt — carry the accent; Search, My Games and Profile are drawn
+ * in to place them, not to claim them. Pure inline SVG in a 1240×452 viewBox,
+ * every colour a --panel-* token or an accent mix, so it inverts with the
+ * theme without branching. Static by design.
+ */
+function ArchitectureTree({ caption }) {
+  const NODES = [
+    { x: 620, y: 150, w: 176, h: 64, label: "HOME", key: true },
+    { x: 150, y: 300, w: 150, h: 58, label: "MY GAMES" },
+    { x: 410, y: 300, w: 150, h: 58, label: "SEARCH" },
+    { x: 830, y: 300, w: 150, h: 58, label: "CLASSICS", key: true },
+    { x: 1090, y: 300, w: 150, h: 58, label: "PROFILE" },
+  ];
+  const LEAVES = [
+    { x: 620, y: 300, w: 172, h: 48, label: "Instant games", key: true },
+    { x: 150, y: 400, w: 180, h: 46, label: "Favourited content" },
+    { x: 410, y: 400, w: 258, h: 46, label: "Any game — franchise or genre" },
+    { x: 830, y: 400, w: 226, h: 46, label: "Downloadable franchises", key: true },
+    { x: 1090, y: 400, w: 168, h: 46, label: "VIP & settings" },
+  ];
+  const EDGES = [
+    { d: "M620,95 L620,116", accent: true, head: true },
+    { d: "M620,182 L620,276", head: true },
+    { d: "M150,214 L1090,214" },
+    { d: "M150,214 L150,269", head: true },
+    { d: "M410,214 L410,269", head: true },
+    { d: "M830,214 L830,269", head: true },
+    { d: "M1090,214 L1090,269", head: true },
+    { d: "M150,329 L150,375", head: true },
+    { d: "M410,329 L410,375", head: true },
+    { d: "M830,329 L830,375", head: true },
+    { d: "M1090,329 L1090,375", head: true },
+  ];
+  const rect = (n, cls) => (
+    <rect
+      key={`r${n.label}`}
+      x={n.x - n.w / 2}
+      y={n.y - n.h / 2}
+      width={n.w}
+      height={n.h}
+      rx={cls.startsWith("archLeaf") ? 6 : 8}
+      className={`${cls}${n.key ? ` ${cls}--key` : ""}`}
+    />
+  );
+  const label = (n, cls) => (
+    <text
+      key={`t${n.label}`}
+      x={n.x}
+      y={n.y + 1}
+      className={`${cls}${n.key ? ` ${cls}--key` : ""}`}
+    >
+      {n.label}
+    </text>
+  );
+
+  return (
+    <figure className="darkMediaFrame reveal">
+      <div className="archTree">
+        <svg
+          viewBox="0 0 1240 452"
+          role="img"
+          aria-label="GameHouse+ information architecture after the transformation. App start, for both new and returning players, opens Home. Home leads to instant games, and branches to My Games (favourited content), Search (any game, by franchise or genre), Classics (downloadable franchises), and Profile (VIP and settings). Home and Classics are the two surfaces the project rebuilt."
+        >
+          <defs>
+            <pattern
+              id="archGrid"
+              width="28"
+              height="28"
+              patternUnits="userSpaceOnUse"
+            >
+              <circle cx="1" cy="1" r="1" className="archGridDot" />
+            </pattern>
+            <marker
+              id="archHead"
+              viewBox="0 0 10 10"
+              refX="8.5"
+              refY="5"
+              markerWidth="7"
+              markerHeight="7"
+              orient="auto-start-reverse"
+            >
+              <path d="M0,0 L10,5 L0,10 z" className="archHeadFill" />
+            </marker>
+            <marker
+              id="archHeadAccent"
+              viewBox="0 0 10 10"
+              refX="8.5"
+              refY="5"
+              markerWidth="7"
+              markerHeight="7"
+              orient="auto-start-reverse"
+            >
+              <path d="M0,0 L10,5 L0,10 z" className="archHeadFill archHeadFill--accent" />
+            </marker>
+          </defs>
+
+          <rect x="0" y="0" width="1240" height="452" fill="url(#archGrid)" />
+
+          <text x="620" y="30" className="archKick">
+            App start
+          </text>
+          <text x="620" y="49" className="archKickSub">
+            for both new and returning players
+          </text>
+          <circle cx="620" cy="86" r="7" className="archDot" />
+
+          {EDGES.map((e, i) => (
+            <path
+              key={`e${i}`}
+              d={e.d}
+              className={`archEdge${e.accent ? " archEdge--accent" : ""}`}
+              markerEnd={
+                e.head
+                  ? `url(#${e.accent ? "archHeadAccent" : "archHead"})`
+                  : undefined
+              }
+            />
+          ))}
+
+          {LEAVES.map((n) => rect(n, "archLeaf"))}
+          {NODES.map((n) => rect(n, "archNode"))}
+          {LEAVES.map((n) => label(n, "archLeafLabel"))}
+          {NODES.map((n) => label(n, "archNodeLabel"))}
+        </svg>
+      </div>
+      {caption ? <figcaption className="mono">{caption}</figcaption> : null}
+    </figure>
+  );
+}
+
 /** A fixed set of cards — principles, steps — with no scroller chrome.
  * Titles are equal-height-matched at render so body copy always starts on
  * the same line, however many lines the longest title itself wraps to. */
@@ -7015,6 +7173,9 @@ function CaseRichBlock({ block, i, reduced }) {
         caption={block.darkMedia.caption}
       />
     );
+  }
+  if (block.archTree) {
+    return <ArchitectureTree key={i} caption={block.archTree.caption} />;
   }
   if (block.carousel) {
     return (
