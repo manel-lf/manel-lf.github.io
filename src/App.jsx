@@ -920,19 +920,12 @@ export const CONTENT = {
           },
         },
         {
-          darkTwoUp: [
-            {
-              imageKey: "case.gamehouse-plus.directionsComparison",
-              ratio: 4 / 3,
-              caption:
-                "Three ways to hold two content types. Only one protected the players who used both.",
-            },
-            {
-              imageKey: "case.gamehouse-plus.architecture",
-              ratio: 4 / 3,
-              caption: "The architecture we landed on.",
-            },
-          ],
+          darkMedia: {
+            imageKey: "case.gamehouse-plus.architecture",
+            ratio: 16 / 9,
+            caption:
+              "Asymmetric, but connected — the architecture we landed on.",
+          },
         },
 
         {
@@ -1926,13 +1919,6 @@ export const CONTENT = {
       plate: "lattice",
       tone: "dark",
       seed: 553,
-    },
-    "case.gamehouse-plus.directionsComparison": {
-      src: null,
-      alt: "Directions A, B and C compared, placeholder — a horizontal ramp standing in for the three architectures weighed against each other.",
-      plate: "ramp",
-      tone: "dark",
-      seed: 554,
     },
     "case.gamehouse-plus.home": {
       src: null,
