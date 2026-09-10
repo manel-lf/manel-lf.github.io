@@ -91,7 +91,7 @@ export const CONTENT = {
      * server-side. Left empty: local dev falls back to a direct OpenAI call
      * with VITE_OPENAI_API_KEY, and the deployed site runs pretend mode.
      */
-    endpoint: "",
+    endpoint: "https://ml2-chat.manel-lf.workers.dev",
     ring: "Ask me anything ·  ",
     openLabel: "Ask me anything — open the ML² assistant",
     dialogLabel: "ML² — ask me anything",
