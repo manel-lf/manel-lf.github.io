@@ -3902,6 +3902,8 @@ const STYLES_SEQ = `
 /* One block for the ML² assistant: the edge-docked "ask me anything" button
    with its rotating rim of type, and the panel it opens. */
 const STYLES_ASK = `
+:root{ --ask-col-w:clamp(340px, 27vw, 400px) }
+
 .ask{
   position:fixed;right:0;bottom:clamp(84px,14vh,124px);
   z-index:56;
@@ -3929,44 +3931,56 @@ const STYLES_ASK = `
 
 .askBtn:hover,.askBtn:focus-visible{ background:var(--accent);color:var(--accent-ink) }
 
+/* The rim of type rides a rounded-square track (matching the button) and
+   marches around it via an animated startOffset in the markup — the SVG
+   itself never rotates. */
 .askRing{
   position:absolute;inset:0;width:100%;height:100%;
-  animation:askspin 13s linear infinite;
+  overflow:visible;
 }
 .askRing text{
-  font-family:var(--font-mono);font-size:13px;font-weight:500;
-  letter-spacing:1.5px;text-transform:uppercase;fill:currentColor;
+  font-family:var(--font-mono);font-size:12px;font-weight:500;
+  letter-spacing:.5px;text-transform:uppercase;fill:currentColor;
 }
-.askBtn:hover .askRing,.askBtn:focus-visible .askRing{ animation-duration:4.5s }
 
 .askSpark{ width:34%;height:34%;color:currentColor }
 .ask[data-phase="hiding"] .askSpark{ opacity:.4 }
 .askSpark path{ fill:currentColor }
 
 @media (prefers-reduced-motion:reduce){
-  .askRing{ animation:none }
   .askBtn{ transition-duration:1ms }
 }
 
-/* ---- panel ---- */
+/* ---- panel ---- : a right-hand column the page makes room for on desktop,
+   full-screen on mobile. */
 .askPanel{
   position:fixed;z-index:90;
-  right:clamp(10px,3vw,26px);bottom:clamp(10px,3vw,22px);
-  width:min(400px,calc(100vw - 20px));
-  height:min(600px,calc(100vh - 40px));
-  height:min(600px,calc(100dvh - 40px));
   display:flex;flex-direction:column;
   background:var(--surface);color:var(--ink);
-  border:1px solid var(--hairline);
-  border-radius:var(--r-lg);
-  box-shadow:var(--shadow-lift);
   overflow:hidden;
-  transform-origin:bottom right;
-  animation:askPanelIn .34s var(--ease-out) both;
 }
-@media (max-width:480px){
-  .askPanel{ right:8px;left:8px;width:auto;height:min(78dvh,564px) }
+
+@media (min-width:861px){
+  .askPanel{
+    top:0;right:0;bottom:0;
+    width:var(--ask-col-w);
+    border-left:1px solid var(--hairline);
+    box-shadow:-14px 0 44px -24px rgba(0,0,0,.22);
+    animation:askColIn .34s var(--ease-out) both;
+  }
+  html.ask-col-open body{ padding-right:var(--ask-col-w) }
+  html.ask-col-open .nav{ right:var(--ask-col-w) }
+  html.ask-col-open .railDock{ right:var(--ask-col-w) }
 }
+
+@media (max-width:860px){
+  .askPanel{
+    inset:0;
+    width:auto;height:100vh;height:100dvh;
+    animation:askPanelUp .28s var(--ease-out) both;
+  }
+}
+
 @media (prefers-reduced-motion:reduce){ .askPanel{ animation:askFade .18s both } }
 
 .askHead{
@@ -3974,10 +3988,12 @@ const STYLES_ASK = `
   padding:var(--s4) var(--s4) var(--s3);
   border-bottom:1px solid var(--hairline);
 }
+.askHeadText{ min-width:0 }
 .askTitle{ font-weight:700;font-size:1.05rem;line-height:1;letter-spacing:-.01em }
 .askSub{
   font-family:var(--font-mono);font-size:.625rem;letter-spacing:.09em;
   text-transform:uppercase;color:var(--muted);margin-top:7px;line-height:1.3;
+  overflow-wrap:anywhere;
 }
 .askHeadBtns{ margin-left:auto;display:flex;gap:2px;flex:none }
 .askIconBtn{
@@ -4070,9 +4086,9 @@ const STYLES_ASK = `
 .askSend:not(:disabled):hover{ transform:translateY(-1px) }
 .askSend:disabled{ cursor:not-allowed }
 
-@keyframes askspin{ to{ transform:rotate(360deg) } }
 @keyframes askdot{ 0%,60%,100%{ transform:translateY(0);opacity:.35 } 30%{ transform:translateY(-4px);opacity:1 } }
-@keyframes askPanelIn{ from{ opacity:0;transform:translateY(14px) scale(.96) } to{ opacity:1;transform:none } }
+@keyframes askColIn{ from{ transform:translateX(100%) } to{ transform:none } }
+@keyframes askPanelUp{ from{ opacity:0;transform:translateY(16px) } to{ opacity:1;transform:none } }
 @keyframes askFade{ from{ opacity:0 } to{ opacity:1 } }
 `;
 
@@ -5531,6 +5547,7 @@ function logAskSession(messages) {
 function AskWidget({ reduced }) {
   const [phase, setPhase] = useState("peek"); // peek | hiding | big
   const [open, setOpen] = useState(false);
+  const [ringFast, setRingFast] = useState(false); // rim type speeds up on hover
   const [messages, setMessages] = useState([]); // { role: 'user' | 'assistant', content }
   const [pending, setPending] = useState(false);
   const [draft, setDraft] = useState("");
@@ -5562,6 +5579,30 @@ function AskWidget({ reduced }) {
     },
     [flushLog],
   );
+
+  // Desktop (>=861px): flag the document so the page shrinks to leave the
+  // column its width. Harmless on mobile, where the CSS ignores the flag.
+  useEffect(() => {
+    const el = document.documentElement;
+    el.classList.toggle("ask-col-open", open);
+    return () => el.classList.remove("ask-col-open");
+  }, [open]);
+
+  // Mobile: the panel is full-screen, so lock the page behind it. Desktop:
+  // the column sits beside the content, which must stay scrollable.
+  useEffect(() => {
+    if (!open) return undefined;
+    const mq = window.matchMedia("(max-width:860px)");
+    const apply = () => {
+      document.body.style.overflow = mq.matches ? "hidden" : "";
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    return () => {
+      mq.removeEventListener("change", apply);
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   // Scroll reactivity — parked while the panel is open, and skipped entirely
   // under reduced motion so the button just sits still at its resting peek.
@@ -5690,18 +5731,31 @@ function AskWidget({ reduced }) {
           aria-label={c.openLabel}
           aria-expanded={open}
           onClick={() => setOpenAndLog(true)}
+          onMouseEnter={() => setRingFast(true)}
+          onMouseLeave={() => setRingFast(false)}
+          onFocus={() => setRingFast(true)}
+          onBlur={() => setRingFast(false)}
         >
           <svg className="askRing" viewBox="0 0 100 100" aria-hidden="true">
             <defs>
               <path
                 id="askRingPath"
                 fill="none"
-                d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"
+                d="M50,8 H72 A20,20 0 0 1 92,28 V72 A20,20 0 0 1 72,92 H28 A20,20 0 0 1 8,72 V28 A20,20 0 0 1 28,8 Z"
               />
             </defs>
-            <text textLength="239" lengthAdjust="spacingAndGlyphs">
+            <text textLength="302" lengthAdjust="spacingAndGlyphs">
               <textPath href="#askRingPath" startOffset="0">
                 {c.ring}
+                {c.ring}
+                {reduced ? null : (
+                  <animate
+                    attributeName="startOffset"
+                    values="0;-302"
+                    dur={ringFast ? "4.5s" : "13s"}
+                    repeatCount="indefinite"
+                  />
+                )}
               </textPath>
             </text>
           </svg>
@@ -5714,7 +5768,7 @@ function AskWidget({ reduced }) {
       {open ? (
         <div className="askPanel" role="dialog" aria-label={c.dialogLabel}>
           <header className="askHead">
-            <div>
+            <div className="askHeadText">
               <div className="askTitle">{c.title}</div>
               <div className="askSub">{c.subtitle}</div>
             </div>
