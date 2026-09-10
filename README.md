@@ -161,6 +161,26 @@ endpointExtraFields: { access_key: 'YOUR_ACCESS_KEY' },
 It POSTs `{ name, email, subject, message }` as JSON. Leave `endpoint: null`
 to keep the mail-draft behaviour.
 
+### ML² — the "ask me anything" assistant
+
+A floating, edge-docked button (`AskWidget`) opens a small chat panel. All of
+its copy is in `CONTENT.ask`.
+
+**Replies.** `askML()` calls OpenAI only when a key was inlined at build time
+via `VITE_OPENAI_API_KEY` (see `.env.example`). That never happens on the
+deployed site — the CI build gets no such secret, and a key baked into a
+static bundle is readable by anyone who opens the page — so production always
+runs *pretend mode*: the canned answers in `ASK_PRETEND`, matched by keyword.
+Copy `.env.example` to `.env.local` and paste a key to get real `gpt-4o-mini`
+replies on `npm run dev`; any failure (bad key, no credits, offline) falls
+back to the same canned answers rather than an error. For real replies in
+production, put the key behind a serverless proxy (Cloudflare Worker / Vercel
+function) and point `askML()` at that instead.
+
+**Logging.** When a chat with at least one answer is closed (or the tab is
+hidden), the transcript is POSTed to the same Web3Forms endpoint the contact
+form uses, so it lands in the same inbox. No endpoint configured → no log.
+
 ### Booking a call
 
 The header CTA opens `CONTENT.booking.url` in a dialog as an iframe, rather

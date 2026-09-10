@@ -70,6 +70,43 @@ export const CONTENT = {
     homeLabel: "Manel López — back to home",
   },
 
+  /**
+   * ML² — the "ask me anything" assistant. The floating button is always
+   * mounted; the panel renders on demand.
+   *
+   * Model replies come from OpenAI only when a VITE_OPENAI_API_KEY is present
+   * at build time (see .env.example). It never is on the deployed site — a
+   * key in a static bundle is public — so production runs `pretend` mode with
+   * the canned answers in ASK_PRETEND. Wire a serverless proxy before relying
+   * on real replies in production.
+   *
+   * Every closed session with at least one answer is POSTed to the same
+   * Web3Forms endpoint the contact form uses (CONTENT.contact), so the
+   * transcript lands in the same inbox.
+   */
+  ask: {
+    ring: "Ask me anything ·  ",
+    openLabel: "Ask me anything — open the ML² assistant",
+    dialogLabel: "ML² — ask me anything",
+    title: "ML²",
+    subtitle: "Manel López × Machine Learning",
+    infoLabel: "About this assistant",
+    disclaimer:
+      "ML² is an AI assistant, not Manel. It can be wrong and it doesn't speak for him — double-check anything that matters, and use the contact form for the real thing.",
+    resetLabel: "Reset conversation",
+    closeLabel: "Close assistant",
+    emptyTitle: "Ask me anything.",
+    suggestions: [
+      "How do you approach product strategy?",
+      "What was your experience at GameHouse?",
+      "How is Boira 🐈‍⬛ doing?",
+    ],
+    inputPlaceholder: "Ask me anything",
+    sendLabel: "Send",
+    errorReply:
+      "Something went wrong reaching the model. Try again in a moment — or use the contact form for anything important.",
+  },
+
   wipBanner: {
     title: "Work in progress. Sorry about the sawdust.",
     body: "A few sections here are still half-built. I'm not actively applying to new roles — yet. So if you got here, it means I'm REALLY interested in the role you're offering and didn't want to miss my chance :)",
@@ -3855,6 +3892,183 @@ const STYLES_SEQ = `
 .splitSeq--static .splitSeq__copyInner{opacity:1 !important}
 `;
 
+/* One block for the ML² assistant: the edge-docked "ask me anything" button
+   with its rotating rim of type, and the panel it opens. */
+const STYLES_ASK = `
+.ask{
+  position:fixed;right:0;bottom:clamp(84px,14vh,124px);
+  z-index:56;
+  --ask-size:clamp(80px,9vw,104px);
+}
+@media (max-width:640px){ .ask{ bottom:clamp(76px,12vh,104px); --ask-size:80px } }
+
+.askBtn{
+  position:relative;
+  width:var(--ask-size);height:var(--ask-size);
+  border-radius:34%;
+  background:var(--panel);color:var(--panel-ink);
+  display:grid;place-items:center;
+  box-shadow:var(--shadow-lift);
+  transform:translateX(50%);
+  transition:transform .55s var(--ease-spring),
+             background-color .28s var(--ease-std),
+             color .28s var(--ease-std);
+  will-change:transform;
+}
+.ask[data-phase="hiding"] .askBtn{ transform:translateX(76%) scale(.94) }
+.ask[data-phase="peek"] .askBtn{ transform:translateX(50%) }
+.ask[data-phase="big"] .askBtn{ transform:translateX(8%) scale(1.12) }
+.ask.is-open .askBtn{ transform:translateX(132%) scale(.7);opacity:0;pointer-events:none }
+
+.askBtn:hover,.askBtn:focus-visible{ background:var(--accent);color:var(--accent-ink) }
+
+.askRing{
+  position:absolute;inset:0;width:100%;height:100%;
+  animation:askspin 13s linear infinite;
+}
+.askRing text{
+  font-family:var(--font-mono);font-size:13px;font-weight:500;
+  letter-spacing:1.5px;text-transform:uppercase;fill:currentColor;
+}
+.askBtn:hover .askRing,.askBtn:focus-visible .askRing{ animation-duration:4.5s }
+
+.askSpark{ width:34%;height:34%;color:currentColor }
+.ask[data-phase="hiding"] .askSpark{ opacity:.4 }
+.askSpark path{ fill:currentColor }
+
+@media (prefers-reduced-motion:reduce){
+  .askRing{ animation:none }
+  .askBtn{ transition-duration:1ms }
+}
+
+/* ---- panel ---- */
+.askPanel{
+  position:fixed;z-index:90;
+  right:clamp(10px,3vw,26px);bottom:clamp(10px,3vw,22px);
+  width:min(400px,calc(100vw - 20px));
+  height:min(600px,calc(100vh - 40px));
+  height:min(600px,calc(100dvh - 40px));
+  display:flex;flex-direction:column;
+  background:var(--surface);color:var(--ink);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-lg);
+  box-shadow:var(--shadow-lift);
+  overflow:hidden;
+  transform-origin:bottom right;
+  animation:askPanelIn .34s var(--ease-out) both;
+}
+@media (max-width:480px){
+  .askPanel{ right:8px;left:8px;width:auto;height:min(78dvh,564px) }
+}
+@media (prefers-reduced-motion:reduce){ .askPanel{ animation:askFade .18s both } }
+
+.askHead{
+  display:flex;align-items:flex-start;gap:var(--s3);
+  padding:var(--s4) var(--s4) var(--s3);
+  border-bottom:1px solid var(--hairline);
+}
+.askTitle{ font-weight:700;font-size:1.05rem;line-height:1;letter-spacing:-.01em }
+.askSub{
+  font-family:var(--font-mono);font-size:.625rem;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted);margin-top:7px;line-height:1.3;
+}
+.askHeadBtns{ margin-left:auto;display:flex;gap:2px;flex:none }
+.askIconBtn{
+  width:32px;height:32px;border-radius:var(--r-sm);
+  color:var(--muted);display:grid;place-items:center;
+  transition:background-color .15s var(--ease-std),color .15s var(--ease-std);
+}
+.askIconBtn:hover{ background:var(--surface-2);color:var(--ink) }
+
+.askInfoWrap{ position:relative;display:flex }
+.askTip{
+  position:absolute;top:calc(100% + 8px);right:0;width:232px;
+  padding:var(--s3);
+  font-family:var(--font-display);font-size:.75rem;line-height:1.45;
+  text-transform:none;letter-spacing:normal;
+  color:var(--panel-ink);background:var(--panel);
+  border-radius:var(--r-md);box-shadow:var(--shadow-lift);
+  opacity:0;visibility:hidden;transform:translateY(-4px);
+  transition:opacity .15s,transform .15s,visibility .15s;
+  z-index:2;pointer-events:none;
+}
+.askInfoWrap:hover .askTip,.askInfoWrap:focus-within .askTip{
+  opacity:1;visibility:visible;transform:none;
+}
+
+.askBody{
+  flex:1;overflow-y:auto;
+  padding:var(--s4);
+  display:flex;flex-direction:column;gap:var(--s3);
+}
+.askEmpty{ margin-block:auto }
+.askEmptyTitle{
+  font-size:1.3rem;font-weight:700;letter-spacing:-.02em;
+  margin-bottom:var(--s4);color:var(--ink);
+}
+.askChip{
+  display:block;width:100%;text-align:left;
+  padding:var(--s3);margin-top:var(--s2);
+  border:1px solid var(--hairline);border-radius:var(--r-md);
+  color:var(--ink-2);font-size:.875rem;line-height:1.4;
+  transition:border-color .15s,background-color .15s,color .15s;
+}
+.askChip:hover{
+  border-color:var(--accent);color:var(--ink);
+  background:color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
+.askMsg{
+  max-width:86%;padding:var(--s3) var(--s4);
+  border-radius:var(--r-md);
+  font-size:.9rem;line-height:1.5;white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.askMsg--user{
+  align-self:flex-end;background:var(--accent);color:var(--accent-ink);
+  border-bottom-right-radius:var(--r-sm);
+}
+.askMsg--bot{
+  align-self:flex-start;background:var(--surface-2);color:var(--ink);
+  border-bottom-left-radius:var(--r-sm);
+}
+.askDots{ align-self:flex-start;display:flex;gap:5px;padding:var(--s3) var(--s4) }
+.askDots i{
+  width:6px;height:6px;border-radius:50%;background:var(--muted);
+  animation:askdot 1s var(--ease-std) infinite;
+}
+.askDots i:nth-child(2){ animation-delay:.15s }
+.askDots i:nth-child(3){ animation-delay:.3s }
+@media (prefers-reduced-motion:reduce){ .askDots i{ animation:none;opacity:.6 } }
+
+.askFoot{
+  border-top:1px solid var(--hairline);
+  padding:var(--s3);
+  display:flex;gap:var(--s2);align-items:flex-end;
+}
+.askInput{
+  flex:1;resize:none;border:0;background:none;outline:none;
+  max-height:120px;line-height:1.45;font-size:.9rem;
+  padding:var(--s2);
+}
+.askInput::placeholder{ color:var(--muted) }
+.askSend{
+  width:34px;height:34px;flex:none;
+  border-radius:var(--r-sm);
+  background:var(--surface-2);color:var(--muted);
+  display:grid;place-items:center;
+  transition:background-color .15s var(--ease-std),color .15s var(--ease-std),transform .15s var(--ease-std);
+}
+.askSend:not(:disabled){ background:var(--accent);color:var(--accent-ink) }
+.askSend:not(:disabled):hover{ transform:translateY(-1px) }
+.askSend:disabled{ cursor:not-allowed }
+
+@keyframes askspin{ to{ transform:rotate(360deg) } }
+@keyframes askdot{ 0%,60%,100%{ transform:translateY(0);opacity:.35 } 30%{ transform:translateY(-4px);opacity:1 } }
+@keyframes askPanelIn{ from{ opacity:0;transform:translateY(14px) scale(.96) } to{ opacity:1;transform:none } }
+@keyframes askFade{ from{ opacity:0 } to{ opacity:1 } }
+`;
+
 /* =========================================================================
  * Hooks
  * ========================================================================= */
@@ -3869,6 +4083,7 @@ function useStyleSheet() {
       STYLES_CASE +
       STYLES_ARCH +
       STYLES_SEQ +
+      STYLES_ASK +
       STYLES_POST +
       STYLES_UTIL;
     document.head.appendChild(el);
@@ -4898,9 +5113,14 @@ const ICON_PATHS = {
   close: "M5 5l10 10M15 5L5 15",
   clock: "M10 3a7 7 0 100 14 7 7 0 000-14zM10 6.5V10l2.7 1.6",
   alert: "M10 2.7L1.8 17h16.4zM10 8v4M10 14.5h.01",
+  arrowUp: "M10 16V5M5 10l5-5 5 5",
+  info: "M10 2.5a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM10 9v4.6M10 6.4h.01",
+  refresh: "M4.6 10a5.6 5.6 0 1 0 1.7-4M4.6 4.6v3.6h3.6",
 };
 
 const ICON_FILLED = {
+  sparkle:
+    "M10 1c.6 4.4 4.6 8.4 9 9-4.4.6-8.4 4.6-9 9-.6-4.4-4.6-8.4-9-9 4.4-.6 8.4-4.6 9-9z",
   linkedin:
     "M4.98 3.5a2 2 0 11-.02 4 2 2 0 01.02-4zM3.3 8.9h3.35V19H3.3zM9.2 8.9h3.2v1.38h.05c.45-.83 1.55-1.7 3.19-1.7 3.41 0 4.04 2.2 4.04 5.05V19h-3.35v-4.72c0-1.13-.02-2.58-1.6-2.58-1.6 0-1.85 1.22-1.85 2.5V19H9.2z",
   behance:
@@ -5113,6 +5333,457 @@ function Nav({ theme, onToggleTheme, onHome, onBook }) {
         </button>
       </div>
     </header>
+  );
+}
+
+/* =========================================================================
+ * ML² — "ask me anything" assistant
+ *
+ * askML() talks to OpenAI only when a key was injected at build time
+ * (import.meta.env.VITE_OPENAI_API_KEY, from a local .env.local that is never
+ * committed and never set in CI). With no key it returns a canned reply, so
+ * the deployed site is a safe demo rather than a public key. logAskSession()
+ * ships a closed transcript to the contact form's Web3Forms inbox.
+ * ========================================================================= */
+
+const ASK_MODEL = "gpt-4o-mini";
+
+const ASK_SYSTEM = `You are ML² ("Manel López × Machine Learning"), a small assistant embedded in Manel López's product-design portfolio.
+
+About Manel: senior product designer based in Barcelona. Sole designer on GameHouse+ (a casual-games subscription app), where he owned research, product analytics, the design system and the rebuilt core surfaces while instant play was reshaping the product. Earlier work with Socialpoint, Popcore and others across games and gamification. He also lectures at university. Boira is his black cat.
+
+Voice: warm, plain, concise. Two or three short paragraphs at most. No bullet-point essays. Speak about Manel in the third person, or in a light first-person "I" as his stand-in — never claim to actually be him.
+
+Boundaries:
+- You are a guide to Manel's work and background, not a general-purpose tool. Politely decline requests to write code, do unrelated tasks, or act as a free chatbot.
+- Never share personal contact details, home address, finances or other private information. Point people to the contact form for anything real.
+- If you don't know something about Manel, say so plainly rather than inventing it.`;
+
+// Pretend-mode answers, tried in order. Kept short and in-voice.
+const ASK_PRETEND = [
+  {
+    match: /boira|cat|pet/i,
+    reply:
+      "Boira 🐈‍⬛ is doing great — full-time supervisor, part-time keyboard occupant. She's a black cat, extremely opinionated about dinner timing, and she's the reason \"Cat Butler\" is on Manel's list of job titles.",
+  },
+  {
+    match: /gamehouse|gh\+|instant play|subscription/i,
+    reply:
+      "Manel was the only designer on GameHouse+, working end to end — research, product analytics, the design system and the rebuilt core surfaces — alongside product, data and engineering.\n\nThe headline problem: instant play arrived and the old catalog model stopped making sense. Home, navigation, search, even the word \"game\" all came loose. He led the redesign that turned the catalog into a platform holding both instant and downloadable content without asking players to care about the difference. Day-zero activation and time-to-first-session both improved several-fold against the installable control.",
+  },
+  {
+    match: /strateg|approach|process|product thinking|how do you/i,
+    reply:
+      "Start from the business tension, not the screens. On GameHouse+ that tension was one product suddenly holding two kinds of content that behaved nothing alike.\n\nSo the work was: name the conflict clearly, get data and research to say which users each format actually served, and only then design an architecture that could hold both. Strategy first, pixels last.",
+  },
+  {
+    match: /design system|component|token|library/i,
+    reply:
+      "The system came out of the GameHouse+ work. Its core rule: describe a game by its state — playable, locked, installed, new — not by the rules that produced that state, so one dimension can lead per surface. It lives as design tokens plus a small component set, built with engineering so the same vocabulary holds in Figma and in code.",
+  },
+  {
+    match: /hire|available|role|freelance|contact|reach|email/i,
+    reply:
+      "Manel is open to senior product design roles, design-system work and prototyping engagements with product and games teams — plus guest lectures and workshops. The contact form on this site reaches him directly; that's the best way in.",
+  },
+];
+
+const ASK_PRETEND_FALLBACK =
+  "I'm running in demo mode right now — no live model wired up — so I can only really speak to a few things: how Manel approaches product strategy, his time at GameHouse, the design-system work, or how Boira the cat is doing. Try one of those?";
+
+function pretendReply(text) {
+  const hit = ASK_PRETEND.find((p) => p.match.test(text || ""));
+  return hit ? hit.reply : ASK_PRETEND_FALLBACK;
+}
+
+async function askML(history) {
+  const key = import.meta.env.VITE_OPENAI_API_KEY;
+  const lastUser = [...history].reverse().find((m) => m.role === "user");
+  const canned = () => pretendReply(lastUser && lastUser.content);
+
+  // No key (the deployed site, always): pure pretend mode.
+  if (!key) {
+    await new Promise((r) => setTimeout(r, 500 + Math.random() * 550));
+    return canned();
+  }
+
+  // Key present (local dev): try the real model, but never leave the user
+  // staring at an error — fall back to the canned answer on any failure
+  // (bad key, no credits, offline, rate limit…).
+  try {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify({
+        model: ASK_MODEL,
+        temperature: 0.6,
+        max_tokens: 450,
+        messages: [{ role: "system", content: ASK_SYSTEM }, ...history],
+      }),
+    });
+    if (!res.ok) throw new Error(`OpenAI ${res.status}`);
+    const data = await res.json();
+    const out = data && data.choices && data.choices[0]?.message?.content;
+    if (!out || !out.trim()) throw new Error("Empty completion");
+    return out.trim();
+  } catch (err) {
+    if (import.meta.env.DEV)
+      console.warn("[ML²] model call failed, using canned reply:", err);
+    return canned();
+  }
+}
+
+/** Best-effort: POST a closed transcript to the contact form's inbox. */
+function logAskSession(messages) {
+  const endpoint = CONTENT.contact.endpoint;
+  const accessKey =
+    CONTENT.contact.endpointExtraFields &&
+    CONTENT.contact.endpointExtraFields.access_key;
+  if (!endpoint || !accessKey) return;
+
+  const pairs = [];
+  for (let i = 0; i < messages.length; i++) {
+    if (messages[i].role !== "user") continue;
+    const answer = messages[i + 1];
+    pairs.push({
+      q: messages[i].content,
+      a:
+        answer && answer.role === "assistant"
+          ? answer.content
+          : "(no answer)",
+    });
+  }
+  if (!pairs.some((p) => p.a !== "(no answer)")) return;
+
+  const stamp = new Date().toISOString().slice(0, 16).replace("T", " ");
+  const mode = import.meta.env.VITE_OPENAI_API_KEY ? "live" : "pretend";
+  const message =
+    `ML² chat log — ${stamp} UTC (${mode})\n` +
+    `${typeof location !== "undefined" ? location.href : ""}\n` +
+    `${typeof navigator !== "undefined" ? navigator.userAgent : ""}\n\n` +
+    pairs
+      .map((p, n) => `[${n + 1}] Q: ${p.q}\n    A: ${p.a}`)
+      .join("\n\n");
+
+  const payload = JSON.stringify({
+    access_key: accessKey,
+    subject: `ML² chat log — ${stamp}`,
+    from_name: "ML² chatbot",
+    email: CONTENT.links.email,
+    message,
+  });
+
+  try {
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(
+        endpoint,
+        new Blob([payload], { type: "application/json" }),
+      );
+    } else {
+      fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+        keepalive: true,
+      }).catch(() => {});
+    }
+  } catch {
+    /* logging never blocks the UI */
+  }
+}
+
+/**
+ * The floating button is always mounted. It rests half-tucked past the right
+ * edge, ducks further out while the page scrolls down, and grows back into
+ * view on scroll-up or after a 3s pause. Clicking it swaps in the panel.
+ */
+function AskWidget({ reduced }) {
+  const [phase, setPhase] = useState("peek"); // peek | hiding | big
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState([]); // { role: 'user' | 'assistant', content }
+  const [pending, setPending] = useState(false);
+  const [draft, setDraft] = useState("");
+
+  const bodyRef = useRef(null);
+  const inputRef = useRef(null);
+  const messagesRef = useRef(messages);
+  const loggedCountRef = useRef(0);
+
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
+
+  const flushLog = useCallback(() => {
+    const cur = messagesRef.current;
+    if (
+      cur.length > loggedCountRef.current &&
+      cur.some((m) => m.role === "assistant")
+    ) {
+      logAskSession(cur);
+      loggedCountRef.current = cur.length;
+    }
+  }, []);
+
+  const setOpenAndLog = useCallback(
+    (next) => {
+      setOpen(next);
+      if (!next) flushLog();
+    },
+    [flushLog],
+  );
+
+  // Scroll reactivity — parked while the panel is open, and skipped entirely
+  // under reduced motion so the button just sits still at its resting peek.
+  useEffect(() => {
+    if (open || reduced) return undefined;
+    let lastY = window.scrollY;
+    let raf = 0;
+    let idleT = 0;
+    let settleT = 0;
+    const run = () => {
+      raf = 0;
+      const y = window.scrollY;
+      const dy = y - lastY;
+      lastY = y;
+      if (dy > 3) setPhase("hiding");
+      else if (dy < -3) setPhase("big");
+      window.clearTimeout(idleT);
+      window.clearTimeout(settleT);
+      idleT = window.setTimeout(() => setPhase("big"), 3000);
+      settleT = window.setTimeout(
+        () => setPhase((p) => (p === "hiding" ? "peek" : p)),
+        800,
+      );
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(run);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+      window.clearTimeout(idleT);
+      window.clearTimeout(settleT);
+    };
+  }, [open, reduced]);
+
+  // Log on tab-away / unload too, not only on an explicit close.
+  useEffect(() => {
+    const onHide = () => flushLog();
+    const onVis = () => {
+      if (document.visibilityState === "hidden") flushLog();
+    };
+    window.addEventListener("pagehide", onHide);
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      window.removeEventListener("pagehide", onHide);
+      document.removeEventListener("visibilitychange", onVis);
+    };
+  }, [flushLog]);
+
+  useEffect(() => {
+    if (open && inputRef.current) inputRef.current.focus();
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKey = (e) => {
+      if (e.key === "Escape") setOpenAndLog(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, setOpenAndLog]);
+
+  useEffect(() => {
+    const el = bodyRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages, pending, open]);
+
+  const resetChat = useCallback(() => {
+    flushLog();
+    setMessages([]);
+    setDraft("");
+    loggedCountRef.current = 0;
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+      inputRef.current.focus();
+    }
+  }, [flushLog]);
+
+  const send = useCallback(
+    async (raw) => {
+      const q = (raw || "").trim();
+      if (!q || pending) return;
+      setDraft("");
+      if (inputRef.current) inputRef.current.style.height = "auto";
+      const next = [...messagesRef.current, { role: "user", content: q }];
+      setMessages(next);
+      setPending(true);
+      try {
+        const reply = await askML(next);
+        setMessages((m) => [...m, { role: "assistant", content: reply }]);
+      } catch {
+        setMessages((m) => [
+          ...m,
+          { role: "assistant", content: CONTENT.ask.errorReply },
+        ]);
+      } finally {
+        setPending(false);
+      }
+    },
+    [pending],
+  );
+
+  const onInput = (e) => {
+    setDraft(e.target.value);
+    const ta = e.target;
+    ta.style.height = "auto";
+    ta.style.height = `${Math.min(ta.scrollHeight, 120)}px`;
+  };
+
+  const onKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      send(draft);
+    }
+  };
+
+  const c = CONTENT.ask;
+
+  return (
+    <>
+      <div className={`ask${open ? " is-open" : ""}`} data-phase={phase}>
+        <button
+          type="button"
+          className="askBtn"
+          aria-label={c.openLabel}
+          aria-expanded={open}
+          onClick={() => setOpenAndLog(true)}
+        >
+          <svg className="askRing" viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <path
+                id="askRingPath"
+                fill="none"
+                d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"
+              />
+            </defs>
+            <text textLength="239" lengthAdjust="spacingAndGlyphs">
+              <textPath href="#askRingPath" startOffset="0">
+                {c.ring}
+              </textPath>
+            </text>
+          </svg>
+          <svg className="askSpark" viewBox="0 0 20 20" aria-hidden="true">
+            <path d={ICON_FILLED.sparkle} />
+          </svg>
+        </button>
+      </div>
+
+      {open ? (
+        <div className="askPanel" role="dialog" aria-label={c.dialogLabel}>
+          <header className="askHead">
+            <div>
+              <div className="askTitle">{c.title}</div>
+              <div className="askSub">{c.subtitle}</div>
+            </div>
+            <div className="askHeadBtns">
+              <span className="askInfoWrap">
+                <button
+                  type="button"
+                  className="askIconBtn"
+                  aria-label={c.infoLabel}
+                >
+                  <Icon name="info" size={16} />
+                </button>
+                <span className="askTip" role="tooltip">
+                  {c.disclaimer}
+                </span>
+              </span>
+              <button
+                type="button"
+                className="askIconBtn"
+                aria-label={c.resetLabel}
+                onClick={resetChat}
+              >
+                <Icon name="refresh" size={16} />
+              </button>
+              <button
+                type="button"
+                className="askIconBtn"
+                aria-label={c.closeLabel}
+                onClick={() => setOpenAndLog(false)}
+              >
+                <Icon name="close" size={16} />
+              </button>
+            </div>
+          </header>
+
+          <div className="askBody" ref={bodyRef} aria-live="polite">
+            {messages.length === 0 ? (
+              <div className="askEmpty">
+                <div className="askEmptyTitle">{c.emptyTitle}</div>
+                {c.suggestions.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    className="askChip"
+                    onClick={() => send(s)}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              messages.map((m, i) => (
+                <div
+                  key={i}
+                  className={`askMsg askMsg--${m.role === "user" ? "user" : "bot"}`}
+                >
+                  {m.content}
+                </div>
+              ))
+            )}
+            {pending ? (
+              <div className="askDots" aria-label="Thinking">
+                <i />
+                <i />
+                <i />
+              </div>
+            ) : null}
+          </div>
+
+          <form
+            className="askFoot"
+            onSubmit={(e) => {
+              e.preventDefault();
+              send(draft);
+            }}
+          >
+            <textarea
+              ref={inputRef}
+              className="askInput"
+              rows={1}
+              placeholder={c.inputPlaceholder}
+              value={draft}
+              onChange={onInput}
+              onKeyDown={onKeyDown}
+            />
+            <button
+              type="submit"
+              className="askSend"
+              disabled={!draft.trim() || pending}
+              aria-label={c.sendLabel}
+            >
+              <Icon name="arrowUp" size={16} />
+            </button>
+          </form>
+        </div>
+      ) : null}
+    </>
   );
 }
 
@@ -8268,6 +8939,7 @@ export default function App() {
         onHome={goHome}
         onBook={() => setBooking(true)}
       />
+      <AskWidget reduced={reduced} />
       {booking ? (
         <BookingDialog onClose={closeBooking} theme={theme} reduced={reduced} />
       ) : null}
