@@ -741,11 +741,9 @@ export const CONTENT = {
           ],
         },
         {
-          wide: {
-            imageKey: "case.gamehouse-plus.oneContentType",
-            ratio: 21 / 9,
-            caption:
-              "One content type became two. Everything that follows is a consequence of that.",
+          splitSequence: {
+            title: "One content type became two",
+            sub: "Everything that follows is a consequence of that",
           },
         },
 
@@ -1889,10 +1887,6 @@ export const CONTENT = {
       seed: 201,
       glow: "#3B3061",
       accent: "#6E5BA6",
-    },
-    "case.gamehouse-plus.oneContentType": {
-      src: "img/case-gamehouse-plus-one-content-type.png",
-      alt: "A single game tile splitting into two — one leading to a download icon, the other to a play icon — standing in for the catalog splitting into downloadable and instant formats.",
     },
     "case.gamehouse-plus.newVsReturning": {
       src: "img/case-gamehouse-plus-new-vs-returning.png",
@@ -3326,6 +3320,8 @@ const STYLES_CASE = `
   box-shadow:var(--shadow-card);
 }
 .caseHeroFrame .inner{border-radius:var(--r-md);overflow:hidden}
+/* The GH+ case opens on a video — sit it in a black frame, not the light one. */
+.caseHeroFrame--video{background:var(--panel);border-color:var(--panel-hairline)}
 
 .metaBar{
   display:grid;
@@ -3711,7 +3707,7 @@ const STYLES_CASE = `
  * a mix of the accent; nothing here is theme-reactive on its own. Static: no
  * timed motion, only the inherited scroll reveal. */
 const STYLES_ARCH = `
-.archTree{padding:clamp(20px,3.4vw,36px) clamp(10px,2vw,22px) clamp(6px,1.4vw,14px)}
+.archTree{padding:clamp(14px,2.6vw,26px) clamp(2px,0.8vw,10px) clamp(4px,1vw,12px)}
 .archTree svg{display:block;width:100%;height:auto;overflow:visible}
 .archGridDot{fill:rgba(255,255,255,0.05)}
 .archKick{fill:var(--panel-muted);font-family:var(--font-mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
@@ -3737,6 +3733,128 @@ const STYLES_ARCH = `
 }
 `;
 
+/* One content type became two — the scroll-scrubbed split. The track is tall,
+   the stage pins inside it, and ContentSplitSequence writes the per-frame
+   transforms. Static fallback (prefers-reduced-motion) is a plain parted row. */
+const STYLES_SEQ = `
+.splitSeq{
+  --sq:clamp(94px,12.5vw,150px);
+  margin:0;
+  height:calc(min(100vh, 900px) + 130vh);
+  height:calc(min(100svh, 900px) + 130vh);
+}
+.splitSeq__stage{
+  position:sticky;
+  top:0;
+  top:max(0px, calc((100svh - 900px) / 2));
+  height:min(100vh, 900px);
+  height:min(100svh, 900px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow:visible;
+}
+.splitSeq__cards{
+  position:relative;
+  width:100%;
+  height:min(62svh, 460px);
+}
+.splitSeq__card{
+  position:absolute;
+  left:calc(50% - var(--sq) / 2);
+  top:calc(50% - var(--sq) / 2);
+  width:var(--sq);
+  height:var(--sq);
+  object-fit:contain;
+  will-change:transform;
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.splitSeq__copy{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:min(330px, 72vw);
+  margin:0;
+  transform:translate(-50%, -50%);
+  text-align:center;
+  pointer-events:none;
+}
+.splitSeq__copyInner{
+  display:flex;
+  flex-direction:column;
+  gap:.5em;
+  will-change:transform, opacity;
+}
+.splitSeq__title{
+  display:block;
+  font-family:var(--font-display);
+  font-weight:700;
+  font-size:clamp(1.45rem, 3.2vw, 2.35rem);
+  line-height:1.12;
+  letter-spacing:-0.02em;
+  color:var(--ink);
+  text-wrap:balance;
+}
+.splitSeq__sub{
+  display:block;
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(0.9rem, 1.5vw, 1.08rem);
+  line-height:1.32;
+  color:var(--muted);
+  max-width:26ch;
+  margin-inline:auto;
+  text-wrap:balance;
+}
+/* Under ~760px there is no room for a headline behind three-wide card
+   groups — drop it into normal flow just below the cluster instead. */
+@media (max-width:760px){
+  .splitSeq__stage{justify-content:flex-start;padding-top:6vh}
+  .splitSeq__cards{height:min(52svh, 360px)}
+  .splitSeq__copy{
+    position:static;
+    left:auto;
+    top:auto;
+    transform:none;
+    width:min(360px, 88vw);
+    margin:clamp(6px,2vh,18px) auto 0;
+  }
+}
+.splitSeq--static{height:auto}
+.splitSeq--static .splitSeq__stage{
+  position:static;
+  height:auto;
+  top:auto;
+  justify-content:center;
+  padding-block:clamp(40px,9vh,96px);
+}
+.splitSeq--static .splitSeq__cards{
+  position:static;
+  height:auto;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:clamp(10px,2.4vw,22px);
+  max-width:520px;
+}
+.splitSeq--static .splitSeq__card{
+  position:static;
+  left:auto;
+  top:auto;
+  transform:none !important;
+  width:clamp(80px,17vw,116px);
+  height:auto;
+}
+.splitSeq--static .splitSeq__copy{
+  position:static;
+  transform:none;
+  margin-top:clamp(22px,5vh,44px);
+}
+.splitSeq--static .splitSeq__copyInner{opacity:1 !important}
+`;
+
 /* =========================================================================
  * Hooks
  * ========================================================================= */
@@ -3750,6 +3868,7 @@ function useStyleSheet() {
       STYLES_HOME +
       STYLES_CASE +
       STYLES_ARCH +
+      STYLES_SEQ +
       STYLES_POST +
       STYLES_UTIL;
     document.head.appendChild(el);
@@ -6641,15 +6760,16 @@ function ArchitectureTree({ caption }) {
   ];
   const EDGES = [
     { d: "M620,95 L620,116", accent: true, head: true },
-    { d: "M620,182 L620,276", head: true },
+    { d: "M620,182 L620,276", accent: true, head: true },
     { d: "M150,214 L1090,214" },
+    { d: "M620,214 L830,214", accent: true },
     { d: "M150,214 L150,269", head: true },
     { d: "M410,214 L410,269", head: true },
-    { d: "M830,214 L830,269", head: true },
+    { d: "M830,214 L830,269", accent: true, head: true },
     { d: "M1090,214 L1090,269", head: true },
     { d: "M150,329 L150,375", head: true },
     { d: "M410,329 L410,375", head: true },
-    { d: "M830,329 L830,375", head: true },
+    { d: "M830,329 L830,375", accent: true, head: true },
     { d: "M1090,329 L1090,375", head: true },
   ];
   const rect = (n, cls) => (
@@ -6678,9 +6798,9 @@ function ArchitectureTree({ caption }) {
     <figure className="darkMediaFrame reveal">
       <div className="archTree">
         <svg
-          viewBox="0 0 1240 452"
+          viewBox="54 14 1126 414"
           role="img"
-          aria-label="GameHouse+ information architecture after the transformation. App start, for both new and returning players, opens Home. Home leads to instant games, and branches to My Games (favourited content), Search (any game, by franchise or genre), Classics (downloadable franchises), and Profile (VIP and settings). Home and Classics are the two surfaces the project rebuilt."
+          aria-label="GameHouse+ information architecture after the transformation. App start, for both new and returning players, opens Home. Home leads to instant games, and branches to My Games (favourited content), Search (any game, by franchise or genre), Classics (downloadable franchises), and Profile (VIP and settings). The path from App start through Home to instant games, and on to Classics and downloadable franchises, is drawn in accent — the two surfaces the project rebuilt."
         >
           <defs>
             <pattern
@@ -6715,7 +6835,7 @@ function ArchitectureTree({ caption }) {
             </marker>
           </defs>
 
-          <rect x="0" y="0" width="1240" height="452" fill="url(#archGrid)" />
+          <rect x="54" y="14" width="1126" height="414" fill="url(#archGrid)" />
 
           <text x="620" y="30" className="archKick">
             App start
@@ -6745,6 +6865,187 @@ function ArchitectureTree({ caption }) {
         </svg>
       </div>
       {caption ? <figcaption className="mono">{caption}</figcaption> : null}
+    </figure>
+  );
+}
+
+/**
+ * The six catalog surfaces the redesign inherited, in the order they sit
+ * left-to-right once the stack has parted. `from` is the clustered pose
+ * (a loose hand of cards near centre); `to` is the split pose — three left,
+ * three right. `xf` is a fraction of the stage half-width so the spread
+ * tracks the viewport instead of overflowing it on narrow screens; `y` is
+ * a pixel offset scaled down a little on small stages.
+ */
+const SPLIT_ICONS = [
+  {
+    key: "fruit",
+    src: "img/case-gamehouse-plus-icon-fruit.png",
+    alt: "Fruit-merge puzzle game",
+    from: { xf: -0.06, y: -26, r: -11 },
+    to: { xf: -0.52, y: -190, r: -8 },
+  },
+  {
+    key: "candy",
+    src: "img/case-gamehouse-plus-icon-candy.png",
+    alt: "Match-three candy game",
+    from: { xf: -0.02, y: 4, r: -3 },
+    to: { xf: -0.62, y: -6, r: 5 },
+  },
+  {
+    key: "trivia",
+    src: "img/case-gamehouse-plus-icon-trivia.png",
+    alt: "Trivia quiz game",
+    from: { xf: 0.03, y: 30, r: 8 },
+    to: { xf: -0.47, y: 180, r: -7 },
+  },
+  {
+    key: "monsters",
+    src: "img/case-gamehouse-plus-icon-monsters.png",
+    alt: "Match-three monsters game",
+    from: { xf: -0.03, y: -30, r: 5 },
+    to: { xf: 0.52, y: -190, r: 9 },
+  },
+  {
+    key: "twenty48",
+    src: "img/case-gamehouse-plus-icon-2048.png",
+    alt: "2048 number-merge game",
+    from: { xf: 0.02, y: -2, r: 12 },
+    to: { xf: 0.62, y: 2, r: -5 },
+  },
+  {
+    key: "cooking",
+    src: "img/case-gamehouse-plus-icon-cooking.png",
+    alt: "Time-management cooking game",
+    from: { xf: 0.07, y: 26, r: -9 },
+    to: { xf: 0.47, y: 182, r: 8 },
+  },
+];
+
+/**
+ * "One content type became two." A scroll-scrubbed pivot: six catalog icons
+ * ride in one stack, then pull apart into two groups as the section scrolls
+ * through a pinned stage, and the headline pop-fades in through the gap once
+ * they have parted. Mirrors useParallax — rAF-throttled scroll read, writes
+ * transforms straight to the nodes, no per-frame React state. Under
+ * prefers-reduced-motion it collapses to a plain parted row with the
+ * headline shown.
+ */
+function ContentSplitSequence({ title, sub, reduced }) {
+  const trackRef = useRef(null);
+  const stageRef = useRef(null);
+  const copyRef = useRef(null);
+  const cardEls = useRef([]);
+
+  useEffect(() => {
+    if (reduced) return;
+    const track = trackRef.current;
+    const stage = stageRef.current;
+    if (!track || !stage) return;
+
+    const clamp01 = (n) => (n < 0 ? 0 : n > 1 ? 1 : n);
+    const outCubic = (t) => 1 - Math.pow(1 - t, 3);
+    const outBack = (t) => {
+      const u = t - 1;
+      return 1 + 2.70158 * u * u * u + 1.70158 * u * u;
+    };
+
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const rect = track.getBoundingClientRect();
+      const span = rect.height - stage.offsetHeight;
+      const p = span > 0 ? clamp01(-rect.top / span) : 0;
+      // A short hold on the stack, then ease the split out.
+      const cp = p <= 0.12 ? 0 : outCubic((p - 0.12) / 0.88);
+
+      const halfW = stage.offsetWidth / 2 || 1;
+      // Floor the spread so the two groups stay clearly apart on a narrow
+      // phone; cap it so it never overshoots a very wide stage.
+      const xBasis = Math.min(Math.max(halfW, 175), 600);
+      const k = Math.max(0.6, Math.min(1.15, halfW / 430));
+
+      for (let idx = 0; idx < cardEls.current.length; idx++) {
+        const el = cardEls.current[idx];
+        if (!el) continue;
+        const a = SPLIT_ICONS[idx].from;
+        const b = SPLIT_ICONS[idx].to;
+        const x = (a.xf + (b.xf - a.xf) * cp) * xBasis;
+        const y = (a.y + (b.y - a.y) * cp) * k;
+        const r = a.r + (b.r - a.r) * cp;
+        const s = 0.9 + 0.1 * cp;
+        el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(
+          1,
+        )}px, 0) rotate(${r.toFixed(2)}deg) scale(${s.toFixed(3)})`;
+      }
+
+      // Headline arrives once the gap has opened. The wrapper owns any
+      // centring; this inner node only carries the pop.
+      const tp = clamp01((p - 0.6) / 0.28);
+      const copy = copyRef.current;
+      if (copy) {
+        copy.style.opacity = tp.toFixed(3);
+        copy.style.transform = `translate3d(0, ${(12 * (1 - tp)).toFixed(
+          1,
+        )}px, 0) scale(${(0.9 + 0.1 * outBack(tp)).toFixed(3)})`;
+      }
+    };
+
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [reduced]);
+
+  return (
+    <figure
+      className={`splitSeq${reduced ? " splitSeq--static" : ""}`}
+      ref={trackRef}
+    >
+      <div className="splitSeq__stage" ref={stageRef}>
+        <div className="splitSeq__cards">
+          {SPLIT_ICONS.map((ic, idx) => (
+            <img
+              key={ic.key}
+              className="splitSeq__card"
+              src={resolveSrc(ic.src)}
+              alt={ic.alt}
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+              ref={(el) => {
+                cardEls.current[idx] = el;
+              }}
+              style={
+                reduced
+                  ? undefined
+                  : {
+                      transform: `translate3d(${(ic.from.xf * 320).toFixed(
+                        0,
+                      )}px, ${ic.from.y}px, 0) rotate(${ic.from.r}deg) scale(0.9)`,
+                    }
+              }
+            />
+          ))}
+        </div>
+        <figcaption className="splitSeq__copy">
+          <span
+            className="splitSeq__copyInner"
+            ref={copyRef}
+            style={reduced ? undefined : { opacity: 0 }}
+          >
+            <span className="splitSeq__title">{title}</span>
+            <span className="splitSeq__sub">{sub}</span>
+          </span>
+        </figcaption>
+      </div>
     </figure>
   );
 }
@@ -7177,6 +7478,16 @@ function CaseRichBlock({ block, i, reduced }) {
   if (block.archTree) {
     return <ArchitectureTree key={i} caption={block.archTree.caption} />;
   }
+  if (block.splitSequence) {
+    return (
+      <ContentSplitSequence
+        key={i}
+        title={block.splitSequence.title}
+        sub={block.splitSequence.sub}
+        reduced={reduced}
+      />
+    );
+  }
   if (block.carousel) {
     return (
       <ProcessScroller
@@ -7468,7 +7779,7 @@ function GameHousePlusCase({
             <p className="casePositioning reveal">{project.caseTitle[1]}</p>
           </div>
 
-          <div className="caseHeroFrame reveal">
+          <div className="caseHeroFrame caseHeroFrame--video reveal">
             <div className="inner">
               <HeroMedia project={project} reduced={reduced} ratio={16 / 9} />
             </div>
