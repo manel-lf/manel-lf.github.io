@@ -85,6 +85,13 @@ export const CONTENT = {
    * transcript lands in the same inbox.
    */
   ask: {
+    /**
+     * The ML² chat proxy (workers/ml2). Paste the deployed Worker URL here and
+     * every reply — live site and local dev — goes through it, key held
+     * server-side. Left empty: local dev falls back to a direct OpenAI call
+     * with VITE_OPENAI_API_KEY, and the deployed site runs pretend mode.
+     */
+    endpoint: "",
     ring: "Ask me anything ·  ",
     openLabel: "Ask me anything — open the ML² assistant",
     dialogLabel: "ML² — ask me anything",
@@ -5397,43 +5404,64 @@ function pretendReply(text) {
 }
 
 async function askML(history) {
+  const proxy = CONTENT.ask.endpoint;
   const key = import.meta.env.VITE_OPENAI_API_KEY;
   const lastUser = [...history].reverse().find((m) => m.role === "user");
   const canned = () => pretendReply(lastUser && lastUser.content);
 
-  // No key (the deployed site, always): pure pretend mode.
-  if (!key) {
-    await new Promise((r) => setTimeout(r, 500 + Math.random() * 550));
-    return canned();
+  // Preferred path: our serverless proxy (workers/ml2) holds the key. Used
+  // everywhere once CONTENT.ask.endpoint is set — live site and local dev.
+  if (proxy) {
+    try {
+      const res = await fetch(proxy, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: history }),
+      });
+      if (!res.ok) throw new Error(`proxy ${res.status}`);
+      const data = await res.json();
+      if (!data || !data.reply || !data.reply.trim())
+        throw new Error("empty reply");
+      return data.reply.trim();
+    } catch (err) {
+      if (import.meta.env.DEV)
+        console.warn("[ML²] proxy call failed, using canned reply:", err);
+      return canned();
+    }
   }
 
-  // Key present (local dev): try the real model, but never leave the user
-  // staring at an error — fall back to the canned answer on any failure
-  // (bad key, no credits, offline, rate limit…).
-  try {
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${key}`,
-      },
-      body: JSON.stringify({
-        model: ASK_MODEL,
-        temperature: 0.6,
-        max_tokens: 450,
-        messages: [{ role: "system", content: ASK_SYSTEM }, ...history],
-      }),
-    });
-    if (!res.ok) throw new Error(`OpenAI ${res.status}`);
-    const data = await res.json();
-    const out = data && data.choices && data.choices[0]?.message?.content;
-    if (!out || !out.trim()) throw new Error("Empty completion");
-    return out.trim();
-  } catch (err) {
-    if (import.meta.env.DEV)
-      console.warn("[ML²] model call failed, using canned reply:", err);
-    return canned();
+  // Local dev with no proxy configured: call OpenAI straight, key from
+  // .env.local. Any failure (bad key, no credits, offline) → canned.
+  if (key) {
+    try {
+      const res = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${key}`,
+        },
+        body: JSON.stringify({
+          model: ASK_MODEL,
+          temperature: 0.6,
+          max_tokens: 450,
+          messages: [{ role: "system", content: ASK_SYSTEM }, ...history],
+        }),
+      });
+      if (!res.ok) throw new Error(`OpenAI ${res.status}`);
+      const data = await res.json();
+      const out = data && data.choices && data.choices[0]?.message?.content;
+      if (!out || !out.trim()) throw new Error("Empty completion");
+      return out.trim();
+    } catch (err) {
+      if (import.meta.env.DEV)
+        console.warn("[ML²] model call failed, using canned reply:", err);
+      return canned();
+    }
   }
+
+  // Deployed site with nothing configured: pure pretend mode.
+  await new Promise((r) => setTimeout(r, 500 + Math.random() * 550));
+  return canned();
 }
 
 /** Best-effort: POST a closed transcript to the contact form's inbox. */

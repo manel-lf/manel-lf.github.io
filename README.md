@@ -166,16 +166,22 @@ to keep the mail-draft behaviour.
 A floating, edge-docked button (`AskWidget`) opens a small chat panel. All of
 its copy is in `CONTENT.ask`.
 
-**Replies.** `askML()` calls OpenAI only when a key was inlined at build time
-via `VITE_OPENAI_API_KEY` (see `.env.example`). That never happens on the
-deployed site — the CI build gets no such secret, and a key baked into a
-static bundle is readable by anyone who opens the page — so production always
-runs *pretend mode*: the canned answers in `ASK_PRETEND`, matched by keyword.
-Copy `.env.example` to `.env.local` and paste a key to get real `gpt-4o-mini`
-replies on `npm run dev`; any failure (bad key, no credits, offline) falls
-back to the same canned answers rather than an error. For real replies in
-production, put the key behind a serverless proxy (Cloudflare Worker / Vercel
-function) and point `askML()` at that instead.
+**Replies.** `askML()` resolves in this order:
+
+1. **`CONTENT.ask.endpoint`** — the ML² chat proxy
+   ([`workers/ml2/`](workers/ml2/), a Cloudflare Worker that holds the key
+   server-side). Set this and every reply, live and local, goes through it.
+   Deploy steps: [`workers/ml2/README.md`](workers/ml2/README.md).
+2. **`VITE_OPENAI_API_KEY`** (from `.env.local`, see `.env.example`) — a
+   direct OpenAI call. Local dev only; never inlined on the deployed site
+   (CI gets no secret, and a key in a static bundle is public).
+3. Neither set — **pretend mode**: the keyword-matched canned answers in
+   `ASK_PRETEND`.
+
+Any failure at 1 or 2 (bad key, no credits, offline) falls back to the
+canned answers rather than showing an error. Keep `gpt-4o-mini`, the token
+cap and the system prompt in step between `workers/ml2/index.js` and the
+`ASK_*` constants in `src/App.jsx`.
 
 **Logging.** When a chat with at least one answer is closed (or the tab is
 hidden), the transcript is POSTed to the same Web3Forms endpoint the contact
