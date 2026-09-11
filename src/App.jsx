@@ -4000,6 +4000,17 @@ const STYLES_ASK = `
 
 .askBtn:hover,.askBtn:focus-visible{ background:var(--accent);color:var(--accent-ink) }
 
+/* Swaps the button to a light chip when the page right behind it — sampled
+   in JS, see the onDark effect in AskWidget — reads dark: dark mode itself
+   (the canvas goes dark, same as any other dark surface) or scrolling over
+   a full-width dark section. --panel/--panel-ink are already a near-black/
+   near-white pair in both themes, so this is just the two swapped rather
+   than a new color pair to maintain. Higher specificity than the plain
+   hover rule above needs an explicit override so hovering an inverted
+   button still shows the accent, not the light chip color. */
+.ask.on-dark .askBtn{ background:var(--panel-ink);color:var(--panel) }
+.ask.on-dark .askBtn:hover,.ask.on-dark .askBtn:focus-visible{ background:var(--accent);color:var(--accent-ink) }
+
 /* The rim of type rides a rounded-square track (matching the button) and
    marches around it via an animated startOffset in the markup — the SVG
    itself never rotates. The track sits well inside the 100-unit viewBox
@@ -5749,6 +5760,36 @@ function splitAskParagraphs(text) {
     .filter(Boolean);
 }
 
+/**
+ * Whether the page actually reads dark right at (x, y) — used to flip the
+ * floating button to a light chip so it doesn't disappear into a dark
+ * surface underneath it. One mechanism covers both cases the button needs
+ * to react to: dark mode (the canvas itself is dark, same as any other dark
+ * surface) and scrolling under a full-width dark section, without
+ * hardcoding either one — it just samples the real rendered background.
+ * elementsFromPoint returns every element stacked at that point, topmost
+ * first, so the button/panel's own elements (always on top there) are
+ * skipped via closest(".ask") to reach whatever's actually behind them;
+ * from there it walks up ancestors for the first non-transparent
+ * background-color, since most wrapper elements don't set one themselves.
+ */
+function isSpotDark(x, y) {
+  if (!document.elementsFromPoint) return false;
+  const stack = document.elementsFromPoint(x, y);
+  const el = stack.find((n) => !n.closest(".ask"));
+  if (!el) return false;
+  for (let node = el; node; node = node.parentElement) {
+    const bg = getComputedStyle(node).backgroundColor;
+    const m = bg.match(/^rgba?\(([\d.]+), ?([\d.]+), ?([\d.]+)(?:, ?([\d.]+))?\)$/);
+    if (!m) continue;
+    const alpha = m[4] === undefined ? 1 : parseFloat(m[4]);
+    if (alpha <= 0.4) continue;
+    const [r, g, b] = [m[1], m[2], m[3]].map(Number);
+    return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255 < 0.4;
+  }
+  return false;
+}
+
 async function askML(history) {
   const proxy = CONTENT.ask.endpoint;
   const key = import.meta.env.VITE_OPENAI_API_KEY;
@@ -5883,6 +5924,7 @@ function logAskSession(messages) {
 function AskWidget({ reduced }) {
   const [phase, setPhase] = useState("peek"); // peek | hiding | big
   const [open, setOpen] = useState(false);
+  const [onDark, setOnDark] = useState(false); // page reads dark right behind the button — see the effect below
   const [ringFast, setRingFast] = useState(false); // rim type speeds up on hover
   const [messages, setMessages] = useState([]); // { role: 'user' | 'assistant', content }
   const [pending, setPending] = useState(false);
@@ -6020,6 +6062,53 @@ function AskWidget({ reduced }) {
     };
   }, [open, reduced]);
 
+  // Flips the button to a light chip over a dark background — dark mode or
+  // a full-width dark section scrolled under it, see isSpotDark(). Runs
+  // under reduced motion too (unlike the phase effect above): this is a
+  // legibility fix, not decoration. Parked while open, like the phase
+  // effect, since the button then sits against the panel's own surface.
+  useEffect(() => {
+    if (open) return undefined;
+    let raf = 0;
+    const check = () => {
+      raf = 0;
+      const btn = document.querySelector(".askBtn");
+      if (!btn) return;
+      const r = btn.getBoundingClientRect();
+      // clientWidth/Height, not innerWidth/Height — the button sits right
+      // at the edge where a visible scrollbar lives, and elementsFromPoint
+      // returns nothing there (it's chrome, not part of the document), so
+      // clamping to the outer window size alone samples the scrollbar and
+      // reads as "nothing behind the button" every time.
+      const x = Math.min(
+        Math.max(r.left + r.width / 2, 4),
+        document.documentElement.clientWidth - 4,
+      );
+      const y = Math.min(
+        Math.max(r.top + r.height / 2, 4),
+        document.documentElement.clientHeight - 4,
+      );
+      setOnDark(isSpotDark(x, y));
+    };
+    const schedule = () => {
+      if (!raf) raf = requestAnimationFrame(check);
+    };
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    const mo = new MutationObserver(schedule);
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      mo.disconnect();
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [open, phase]);
+
   // Log on tab-away / unload too, not only on an explicit close.
   useEffect(() => {
     const onHide = () => flushLog();
@@ -6156,7 +6245,10 @@ function AskWidget({ reduced }) {
 
   return (
     <>
-      <div className={`ask${open ? " is-open" : ""}`} data-phase={phase}>
+      <div
+        className={`ask${open ? " is-open" : ""}${onDark ? " on-dark" : ""}`}
+        data-phase={phase}
+      >
         <button
           type="button"
           className="askBtn"
