@@ -6055,15 +6055,25 @@ function AskWidget({ reduced }) {
                 d="M50,16 H68 A16,16 0 0 1 84,32 V68 A16,16 0 0 1 68,84 H32 A16,16 0 0 1 16,68 V32 A16,16 0 0 1 32,16 Z"
               />
             </defs>
+            {/* A full one-directional lap would drag the seam where the two
+                copies join — visibly "Ask me anything" restarting mid-read —
+                across the whole ring once per cycle, including the left-
+                front arc that's actually on screen (only the right side is
+                tucked off-canvas by the button's own translateX). There's no
+                path shape that keeps a full 360° sweep's seam off-screen, so
+                instead we sweep back and forth within a range that keeps the
+                seam parked on the hidden right side at both ends — the
+                visible arc still reads as continuously moving text, it just
+                never shows the restart. */}
             <text textLength="488" lengthAdjust="spacingAndGlyphs">
-              <textPath href="#askRingPath" startOffset="0">
+              <textPath href="#askRingPath" startOffset="-235">
                 {c.ring}
                 {c.ring}
                 {reduced ? null : (
                   <animate
                     attributeName="startOffset"
-                    values="0;-244"
-                    dur={ringFast ? "4.5s" : "13s"}
+                    values="-235;-132;-235"
+                    dur={ringFast ? "3.8s" : "11s"}
                     repeatCount="indefinite"
                   />
                 )}
