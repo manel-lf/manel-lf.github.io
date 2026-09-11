@@ -3908,6 +3908,7 @@ const STYLES_ASK = `
   position:fixed;right:0;bottom:clamp(84px,14vh,124px);
   z-index:56;
   --ask-size:clamp(80px,9vw,104px);
+  transition:right .55s var(--ease-spring);
 }
 @media (max-width:640px){ .ask{ bottom:clamp(76px,12vh,104px); --ask-size:80px } }
 
@@ -3930,6 +3931,23 @@ const STYLES_ASK = `
 .ask[data-phase="big"] .askBtn{ transform:translateX(8%) scale(1.12) }
 .ask.is-open .askBtn{ transform:translateX(132%) scale(.7);opacity:0;pointer-events:none }
 
+/* Desktop only: instead of flying off past the viewport edge when the
+   panel opens, the button stays on screen and slides to sit half-tucked
+   behind the panel's own left edge — the same half-in/half-out "peek" look
+   it has at rest, just cropped by the chat column now instead of the
+   screen margin. Its icon swaps to an X (see the JSX) so it doubles as a
+   close control. Mobile keeps the old fly-off-and-fade behavior above,
+   since the panel there is full-screen and there's no column edge to
+   tuck behind. */
+@media (min-width:861px){
+  .ask.is-open{ right:var(--ask-col-w) }
+  .ask.is-open .askBtn{
+    transform:translateX(50%);
+    opacity:1;
+    pointer-events:auto;
+  }
+}
+
 .askBtn:hover,.askBtn:focus-visible{ background:var(--accent);color:var(--accent-ink) }
 
 /* The rim of type rides a rounded-square track (matching the button) and
@@ -3946,12 +3964,12 @@ const STYLES_ASK = `
   letter-spacing:.3px;text-transform:uppercase;fill:currentColor;
 }
 
-.askSpark{ width:34%;height:34%;color:currentColor }
-.ask[data-phase="hiding"] .askSpark{ opacity:.4 }
+.askSpark,.askSparkX{ width:34%;height:34%;color:currentColor }
+.ask[data-phase="hiding"] .askSpark,.ask[data-phase="hiding"] .askSparkX{ opacity:.4 }
 .askSpark path{ fill:currentColor }
 
 @media (prefers-reduced-motion:reduce){
-  .askBtn{ transition-duration:1ms }
+  .askBtn,.ask{ transition-duration:1ms }
 }
 
 /* ---- panel ---- : a right-hand column the page makes room for on desktop,
@@ -6059,9 +6077,9 @@ function AskWidget({ reduced }) {
         <button
           type="button"
           className="askBtn"
-          aria-label={c.openLabel}
+          aria-label={open ? c.closeLabel : c.openLabel}
           aria-expanded={open}
-          onClick={() => setOpenAndLog(true)}
+          onClick={() => setOpenAndLog(!open)}
           onMouseEnter={() => setRingFast(true)}
           onMouseLeave={() => setRingFast(false)}
           onFocus={() => setRingFast(true)}
@@ -6072,41 +6090,43 @@ function AskWidget({ reduced }) {
               {/* Inset well clear of the 0-100 edge (16 units) so the all-
                   caps text's cap-height — which sits entirely above this
                   baseline-following path — never reaches the button's own
-                  edge, let alone the page behind it. */}
+                  edge, let alone the page behind it. Starts on the right
+                  (84,50) rather than top-center so the seam where the two
+                  duplicate copies join sits over the hidden side of the
+                  button at rest, not dead center. */}
               <path
                 id="askRingPath"
                 fill="none"
-                d="M50,16 H68 A16,16 0 0 1 84,32 V68 A16,16 0 0 1 68,84 H32 A16,16 0 0 1 16,68 V32 A16,16 0 0 1 32,16 Z"
+                d="M84,50 V68 A16,16 0 0 1 68,84 H32 A16,16 0 0 1 16,68 V32 A16,16 0 0 1 32,16 H68 A16,16 0 0 1 84,32 Z"
               />
             </defs>
-            {/* A full one-directional lap would drag the seam where the two
-                copies join — visibly "Ask me anything" restarting mid-read —
-                across the whole ring once per cycle, including the left-
-                front arc that's actually on screen (only the right side is
-                tucked off-canvas by the button's own translateX). There's no
-                path shape that keeps a full 360° sweep's seam off-screen, so
-                instead we sweep back and forth within a range that keeps the
-                seam parked on the hidden right side at both ends — the
-                visible arc still reads as continuously moving text, it just
-                never shows the restart. */}
+            {/* Two copies of the ring text, each stretched via textLength to
+                span one full lap (488 = 2x the ~244-unit path), so the
+                second copy always exactly backs up the first as it slides
+                out — the ring stays fully covered at every point in the
+                animation, no blank gap, no jump at the loop reset. */}
             <text textLength="488" lengthAdjust="spacingAndGlyphs">
-              <textPath href="#askRingPath" startOffset="-235">
+              <textPath href="#askRingPath" startOffset="0">
                 {c.ring}
                 {c.ring}
                 {reduced ? null : (
                   <animate
                     attributeName="startOffset"
-                    values="-235;-132;-235"
-                    dur={ringFast ? "3.8s" : "11s"}
+                    values="0;-244"
+                    dur={ringFast ? "4.5s" : "13s"}
                     repeatCount="indefinite"
                   />
                 )}
               </textPath>
             </text>
           </svg>
-          <svg className="askSpark" viewBox="0 0 20 20" aria-hidden="true">
-            <path d={ICON_FILLED.sparkle} />
-          </svg>
+          {open ? (
+            <Icon name="close" className="askSparkX" size={20} strokeWidth={1.6} />
+          ) : (
+            <svg className="askSpark" viewBox="0 0 20 20" aria-hidden="true">
+              <path d={ICON_FILLED.sparkle} />
+            </svg>
+          )}
         </button>
       </div>
 
