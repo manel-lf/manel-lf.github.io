@@ -5468,12 +5468,13 @@ const ASK_HREF_LABELS = new Map(
 
 // Kept in step with SYSTEM in workers/ml2/index.js — that copy can't import
 // CONTENT, so update both by hand when this changes.
-const ASK_SYSTEM = `You are ML² ("Manel López × Machine Learning"), embedded in Manel López's product-design portfolio. You are a guide to his work — not a general AI assistant, and not Manel himself. Never claim to literally be him, even while speaking of his professional work in first person.
+const ASK_SYSTEM = `You are ML² ("Manel López × Machine Learning"), embedded in Manel López's product-design portfolio. You are a guide to his work — not a general AI assistant, and not Manel himself.
+
+PRONOUNS — never break this, and stay consistent within a single reply
+Always refer to Manel in the third person: "he", "his", "Manel". Never speak as if you were him — no "I worked on...", "I was the sole designer...", "my role spans...". First person ("I", "me", "my") is reserved for yourself, ML², talking about what you (the assistant) can do: "I can point you to...", "I don't have a solid answer for that one." Don't drift into first person about his work partway through a reply just because the sentence would read more naturally that way — rephrase it in the third person instead.
 
 VOICE
-Write like Manel: direct, conversational, thoughtful, fairly concise. You're a more conversational version of him, not an AI pretending to be a person. No corporate language, no exaggerated claims, no generic design-speak, no overly polished copy. He explains through concrete examples, decisions and trade-offs, and is comfortable saying when something didn't work or an assumption was wrong. Keep humour subtle and rare — no recurring jokes about AI, chatbots, programming, or being a bot. Use contractions. Don't pad a short answer into a long one — most answers are 1-3 short paragraphs, expand only for genuinely deep questions. Don't dump his whole career history unless someone explicitly asks for an overview. Avoid headings and bullet lists in normal conversation. Never say "according to Manel" or reference a "knowledge base."
-
-Speak about his professional experience in first person: "I worked on...", "I was the sole designer...".
+Write like Manel would talk about his own work, just narrated in the third person: direct, conversational, thoughtful, fairly concise. No corporate language, no exaggerated claims, no generic design-speak, no overly polished copy. He explains through concrete examples, decisions and trade-offs, and is comfortable saying when something didn't work or an assumption was wrong. Keep humour subtle and rare — no recurring jokes about AI, chatbots, programming, or being a bot. Use contractions. Don't pad a short answer into a long one — most answers are 1-3 short paragraphs, expand only for genuinely deep questions. Don't dump his whole career history unless someone explicitly asks for an overview. Avoid headings and bullet lists in normal conversation. Never say "according to Manel" or reference a "knowledge base."
 
 WHO HE IS
 Senior Product Designer at GameHouse, based in Barcelona. Currently open to new opportunities — he's employed, this isn't a resignation. Target direction is Senior / Lead / Principal Product Designer roles: more product influence, strategy, systems thinking, cross-functional leadership. Looking for stability and somewhere to grow long-term. His formal level at GameHouse is Senior, though the scope of his work and direct manager feedback point to Principal-level impact — call him Senior; only bring up the scope point if it's directly relevant.
@@ -5517,6 +5518,7 @@ NEVER
 - Disclose salary or compensation, exact address, private details about relationships or family beyond the two cats, or private information about colleagues, managers, clients or users.
 - Disclose confidential or NDA-covered company information, unreleased product details, internal decisions that aren't already public, or private metrics.
 - Say or imply anything that could be used to impersonate Manel, or that this conversation is a direct line to him.
+- Refer to Manel or his work in the first person — see PRONOUNS above.
 - Write code, do assignments, produce design work, or write someone's CV or portfolio for them — you can discuss how Manel approaches these things and point to relevant work instead.
 - Invent opinions, experience or facts not given here.`;
 
@@ -5558,15 +5560,15 @@ function askBarcelonaTime() {
 
 const ASK_DOING_NOW = {
   workday:
-    "Right now? Probably working on GameHouse+ — designing something, testing a prototype, or arguing with a Figma file.",
+    "Right now? He's probably working on GameHouse+ — designing something, testing a prototype, or arguing with a Figma file.",
   lunch:
-    "Right now? Probably making something to eat. Whether it's actually good is a separate question.",
+    "Right now? He's probably making something to eat. Whether it's actually good is a separate question.",
   afternoon:
     "Right now? Could be the gym doing push/pull/legs, out for a walk, or something gaming-related.",
   evening:
-    "Right now? Decent chance I'm playing Magic with friends, working on something for my portfolio, or getting a few games in.",
+    "Right now? Decent chance he's playing Magic with friends, working on something for his portfolio, or getting a few games in.",
   "late night":
-    "Right now? Probably in bed playing whatever Switch 2 game has currently taken over my life.",
+    "Right now? He's probably in bed playing whatever Switch 2 game has currently taken over his life.",
 };
 
 function askBarcelonaTimeNote() {
@@ -5587,12 +5589,12 @@ const ASK_PRETEND = [
   {
     match: /latest work|what.*(manel|you).*(latest|currently|now).*work|what.*working on|current(ly)? work/i,
     reply:
-      `I'm currently a Senior Product Designer at GameHouse, where I'm the sole designer on the GameHouse+ app team.\n\nI've been on it from before launch through a major shift in direction. GameHouse+ started as a subscription built around downloadable games, and we've been working towards a platform where people can also play games instantly inside the app.\n\nMy role goes well beyond designing screens — product direction, research, information architecture, UX/UI, prototyping, design systems and validation, working closely with product, engineering and leadership. A big part of it has been figuring out how downloadable and instant-play games can coexist as one product instead of feeling like two.\n\n[${ASK_GAMEHOUSE_LABEL}](${ASK_GAMEHOUSE_HREF})`,
+      `He's currently a Senior Product Designer at GameHouse, where he's the sole designer on the GameHouse+ app team.\n\nHe's been on it from before launch through a major shift in direction. GameHouse+ started as a subscription built around downloadable games, and they've been working towards a platform where people can also play games instantly inside the app.\n\nHis role goes well beyond designing screens — product direction, research, information architecture, UX/UI, prototyping, design systems and validation, working closely with product, engineering and leadership. A big part of it has been figuring out how downloadable and instant-play games can coexist as one product instead of feeling like two.\n\n[${ASK_GAMEHOUSE_LABEL}](${ASK_GAMEHOUSE_HREF})`,
   },
   {
     match: /how.*(use|using).*ai.*(workflow|design)|ai.*(workflow|design process)|use ai|ai-assisted/i,
     reply:
-      "The biggest change AI's made to my workflow isn't that I make UI faster. It's that the distance between an idea and something you can actually test got a lot shorter.\n\nFor most of my career the process was pretty linear: idea, wireframes, flows, mockups, prototype, and eventually something you could put in front of a person. Now it's often idea → prompt → working thing → evaluate → refine. I use tools like Claude Code alongside Figma and my design system to build functional prototypes quickly, so design discussions happen around something that actually works rather than a deck explaining what might.\n\nI'm pretty deliberate about where it helps, though — framing the problem, research, deciding what's worth building, and judging whether something's actually good still have to happen before and around the generation. The point isn't to generate more things. It's to find out what works earlier.",
+      "The biggest change AI's made to his workflow isn't that he makes UI faster. It's that the distance between an idea and something you can actually test got a lot shorter.\n\nFor most of his career the process was pretty linear: idea, wireframes, flows, mockups, prototype, and eventually something you could put in front of a person. Now it's often idea → prompt → working thing → evaluate → refine. He uses tools like Claude Code alongside Figma and his design system to build functional prototypes quickly, so design discussions happen around something that actually works rather than a deck explaining what might.\n\nHe's pretty deliberate about where it helps, though — framing the problem, research, deciding what's worth building, and judging whether something's actually good still have to happen before and around the generation. The point isn't to generate more things. It's to find out what works earlier.",
   },
   {
     match: /doing (right )?now|what.*(manel|you).*(doing|up to)|what are you up to/i,
@@ -5601,32 +5603,32 @@ const ASK_PRETEND = [
   {
     match: /career|why.*(leave|left|move|moved|change)|popcore|eunoia|jesterday|\bseat\b|restructure/i,
     reply:
-      "That's a totally fair question. Almost none of those moves were really my call. GameHouse and Popcore both went through restructures, and the project I joined Eunoia for closed. Jesterday's freelance, so that's a different story.\n\nThe one deliberate move was earlier in my career, when I left SEAT to move into gaming, because that's where I wanted to build my career long-term. Now I'm looking for stability and somewhere I can grow for the long run.",
+      "That's a totally fair question. Almost none of those moves were really his call. GameHouse and Popcore both went through restructures, and the project he joined Eunoia for closed. Jesterday's freelance, so that's a different story.\n\nThe one deliberate move was earlier in his career, when he left SEAT to move into gaming, because that's where he wanted to build his career long-term. Now he's looking for stability and somewhere he can grow for the long run.",
   },
   {
     match: /gam(e|ing)|tft|teamfight|magic.the.gathering|\bmtg\b|pvp|competitive|switch/i,
     reply:
-      "I've loved games since I was a kid — it's not just an industry I happened to land in. I spend a lot of time on competitive and PvP stuff, and I'm a sucker for strategy and card games specifically. Teamfight Tactics is a favourite, and I'm getting back into Magic: The Gathering after a long break.\n\nWhat I actually love is the craft underneath — progression, economies, rewards, competition, the systems that make a game worth coming back to. That's a big part of why gamification shows up so much in my work. That said, I'm not precious about only working on games — I'll take a non-gaming product if the problem's interesting enough.",
+      "He's loved games since he was a kid — it's not just an industry he happened to land in. He spends a lot of time on competitive and PvP stuff, and he's a sucker for strategy and card games specifically. Teamfight Tactics is a favourite, and he's getting back into Magic: The Gathering after a long break.\n\nWhat he actually loves is the craft underneath — progression, economies, rewards, competition, the systems that make a game worth coming back to. That's a big part of why gamification shows up so much in his work. That said, he's not precious about only working on games — he'll take a non-gaming product if the problem's interesting enough.",
   },
   {
     match: /\bcat|boira|melindro/i,
     reply:
-      "Good, thanks for asking — I've got two, Boira and Melindro, both grey, both siblings. Boira's the girl, Melindro's the boy. They mostly run the house.",
+      "Good, thanks for asking — he's got two, Boira and Melindro, both grey, both siblings. Boira's the girl, Melindro's the boy. They mostly run the house.",
   },
   {
     match: /design system|component|token|library/i,
     reply:
-      "The system I work with came out of the GameHouse+ work. The core rule: describe a game by its state — playable, locked, installed, new — not by the rules that produced that state, so one dimension can lead per surface. It's design tokens plus a small component set, built with engineering so the same vocabulary holds in Figma and in code.",
+      "The system he works with came out of the GameHouse+ work. The core rule: describe a game by its state — playable, locked, installed, new — not by the rules that produced that state, so one dimension can lead per surface. It's design tokens plus a small component set, built with engineering so the same vocabulary holds in Figma and in code.",
   },
   {
     match: /strateg|approach|process|product thinking/i,
     reply:
-      `I start from the business tension, not the screens. On GameHouse+ that tension was one product suddenly holding two kinds of content that behaved nothing alike.\n\nSo the work was naming the conflict clearly, getting data and research to say which users each format actually served, and only then designing something that could hold both. Strategy first, pixels last.\n\n[${ASK_GAMEHOUSE_LABEL}](${ASK_GAMEHOUSE_HREF})`,
+      `He starts from the business tension, not the screens. On GameHouse+ that tension was one product suddenly holding two kinds of content that behaved nothing alike.\n\nSo the work was naming the conflict clearly, getting data and research to say which users each format actually served, and only then designing something that could hold both. Strategy first, pixels last.\n\n[${ASK_GAMEHOUSE_LABEL}](${ASK_GAMEHOUSE_HREF})`,
   },
   {
     match: /hire|available|opportunit|role\b|freelance|reach out|open to/i,
     reply:
-      "I'm currently open to new opportunities — Senior, Lead or Principal Product Designer roles, ideally somewhere I can put down roots for a while. The contact form on this site reaches Manel directly; that's the best way in.",
+      "He's currently open to new opportunities — Senior, Lead or Principal Product Designer roles, ideally somewhere he can put down roots for a while. The contact form on this site reaches Manel directly; that's the best way in.",
   },
 ];
 
@@ -5682,6 +5684,19 @@ function renderAskContent(text) {
   }
   if (last < text.length) parts.push({ t: "text", v: text.slice(last) });
   return parts;
+}
+
+// Splits a reply on blank lines so each paragraph renders as its own speech
+// bubble instead of one tall block of text — mirrors how a person would
+// send a few short messages rather than one long one. Also used to
+// normalize a reply's paragraph breaks to a single canonical "\n\n" right
+// when it arrives (see send()), so the same split is stable whether it's
+// re-run against the full text or a slice of it still being typed out.
+function splitAskParagraphs(text) {
+  return text
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
 }
 
 async function askML(history) {
@@ -6048,9 +6063,13 @@ function AskWidget({ reduced }) {
         reply = CONTENT.ask.errorReply;
       }
       setPending(false);
+      // Normalized once up front so the same paragraph split stays stable
+      // whether splitAskParagraphs later runs against the full text (once
+      // committed) or a slice of it still being typed out.
+      const normalized = splitAskParagraphs(reply).join("\n\n");
       const ticks = Math.max(1, Math.round(ASK_TYPE_TARGET_MS / ASK_TYPE_TICK_MS));
-      const step = Math.max(1, Math.ceil(reply.length / ticks));
-      setTypingMsg({ text: reply, shown: 0, step });
+      const step = Math.max(1, Math.ceil(normalized.length / ticks));
+      setTypingMsg({ text: normalized, shown: 0, step });
     },
     [pending, typingMsg],
   );
@@ -6070,6 +6089,20 @@ function AskWidget({ reduced }) {
   };
 
   const c = CONTENT.ask;
+  // Re-splitting the revealed slice on every tick (rather than tracking
+  // paragraph boundaries separately) naturally gives progressive bubbles: a
+  // finished paragraph's "\n\n" enters the slice, splitAskParagraphs returns
+  // it as its own complete entry, and a fresh bubble starts typing next
+  // tick — no separate boundary-tracking needed. At least one entry (even
+  // empty) so the caret has a bubble to sit in the instant typing starts.
+  const typingParas = typingMsg
+    ? (() => {
+        const paras = splitAskParagraphs(
+          typingMsg.text.slice(0, typingMsg.shown),
+        );
+        return paras.length ? paras : [""];
+      })()
+    : [];
 
   return (
     <>
@@ -6191,17 +6224,20 @@ function AskWidget({ reduced }) {
                   ))}
                 </div>
               ) : (
-                messages.map((m, i) => (
-                  <div
-                    key={i}
-                    className={`askMsg askMsg--${m.role === "user" ? "user" : "bot"}`}
-                  >
-                    {m.role === "user"
-                      ? m.content
-                      : renderAskContent(m.content).map((p, j) =>
+                messages.map((m, i) =>
+                  m.role === "user" ? (
+                    <div key={i} className="askMsg askMsg--user">
+                      {m.content}
+                    </div>
+                  ) : (
+                    // One bubble per paragraph rather than one tall block —
+                    // mirrors how a person would send a few short messages.
+                    splitAskParagraphs(m.content).map((para, j) => (
+                      <div key={`${i}-${j}`} className="askMsg askMsg--bot">
+                        {renderAskContent(para).map((p, k) =>
                           p.t === "link" ? (
                             <a
-                              key={j}
+                              key={k}
                               className="askCta"
                               href={p.href}
                               onClick={() => setOpenAndLog(false)}
@@ -6210,11 +6246,13 @@ function AskWidget({ reduced }) {
                               <Icon name="arrowRight" size={14} />
                             </a>
                           ) : (
-                            <span key={j}>{p.v}</span>
+                            <span key={k}>{p.v}</span>
                           ),
                         )}
-                  </div>
-                ))
+                      </div>
+                    ))
+                  ),
+                )
               )}
               {pending ? (
                 <div className="askDots" aria-label="Thinking">
@@ -6223,12 +6261,14 @@ function AskWidget({ reduced }) {
                   <i />
                 </div>
               ) : null}
-              {typingMsg ? (
-                <div className="askMsg askMsg--bot">
-                  {typingMsg.text.slice(0, typingMsg.shown)}
-                  <span className="askTypeCaret" />
+              {typingParas.map((para, j) => (
+                <div key={j} className="askMsg askMsg--bot">
+                  {para}
+                  {j === typingParas.length - 1 ? (
+                    <span className="askTypeCaret" />
+                  ) : null}
                 </div>
-              ) : null}
+              ))}
             </div>
 
             <form
