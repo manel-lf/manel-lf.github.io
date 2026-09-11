@@ -6079,15 +6079,15 @@ function AskWidget({ reduced }) {
                 d="M50,16 H68 A16,16 0 0 1 84,32 V68 A16,16 0 0 1 68,84 H32 A16,16 0 0 1 16,68 V32 A16,16 0 0 1 32,16 Z"
               />
             </defs>
-            <text textLength="244" lengthAdjust="spacingAndGlyphs">
+            <text textLength="488" lengthAdjust="spacingAndGlyphs">
               <textPath href="#askRingPath" startOffset="0">
                 {c.ring}
                 {c.ring}
                 {reduced ? null : (
                   <animate
                     attributeName="startOffset"
-                    values="0;-122"
-                    dur={ringFast ? "2.25s" : "6.5s"}
+                    values="0;-244"
+                    dur={ringFast ? "4.5s" : "13s"}
                     repeatCount="indefinite"
                   />
                 )}
