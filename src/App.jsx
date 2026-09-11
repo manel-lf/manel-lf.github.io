@@ -999,7 +999,8 @@ export const CONTENT = {
             ],
             imageKey: "case.gamehouse-plus.classics",
             ratio: 1353 / 2724,
-            caption: "Downloadable franchises got a home instead of a badge.",
+            caption:
+              "Downloadable franchises got a home instead of just a badge.",
             imageFirst: true,
           },
         },
