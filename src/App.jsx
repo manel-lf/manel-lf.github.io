@@ -985,7 +985,7 @@ export const CONTENT = {
               "Two additions carry it. Keep Playing brings back the games a player has already engaged with, so a returning session starts where the last one stopped. A video carousel sits above it, putting featured titles in motion so players can judge a game before tapping into it.",
             ],
             imageKey: "case.gamehouse-plus.home",
-            ratio: 1179 / 2672,
+            ratio: 1353 / 2724,
             caption:
               "Home stopped listing the catalog and started proposing a session.",
           },
@@ -998,7 +998,7 @@ export const CONTENT = {
               "Giving Classics its own tab in the tab bar kept downloadable franchises findable at all times, one tap from anywhere, while leaving the landing surface to the instant games that were performing best. Commitment is the point in Classics — long sessions, the series people finish — so it reads as a destination rather than a filter.",
             ],
             imageKey: "case.gamehouse-plus.classics",
-            ratio: 1179 / 2672,
+            ratio: 1353 / 2724,
             caption: "Downloadable franchises got a home instead of a badge.",
             imageFirst: true,
           },
@@ -1011,7 +1011,7 @@ export const CONTENT = {
               "Filters run on franchise and genre, never on format. A player looking for a series gets all of it — instant and downloadable, side by side. It keeps the catalog whole after splitting the front door, and makes dual-format play deliberate rather than accidental.",
             ],
             imageKey: "case.gamehouse-plus.search",
-            ratio: 1179 / 2672,
+            ratio: 1353 / 2724,
             caption:
               "Filters cross content types, so the library never feels split.",
           },
@@ -1024,7 +1024,7 @@ export const CONTENT = {
               "Whatever a player has saved or installed sits in one library, in one list, regardless of how each title loads. The distinction that structures the entire product disappears in the one place players think of as theirs.",
             ],
             imageKey: "case.gamehouse-plus.myGames",
-            ratio: 16 / 10,
+            ratio: 1353 / 2724,
             caption: "One library, regardless of how each game loads.",
             imageFirst: true,
           },
@@ -1955,11 +1955,8 @@ export const CONTENT = {
       alt: "Search, with a Series filter that spans franchise and genre results across both formats.",
     },
     "case.gamehouse-plus.myGames": {
-      src: null,
-      alt: "My Games, placeholder — a modular grid standing in for one library regardless of how each game loads.",
-      plate: "grid",
-      tone: "light",
-      seed: 559,
+      src: "img/case-gamehouse-plus-my-games.png",
+      alt: "My Games, one library holding every saved or installed title regardless of how it loads.",
     },
 
     "card.jesterday.thumbnail": {
