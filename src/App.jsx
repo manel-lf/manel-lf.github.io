@@ -6046,7 +6046,19 @@ function AskWidget({ reduced }) {
     schedule();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", schedule);
-    const mo = new MutationObserver(schedule);
+    // The toggle itself needs a different trigger than scroll/resize: body's
+    // background-color is mid cross-fade (.theme-ready body, --dur-slow —
+    // 320ms) for a moment after data-theme flips, so a same-frame check
+    // above would sample a color still animating away from the old theme,
+    // classify against that, and then never get a second look since nothing
+    // else fires afterward — this is what actually made the toggle look
+    // like it didn't do anything. Wait out the cross-fade first.
+    let themeT = 0;
+    const onThemeChange = () => {
+      window.clearTimeout(themeT);
+      themeT = window.setTimeout(check, 360);
+    };
+    const mo = new MutationObserver(onThemeChange);
     mo.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-theme"],
@@ -6055,6 +6067,7 @@ function AskWidget({ reduced }) {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
       mo.disconnect();
+      window.clearTimeout(themeT);
       if (raf) cancelAnimationFrame(raf);
     };
   }, [open, phase]);
