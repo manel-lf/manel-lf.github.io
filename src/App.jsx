@@ -982,7 +982,7 @@ export const CONTENT = {
               "Two additions carry it. Keep Playing brings back the games a player has already engaged with, so a returning session starts where the last one stopped. A video carousel sits above it, putting featured titles in motion so players can judge a game before tapping into it.",
             ],
             imageKey: "case.gamehouse-plus.home",
-            ratio: 16 / 10,
+            ratio: 1179 / 2672,
             caption:
               "Home stopped listing the catalog and started proposing a session.",
           },
@@ -995,7 +995,7 @@ export const CONTENT = {
               "Giving Classics its own tab in the tab bar kept downloadable franchises findable at all times, one tap from anywhere, while leaving the landing surface to the instant games that were performing best. Commitment is the point in Classics — long sessions, the series people finish — so it reads as a destination rather than a filter.",
             ],
             imageKey: "case.gamehouse-plus.classics",
-            ratio: 16 / 10,
+            ratio: 1179 / 2672,
             caption: "Downloadable franchises got a home instead of a badge.",
             imageFirst: true,
           },
@@ -1008,7 +1008,7 @@ export const CONTENT = {
               "Filters run on franchise and genre, never on format. A player looking for a series gets all of it — instant and downloadable, side by side. It keeps the catalog whole after splitting the front door, and makes dual-format play deliberate rather than accidental.",
             ],
             imageKey: "case.gamehouse-plus.search",
-            ratio: 16 / 10,
+            ratio: 1179 / 2672,
             caption:
               "Filters cross content types, so the library never feels split.",
           },
@@ -1026,14 +1026,6 @@ export const CONTENT = {
             imageFirst: true,
           },
         },
-        {
-          wide: {
-            imageKey: "case.gamehouse-plus.craftPlate",
-            ratio: 21 / 9,
-            caption: "States, empty cases and system messaging.",
-          },
-        },
-
         {
           h: "What shipped, and what it taught me.",
           navLabel: "Impact",
@@ -1948,25 +1940,16 @@ export const CONTENT = {
       seed: 553,
     },
     "case.gamehouse-plus.home": {
-      src: null,
-      alt: "Home, rebuilt as an instant-first starting point, placeholder — a wide gradient mesh standing in for the redesigned entry screen.",
-      plate: "mesh",
-      tone: "light",
-      seed: 556,
+      src: "img/case-gamehouse-plus-home.png",
+      alt: "Home, rebuilt as an instant-first starting point — a video carousel and Keep Playing row above the catalog.",
     },
     "case.gamehouse-plus.classics": {
-      src: null,
-      alt: "Classics, placeholder — stepped columns standing in for the dedicated downloadable-franchise surface.",
-      plate: "columns",
-      tone: "light",
-      seed: 557,
+      src: "img/case-gamehouse-plus-classics.png",
+      alt: "Classics, its own tab in the tab bar for the dedicated downloadable-franchise surface.",
     },
     "case.gamehouse-plus.search": {
-      src: null,
-      alt: "Search filters, placeholder — an isometric lattice standing in for franchise and genre results spanning both formats.",
-      plate: "lattice",
-      tone: "light",
-      seed: 558,
+      src: "img/case-gamehouse-plus-search.png",
+      alt: "Search, with a Series filter that spans franchise and genre results across both formats.",
     },
     "case.gamehouse-plus.myGames": {
       src: null,
@@ -1974,13 +1957,6 @@ export const CONTENT = {
       plate: "grid",
       tone: "light",
       seed: 559,
-    },
-    "case.gamehouse-plus.craftPlate": {
-      src: null,
-      alt: "Component states craft plate, placeholder — nested panels standing in for a dense grid of states, empty cases and system messaging.",
-      plate: "panels",
-      tone: "light",
-      seed: 560,
     },
 
     "card.jesterday.thumbnail": {
