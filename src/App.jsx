@@ -683,8 +683,11 @@ export const CONTENT = {
     metaLabels: { role: "Role", years: "Years", skills: "Skills" },
     processPrev: "Previous process card",
     processNext: "Next process card",
-    prevProject: "Previous",
-    nextProject: "Next",
+    // The sign-off block at the end of every case study — a fixed
+    // destination rather than a computed "next" one (see CaseEndCard).
+    caseEndTitle: "Thanks for reading.",
+    caseEndSub: "More case studies by Manel.",
+    caseEndHomeTitle: "Return to home",
     railLabel: "Sections in this case study",
     rail: [
       { id: "overview", label: "Overview" },
@@ -3617,6 +3620,65 @@ const STYLES_CASE = `
   font-weight:600;letter-spacing:-.025em;color:var(--ink);
 }
 
+/* ---- case-study sign-off: a title, a subtitle, one fixed-destination card
+   (see CaseEndCard) — not the old prev/next chain (.caseNav above), which
+   JournalPost still uses for its own, unrelated prev/next. Both lines are
+   sized to always stay on one line, at any viewport width. ---- */
+.caseEnd{padding-block:var(--s7)}
+.caseEndTitle{
+  font-size:clamp(1.375rem,3.6vw,2rem);
+  font-weight:700;letter-spacing:-.02em;color:var(--ink);
+  white-space:nowrap;
+}
+.caseEndSub{
+  margin-top:var(--s2);
+  font-size:clamp(.9375rem,2.2vw,1.125rem);
+  color:var(--muted);
+  white-space:nowrap;
+}
+.caseEndCard{
+  display:flex;align-items:center;gap:var(--s5);
+  margin-top:var(--s6);
+  padding:var(--s5);
+  max-width:520px;
+  background:var(--surface);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-lg);
+  box-shadow:var(--shadow-card);
+  transition:transform var(--dur-slow) var(--ease-out),
+             box-shadow var(--dur-slow) var(--ease-out),
+             border-color var(--dur-slow) var(--ease-std);
+}
+.caseEndCard:hover{
+  transform:translate3d(0,-4px,0);
+  box-shadow:var(--shadow-lift);
+  border-color:var(--hairline-strong);
+}
+.caseEndCardMark{
+  flex:none;
+  width:88px;height:64px;
+  display:grid;place-items:center;
+  border-radius:var(--r-md);
+  background:var(--canvas);
+  color:var(--ink);
+}
+.caseEndCardBody{min-width:0}
+.caseEndCardTitle{
+  display:block;
+  font-size:1.0625rem;font-weight:600;letter-spacing:-.02em;color:var(--ink);
+}
+.caseEndCardDesc{
+  display:block;
+  margin-top:var(--s1);
+  color:var(--ink-2);font-size:.875rem;line-height:1.5;
+}
+/* .viewCase is the same solid pill used for the home page's project CTAs —
+   reused here deliberately, so this reads as unmistakably a button and not
+   a third variant of "card that might just be a container." */
+.caseEndCardCta{margin-top:var(--s3);padding:var(--s2) var(--s4);font-size:.8125rem}
+.caseEndCard:hover .caseEndCardCta{transform:translate3d(0,-2px,0);opacity:.92}
+.caseEndCard:hover .caseEndCardCta svg{transform:translateX(3px)}
+
 /* ---- view crossfade fallback ---- */
 .viewFade{animation:viewIn ${DUR.slow}ms var(--ease-out) both}
 @keyframes viewIn{from{opacity:0;transform:translate3d(0,10px,0)}to{opacity:1;transform:none}}
@@ -3713,7 +3775,7 @@ const STYLES_CASE = `
   .heroName .wordInner{transform:none !important}
   .caret{animation:none;opacity:1}
   .spotlightMedia{transform:none !important}
-  .projectCard:hover,.bitTile:hover,.caseNavBtn:hover,.btn:hover,.submit:hover{transform:none}
+  .projectCard:hover,.bitTile:hover,.caseNavBtn:hover,.caseEndCard:hover,.btn:hover,.submit:hover{transform:none}
   .projectCard:hover .cardMarkWrap > *,
   .bitTile:hover .bitMedia > *,
   .systemCell:hover > *{transform:none}
@@ -8253,19 +8315,86 @@ function StaticCardsGrid({ cards }) {
   );
 }
 
-function CaseStudy({
-  project,
-  prev,
-  next,
-  onCapture,
-  onHome,
-  flight,
-  reduced,
-}) {
+// The one fixed destination the sign-off card at the end of every case
+// study can point at. Found once here rather than hand-typed at each call
+// site, so the link can't drift from what the site actually serves.
+const CASE_END_GAMEHOUSE = CONTENT.projects.find(
+  (p) => p.slug === "gamehouse-plus",
+);
+
+/**
+ * The single card at the end of every case study. Not a computed "next"
+ * project — that was the actual bug: the old prev/next chain could land on
+ * Jesterday, which has no working on-site case page (it links out to
+ * Behance instead), and the generic template crashed trying to render it.
+ * A fixed destination sidesteps that entirely: everywhere but GameHouse+'s
+ * own page, this points at the flagship; on GH+'s own page — where
+ * pointing at itself would be pointless — it points home instead.
+ */
+function CaseEndCard({ project, onCapture, onHome }) {
+  const markRef = useRef(null);
+  const isGamehouse = project.slug === CASE_END_GAMEHOUSE.slug;
+
+  if (isGamehouse) {
+    return (
+      <a className="caseEndCard" href="#/" onClick={onHome}>
+        <span className="caseEndCardMark" aria-hidden="true">
+          <Icon name="arrowLeft" size={22} />
+        </span>
+        <span className="caseEndCardBody">
+          <span className="caseEndCardTitle">
+            {CONTENT.caseUi.caseEndHomeTitle}
+          </span>
+          <span className="viewCase caseEndCardCta">
+            {CONTENT.caseUi.backLabel}
+            <Icon name="arrowRight" size={16} />
+          </span>
+        </span>
+      </a>
+    );
+  }
+
+  return (
+    <a
+      className="caseEndCard"
+      href={`#/work/${CASE_END_GAMEHOUSE.slug}`}
+      onClick={() => onCapture(markRef.current)}
+    >
+      <span className="caseEndCardMark" ref={markRef} aria-hidden="true">
+        <img
+          src={resolveSrc(CASE_END_GAMEHOUSE.spotlightLogo)}
+          alt=""
+          style={{
+            height: "26px",
+            width: `${Math.round(
+              26 * CASE_END_GAMEHOUSE.spotlightLogoAspect,
+            )}px`,
+          }}
+        />
+      </span>
+      <span className="caseEndCardBody">
+        <span className="caseEndCardTitle">{CASE_END_GAMEHOUSE.name}</span>
+        <span className="caseEndCardDesc">
+          {CASE_END_GAMEHOUSE.cardDescription}
+        </span>
+        <span className="viewCase caseEndCardCta">
+          {CONTENT.work.viewCase}
+          <Icon name="arrowRight" size={16} />
+        </span>
+      </span>
+    </a>
+  );
+}
+
+function CaseStudy({ project, onCapture, onHome, flight, reduced }) {
   const revealRef = useReveal();
   const subjectRef = useRef(null);
   const caseIds = useMemo(() => CONTENT.caseUi.rail.map((r) => r.id), []);
   const activeId = useScrollSpy(caseIds, [project.slug]);
+  // Only GameHouse+ writes both a title and a subtitle line here; every
+  // other project falls back to its one-line positioning statement (same
+  // fallback Spotlight already uses on the home page).
+  const caseTitle = project.caseTitle || [project.positioning];
 
   /**
    * Shared-element flight: the title the visitor clicked animates into the
@@ -8337,11 +8466,11 @@ function CaseStudy({
               <span className="caseEyebrow mono">{project.eyebrow}</span>
               <h1 className="caseTitle">
                 <span className="subject" ref={subjectRef}>
-                  {project.caseTitle[0]}
+                  {caseTitle[0]}
                 </span>
               </h1>
             </div>
-            <p className="casePositioning reveal">{project.caseTitle[1]}</p>
+            <p className="casePositioning reveal">{caseTitle[1]}</p>
           </div>
 
           <div className="caseHeroFrame reveal">
@@ -8470,40 +8599,17 @@ function CaseStudy({
           </div>
         </section>
 
-        {/* Prev / next */}
+        {/* More case studies */}
         <div className="container">
-          <nav className="caseNav" aria-label="Other case studies">
-            <a
-              className="caseNavBtn"
-              href={`#/work/${prev.slug}`}
-              onClick={(e) =>
-                onCapture(e.currentTarget.querySelector("[data-nav-name]"))
-              }
-            >
-              <span className="dir mono">
-                <Icon name="arrowLeft" size={14} />
-                {CONTENT.caseUi.prevProject}
-              </span>
-              <span className="name" data-nav-name>
-                {prev.name}
-              </span>
-            </a>
-            <a
-              className="caseNavBtn caseNavBtn--next"
-              href={`#/work/${next.slug}`}
-              onClick={(e) =>
-                onCapture(e.currentTarget.querySelector("[data-nav-name]"))
-              }
-            >
-              <span className="dir mono">
-                {CONTENT.caseUi.nextProject}
-                <Icon name="arrowRight" size={14} />
-              </span>
-              <span className="name" data-nav-name>
-                {next.name}
-              </span>
-            </a>
-          </nav>
+          <div className="caseEnd">
+            <p className="caseEndTitle">{CONTENT.caseUi.caseEndTitle}</p>
+            <p className="caseEndSub">{CONTENT.caseUi.caseEndSub}</p>
+            <CaseEndCard
+              project={project}
+              onCapture={onCapture}
+              onHome={onHome}
+            />
+          </div>
         </div>
 
         <Footer />
@@ -8842,17 +8948,12 @@ function CaseRichBlock({ block, i, reduced }) {
  * ids are slugified from that label, so the sticky rail always matches
  * this project's own outline instead of a shared, hardcoded one.
  */
-function GameHousePlusCase({
-  project,
-  prev,
-  next,
-  onCapture,
-  onHome,
-  flight,
-  reduced,
-}) {
+function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
   const revealRef = useReveal();
   const subjectRef = useRef(null);
+  // GameHouse+ always defines both lines; the fallback exists only for
+  // parity with CaseStudy, in case that ever changes.
+  const caseTitle = project.caseTitle || [project.positioning];
 
   const sections = useMemo(() => {
     const list = [];
@@ -8935,11 +9036,11 @@ function GameHousePlusCase({
               <span className="caseEyebrow mono">{project.eyebrow}</span>
               <h1 className="caseTitle">
                 <span className="subject" ref={subjectRef}>
-                  {project.caseTitle[0]}
+                  {caseTitle[0]}
                 </span>
               </h1>
             </div>
-            <p className="casePositioning reveal">{project.caseTitle[1]}</p>
+            <p className="casePositioning reveal">{caseTitle[1]}</p>
           </div>
 
           <div className="caseHeroFrame caseHeroFrame--video reveal">
@@ -9035,40 +9136,17 @@ function GameHousePlusCase({
           </div>
         </div>
 
-        {/* Prev / next */}
+        {/* More case studies */}
         <div className="container">
-          <nav className="caseNav" aria-label="Other case studies">
-            <a
-              className="caseNavBtn"
-              href={`#/work/${prev.slug}`}
-              onClick={(e) =>
-                onCapture(e.currentTarget.querySelector("[data-nav-name]"))
-              }
-            >
-              <span className="dir mono">
-                <Icon name="arrowLeft" size={14} />
-                {CONTENT.caseUi.prevProject}
-              </span>
-              <span className="name" data-nav-name>
-                {prev.name}
-              </span>
-            </a>
-            <a
-              className="caseNavBtn caseNavBtn--next"
-              href={`#/work/${next.slug}`}
-              onClick={(e) =>
-                onCapture(e.currentTarget.querySelector("[data-nav-name]"))
-              }
-            >
-              <span className="dir mono">
-                {CONTENT.caseUi.nextProject}
-                <Icon name="arrowRight" size={14} />
-              </span>
-              <span className="name" data-nav-name>
-                {next.name}
-              </span>
-            </a>
-          </nav>
+          <div className="caseEnd">
+            <p className="caseEndTitle">{CONTENT.caseUi.caseEndTitle}</p>
+            <p className="caseEndSub">{CONTENT.caseUi.caseEndSub}</p>
+            <CaseEndCard
+              project={project}
+              onCapture={onCapture}
+              onHome={onHome}
+            />
+          </div>
         </div>
 
         <Footer />
@@ -9449,12 +9527,6 @@ export default function App() {
         <GameHousePlusCase
           key={project.slug}
           project={project}
-          prev={
-            navigableProjects[
-              (index - 1 + navigableProjects.length) % navigableProjects.length
-            ]
-          }
-          next={navigableProjects[(index + 1) % navigableProjects.length]}
           onCapture={captureFlight}
           onHome={goHome}
           flight={flight}
@@ -9464,12 +9536,6 @@ export default function App() {
         <CaseStudy
           key={project.slug}
           project={project}
-          prev={
-            navigableProjects[
-              (index - 1 + navigableProjects.length) % navigableProjects.length
-            ]
-          }
-          next={navigableProjects[(index + 1) % navigableProjects.length]}
           onCapture={captureFlight}
           onHome={goHome}
           flight={flight}
