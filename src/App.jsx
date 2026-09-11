@@ -6086,8 +6086,8 @@ function AskWidget({ reduced }) {
                 {reduced ? null : (
                   <animate
                     attributeName="startOffset"
-                    values="0;-244"
-                    dur={ringFast ? "4.5s" : "13s"}
+                    values="0;-122"
+                    dur={ringFast ? "2.25s" : "6.5s"}
                     repeatCount="indefinite"
                   />
                 )}
