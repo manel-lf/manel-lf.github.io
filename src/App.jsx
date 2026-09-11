@@ -986,8 +986,6 @@ export const CONTENT = {
             ],
             imageKey: "case.gamehouse-plus.home",
             ratio: 1353 / 2724,
-            caption:
-              "Home stopped listing the catalog and started proposing a session.",
           },
         },
         {
@@ -999,8 +997,6 @@ export const CONTENT = {
             ],
             imageKey: "case.gamehouse-plus.classics",
             ratio: 1353 / 2724,
-            caption:
-              "Downloadable franchises got a home instead of just a badge.",
             imageFirst: true,
           },
         },
@@ -1013,8 +1009,6 @@ export const CONTENT = {
             ],
             imageKey: "case.gamehouse-plus.search",
             ratio: 1353 / 2724,
-            caption:
-              "Filters cross content types, so the library never feels split.",
           },
         },
         {
@@ -1026,7 +1020,6 @@ export const CONTENT = {
             ],
             imageKey: "case.gamehouse-plus.myGames",
             ratio: 1353 / 2724,
-            caption: "One library, regardless of how each game loads.",
             imageFirst: true,
           },
         },
@@ -3506,6 +3499,19 @@ const STYLES_CASE = `
   align-items:center;
 }
 .featureRow + .featureRow{margin-top:clamp(40px,6vh,80px)}
+/* Device-mockup screenshots already carry their own frame, so this figure
+   skips the caseHeroFrame card treatment and is scaled down ~40%. */
+/* .featureVisual is the grid item and stays stretched to the full column
+   (so its width stays definite even for an offscreen, content-visibility:
+   auto image) — the 60% cap and centering live on the plain-block child
+   instead, where percentage sizing doesn't depend on content intrinsic
+   size. */
+.featureVisualInner{
+  max-width:60%;
+  margin-inline:auto;
+  border-radius:var(--r-md);
+  overflow:hidden;
+}
 .featureCopy{display:flex;flex-direction:column;gap:var(--s3)}
 .featureCopy h3{
   font-size:1.25rem;font-weight:600;letter-spacing:-.02em;color:var(--ink);
@@ -8916,7 +8922,7 @@ function CaseRichBlock({ block, i, reduced }) {
   }
   // Media and copy side by side, alternating which side the image sits on.
   if (block.featureRow) {
-    const { kicker, title, body, imageKey, ratio, caption, imageFirst } =
+    const { kicker, title, body, imageKey, ratio, imageFirst } =
       block.featureRow;
     const copy = (
       <div className="featureCopy" key="copy">
@@ -8930,14 +8936,11 @@ function CaseRichBlock({ block, i, reduced }) {
       </div>
     );
     const figure = (
-      <figure className="caseHeroFrame" key="fig" style={{ margin: 0 }}>
-        <div className="inner">
+      <div className="featureVisual" key="fig">
+        <div className="featureVisualInner">
           <Visual imageKey={imageKey} ratio={ratio || 16 / 10} />
         </div>
-        {caption ? (
-          <figcaption className="mono wideCaption">{caption}</figcaption>
-        ) : null}
-      </figure>
+      </div>
     );
     return (
       <div className="featureRow reveal" key={i}>
