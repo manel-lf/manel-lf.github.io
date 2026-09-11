@@ -1078,7 +1078,7 @@ export const CONTENT = {
       // ping-pong on hover (desktop) or once centred in view (mobile).
       cardVideo: {
         src: "video/jesterday-card.mp4",
-        poster: "img/jesterday-thumbnail.svg",
+        poster: "img/jesterday-card-poster.png",
       },
       // The case study is already published as a finished piece on Behance,
       // so the card is a plain external link there instead of the internal
@@ -1316,7 +1316,7 @@ export const CONTENT = {
       // Jesterday card above.
       cardVideo: {
         src: "video/scavenger-hunt-card.mp4",
-        poster: "img/scavenger-hunt-thumbnail.jpg",
+        poster: "img/scavenger-hunt-card-poster.jpg",
       },
       // Was a plain external link out to Behance; the case study now lives
       // here instead, told through its own three shipped features rather
@@ -1576,9 +1576,10 @@ export const CONTENT = {
       name: "Dragon City 2",
       mark: "socialpoint",
       eyebrow: "Dragon City 2 · Socialpoint",
-      // No still shot for this one yet — the video's own first frame stands
-      // in as the idle poster (see CardVideo).
-      cardVideo: { src: "video/dragon-city-2-card.mp4" },
+      cardVideo: {
+        src: "video/dragon-city-2-card.mp4",
+        poster: "img/dragon-city-2-card-poster.png",
+      },
       positioning:
         "A cancelled midcore RPG sequel — campaign battle systems redesigned, then tested against real first-time players.",
       cardDescription:
