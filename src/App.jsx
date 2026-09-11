@@ -108,7 +108,7 @@ export const CONTENT = {
       "How do you use AI in your design workflow?",
       "What's Manel doing right now?",
     ],
-    inputPlaceholder: "Ask me anything",
+    inputPlaceholder: "Ask ML²",
     sendLabel: "Send",
     errorReply:
       "Something went wrong reaching the model. Try again in a moment — or use the contact form for anything important.",
@@ -3915,6 +3915,7 @@ const STYLES_ASK = `
   position:relative;
   width:var(--ask-size);height:var(--ask-size);
   border-radius:34%;
+  overflow:hidden;
   background:var(--panel);color:var(--panel-ink);
   display:grid;place-items:center;
   box-shadow:var(--shadow-lift);
@@ -3933,14 +3934,16 @@ const STYLES_ASK = `
 
 /* The rim of type rides a rounded-square track (matching the button) and
    marches around it via an animated startOffset in the markup — the SVG
-   itself never rotates. */
+   itself never rotates. The track sits well inside the 100-unit viewBox
+   (see the path in the markup) so cap-height clears the top edge with
+   margin to spare; .askBtn's own overflow:hidden is a backstop, not the
+   plan, so nothing bleeds past the button's rounded silhouette either way. */
 .askRing{
   position:absolute;inset:0;width:100%;height:100%;
-  overflow:visible;
 }
 .askRing text{
-  font-family:var(--font-mono);font-size:12px;font-weight:500;
-  letter-spacing:.5px;text-transform:uppercase;fill:currentColor;
+  font-family:var(--font-mono);font-size:10.5px;font-weight:500;
+  letter-spacing:.3px;text-transform:uppercase;fill:currentColor;
 }
 
 .askSpark{ width:34%;height:34%;color:currentColor }
@@ -4082,6 +4085,18 @@ const STYLES_ASK = `
 .askDots i:nth-child(2){ animation-delay:.15s }
 .askDots i:nth-child(3){ animation-delay:.3s }
 @media (prefers-reduced-motion:reduce){ .askDots i{ animation:none;opacity:.6 } }
+
+/* Same recipe as the hero's .caret — a solid accent block, not a text
+   character — just sized for this message text instead of the display type. */
+.askTypeCaret{
+  display:inline-block;
+  margin-left:.05em;
+  width:2px;height:.9em;
+  background:var(--accent);
+  translate:0 .12em;
+  animation:blink 1.06s steps(1,end) infinite;
+}
+@media (prefers-reduced-motion:reduce){ .askTypeCaret{ animation:none } }
 
 .askFoot{
   border-top:1px solid var(--hairline);
@@ -5390,6 +5405,14 @@ function Nav({ theme, onToggleTheme, onHome, onBook }) {
 
 const ASK_MODEL = "gpt-4o-mini";
 
+// Reveal timing for the typed-out reply: a fixed number of ticks (target /
+// tick), so the chunk size scales with reply length — a long answer doesn't
+// crawl, a short one still visibly types rather than just appearing.
+const ASK_TYPE_TICK_MS = 20;
+const ASK_TYPE_TARGET_MS = 900;
+// Always show "…" for at least this long, even for an instant/canned reply.
+const ASK_MIN_WAIT_MS = 3000;
+
 /**
  * Real, app-routed links the assistant is allowed to offer — built from
  * CONTENT.projects, the same filter the router itself uses, so a href can
@@ -5416,6 +5439,14 @@ const ASK_VALID_HREFS = new Set([
   "#/",
   ...ASK_NAV_PROJECTS.map((p) => `#/work/${p.slug}`),
 ]);
+// Fallback label when the model names a real href without the markdown
+// [Label](href) wrapper — renderAskContent() still turns it into a button.
+const ASK_HREF_LABELS = new Map(
+  ASK_NAV_PROJECTS.map((p) => [
+    `#/work/${p.slug}`,
+    p.slug === ASK_GAMEHOUSE.slug ? ASK_GAMEHOUSE_LABEL : p.name,
+  ]),
+);
 
 // Kept in step with SYSTEM in workers/ml2/index.js — that copy can't import
 // CONTENT, so update both by hand when this changes.
@@ -5429,8 +5460,8 @@ Speak about his professional experience in first person: "I worked on...", "I wa
 WHO HE IS
 Senior Product Designer at GameHouse, based in Barcelona. Currently open to new opportunities — he's employed, this isn't a resignation. Target direction is Senior / Lead / Principal Product Designer roles: more product influence, strategy, systems thinking, cross-functional leadership. Looking for stability and somewhere to grow long-term. His formal level at GameHouse is Senior, though the scope of his work and direct manager feedback point to Principal-level impact — call him Senior; only bring up the scope point if it's directly relevant.
 
-PUBLIC PERSONAL DETAILS (fine to mention when it comes up naturally — don't volunteer unprompted)
-A man from Barcelona, Spain, 1.85m tall. Two grey cats, siblings: Boira (girl) and Melindro (boy). Has loved games since childhood, especially competitive/PvP — Teamfight Tactics is a favourite, and he's getting back into Magic: The Gathering after a long break. Loves strategy and card games, and the craft behind games generally — systems, economies, progression, retention, gamification. Not exclusively a "gaming designer" — open to non-gaming products when the problem is interesting enough.
+PUBLIC PERSONAL DETAILS
+Share these warmly and readily whenever they're relevant — they're not secrets, they're part of what makes him easy to get to know, so don't be cagey about them. Just don't force them into an answer that isn't about them. A man from Barcelona, Spain, 1.85m tall. Two grey cats, siblings: Boira (girl) and Melindro (boy). Has loved games since childhood, especially competitive/PvP — Teamfight Tactics is a favourite, and he's getting back into Magic: The Gathering after a long break. Loves strategy and card games, and the craft behind games generally — systems, economies, progression, retention, gamification. Not exclusively a "gaming designer" — open to non-gaming products when the problem is interesting enough.
 
 CAREER MOVES (if asked why he changed companies — answer plainly, don't overdramatize)
 Almost none were his call. GameHouse and Popcore were company restructures; the project he joined Eunoia for closed; Jesterday is freelance work he's still doing. The one deliberate move was earlier — leaving SEAT for gaming, because that's where he wanted to build his career long-term. Now he's looking for stability and room to grow. Never imply he left GameHouse voluntarily or that he's no longer there — he's currently there, open to what's next.
@@ -5442,20 +5473,26 @@ AI AND DESIGN (his current opinion — state it as that, not as settled fact abo
 He's very into AI-assisted design workflows and uses AI daily; he thinks it will meaningfully change how designers work. He doesn't think it currently replaces strong UX designers or the judgment part of design: AI is good at producing UI and replicating existing patterns, but UX is deciding what should exist in the first place — a different problem needing taste, creativity and real understanding of the problem. His own loop: idea → prompt → working thing → evaluate → refine, using tools like Claude Code alongside Figma and his design system, so design conversations happen around something that actually works rather than a deck. The point of AI in his workflow is finding out what works earlier — it doesn't replace framing the problem or judging whether something's actually good.
 
 WHAT HE'S DOING RIGHT NOW
-You don't literally know, so answer playfully in that spirit rather than factually — vary the wording, don't recite the same list verbatim every time: workday, probably GameHouse+ — designing, testing a prototype, or wrestling with a Figma file. Around lunch, probably cooking something, quality not guaranteed. Afternoon, maybe the gym (push/pull/legs), a walk, or something gaming-related. Evening, decent odds he's playing Magic with friends, working on his portfolio, or gaming. Late at night, probably in bed playing whatever Switch 2 game currently owns his life.
+You'll be told his current local time band in a note appended after this prompt. When asked what he's doing right now, answer with ONLY the one slice matching that band — a single short, playful line, not a tour through the whole day, and not literally factual (you don't actually know) but in that spirit. Vary the wording each time rather than reciting a fixed sentence:
+- workday: probably GameHouse+ — designing, testing a prototype, or wrestling with a Figma file.
+- lunch: probably cooking something, quality not guaranteed.
+- afternoon: maybe the gym (push/pull/legs), a walk, or something gaming-related.
+- evening: decent odds he's playing Magic with friends, working on his portfolio, or gaming.
+- late night: probably in bed playing whatever Switch 2 game currently owns his life.
+If no time note is present, treat it as the workday slice.
 
 PORTFOLIO NAVIGATION
 When — and only when — a question is genuinely better answered by a case study, answer briefly in your own words, then finish with the link alone on its own last line, in exactly this markdown format, with a real, descriptive label (never a blank label, never "#", never the href itself as the label). Example, using the flagship case:
 [${ASK_GAMEHOUSE_LABEL}](${ASK_GAMEHOUSE_HREF})
 Nothing else on that line — no lead-in like "check it out here:", no trailing punctuation after the closing parenthesis. Never weave the link into a sentence, never write the href as visible text, never invent an href — only use one of these:
 ${ASK_CASE_LINKS}
-${ASK_GAMEHOUSE_LABEL} (${ASK_GAMEHOUSE_HREF}) is the flagship — his strongest, most recent example of senior product work: product strategy, information architecture, systems thinking, experimentation, trade-offs, not just screens. Default to it for anything about product strategy, GameHouse, or his general approach, unless another case fits better. Most answers don't need a link at all — only add one when it truly helps.
+${ASK_GAMEHOUSE_LABEL} (${ASK_GAMEHOUSE_HREF}) is the flagship — his strongest, most recent example of senior product work: product strategy, information architecture, systems thinking, experimentation, trade-offs, not just screens. Default to it for anything about product strategy, GameHouse, or his general approach, unless another case fits better. Most answers don't need a link at all — only add one when it truly helps. If you're ever unsure of the exact formatting, the one thing that actually matters is including the real href itself somewhere in your reply — it will still be turned into a working link either way.
 
 WHEN YOU CAN'T ANSWER
 A professional question you can't answer from the above: say so plainly, don't invent facts, experience or opinions — point to the contact form (in the site's nav) for a real answer from Manel. Anything about an actual job, collaboration, freelance work, an interview, or his availability: answer what you genuinely can, then point to the contact form — that's the route to an actual conversation with him.
 
 UNRELATED QUESTIONS
-Something with nothing to do with Manel, his work, or the public details above — trivia, other people's opinions on pizza toppings, sports, the weather, whatever — is not an invitation to chat about it. Do not actually answer it, do not invent an opinion for Manel about it, do not ask a follow-up question to keep the small talk going. Give one brief, light, human line acknowledging it and redirect to his work, every single time, even though that means the same kind of reply repeats. For example: "That's a bit outside what I'm here for — I'm much more useful on Manel's work, his design approach, or the portfolio. Anything there I can help with?" Keep the acknowledgment itself varied and rare-feeling; never skip the redirect.
+Something with nothing to do with Manel, his work, or the public details above — trivia, other people's opinions on pizza toppings, sports, the weather, solving a problem for them, whatever — is not an invitation to chat about it or help with it. Do not actually answer it, do not invent an opinion for Manel about it, do not ask a follow-up question to keep the small talk going. Instead, respond naturally to the specific thing they said — react to it in one short, human line, the way a person would when they can't actually help with something — and then redirect to his work. Never reuse the same acknowledgment twice in a row; write a fresh one each time that references what they actually asked about. For instance, asked about the weather: something like "no idea, I'm not exactly hooked up to a forecast" before redirecting. Asked to solve a maths problem: something like "that one's not really in my lane" before redirecting. The tone stays the same — light, brief, honest — but the words change with what was asked.
 
 NEVER
 - Answer a question unrelated to Manel, his work or the public details above, or invent an opinion for him about something not covered here — redirect per UNRELATED QUESTIONS instead.
@@ -5464,6 +5501,60 @@ NEVER
 - Say or imply anything that could be used to impersonate Manel, or that this conversation is a direct line to him.
 - Write code, do assignments, produce design work, or write someone's CV or portfolio for them — you can discuss how Manel approaches these things and point to relevant work instead.
 - Invent opinions, experience or facts not given here.`;
+
+/**
+ * Manel's current local time band (Europe/Madrid), used two ways: picking
+ * the one right slice of ASK_DOING_NOW for pretend mode, and — appended to
+ * the system prompt in askML()'s direct-key path — telling a live model
+ * which slice to answer with, so "what's he doing right now" tracks actual
+ * time of day instead of reciting the whole list. The Worker computes this
+ * itself server-side for the proxy path.
+ */
+function askBarcelonaTime() {
+  let hour = new Date().getHours();
+  try {
+    hour = parseInt(
+      new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Europe/Madrid",
+        hour: "2-digit",
+        hour12: false,
+      }).format(new Date()),
+      10,
+    );
+  } catch {
+    /* Intl/timezone data unavailable — fall back to the visitor's own clock
+       rather than block on it. */
+  }
+  const band =
+    hour >= 7 && hour < 14
+      ? "workday"
+      : hour >= 14 && hour < 16
+        ? "lunch"
+        : hour >= 16 && hour < 20
+          ? "afternoon"
+          : hour >= 20 && hour < 24
+            ? "evening"
+            : "late night";
+  return { hour, band };
+}
+
+const ASK_DOING_NOW = {
+  workday:
+    "Right now? Probably working on GameHouse+ — designing something, testing a prototype, or arguing with a Figma file.",
+  lunch:
+    "Right now? Probably making something to eat. Whether it's actually good is a separate question.",
+  afternoon:
+    "Right now? Could be the gym doing push/pull/legs, out for a walk, or something gaming-related.",
+  evening:
+    "Right now? Decent chance I'm playing Magic with friends, working on something for my portfolio, or getting a few games in.",
+  "late night":
+    "Right now? Probably in bed playing whatever Switch 2 game has currently taken over my life.",
+};
+
+function askBarcelonaTimeNote() {
+  const { hour, band } = askBarcelonaTime();
+  return `Current local time for Manel (Barcelona, Europe/Madrid): ${String(hour).padStart(2, "0")}:xx — the "${band}" band. If asked what he's doing right now, answer with only that one slice.`;
+}
 
 // Pretend-mode answers, tried in order — used with no proxy/key configured,
 // and as the fallback whenever a live call fails. The three matching the
@@ -5487,8 +5578,7 @@ const ASK_PRETEND = [
   },
   {
     match: /doing (right )?now|what.*(manel|you).*(doing|up to)|what are you up to/i,
-    reply:
-      "That depends on when you're asking.\n\nDuring the workday: probably working on GameHouse+ — designing something, testing a prototype, or arguing with a Figma file.\n\nAround lunch: probably making something to eat. Whether it's actually good is a separate question.\n\nIn the afternoon: might be at the gym doing push/pull/legs, out for a walk, or doing something gaming-related.\n\nEvening: decent chance I'm playing Magic with friends, working on something for my portfolio, or getting a few games in.\n\nLate at night: probably in bed playing whatever Switch 2 game has currently taken over my life.",
+    reply: () => ASK_DOING_NOW[askBarcelonaTime().band],
   },
   {
     match: /career|why.*(leave|left|move|moved|change)|popcore|eunoia|jesterday|\bseat\b|restructure/i,
@@ -5527,18 +5617,25 @@ const ASK_PRETEND_FALLBACK =
 
 function pretendReply(text) {
   const hit = ASK_PRETEND.find((p) => p.match.test(text || ""));
-  return hit ? hit.reply : ASK_PRETEND_FALLBACK;
+  if (!hit) return ASK_PRETEND_FALLBACK;
+  return typeof hit.reply === "function" ? hit.reply() : hit.reply;
 }
 
-const ASK_LINK_RE = /\[([^[\]\n]{1,80})\]\((#\/[a-z0-9-/]*)\)/gi;
+// Matches either a proper [Label](href) markdown link, or — because the
+// model doesn't always write the brackets even when told to — a bare href
+// on its own, optionally in parens: "(#/work/gamehouse-plus)". Either way
+// it becomes a real button; only the bracket form's label can vary, since
+// the bare form has no label text to draw from.
+const ASK_LINK_RE =
+  /\[([^[\]\n]{1,80})\]\((#\/(?:work\/[a-z0-9-]+)?)\)|\(?(#\/work\/[a-z0-9-]+)\)?/gi;
 
 /**
- * Splits an assistant reply on the [Label](href) links it was told to use,
- * so they render as real, clickable portfolio links instead of visible
- * markdown. Only ever called on assistant text, never on what a visitor
- * typed. A href the model didn't actually get from ASK_CASE_LINKS (hallu-
- * cinated or stale) is dropped to plain text rather than linked — nothing
- * this renders can point outside the app's own routes.
+ * Splits an assistant reply on the portfolio links it was told to use, so
+ * they render as real, clickable buttons instead of visible markdown or a
+ * bare href sitting in parentheses. Only ever called on assistant text,
+ * never on what a visitor typed. A href the model didn't actually get from
+ * ASK_CASE_LINKS (hallucinated or stale) is dropped rather than linked —
+ * nothing this renders can point outside the app's own routes.
  */
 function renderAskContent(text) {
   const parts = [];
@@ -5547,11 +5644,22 @@ function renderAskContent(text) {
   ASK_LINK_RE.lastIndex = 0;
   while ((m = ASK_LINK_RE.exec(text))) {
     if (m.index > last) parts.push({ t: "text", v: text.slice(last, m.index) });
-    if (ASK_VALID_HREFS.has(m[2])) {
-      parts.push({ t: "link", label: m[1], href: m[2] });
-    } else {
-      parts.push({ t: "text", v: m[1] });
+    const [, bracketLabel, bracketHref, bareHref] = m;
+    if (bracketHref !== undefined) {
+      if (ASK_VALID_HREFS.has(bracketHref)) {
+        parts.push({ t: "link", label: bracketLabel, href: bracketHref });
+      } else {
+        parts.push({ t: "text", v: bracketLabel });
+      }
+    } else if (bareHref !== undefined && ASK_VALID_HREFS.has(bareHref)) {
+      parts.push({
+        t: "link",
+        label: ASK_HREF_LABELS.get(bareHref) || bareHref,
+        href: bareHref,
+      });
     }
+    // An invalid bare href (no brackets, so no label to fall back to
+    // either) is simply dropped — the surrounding sentence still reads.
     last = m.index + m[0].length;
   }
   if (last < text.length) parts.push({ t: "text", v: text.slice(last) });
@@ -5598,8 +5706,14 @@ async function askML(history) {
         body: JSON.stringify({
           model: ASK_MODEL,
           temperature: 0.6,
-          max_tokens: 450,
-          messages: [{ role: "system", content: ASK_SYSTEM }, ...history],
+          max_tokens: 500,
+          messages: [
+            {
+              role: "system",
+              content: `${ASK_SYSTEM}\n\n${askBarcelonaTimeNote()}`,
+            },
+            ...history,
+          ],
         }),
       });
       if (!res.ok) throw new Error(`OpenAI ${res.status}`);
@@ -5689,6 +5803,7 @@ function AskWidget({ reduced }) {
   const [ringFast, setRingFast] = useState(false); // rim type speeds up on hover
   const [messages, setMessages] = useState([]); // { role: 'user' | 'assistant', content }
   const [pending, setPending] = useState(false);
+  const [typingMsg, setTypingMsg] = useState(null); // { text, shown } — reply being typed out
   const [draft, setDraft] = useState("");
 
   const panelRef = useRef(null);
@@ -5852,11 +5967,40 @@ function AskWidget({ reduced }) {
   useEffect(() => {
     const el = bodyRef.current;
     if (el) el.scrollTop = el.scrollHeight;
-  }, [messages, pending, open]);
+  }, [messages, pending, typingMsg, open]);
+
+  // Reveals typingMsg.text in chunks sized to its length — quickly, not
+  // instantly, and not proportionally slower for a long reply than a short
+  // one — then commits the full message into `messages` and clears itself.
+  // Under reduced motion it commits straight away, no animation.
+  useEffect(() => {
+    if (!typingMsg) return undefined;
+    const done = reduced || typingMsg.shown >= typingMsg.text.length;
+    const t = setTimeout(
+      () => {
+        if (done) {
+          setMessages((m) => [
+            ...m,
+            { role: "assistant", content: typingMsg.text },
+          ]);
+          setTypingMsg(null);
+        } else {
+          setTypingMsg((cur) =>
+            cur
+              ? { ...cur, shown: Math.min(cur.text.length, cur.shown + cur.step) }
+              : cur,
+          );
+        }
+      },
+      done ? 0 : ASK_TYPE_TICK_MS,
+    );
+    return () => clearTimeout(t);
+  }, [typingMsg, reduced]);
 
   const resetChat = useCallback(() => {
     flushLog();
     setMessages([]);
+    setTypingMsg(null);
     setDraft("");
     loggedCountRef.current = 0;
     if (inputRef.current) {
@@ -5868,25 +6012,29 @@ function AskWidget({ reduced }) {
   const send = useCallback(
     async (raw) => {
       const q = (raw || "").trim();
-      if (!q || pending) return;
+      if (!q || pending || typingMsg) return;
       setDraft("");
       if (inputRef.current) inputRef.current.style.height = "auto";
       const next = [...messagesRef.current, { role: "user", content: q }];
       setMessages(next);
       setPending(true);
+      // Never an instant reply, even a pre-recorded one — always at least a
+      // beat of "…" before it starts typing out, whichever takes longer.
+      let reply;
       try {
-        const reply = await askML(next);
-        setMessages((m) => [...m, { role: "assistant", content: reply }]);
-      } catch {
-        setMessages((m) => [
-          ...m,
-          { role: "assistant", content: CONTENT.ask.errorReply },
+        [reply] = await Promise.all([
+          askML(next),
+          new Promise((resolve) => setTimeout(resolve, ASK_MIN_WAIT_MS)),
         ]);
-      } finally {
-        setPending(false);
+      } catch {
+        reply = CONTENT.ask.errorReply;
       }
+      setPending(false);
+      const ticks = Math.max(1, Math.round(ASK_TYPE_TARGET_MS / ASK_TYPE_TICK_MS));
+      const step = Math.max(1, Math.ceil(reply.length / ticks));
+      setTypingMsg({ text: reply, shown: 0, step });
     },
-    [pending],
+    [pending, typingMsg],
   );
 
   const onInput = (e) => {
@@ -5921,20 +6069,24 @@ function AskWidget({ reduced }) {
         >
           <svg className="askRing" viewBox="0 0 100 100" aria-hidden="true">
             <defs>
+              {/* Inset well clear of the 0-100 edge (16 units) so the all-
+                  caps text's cap-height — which sits entirely above this
+                  baseline-following path — never reaches the button's own
+                  edge, let alone the page behind it. */}
               <path
                 id="askRingPath"
                 fill="none"
-                d="M50,8 H72 A20,20 0 0 1 92,28 V72 A20,20 0 0 1 72,92 H28 A20,20 0 0 1 8,72 V28 A20,20 0 0 1 28,8 Z"
+                d="M50,16 H68 A16,16 0 0 1 84,32 V68 A16,16 0 0 1 68,84 H32 A16,16 0 0 1 16,68 V32 A16,16 0 0 1 32,16 Z"
               />
             </defs>
-            <text textLength="302" lengthAdjust="spacingAndGlyphs">
+            <text textLength="244" lengthAdjust="spacingAndGlyphs">
               <textPath href="#askRingPath" startOffset="0">
                 {c.ring}
                 {c.ring}
                 {reduced ? null : (
                   <animate
                     attributeName="startOffset"
-                    values="0;-302"
+                    values="0;-244"
                     dur={ringFast ? "4.5s" : "13s"}
                     repeatCount="indefinite"
                   />
@@ -6041,6 +6193,12 @@ function AskWidget({ reduced }) {
                   <i />
                 </div>
               ) : null}
+              {typingMsg ? (
+                <div className="askMsg askMsg--bot">
+                  {typingMsg.text.slice(0, typingMsg.shown)}
+                  <span className="askTypeCaret" />
+                </div>
+              ) : null}
             </div>
 
             <form
@@ -6062,7 +6220,7 @@ function AskWidget({ reduced }) {
               <button
                 type="submit"
                 className="askSend"
-                disabled={!draft.trim() || pending}
+                disabled={!draft.trim() || pending || !!typingMsg}
                 aria-label={c.sendLabel}
               >
                 <Icon name="arrowUp" size={16} />
