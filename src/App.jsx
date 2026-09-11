@@ -1073,10 +1073,13 @@ export const CONTENT = {
       name: "Jesterday",
       mark: "jesterday",
       eyebrow: "GPixel · Jesterday",
-      // A real thumbnail (an IMAGES key) instead of the centred wordmark —
-      // set only for this card. Leave unset on other projects to keep their
-      // current centred-logo treatment.
-      cardThumbnail: "card.jesterday.thumbnail",
+      // A real clip instead of the centred wordmark — set only for cards
+      // that have one. `poster` is the paused/idle frame; the clip plays
+      // ping-pong on hover (desktop) or once centred in view (mobile).
+      cardVideo: {
+        src: "video/jesterday-card.mp4",
+        poster: "img/jesterday-thumbnail.svg",
+      },
       // The case study is already published as a finished piece on Behance,
       // so the card is a plain external link there instead of the internal
       // case-study route.
@@ -1309,8 +1312,12 @@ export const CONTENT = {
       name: "Scavenger Hunt",
       mark: "popcore",
       eyebrow: "Scavenger Hunt · Popcore",
-      // A real thumbnail (an IMAGES key) instead of the centred wordmark.
-      cardThumbnail: "card.scavengerHunt.thumbnail",
+      // A real clip instead of the centred wordmark — see the note on the
+      // Jesterday card above.
+      cardVideo: {
+        src: "video/scavenger-hunt-card.mp4",
+        poster: "img/scavenger-hunt-thumbnail.jpg",
+      },
       // Was a plain external link out to Behance; the case study now lives
       // here instead, told through its own three shipped features rather
       // than the generic template.
@@ -1449,6 +1456,9 @@ export const CONTENT = {
       name: "SEAT CUPRA",
       mark: "cupra",
       eyebrow: "SEAT CUPRA",
+      // Static for now (no clip shot yet) — still gets the same idle-dim/
+      // hover-brighten treatment as the video cards, just no playback.
+      cardThumbnail: "card.seatCupra.thumbnail",
       // Case study isn't ready yet — the card shows a tooltip instead of
       // navigating, and the route itself redirects home. See ProjectCard
       // and App's routing guard.
@@ -1566,6 +1576,9 @@ export const CONTENT = {
       name: "Dragon City 2",
       mark: "socialpoint",
       eyebrow: "Dragon City 2 · Socialpoint",
+      // No still shot for this one yet — the video's own first frame stands
+      // in as the idle poster (see CardVideo).
+      cardVideo: { src: "video/dragon-city-2-card.mp4" },
       positioning:
         "A cancelled midcore RPG sequel — campaign battle systems redesigned, then tested against real first-time players.",
       cardDescription:
@@ -1953,20 +1966,16 @@ export const CONTENT = {
       alt: "My Games, one library holding every saved or installed title regardless of how it loads.",
     },
 
-    "card.jesterday.thumbnail": {
-      src: "img/jesterday-thumbnail.svg",
-      alt: "Jesterday: a stylised game controller held in two hands, cut by a diagonal yellow motion stripe.",
-      plate: "weave",
-      tone: "light",
-      seed: 209,
-    },
+    // Jesterday and Scavenger Hunt now show a clip (see cardVideo on each
+    // project) — their old static art lives on only as that clip's poster
+    // frame, referenced directly by path rather than through this registry.
 
-    "card.scavengerHunt.thumbnail": {
-      src: "img/scavenger-hunt-thumbnail.jpg",
-      alt: "Scavenger Hunt: a hidden-object party scene seen through a magnifying glass held over a red balloon.",
+    "card.seatCupra.thumbnail": {
+      src: "img/seat-cupra-card.png",
+      alt: "SEAT CUPRA's connected-services infotainment screen, a night-mode navigation view on the car's dashboard display.",
       plate: "orbit",
-      tone: "light",
-      seed: 210,
+      tone: "dark",
+      seed: 211,
     },
 
     "case.jesterday.hero": {
@@ -2748,12 +2757,29 @@ body{
 const STYLES_HOME = `
 /* ============================ SPOTLIGHT ============================ */
 .spotlight{
+  display:block;
   position:relative;
   background:var(--panel);
   color:var(--panel-ink);
   border-radius:var(--r-lg);
   overflow:hidden;
   isolation:isolate;
+  transition:transform var(--dur-slow) var(--ease-out),
+             box-shadow var(--dur-slow) var(--ease-out);
+}
+/* The whole card is the link (see Spotlight) — hovering or focusing
+   anywhere on it lifts it, same language as the grid cards below.
+   Specificity note: .has-reveal .reveal.is-in (below) sets transform:none
+   at (0,3,0) once the scroll-reveal has played — after which every
+   .spotlight is also .is-in, so a plain .spotlight:hover at (0,2,0) would
+   silently lose the fight for transform and never actually lift. Matching
+   that specificity here (and .reveal itself, to stay in the same cascade
+   layer rather than relying on source order) is what makes the lift work
+   post-reveal, not just before it. */
+.has-reveal .spotlight.reveal:hover,
+.has-reveal .spotlight.reveal.is-active{
+  transform:translate3d(0,-4px,0);
+  box-shadow:var(--shadow-lift);
 }
 .spotlightMedia{
   position:absolute;inset:-12% 0;
@@ -2843,7 +2869,11 @@ const STYLES_HOME = `
              border-color var(--dur-slow) var(--ease-std);
   box-shadow:var(--shadow-card);
 }
-.projectCard:hover{
+/* Same specificity note as .spotlight above: needs to match
+   .has-reveal .reveal.is-in's (0,3,0) or the lift silently never applies
+   once a card has scrolled into view. */
+.has-reveal .projectCard.reveal:hover,
+.has-reveal .projectCard.reveal.is-active{
   transform:translate3d(0,-4px,0);
   box-shadow:var(--shadow-lift);
   border-color:var(--hairline-strong);
@@ -2887,7 +2917,26 @@ const STYLES_HOME = `
   will-change:transform;
 }
 .projectCard:hover .cardMarkWrap > *,
-.projectCard:hover .cardMediaImg{transform:scale(1.045)}
+.projectCard:hover .cardMediaImg,
+.projectCard.is-active .cardMarkWrap > *,
+.projectCard.is-active .cardMediaImg{transform:scale(1.045)}
+/* Idle: the clip/still sits desaturated and dimmed so the hover/centred
+   swap to full colour reads as the thumbnail "waking up". */
+.cardMediaDim{
+  filter:saturate(.5);
+  opacity:.5;
+  /* Repeats the transform transition from .cardMediaImg above: this and
+     that rule share specificity, so whichever comes later in the sheet
+     would otherwise overwrite the other's transition outright. */
+  transition:transform ${DUR.reveal}ms var(--ease-out),
+             filter var(--dur-slow) var(--ease-std),
+             opacity var(--dur-slow) var(--ease-std);
+}
+.projectCard:hover .cardMediaDim,
+.projectCard.is-active .cardMediaDim{
+  filter:saturate(1);
+  opacity:1;
+}
 /* A real thumbnail ignores cardMarkWrap's own padding — it bleeds to the
    box's full edges (and is partially covered by the label above it)
    instead of sitting centred and inset like a wordmark. The box itself
@@ -2908,7 +2957,8 @@ const STYLES_HOME = `
   margin-top:var(--s4);color:var(--ink);
 }
 .cardCta svg{transition:transform var(--dur-base) var(--ease-out)}
-.projectCard:hover .cardCta svg{transform:translateX(3px)}
+.projectCard:hover .cardCta svg,
+.projectCard.is-active .cardCta svg{transform:translateX(3px)}
 
 /* A card whose case study isn't ready yet: same look, but a plain reset
    button standing in for the link, since nothing actually navigates. The
@@ -3787,10 +3837,14 @@ const STYLES_CASE = `
   .heroName .wordInner{transform:none !important}
   .caret{animation:none;opacity:1}
   .spotlightMedia{transform:none !important}
-  .projectCard:hover,.bitTile:hover,.caseNavBtn:hover,.caseEndCard:hover,.btn:hover,.submit:hover{transform:none}
+  .spotlight:hover,.spotlight.is-active,
+  .projectCard:hover,.projectCard.is-active,
+  .bitTile:hover,.caseNavBtn:hover,.caseEndCard:hover,.btn:hover,.submit:hover{transform:none}
   .projectCard:hover .cardMarkWrap > *,
+  .projectCard.is-active .cardMarkWrap > *,
   .bitTile:hover .bitMedia > *,
   .systemCell:hover > *{transform:none}
+  .cardMediaDim{filter:saturate(1);opacity:1}
   .viewFade{animation:none}
   .subject.is-flying{transition:none !important;transform:none !important}
 }
@@ -4460,6 +4514,54 @@ function useParallax(strength = 0.12, reduced = false) {
     };
   }, [strength, reduced]);
   return ref;
+}
+
+/**
+ * Mirrors hover for touch: the work card nearest the viewport's vertical
+ * centre gets the same "active" state a mouse hover would give it. A no-op
+ * wherever real hover is available, so desktop pays nothing for this — it
+ * only ever runs on touch/coarse-pointer devices.
+ */
+function useCenteredCard(containerRef) {
+  const [activeSlug, setActiveSlug] = useState(null);
+  useEffect(() => {
+    const root = containerRef.current;
+    if (!root || !("IntersectionObserver" in window)) return;
+    if (
+      window.matchMedia &&
+      window.matchMedia("(hover: hover) and (pointer: fine)").matches
+    ) {
+      return;
+    }
+    const nodes = Array.from(root.querySelectorAll("[data-card-slug]"));
+    if (!nodes.length) return;
+    const ratios = new Map();
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) =>
+          ratios.set(e.target.dataset.cardSlug, e.intersectionRatio),
+        );
+        let best = null;
+        let bestRatio = 0;
+        ratios.forEach((ratio, slug) => {
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            best = slug;
+          }
+        });
+        setActiveSlug(bestRatio > 0 ? best : null);
+      },
+      {
+        // Shrinks the observed root to a thin band around its vertical
+        // centre — a card only intersects it while roughly centred.
+        rootMargin: "-42% 0px -42% 0px",
+        threshold: [0, 0.2, 0.4, 0.6, 0.8, 1],
+      },
+    );
+    nodes.forEach((n) => io.observe(n));
+    return () => io.disconnect();
+  }, [containerRef]);
+  return activeSlug;
 }
 
 /* =========================================================================
@@ -5229,6 +5331,103 @@ function HeroMedia({ project, reduced, ratio = 16 / 9, className }) {
         </video>
       )}
     </div>
+  );
+}
+
+/**
+ * A work card's clip: paused on its own first frame while idle, dimmed by
+ * CSS (see `.cardMediaDim`); once `active` (hovered, or — on touch —
+ * centred in the viewport) it plays ping-pong, driven here by hand-walking
+ * `currentTime` each frame, since HTML5 video has no native reverse
+ * playback. Falls back to a still first frame under reduced motion.
+ *
+ * The clip itself doesn't start downloading until the card nears the
+ * viewport — four of these on one page would otherwise all fetch on load,
+ * same reasoning as the lazy `<img>`s elsewhere on the grid.
+ */
+function CardVideo({ cardVideo, active, reduced, className }) {
+  const videoRef = useRef(null);
+  const rafRef = useRef(0);
+  const dirRef = useRef(1);
+  const lastTsRef = useRef(0);
+  const [seen, setSeen] = useState(() => !("IntersectionObserver" in window));
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || seen) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setSeen(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "200px 0px" },
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, [seen]);
+
+  // A <source> appended after mount doesn't start loading on its own — the
+  // browser only re-runs resource selection on an explicit load() call.
+  useEffect(() => {
+    if (seen && videoRef.current) videoRef.current.load();
+  }, [seen]);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || !seen) return;
+    if (active && !reduced) {
+      dirRef.current = 1;
+      lastTsRef.current = 0;
+      const step = (ts) => {
+        if (!v.duration) {
+          rafRef.current = requestAnimationFrame(step);
+          return;
+        }
+        const dt = lastTsRef.current ? (ts - lastTsRef.current) / 1000 : 0;
+        lastTsRef.current = ts;
+        let t = v.currentTime + dirRef.current * dt;
+        if (t >= v.duration) {
+          t = v.duration;
+          dirRef.current = -1;
+        } else if (t <= 0) {
+          t = 0;
+          dirRef.current = 1;
+        }
+        v.currentTime = t;
+        rafRef.current = requestAnimationFrame(step);
+      };
+      v.pause();
+      rafRef.current = requestAnimationFrame(step);
+    } else {
+      cancelAnimationFrame(rafRef.current);
+      v.pause();
+      if (!active) v.currentTime = 0;
+    }
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [active, reduced, seen]);
+
+  return (
+    <video
+      ref={videoRef}
+      className={className}
+      muted
+      playsInline
+      preload={seen ? "auto" : "none"}
+      poster={cardVideo.poster ? resolveSrc(cardVideo.poster) : undefined}
+      // No poster art yet for this one: autoplay-then-immediately-pause is
+      // the standard trick to force the browser to decode and paint the
+      // first frame instead of showing nothing until playback starts.
+      autoPlay={seen && !cardVideo.poster}
+      onLoadedData={(e) => {
+        if (!cardVideo.poster) e.currentTarget.pause();
+      }}
+    >
+      {seen ? (
+        <source src={resolveSrc(cardVideo.src)} type="video/mp4" />
+      ) : null}
+    </video>
   );
 }
 
@@ -6987,13 +7186,35 @@ function LogoStrip({ reduced }) {
  * HOME — work
  * ========================================================================= */
 
-function Spotlight({ project, onCapture, reduced }) {
+function Spotlight({ project, onCapture, reduced, centerActive }) {
   const mediaRef = useParallax(0.1, reduced);
   const titleRef = useRef(null);
+  const cardRef = useRef(null);
+  const [hovered, setHovered] = useState(false);
+  const active = hovered || centerActive;
   const lines = project.caseTitle || [project.positioning];
 
+  // Toggled imperatively, not via the className prop: the scroll-reveal
+  // observer (useReveal) adds "is-in" to this same node straight on the
+  // DOM, outside React. Re-rendering the className string would overwrite
+  // that class and snap the card back to its pre-reveal opacity:0.
+  useEffect(() => {
+    cardRef.current?.classList.toggle("is-active", active);
+  }, [active]);
+
   return (
-    <article className="spotlight reveal">
+    <a
+      ref={cardRef}
+      className="spotlight reveal"
+      href={`#/work/${project.slug}`}
+      data-card-slug={project.slug}
+      onClick={() => onCapture(titleRef.current)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onFocus={() => setHovered(true)}
+      onBlur={() => setHovered(false)}
+      aria-label={`${project.name} — ${CONTENT.work.viewCase}`}
+    >
       <div className="spotlightMedia" ref={mediaRef} aria-hidden="true">
         {project.spotlightVideo ? (
           reduced ? (
@@ -7056,28 +7277,40 @@ function Spotlight({ project, onCapture, reduced }) {
               </div>
             ))}
           </dl>
-          <a
-            className="viewCase"
-            href={`#/work/${project.slug}`}
-            onClick={() => onCapture(titleRef.current)}
-            aria-label={`${project.name} — ${CONTENT.work.viewCase}`}
-          >
+          <span className="viewCase" aria-hidden="true">
             {CONTENT.work.viewCase}
             <Icon name="arrowRight" size={16} />
-          </a>
+          </span>
         </div>
       </div>
-    </article>
+    </a>
   );
 }
 
-function ProjectCard({ project, onCapture, index }) {
+function ProjectCard({ project, onCapture, index, reduced, centerActive }) {
   const titleRef = useRef(null);
   const hostRef = useRef(null);
+  const cardRef = useRef(null);
   const isExternal = Boolean(project.externalUrl);
   const isBlocked = Boolean(project.underConstruction);
   const [tipOpen, setTipOpen] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const active = hovered || centerActive;
   const tipId = `card-tip-${project.slug}`;
+  const hasMedia = Boolean(project.cardThumbnail || project.cardVideo);
+  const hoverHandlers = {
+    onMouseEnter: () => setHovered(true),
+    onMouseLeave: () => setHovered(false),
+    onFocus: () => setHovered(true),
+    onBlur: () => setHovered(false),
+  };
+
+  // Imperative, not via className: useReveal adds "is-in" to this node
+  // straight on the DOM. Re-rendering the className string on hover would
+  // overwrite that class and snap the card back to opacity:0. See Spotlight.
+  useEffect(() => {
+    cardRef.current?.classList.toggle("is-active", active);
+  }, [active]);
 
   // The tooltip dismisses itself: a short auto-hide, plus Escape and a
   // click anywhere outside the card. Listeners are only live while it is
@@ -7103,20 +7336,25 @@ function ProjectCard({ project, onCapture, index }) {
 
   const media = (
     <span className="cardMedia">
-      <span
-        className={`cardTop mono${project.cardThumbnail ? " cardTop--overlay" : ""}`}
-      >
+      <span className={`cardTop mono${hasMedia ? " cardTop--overlay" : ""}`}>
         <span ref={titleRef}>{project.eyebrow}</span>
         <Icon name={isBlocked ? "clock" : "arrowUpRight"} size={16} />
       </span>
       <span
-        className={`cardMarkWrap${project.cardThumbnail ? " cardMarkWrap--thumbnail" : ""}`}
+        className={`cardMarkWrap${hasMedia ? " cardMarkWrap--thumbnail" : ""}`}
       >
-        {project.cardThumbnail ? (
+        {project.cardVideo ? (
+          <CardVideo
+            cardVideo={project.cardVideo}
+            active={active}
+            reduced={reduced}
+            className="cardMediaImg cardMediaDim"
+          />
+        ) : project.cardThumbnail ? (
           <Visual
             imageKey={project.cardThumbnail}
             fill
-            className="cardMediaImg"
+            className="cardMediaImg cardMediaDim"
           />
         ) : (
           <Wordmark
@@ -7136,12 +7374,15 @@ function ProjectCard({ project, onCapture, index }) {
     return (
       <li ref={hostRef} className="projectCardHost">
         <button
+          ref={cardRef}
           type="button"
           className="projectCard reveal"
           style={{ "--reveal-delay": `${index * 70}ms` }}
+          data-card-slug={project.slug}
           onClick={() => setTipOpen((v) => !v)}
           aria-describedby={tipOpen ? tipId : undefined}
           aria-label={`${project.name} — ${CONTENT.work.underConstruction}`}
+          {...hoverHandlers}
         >
           {media}
           <span className="cardBody">
@@ -7166,13 +7407,16 @@ function ProjectCard({ project, onCapture, index }) {
   return (
     <li>
       <a
+        ref={cardRef}
         className="projectCard reveal"
         href={isExternal ? project.externalUrl : `#/work/${project.slug}`}
         target={isExternal ? "_blank" : undefined}
         rel={isExternal ? "noreferrer noopener" : undefined}
         style={{ "--reveal-delay": `${index * 70}ms` }}
+        data-card-slug={project.slug}
         onClick={isExternal ? undefined : () => onCapture(titleRef.current)}
         aria-label={`${project.name} — ${isExternal ? CONTENT.work.viewOnBehance : CONTENT.work.viewCase}`}
+        {...hoverHandlers}
       >
         {media}
         <span className="cardBody">
@@ -7188,9 +7432,11 @@ function ProjectCard({ project, onCapture, index }) {
 }
 
 function WorkSection({ projects, spotlight, onCapture, reduced }) {
+  const containerRef = useRef(null);
+  const centeredSlug = useCenteredCard(containerRef);
   return (
     <section id="work" className="section" aria-labelledby="work-h">
-      <div className="container">
+      <div className="container" ref={containerRef}>
         <SectionHead
           headingId="work-h"
           label={CONTENT.work.eyebrow}
@@ -7201,6 +7447,7 @@ function WorkSection({ projects, spotlight, onCapture, reduced }) {
             project={spotlight}
             onCapture={onCapture}
             reduced={reduced}
+            centerActive={centeredSlug === spotlight.slug}
           />
         </div>
         <ul className="projectGrid">
@@ -7210,6 +7457,8 @@ function WorkSection({ projects, spotlight, onCapture, reduced }) {
               project={p}
               onCapture={onCapture}
               index={i}
+              reduced={reduced}
+              centerActive={centeredSlug === p.slug}
             />
           ))}
         </ul>
