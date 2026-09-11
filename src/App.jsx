@@ -3242,6 +3242,13 @@ textarea.control{min-height:120px;resize:vertical;line-height:1.6}
 }
 .copyright .sep{opacity:.5;padding-inline:var(--s3)}
 
+/* On the case-study sign-off's black panel instead of the light canvas —
+   see .caseEndPanel. Home and journal keep the plain footer above. */
+.footer--onPanel .footerTop{border-top-color:var(--panel-hairline)}
+.footer--onPanel .socialBtn{border-color:var(--panel-hairline);color:var(--panel-muted)}
+.footer--onPanel .socialBtn:hover{color:var(--panel-ink);border-color:var(--panel-ink)}
+.footer--onPanel .copyright{color:var(--panel-muted)}
+
 .railDock{
   position:fixed;left:0;right:0;bottom:var(--s5);
   z-index:var(--z-rail);
@@ -3618,61 +3625,62 @@ const STYLES_CASE = `
   font-weight:600;letter-spacing:-.025em;color:var(--ink);
 }
 
-/* ---- case-study sign-off: a title, a subtitle, one fixed-destination card
-   (see CaseEndCard) — not the old prev/next chain (.caseNav above), which
-   JournalPost still uses for its own, unrelated prev/next. Both lines are
-   sized to always stay on one line, at any viewport width. ---- */
-.caseEnd{padding-block:var(--s7)}
-.caseEndTitle{
-  font-size:clamp(1.375rem,3.6vw,2rem);
-  font-weight:700;letter-spacing:-.02em;color:var(--ink);
-  white-space:nowrap;
+/* ---- case-study sign-off: a full-bleed black band — chrome, like the nav
+   or footer, not another content section — holding the SectionHead pairing,
+   one fixed-destination card (see CaseEndCard) and the footer itself. Not
+   the old prev/next chain (.caseNav above), which JournalPost still uses
+   for its own, unrelated prev/next. ---- */
+.caseEndPanel{
+  margin-top:clamp(40px,7vh,88px);
+  background:var(--panel);
 }
-.caseEndSub{
-  margin-top:var(--s2);
-  font-size:clamp(.9375rem,2.2vw,1.125rem);
-  color:var(--muted);
-  white-space:nowrap;
-}
+.caseEnd{padding-block:var(--section-y)}
 .caseEndCard{
   display:flex;align-items:center;gap:var(--s5);
   margin-top:var(--s6);
   padding:var(--s5);
   max-width:520px;
-  background:var(--surface);
-  border:1px solid var(--hairline);
+  background:color-mix(in srgb, var(--panel-ink) 5%, transparent);
+  border:1px solid var(--panel-hairline);
   border-radius:var(--r-lg);
-  box-shadow:var(--shadow-card);
   transition:transform var(--dur-slow) var(--ease-out),
-             box-shadow var(--dur-slow) var(--ease-out),
+             background-color var(--dur-slow) var(--ease-std),
              border-color var(--dur-slow) var(--ease-std);
 }
 .caseEndCard:hover{
   transform:translate3d(0,-4px,0);
-  box-shadow:var(--shadow-lift);
-  border-color:var(--hairline-strong);
+  background:color-mix(in srgb, var(--panel-ink) 9%, transparent);
+  border-color:var(--panel-ink);
 }
 .caseEndCardMark{
   flex:none;
-  width:88px;height:64px;
+  width:64px;height:64px;
   display:grid;place-items:center;
   border-radius:var(--r-md);
-  background:var(--canvas);
-  color:var(--ink);
+  overflow:hidden;
+}
+.caseEndCardIcon{width:100%;height:100%;object-fit:cover;display:block}
+/* The header's monogram (background:ink/color:canvas) would go
+   near-invisible here — this panel is always dark, regardless of site
+   theme — so this is deliberately inverted rather than reused as-is. */
+.caseEndCardMark--home{
+  background:var(--panel-ink);color:var(--panel);
+  font-weight:800;font-size:1.25rem;letter-spacing:-.02em;
 }
 .caseEndCardBody{min-width:0}
 .caseEndCardTitle{
   display:block;
-  font-size:1.0625rem;font-weight:600;letter-spacing:-.02em;color:var(--ink);
+  font-size:1.0625rem;font-weight:600;letter-spacing:-.02em;color:var(--panel-ink);
 }
 .caseEndCardDesc{
   display:block;
   margin-top:var(--s1);
-  color:var(--ink-2);font-size:.875rem;line-height:1.5;
+  color:var(--panel-muted);font-size:.875rem;line-height:1.5;
 }
-/* .viewCase is the same solid pill used for the home page's project CTAs —
-   reused here deliberately, so this reads as unmistakably a button and not
-   a third variant of "card that might just be a container." */
+/* .viewCase is the same solid off-white pill the Spotlight card's own CTA
+   already uses — built for exactly this dark-surface context, reused here
+   so this reads as unmistakably a button and not a third variant of "card
+   that might just be a container." */
 .caseEndCardCta{margin-top:var(--s3);padding:var(--s2) var(--s4);font-size:.8125rem}
 .caseEndCard:hover .caseEndCardCta{transform:translate3d(0,-2px,0);opacity:.92}
 .caseEndCard:hover .caseEndCardCta svg{transform:translateX(3px)}
@@ -7753,9 +7761,9 @@ function ContactSection() {
  * Footer
  * ========================================================================= */
 
-function Footer() {
+function Footer({ onPanel }) {
   return (
-    <footer className="footer">
+    <footer className={`footer${onPanel ? " footer--onPanel" : ""}`}>
       <div className="container">
         <div className="footerTop">
           <ul className="socials">
@@ -8336,8 +8344,16 @@ function CaseEndCard({ project, onCapture, onHome }) {
   if (isGamehouse) {
     return (
       <a className="caseEndCard" href="#/" onClick={onHome}>
-        <span className="caseEndCardMark" aria-hidden="true">
-          <Icon name="arrowLeft" size={22} />
+        {/* The header's own monogram is background:ink/color:canvas — on
+            the light canvas it's a dark badge, but this card sits on the
+            always-dark panel, where that would go near-invisible. Inverted
+            to panel-ink/panel, which stays legible on the panel regardless
+            of site theme. */}
+        <span
+          className="caseEndCardMark caseEndCardMark--home"
+          aria-hidden="true"
+        >
+          {CONTENT.meta.monogram}
         </span>
         <span className="caseEndCardBody">
           <span className="caseEndCardTitle">
@@ -8360,14 +8376,9 @@ function CaseEndCard({ project, onCapture, onHome }) {
     >
       <span className="caseEndCardMark" ref={markRef} aria-hidden="true">
         <img
-          src={resolveSrc(CASE_END_GAMEHOUSE.spotlightLogo)}
+          className="caseEndCardIcon"
+          src={resolveSrc("img/logos/gamehouse-plus-icon.png")}
           alt=""
-          style={{
-            height: "26px",
-            width: `${Math.round(
-              26 * CASE_END_GAMEHOUSE.spotlightLogoAspect,
-            )}px`,
-          }}
         />
       </span>
       <span className="caseEndCardBody">
@@ -8597,20 +8608,26 @@ function CaseStudy({ project, onCapture, onHome, flight, reduced }) {
           </div>
         </section>
 
-        {/* More case studies */}
-        <div className="container">
-          <div className="caseEnd">
-            <p className="caseEndTitle">{CONTENT.caseUi.caseEndTitle}</p>
-            <p className="caseEndSub">{CONTENT.caseUi.caseEndSub}</p>
-            <CaseEndCard
-              project={project}
-              onCapture={onCapture}
-              onHome={onHome}
-            />
+        {/* More case studies — full-bleed black, like the header/footer
+            "chrome" rather than another content section. */}
+        <div className="caseEndPanel">
+          <div className="container">
+            <section className="caseEnd" aria-labelledby="case-end-h">
+              <SectionHead
+                headingId="case-end-h"
+                label={CONTENT.caseUi.caseEndTitle}
+                statement={CONTENT.caseUi.caseEndSub}
+                onPanel
+              />
+              <CaseEndCard
+                project={project}
+                onCapture={onCapture}
+                onHome={onHome}
+              />
+            </section>
           </div>
+          <Footer onPanel />
         </div>
-
-        <Footer />
       </main>
 
       <SectionRail
@@ -9134,20 +9151,26 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
           </div>
         </div>
 
-        {/* More case studies */}
-        <div className="container">
-          <div className="caseEnd">
-            <p className="caseEndTitle">{CONTENT.caseUi.caseEndTitle}</p>
-            <p className="caseEndSub">{CONTENT.caseUi.caseEndSub}</p>
-            <CaseEndCard
-              project={project}
-              onCapture={onCapture}
-              onHome={onHome}
-            />
+        {/* More case studies — full-bleed black, like the header/footer
+            "chrome" rather than another content section. */}
+        <div className="caseEndPanel">
+          <div className="container">
+            <section className="caseEnd" aria-labelledby="case-end-h">
+              <SectionHead
+                headingId="case-end-h"
+                label={CONTENT.caseUi.caseEndTitle}
+                statement={CONTENT.caseUi.caseEndSub}
+                onPanel
+              />
+              <CaseEndCard
+                project={project}
+                onCapture={onCapture}
+                onHome={onHome}
+              />
+            </section>
           </div>
+          <Footer onPanel />
         </div>
-
-        <Footer />
       </main>
 
       <SectionRail
