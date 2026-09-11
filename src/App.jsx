@@ -2942,7 +2942,11 @@ const STYLES_HOME = `
    instead of sitting centred and inset like a wordmark. The box itself
    still takes its height from that padding, same as every other card:
    only the image's *content* escapes it, not the card's size. */
-.cardMediaImg{position:absolute;inset:0}
+/* object-fit only matters for CardVideo, which puts this class straight on
+   a <video> (Visual's own <img> already sets it inline) — without it, a
+   video defaults to object-fit:fill and stretches/distorts to the box
+   instead of covering it: full width, cropped and centred vertically. */
+.cardMediaImg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cardBody{
   padding:0 var(--s5) var(--s5);
   border-top:1px solid var(--hairline);
@@ -5337,9 +5341,13 @@ function HeroMedia({ project, reduced, ratio = 16 / 9, className }) {
 /**
  * A work card's clip: paused on its own first frame while idle, dimmed by
  * CSS (see `.cardMediaDim`); once `active` (hovered, or — on touch —
- * centred in the viewport) it plays ping-pong, driven here by hand-walking
- * `currentTime` each frame, since HTML5 video has no native reverse
- * playback. Falls back to a still first frame under reduced motion.
+ * centred in the viewport) it plays ping-pong. Forward is real native
+ * playback (smooth, hardware-decoded); reverse has no native equivalent,
+ * so it's hand-walked via `currentTime` on a throttled timer — throttled
+ * because a seek is an async decode from the nearest keyframe, and driving
+ * it every animation frame (~60/s) queues a new seek before the last one
+ * resolves, which is what made the clip appear to freeze after its first
+ * couple of frames. Falls back to a still first frame under reduced motion.
  *
  * The clip itself doesn't start downloading until the card nears the
  * viewport — four of these on one page would otherwise all fetch on load,
@@ -5347,9 +5355,7 @@ function HeroMedia({ project, reduced, ratio = 16 / 9, className }) {
  */
 function CardVideo({ cardVideo, active, reduced, className }) {
   const videoRef = useRef(null);
-  const rafRef = useRef(0);
-  const dirRef = useRef(1);
-  const lastTsRef = useRef(0);
+  const reverseTimerRef = useRef(0);
   const [seen, setSeen] = useState(() => !("IntersectionObserver" in window));
 
   useEffect(() => {
@@ -5377,35 +5383,38 @@ function CardVideo({ cardVideo, active, reduced, className }) {
   useEffect(() => {
     const v = videoRef.current;
     if (!v || !seen) return;
+
     if (active && !reduced) {
-      dirRef.current = 1;
-      lastTsRef.current = 0;
-      const step = (ts) => {
-        if (!v.duration) {
-          rafRef.current = requestAnimationFrame(step);
-          return;
+      // The step is a fixed 90ms of video time per tick — long enough for
+      // each seek to actually resolve before the next one is queued, and
+      // it keeps the reverse leg's real-world duration close to the clip's
+      // own length (same pace as the forward leg it mirrors).
+      const reverseStep = () => {
+        const t = v.currentTime - 0.09;
+        if (t <= 0) {
+          window.clearInterval(reverseTimerRef.current);
+          v.currentTime = 0;
+          v.play().catch(() => {});
+        } else {
+          v.currentTime = t;
         }
-        const dt = lastTsRef.current ? (ts - lastTsRef.current) / 1000 : 0;
-        lastTsRef.current = ts;
-        let t = v.currentTime + dirRef.current * dt;
-        if (t >= v.duration) {
-          t = v.duration;
-          dirRef.current = -1;
-        } else if (t <= 0) {
-          t = 0;
-          dirRef.current = 1;
-        }
-        v.currentTime = t;
-        rafRef.current = requestAnimationFrame(step);
       };
-      v.pause();
-      rafRef.current = requestAnimationFrame(step);
-    } else {
-      cancelAnimationFrame(rafRef.current);
-      v.pause();
-      if (!active) v.currentTime = 0;
+      const onEnded = () => {
+        window.clearInterval(reverseTimerRef.current);
+        reverseTimerRef.current = window.setInterval(reverseStep, 90);
+      };
+      v.loop = false;
+      v.addEventListener("ended", onEnded);
+      v.play().catch(() => {});
+      return () => {
+        window.clearInterval(reverseTimerRef.current);
+        v.removeEventListener("ended", onEnded);
+      };
     }
-    return () => cancelAnimationFrame(rafRef.current);
+
+    window.clearInterval(reverseTimerRef.current);
+    v.pause();
+    v.currentTime = 0;
   }, [active, reduced, seen]);
 
   return (
