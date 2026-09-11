@@ -3952,12 +3952,21 @@ const STYLES_ASK = `
 }
 
 /* ---- panel ---- : a right-hand column the page makes room for on desktop,
-   full-screen on mobile. */
+   full-screen on mobile.
+
+   The entrance animation lives on .askPanelInner, not .askPanel itself,
+   because .askPanel's own transform/height are also driven imperatively
+   (see the visualViewport effect in AskWidget, for the on-screen-keyboard
+   fix) — a CSS animation on the same property would keep overriding those
+   inline styles for as long as it's in effect. */
 .askPanel{
   position:fixed;z-index:90;
-  display:flex;flex-direction:column;
   background:var(--surface);color:var(--ink);
   overflow:hidden;
+}
+.askPanelInner{
+  display:flex;flex-direction:column;
+  height:100%;
 }
 
 @media (min-width:861px){
@@ -3966,8 +3975,8 @@ const STYLES_ASK = `
     width:var(--ask-col-w);
     border-left:1px solid var(--hairline);
     box-shadow:-14px 0 44px -24px rgba(0,0,0,.22);
-    animation:askColIn .34s var(--ease-out) both;
   }
+  .askPanelInner{ animation:askColIn .34s var(--ease-out) }
   html.ask-col-open body{ padding-right:var(--ask-col-w) }
   html.ask-col-open .nav{ right:var(--ask-col-w) }
   html.ask-col-open .railDock{ right:var(--ask-col-w) }
@@ -3977,11 +3986,11 @@ const STYLES_ASK = `
   .askPanel{
     inset:0;
     width:auto;height:100vh;height:100dvh;
-    animation:askPanelUp .28s var(--ease-out) both;
   }
+  .askPanelInner{ animation:askPanelUp .28s var(--ease-out) }
 }
 
-@media (prefers-reduced-motion:reduce){ .askPanel{ animation:askFade .18s both } }
+@media (prefers-reduced-motion:reduce){ .askPanelInner{ animation:askFade .18s } }
 
 .askHead{
   display:flex;align-items:flex-start;gap:var(--s3);
@@ -4020,7 +4029,7 @@ const STYLES_ASK = `
 }
 
 .askBody{
-  flex:1;overflow-y:auto;
+  flex:1;overflow-y:auto;overscroll-behavior:contain;
   padding:var(--s4);
   display:flex;flex-direction:column;gap:var(--s3);
 }
@@ -5682,6 +5691,7 @@ function AskWidget({ reduced }) {
   const [pending, setPending] = useState(false);
   const [draft, setDraft] = useState("");
 
+  const panelRef = useRef(null);
   const bodyRef = useRef(null);
   const inputRef = useRef(null);
   const messagesRef = useRef(messages);
@@ -5731,6 +5741,49 @@ function AskWidget({ reduced }) {
     return () => {
       mq.removeEventListener("change", apply);
       document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  // Mobile again: keep the full-screen panel matched to what's actually
+  // visible, not the layout viewport. An on-screen keyboard shrinks the
+  // real visible area and — on iOS especially — the browser scrolls the
+  // whole fixed layer to keep the focused field in view rather than
+  // resizing it, which is what was cropping the header and close button
+  // above the top of the screen. visualViewport gives the true height and
+  // how far that scroll has shifted things; mirroring both onto the panel
+  // keeps header, body and footer all on screen with the keyboard open.
+  useEffect(() => {
+    if (!open) return undefined;
+    const vv = window.visualViewport;
+    if (!vv) return undefined;
+    const mq = window.matchMedia("(max-width:860px)");
+    const clear = () => {
+      const panel = panelRef.current;
+      if (!panel) return;
+      panel.style.height = "";
+      panel.style.transform = "";
+    };
+    const apply = () => {
+      const panel = panelRef.current;
+      if (!panel) return;
+      if (!mq.matches) {
+        clear();
+        return;
+      }
+      panel.style.height = `${vv.height}px`;
+      panel.style.transform = vv.offsetTop
+        ? `translateY(${vv.offsetTop}px)`
+        : "";
+    };
+    apply();
+    vv.addEventListener("resize", apply);
+    vv.addEventListener("scroll", apply);
+    mq.addEventListener("change", apply);
+    return () => {
+      vv.removeEventListener("resize", apply);
+      vv.removeEventListener("scroll", apply);
+      mq.removeEventListener("change", apply);
+      clear();
     };
   }, [open]);
 
@@ -5896,119 +5949,126 @@ function AskWidget({ reduced }) {
       </div>
 
       {open ? (
-        <div className="askPanel" role="dialog" aria-label={c.dialogLabel}>
-          <header className="askHead">
-            <div className="askHeadText">
-              <div className="askTitle">{c.title}</div>
-              <div className="askSub">{c.subtitle}</div>
-            </div>
-            <div className="askHeadBtns">
-              <span className="askInfoWrap">
+        <div
+          className="askPanel"
+          role="dialog"
+          aria-label={c.dialogLabel}
+          ref={panelRef}
+        >
+          <div className="askPanelInner">
+            <header className="askHead">
+              <div className="askHeadText">
+                <div className="askTitle">{c.title}</div>
+                <div className="askSub">{c.subtitle}</div>
+              </div>
+              <div className="askHeadBtns">
+                <span className="askInfoWrap">
+                  <button
+                    type="button"
+                    className="askIconBtn"
+                    aria-label={c.infoLabel}
+                  >
+                    <Icon name="info" size={16} />
+                  </button>
+                  <span className="askTip" role="tooltip">
+                    {c.disclaimer}
+                  </span>
+                </span>
                 <button
                   type="button"
                   className="askIconBtn"
-                  aria-label={c.infoLabel}
+                  aria-label={c.resetLabel}
+                  onClick={resetChat}
                 >
-                  <Icon name="info" size={16} />
+                  <Icon name="refresh" size={16} />
                 </button>
-                <span className="askTip" role="tooltip">
-                  {c.disclaimer}
-                </span>
-              </span>
-              <button
-                type="button"
-                className="askIconBtn"
-                aria-label={c.resetLabel}
-                onClick={resetChat}
-              >
-                <Icon name="refresh" size={16} />
-              </button>
-              <button
-                type="button"
-                className="askIconBtn"
-                aria-label={c.closeLabel}
-                onClick={() => setOpenAndLog(false)}
-              >
-                <Icon name="close" size={16} />
-              </button>
-            </div>
-          </header>
-
-          <div className="askBody" ref={bodyRef} aria-live="polite">
-            {messages.length === 0 ? (
-              <div className="askEmpty">
-                <div className="askEmptyTitle">{c.emptyTitle}</div>
-                {c.suggestions.map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    className="askChip"
-                    onClick={() => send(s)}
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            ) : (
-              messages.map((m, i) => (
-                <div
-                  key={i}
-                  className={`askMsg askMsg--${m.role === "user" ? "user" : "bot"}`}
+                <button
+                  type="button"
+                  className="askIconBtn"
+                  aria-label={c.closeLabel}
+                  onClick={() => setOpenAndLog(false)}
                 >
-                  {m.role === "user"
-                    ? m.content
-                    : renderAskContent(m.content).map((p, j) =>
-                        p.t === "link" ? (
-                          <a
-                            key={j}
-                            className="askCta"
-                            href={p.href}
-                            onClick={() => setOpenAndLog(false)}
-                          >
-                            {p.label}
-                            <Icon name="arrowRight" size={14} />
-                          </a>
-                        ) : (
-                          <span key={j}>{p.v}</span>
-                        ),
-                      )}
-                </div>
-              ))
-            )}
-            {pending ? (
-              <div className="askDots" aria-label="Thinking">
-                <i />
-                <i />
-                <i />
+                  <Icon name="close" size={16} />
+                </button>
               </div>
-            ) : null}
-          </div>
+            </header>
 
-          <form
-            className="askFoot"
-            onSubmit={(e) => {
-              e.preventDefault();
-              send(draft);
-            }}
-          >
-            <textarea
-              ref={inputRef}
-              className="askInput"
-              rows={1}
-              placeholder={c.inputPlaceholder}
-              value={draft}
-              onChange={onInput}
-              onKeyDown={onKeyDown}
-            />
-            <button
-              type="submit"
-              className="askSend"
-              disabled={!draft.trim() || pending}
-              aria-label={c.sendLabel}
+            <div className="askBody" ref={bodyRef} aria-live="polite">
+              {messages.length === 0 ? (
+                <div className="askEmpty">
+                  <div className="askEmptyTitle">{c.emptyTitle}</div>
+                  {c.suggestions.map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      className="askChip"
+                      onClick={() => send(s)}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                messages.map((m, i) => (
+                  <div
+                    key={i}
+                    className={`askMsg askMsg--${m.role === "user" ? "user" : "bot"}`}
+                  >
+                    {m.role === "user"
+                      ? m.content
+                      : renderAskContent(m.content).map((p, j) =>
+                          p.t === "link" ? (
+                            <a
+                              key={j}
+                              className="askCta"
+                              href={p.href}
+                              onClick={() => setOpenAndLog(false)}
+                            >
+                              {p.label}
+                              <Icon name="arrowRight" size={14} />
+                            </a>
+                          ) : (
+                            <span key={j}>{p.v}</span>
+                          ),
+                        )}
+                  </div>
+                ))
+              )}
+              {pending ? (
+                <div className="askDots" aria-label="Thinking">
+                  <i />
+                  <i />
+                  <i />
+                </div>
+              ) : null}
+            </div>
+
+            <form
+              className="askFoot"
+              onSubmit={(e) => {
+                e.preventDefault();
+                send(draft);
+              }}
             >
-              <Icon name="arrowUp" size={16} />
-            </button>
-          </form>
+              <textarea
+                ref={inputRef}
+                className="askInput"
+                rows={1}
+                placeholder={c.inputPlaceholder}
+                value={draft}
+                onChange={onInput}
+                onKeyDown={onKeyDown}
+              />
+              <button
+                type="submit"
+                className="askSend"
+                disabled={!draft.trim() || pending}
+                aria-label={c.sendLabel}
+              >
+                <Icon name="arrowUp" size={16} />
+              </button>
+            </form>
+          </div>
         </div>
       ) : null}
     </>
