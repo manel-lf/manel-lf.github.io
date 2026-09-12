@@ -2902,8 +2902,10 @@ const STYLES_HOME = `
   display:grid;place-items:center;
   height:clamp(140px,20vw,220px);
   padding-inline:var(--s5);
-  /* fixed-radius clip: the mark scales inside, the frame never moves */
-  border-radius:var(--r-md);
+  /* Square clip: the mark/thumbnail scales inside, the frame never moves.
+     No radius here — a real thumbnail's corners should read as part of the
+     card's own rounded edge, not carry a second, smaller radius of their
+     own (the card itself still clips via its own overflow:hidden). */
   overflow:hidden;
 }
 /* The overlay label (position:absolute) takes up none of the flow height
@@ -5323,7 +5325,6 @@ function HeroMedia({ project, reduced, ratio = 16 / 9, className }) {
         <video
           autoPlay
           muted
-          loop
           playsInline
           preload="auto"
           poster={resolveSrc(project.spotlightVideo.poster)}
@@ -7239,7 +7240,6 @@ function Spotlight({ project, onCapture, reduced, centerActive }) {
               poster={resolveSrc(project.spotlightVideo.poster)}
               autoPlay
               muted
-              loop
               playsInline
               preload="auto"
             >
