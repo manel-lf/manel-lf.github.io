@@ -5325,6 +5325,7 @@ function HeroMedia({ project, reduced, ratio = 16 / 9, className }) {
         <video
           autoPlay
           muted
+          loop
           playsInline
           preload="auto"
           poster={resolveSrc(project.spotlightVideo.poster)}
@@ -5345,11 +5346,11 @@ function HeroMedia({ project, reduced, ratio = 16 / 9, className }) {
  * CSS (see `.cardMediaDim`); once `active` (hovered, or — on touch —
  * centred in the viewport) it plays ping-pong. Forward is real native
  * playback (smooth, hardware-decoded); reverse has no native equivalent,
- * so it's hand-walked via `currentTime` on a throttled timer — throttled
- * because a seek is an async decode from the nearest keyframe, and driving
- * it every animation frame (~60/s) queues a new seek before the last one
- * resolves, which is what made the clip appear to freeze after its first
- * couple of frames. Falls back to a still first frame under reduced motion.
+ * so it's hand-walked via `currentTime`, one step per the video's own
+ * `seeked` event rather than a fixed timer — a seek is an async decode
+ * from the nearest keyframe, and driving steps on a clock queued a new one
+ * before the last had resolved, which is what made the reverse leg
+ * stutter. Falls back to a still first frame under reduced motion.
  *
  * The clip itself doesn't start downloading until the card nears the
  * viewport — four of these on one page would otherwise all fetch on load,
@@ -5357,7 +5358,6 @@ function HeroMedia({ project, reduced, ratio = 16 / 9, className }) {
  */
 function CardVideo({ cardVideo, active, reduced, className }) {
   const videoRef = useRef(null);
-  const reverseTimerRef = useRef(0);
   const [seen, setSeen] = useState(() => !("IntersectionObserver" in window));
 
   useEffect(() => {
@@ -5387,34 +5387,45 @@ function CardVideo({ cardVideo, active, reduced, className }) {
     if (!v || !seen) return;
 
     if (active && !reduced) {
-      // The step is a fixed 90ms of video time per tick — long enough for
-      // each seek to actually resolve before the next one is queued, and
-      // it keeps the reverse leg's real-world duration close to the clip's
-      // own length (same pace as the forward leg it mirrors).
+      let cancelled = false;
+      let pendingTimer = 0;
+      // Each step waits for the video's own `seeked` event instead of
+      // firing on a fixed-interval timer — a seek is an async decode from
+      // the nearest keyframe, and firing the next one on a clock queued it
+      // before the last had actually resolved, which is what made the
+      // reverse leg visibly stutter. A step only ever starts once the
+      // browser is done with the last one; the 90ms floor after that keeps
+      // its pace close to the forward leg it mirrors when seeks resolve
+      // faster than that.
       const reverseStep = () => {
+        if (cancelled) return;
         const t = v.currentTime - 0.09;
         if (t <= 0) {
-          window.clearInterval(reverseTimerRef.current);
           v.currentTime = 0;
           v.play().catch(() => {});
-        } else {
-          v.currentTime = t;
+          return;
         }
+        const stepStart = performance.now();
+        const onSeeked = () => {
+          v.removeEventListener("seeked", onSeeked);
+          if (cancelled) return;
+          const wait = Math.max(0, 90 - (performance.now() - stepStart));
+          pendingTimer = window.setTimeout(reverseStep, wait);
+        };
+        v.addEventListener("seeked", onSeeked);
+        v.currentTime = t;
       };
-      const onEnded = () => {
-        window.clearInterval(reverseTimerRef.current);
-        reverseTimerRef.current = window.setInterval(reverseStep, 90);
-      };
+      const onEnded = () => reverseStep();
       v.loop = false;
       v.addEventListener("ended", onEnded);
       v.play().catch(() => {});
       return () => {
-        window.clearInterval(reverseTimerRef.current);
+        cancelled = true;
+        window.clearTimeout(pendingTimer);
         v.removeEventListener("ended", onEnded);
       };
     }
 
-    window.clearInterval(reverseTimerRef.current);
     v.pause();
     v.currentTime = 0;
   }, [active, reduced, seen]);
@@ -7240,6 +7251,7 @@ function Spotlight({ project, onCapture, reduced, centerActive }) {
               poster={resolveSrc(project.spotlightVideo.poster)}
               autoPlay
               muted
+              loop
               playsInline
               preload="auto"
             >
