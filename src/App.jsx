@@ -4082,6 +4082,26 @@ const STYLES_ASK = `
   background:color-mix(in srgb, var(--accent) 6%, transparent);
 }
 
+/* Divergent next-questions under the most recent reply — a wrapped row of
+   small pills, not the full-width stacked .askChip list the empty state
+   uses, so it reads as "a few quick options" rather than a repeat of the
+   opening suggestions. */
+.askFollowups{
+  align-self:flex-start;
+  display:flex;flex-wrap:wrap;gap:var(--s2);
+  max-width:86%;
+}
+.askFollowup{
+  padding:var(--s2) var(--s3);
+  border:1px solid var(--hairline);border-radius:var(--r-pill);
+  color:var(--ink-2);font-size:.8125rem;line-height:1.3;
+  transition:border-color .15s,background-color .15s,color .15s;
+}
+.askFollowup:hover{
+  border-color:var(--accent);color:var(--ink);
+  background:color-mix(in srgb, var(--accent) 6%, transparent);
+}
+
 .askMsg{
   max-width:86%;padding:var(--s3) var(--s4);
   border-radius:var(--r-md);
@@ -4133,10 +4153,16 @@ const STYLES_ASK = `
   display:flex;gap:var(--s2);align-items:flex-end;
 }
 .askInput{
-  flex:1;resize:none;border:0;background:none;outline:none;
+  flex:1;resize:none;outline:none;
   max-height:120px;line-height:1.45;font-size:.9rem;
-  padding:var(--s2);
+  padding:var(--s2) var(--s3);
+  color:var(--ink);
+  background:var(--surface-2);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-md);
+  transition:border-color .15s var(--ease-std);
 }
+.askInput:focus{ border-color:var(--accent) }
 .askInput::placeholder{ color:var(--muted) }
 .askSend{
   width:34px;height:34px;flex:none;
@@ -5504,11 +5530,11 @@ He's very into AI-assisted design workflows and uses AI daily; he thinks it will
 
 WHAT HE'S DOING RIGHT NOW
 You'll be told his current local time band in a note appended after this prompt. When asked what he's doing right now, answer with ONLY the one slice matching that band — a single short, playful line, not a tour through the whole day, and not literally factual (you don't actually know) but in that spirit. Vary the wording each time rather than reciting a fixed sentence:
-- workday: probably GameHouse+ — designing, testing a prototype, or wrestling with a Figma file.
+- workday: probably GameHouse+ — designing, testing a prototype, or wrestling with a Figma file. Good timing, actually — mention that it's a solid moment to reach out, and that the contact form or booking a call are the way to do it.
 - lunch: probably cooking something, quality not guaranteed.
-- afternoon: maybe the gym (push/pull/legs), a walk, or something gaming-related.
+- afternoon: maybe the gym — push, pull, and (allegedly) legs — a walk, or something gaming-related.
 - evening: decent odds he's playing Magic with friends, working on his portfolio, or gaming.
-- late night: probably in bed playing whatever Switch 2 game currently owns his life.
+- late night: probably in bed with whatever Switch game currently has him hooked — recent suspects include Pokémon Pokopia, Star Fox, or Splatoon: Deep Cut.
 If no time note is present, treat it as the workday slice.
 
 PORTFOLIO NAVIGATION
@@ -5569,17 +5595,20 @@ function askBarcelonaTime() {
   return { hour, band };
 }
 
+// The late-night line names real, recent Switch releases so it doesn't go
+// stale into a generic "some Switch game" filler — worth swapping in
+// whatever's actually trending every few months.
 const ASK_DOING_NOW = {
   workday:
-    "Right now? He's probably working on GameHouse+ — designing something, testing a prototype, or arguing with a Figma file.",
+    "Right now? He's probably working on GameHouse+ — designing something, testing a prototype, or arguing with a Figma file. Good time to catch him, actually — want to send a message or book a call?",
   lunch:
     "Right now? He's probably making something to eat. Whether it's actually good is a separate question.",
   afternoon:
-    "Right now? Could be the gym doing push/pull/legs, out for a walk, or something gaming-related.",
+    "Right now? Could be the gym — push, pull, and (allegedly) legs — out for a walk, or something gaming-related.",
   evening:
     "Right now? Decent chance he's playing Magic with friends, working on something for his portfolio, or getting a few games in.",
   "late night":
-    "Right now? He's probably in bed playing whatever Switch 2 game has currently taken over his life.",
+    "Right now? Probably in bed with whatever Switch game currently has him hooked — Pokémon Pokopia, Star Fox, or Splatoon: Deep Cut are the recent suspects.",
 };
 
 function askBarcelonaTimeNote() {
@@ -5587,59 +5616,104 @@ function askBarcelonaTimeNote() {
   return `Current local time for Manel (Barcelona, Europe/Madrid): ${String(hour).padStart(2, "0")}:xx — the "${band}" band. If asked what he's doing right now, answer with only that one slice.`;
 }
 
+// Shown under the last reply as a "Send a message" / "Book a call" pair —
+// for questions where the actual next step isn't more chat, it's reaching
+// him. Objects instead of plain strings so the click performs the real
+// action (open the contact form, open the booking dialog) rather than just
+// asking it as another question — see the action handling in AskWidget.
+const ASK_CONTACT_FOLLOWUPS = [
+  { label: "Send a message", action: "contact" },
+  { label: "Book a call", action: "book" },
+];
+
+// A handful of generic next questions for whenever nothing more specific
+// applies — an unmatched question, or the model's own reply came back
+// without a clear topic to branch from.
+const ASK_GENERIC_FOLLOWUPS = [
+  "What's Manel's latest work?",
+  "What's he doing right now?",
+  "How does he use AI in his design workflow?",
+];
+
 // Pretend-mode answers, tried in order — used with no proxy/key configured,
 // and as the fallback whenever a live call fails. The three matching the
 // suggested-question chips use the exact scripted copy; the rest are drawn
-// from the same facts as ASK_SYSTEM, in the same voice.
+// from the same facts as ASK_SYSTEM, in the same voice. `followups` — a
+// couple of divergent next questions shown as chips under the reply, or a
+// function when they depend on runtime state (time of day) — is matched
+// against the visitor's own question, not the reply text, so it applies
+// just as well to a live model reply on the same topic; see pickFollowups.
 const ASK_PRETEND = [
   {
     match: /salary|compensation|comp\b|how much.*(earn|make|paid)|pay range/i,
     reply:
       "That's not something I get into here — comp isn't public. If you want to talk numbers, that's a conversation for the contact form, directly with Manel.",
+    followups: ["What roles is he targeting?", "Is he open to freelance work?"],
   },
   {
     match: /latest work|what.*(manel|you).*(latest|currently|now).*work|what.*working on|current(ly)? work/i,
     reply:
       `He's currently a Senior Product Designer at GameHouse, where he's the sole designer on the GameHouse+ app team.\n\nHe's been on it from before launch through a major shift in direction. GameHouse+ started as a subscription built around downloadable games, and they've been working towards a platform where people can also play games instantly inside the app.\n\nHis role goes well beyond designing screens — product direction, research, information architecture, UX/UI, prototyping, design systems and validation, working closely with product, engineering and leadership. A big part of it has been figuring out how downloadable and instant-play games can coexist as one product instead of feeling like two.\n\n[${ASK_GAMEHOUSE_LABEL}](${ASK_GAMEHOUSE_HREF})`,
+    followups: [
+      "What was the hardest trade-off on it?",
+      "What's his general approach to product strategy?",
+    ],
   },
   {
     match: /how.*(use|using).*ai.*(workflow|design)|ai.*(workflow|design process)|use ai|ai-assisted/i,
     reply:
       "The biggest change AI's made to his workflow isn't that he makes UI faster. It's that the distance between an idea and something you can actually test got a lot shorter.\n\nFor most of his career the process was pretty linear: idea, wireframes, flows, mockups, prototype, and eventually something you could put in front of a person. Now it's often idea → prompt → working thing → evaluate → refine. He uses tools like Claude Code alongside Figma and his design system to build functional prototypes quickly, so design discussions happen around something that actually works rather than a deck explaining what might.\n\nHe's pretty deliberate about where it helps, though — framing the problem, research, deciding what's worth building, and judging whether something's actually good still have to happen before and around the generation. The point isn't to generate more things. It's to find out what works earlier.",
+    followups: [
+      "Does AI replace UX judgement, in his view?",
+      "What's Manel's latest work?",
+    ],
   },
   {
     match: /doing (right )?now|what.*(manel|you).*(doing|up to)|what are you up to/i,
     reply: () => ASK_DOING_NOW[askBarcelonaTime().band],
+    followups: () =>
+      askBarcelonaTime().band === "workday"
+        ? ASK_CONTACT_FOLLOWUPS
+        : ["What's Manel's latest work?", "What does he think about AI in design?"],
   },
   {
     match: /career|why.*(leave|left|move|moved|change)|popcore|eunoia|jesterday|\bseat\b|restructure/i,
     reply:
       "That's a totally fair question. Almost none of those moves were really his call. GameHouse and Popcore both went through restructures, and the project he joined Eunoia for closed. Jesterday's freelance, so that's a different story.\n\nThe one deliberate move was earlier in his career, when he left SEAT to move into gaming, because that's where he wanted to build his career long-term. Now he's looking for stability and somewhere he can grow for the long run.",
+    followups: ["Is he looking to move again?", "What's his latest work?"],
   },
   {
     match: /gam(e|ing)|tft|teamfight|magic.the.gathering|\bmtg\b|pvp|competitive|switch/i,
     reply:
       "He's loved games since he was a kid — it's not just an industry he happened to land in. He spends a lot of time on competitive and PvP stuff, and he's a sucker for strategy and card games specifically. Teamfight Tactics is a favourite, and he's getting back into Magic: The Gathering after a long break.\n\nWhat he actually loves is the craft underneath — progression, economies, rewards, competition, the systems that make a game worth coming back to. That's a big part of why gamification shows up so much in his work. That said, he's not precious about only working on games — he'll take a non-gaming product if the problem's interesting enough.",
+    followups: [
+      "What's he playing right now?",
+      "How does that show up in his design work?",
+    ],
   },
   {
     match: /\bcat|boira|melindro/i,
     reply:
       "Good, thanks for asking — he's got two, Boira and Melindro, both grey, both siblings. Boira's the girl, Melindro's the boy. They mostly run the house.",
+    followups: ["What's Manel working on right now?", "What's his design process like?"],
   },
   {
     match: /design system|component|token|library/i,
     reply:
       "The system he works with came out of the GameHouse+ work. The core rule: describe a game by its state — playable, locked, installed, new — not by the rules that produced that state, so one dimension can lead per surface. It's design tokens plus a small component set, built with engineering so the same vocabulary holds in Figma and in code.",
+    followups: ["What's his general product strategy?", "What's his latest work?"],
   },
   {
     match: /strateg|approach|process|product thinking/i,
     reply:
       `He starts from the business tension, not the screens. On GameHouse+ that tension was one product suddenly holding two kinds of content that behaved nothing alike.\n\nSo the work was naming the conflict clearly, getting data and research to say which users each format actually served, and only then designing something that could hold both. Strategy first, pixels last.\n\n[${ASK_GAMEHOUSE_LABEL}](${ASK_GAMEHOUSE_HREF})`,
+    followups: ["How does he use AI in his workflow?", "What's his design system like?"],
   },
   {
     match: /hire|available|opportunit|role\b|freelance|reach out|open to/i,
     reply:
       "He's currently open to new opportunities — Senior, Lead or Principal Product Designer roles, ideally somewhere he can put down roots for a while. The contact form on this site reaches Manel directly; that's the best way in.",
+    followups: ASK_CONTACT_FOLLOWUPS,
   },
 ];
 
@@ -5650,6 +5724,23 @@ function pretendReply(text) {
   const hit = ASK_PRETEND.find((p) => p.match.test(text || ""));
   if (!hit) return ASK_PRETEND_FALLBACK;
   return typeof hit.reply === "function" ? hit.reply() : hit.reply;
+}
+
+/**
+ * Picks 2-3 divergent follow-up questions to show as chips under a reply.
+ * Matched against the visitor's own question (always known, regardless of
+ * how the reply was produced) rather than parsed out of the reply text, so
+ * it works identically for a live model answer and a canned one on the same
+ * topic — no fragile parsing of free-form model output required.
+ */
+function pickFollowups(question) {
+  const hit = ASK_PRETEND.find((p) => p.match.test(question || ""));
+  const list = hit
+    ? typeof hit.followups === "function"
+      ? hit.followups()
+      : hit.followups
+    : null;
+  return list && list.length ? list : ASK_GENERIC_FOLLOWUPS;
 }
 
 // Matches either a proper [Label](href) markdown link, or — because the
@@ -5871,7 +5962,7 @@ function logAskSession(messages) {
  * edge, ducks further out while the page scrolls down, and grows back into
  * view on scroll-up or after a 3s pause. Clicking it swaps in the panel.
  */
-function AskWidget({ reduced }) {
+function AskWidget({ reduced, onBook }) {
   const [phase, setPhase] = useState("peek"); // peek | hiding | big
   const [open, setOpen] = useState(false);
   const [onDark, setOnDark] = useState(false); // page reads dark right behind the button — see the effect below
@@ -6116,7 +6207,11 @@ function AskWidget({ reduced }) {
         if (done) {
           setMessages((m) => [
             ...m,
-            { role: "assistant", content: typingMsg.text },
+            {
+              role: "assistant",
+              content: typingMsg.text,
+              followups: typingMsg.followups,
+            },
           ]);
           setTypingMsg(null);
         } else {
@@ -6171,9 +6266,41 @@ function AskWidget({ reduced }) {
       const normalized = splitAskParagraphs(reply).join("\n\n");
       const ticks = Math.max(1, Math.round(ASK_TYPE_TARGET_MS / ASK_TYPE_TICK_MS));
       const step = Math.max(1, Math.ceil(normalized.length / ticks));
-      setTypingMsg({ text: normalized, shown: 0, step });
+      setTypingMsg({ text: normalized, shown: 0, step, followups: pickFollowups(q) });
     },
     [pending, typingMsg],
+  );
+
+  // A followup chip is either another question (send it like anything the
+  // visitor typed) or a real action — jump to the contact section, or open
+  // the booking dialog — closing the panel either way since the visitor is
+  // being sent elsewhere, not continuing the conversation.
+  const handleFollowup = useCallback(
+    (f) => {
+      if (typeof f === "string") {
+        send(f);
+        return;
+      }
+      setOpenAndLog(false);
+      if (f.action === "book") {
+        onBook?.();
+      } else if (f.action === "contact") {
+        const scrollToContact = () =>
+          document
+            .getElementById("contact")
+            ?.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+        // The contact section only exists on the home view — from a case
+        // study or journal post, route home first and give the route
+        // change a beat to render before scrolling.
+        if (parseHash(window.location.hash).view === "home") {
+          scrollToContact();
+        } else {
+          window.location.hash = "#/";
+          window.setTimeout(scrollToContact, 100);
+        }
+      }
+    },
+    [send, setOpenAndLog, onBook, reduced],
   );
 
   const onInput = (e) => {
@@ -6205,6 +6332,16 @@ function AskWidget({ reduced }) {
         return paras.length ? paras : [""];
       })()
     : [];
+
+  // Only once the reply's fully settled — not mid-type, not while another
+  // request is pending — and only ever for the most recent turn; older
+  // followups would just be stale invitations to re-ask something the
+  // conversation's already moved past.
+  const lastMsg = messages[messages.length - 1];
+  const activeFollowups =
+    !pending && !typingMsg && lastMsg?.role === "assistant"
+      ? lastMsg.followups
+      : null;
 
   return (
     <>
@@ -6374,6 +6511,20 @@ function AskWidget({ reduced }) {
                   ) : null}
                 </div>
               ))}
+              {activeFollowups?.length ? (
+                <div className="askFollowups">
+                  {activeFollowups.map((f, i) => (
+                    <button
+                      key={i}
+                      type="button"
+                      className="askFollowup"
+                      onClick={() => handleFollowup(f)}
+                    >
+                      {typeof f === "string" ? f : f.label}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
             </div>
 
             <form
@@ -9560,7 +9711,7 @@ export default function App() {
         onHome={goHome}
         onBook={() => setBooking(true)}
       />
-      <AskWidget reduced={reduced} />
+      <AskWidget reduced={reduced} onBook={() => setBooking(true)} />
       {booking ? (
         <BookingDialog onClose={closeBooking} theme={theme} reduced={reduced} />
       ) : null}
