@@ -876,9 +876,11 @@ export const CONTENT = {
         {
           staticCards: [
             {
+              // Single sketch render, not a light/dark pair — same file
+              // both ways rather than a separate re-render per theme.
               thumb: {
-                light: "img/gh-principle-state-light.png",
-                dark: "img/gh-principle-state-dark.png",
+                light: "img/gh-principle-state.png",
+                dark: "img/gh-principle-state.png",
               },
               title: "Show state, never rules.",
               meta: "Principle",
@@ -886,8 +888,8 @@ export const CONTENT = {
             },
             {
               thumb: {
-                light: "img/gh-principle-surface-light.png",
-                dark: "img/gh-principle-surface-dark.png",
+                light: "img/gh-principle-surface.png",
+                dark: "img/gh-principle-surface.png",
               },
               title: "One dimension leads per surface.",
               meta: "Principle",
@@ -895,8 +897,8 @@ export const CONTENT = {
             },
             {
               thumb: {
-                light: "img/gh-principle-format-light.png",
-                dark: "img/gh-principle-format-dark.png",
+                light: "img/gh-principle-format.png",
+                dark: "img/gh-principle-format.png",
               },
               title:
                 "Format decides where a game lives, never whether a player can find it.",
@@ -3495,10 +3497,14 @@ const STYLES_CASE = `
 /* Each thumbnail ships as a light- and a dark-mode render (the source art
    is transparent everywhere but the artwork itself, so this only swaps
    which one is visible — not a background) — the card's own --surface
-   shows through either way, so no separate fill is needed here. */
+   shows through either way, so no separate fill is needed here.
+   The three principle sketches only ship one render, opaque light
+   background included, so their "dark" instance is the same file
+   inverted rather than a real second render — safe globally since
+   nothing else currently uses a genuinely distinct thumb.dark image. */
 .cardThumb--dark{display:none}
 [data-theme='dark'] .cardThumb--light{display:none}
-[data-theme='dark'] .cardThumb--dark{display:block}
+[data-theme='dark'] .cardThumb--dark{display:block;filter:invert(1)}
 .processCardBody{
   padding:var(--s5);
   display:flex;flex-direction:column;gap:var(--s3);
