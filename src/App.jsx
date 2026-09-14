@@ -1844,6 +1844,149 @@ export const CONTENT = {
         },
       ],
     },
+    {
+      slug: "the-southern",
+      logo: "img/logos/eunoiadigital.svg",
+      logoAspect: 12.264,
+      name: "The Southern",
+      mark: "the-southern",
+      eyebrow: "The Southern · Eunoia Digital",
+      cardVideo: {
+        src: "video/the-southern-card.mp4",
+        poster: "img/the-southern-card-poster.jpg",
+      },
+      // A phone mockup layered over the card's own video/poster — barely
+      // visible at rest, sliding up toward the top edge on hover. See
+      // ProjectCard's `cardMockup` handling and .cardMockup in the stylesheet.
+      cardMockup: "img/the-southern-card-phone.png",
+      positioning:
+        "A branding and omnichannel experience design project for The Southern, a luxury hotel group — brand identity and app flows.",
+      cardDescription:
+        "A branding and omnichannel experience design project for The Southern, a luxury hotel group; brand identity and app flows.",
+      role: "UX/UI & Brand Design @ Eunoia Digital",
+      years: "2024",
+      skills: [
+        "Graphic Design",
+        "Branding",
+        "Art Direction",
+        "UX Design",
+        "Design Systems",
+        "Responsive Web",
+        "Mobile App Design",
+        "Prototyping",
+      ],
+      metrics: [
+        { value: "8 → 1", label: "Hotel brands unified into one identity" },
+        { value: "2", label: "Native apps shipped alongside the portal" },
+        { value: "1", label: "Design system spanning web and mobile" },
+      ],
+      caseTitle: [
+        "Eight hotel brands. One digital identity.",
+        "Brand identity, a responsive portal and two native apps for The Southern, built with a small team at Eunoia Digital.",
+      ],
+      images: {
+        hero: "case.the-southern.hero",
+      },
+      richBody: [
+        { h: "Overview", index: "01", navLabel: "Overview" },
+        {
+          stats: [
+            { value: "8 → 1", label: "Hotel brands unified into one identity" },
+            { value: "2", label: "Native apps shipped alongside the portal" },
+            { value: "1", label: "Design system spanning web and mobile" },
+          ],
+        },
+        {
+          p: "The Southern is a luxury hotel group built by folding eight previously separate properties under one name. Eunoia Digital brought me onto the small team rebuilding its digital presence from that new identity outward: a responsive booking portal, and native iOS/Android apps for the stay itself.",
+        },
+        {
+          quote:
+            "Unify eight brands into one portal without flattening any of them into wallpaper.",
+        },
+        {
+          p: "I worked across the whole thing — helping shape the visual identity, then building the design system it runs on, then designing the portal and the two app flows, booking and the digital key, that sit on top of it.",
+        },
+
+        { h: "The identity", index: "02", navLabel: "Identity" },
+        { sub: "A palette narrow enough to sit over eight different hotels" },
+        {
+          p: "The starting point was a serif wordmark and a deliberately restrained palette — a deep teal, a warm olive, and three neutrals. Restraint was the point: eight properties with their own history and their own photography needed a shared language plain enough to sit over any of it without a fight.",
+        },
+        {
+          imageKey: "case.the-southern.system",
+          ratio: 1607 / 622,
+          caption:
+            "The Digital Key card and the wordmark lockup — the same component style, reused across the portal and both apps.",
+        },
+
+        { h: "The portal", index: "03", navLabel: "Portal" },
+        { sub: "One responsive site standing in for eight brand sites" },
+        {
+          p: "The portal is where the unification argument gets tested for real: browse, compare rooms, book and manage a stay, all in one place instead of eight. The components I designed for it — recommendation cards, amenity tiles, the review prompt — are the same ones the apps reuse, so the brand doesn't fork the moment a screen gets smaller.",
+        },
+        {
+          imageKey: "case.the-southern.desktop",
+          ratio: 1280 / 1471,
+          caption:
+            "The booking portal's home surface: recommended stays, amenities, dining and a review prompt in one scroll.",
+        },
+
+        { h: "Arrive, unlock, stay.", index: "04", navLabel: "Digital Key" },
+        { sub: "The app's whole job is to remove the front-desk queue" },
+        {
+          p: "Digital Key is the app's centrepiece: activate it once from Home, then hold your phone near the door to unlock — no keycard, no desk. I designed the full sequence, including the states around it: sharing a key with someone else on the reservation, and the plain-language fallback for a guest who'd rather collect a physical card at the desk.",
+        },
+        {
+          imageKey: "case.the-southern.flow",
+          ratio: 2255 / 1279,
+          caption:
+            "The Digital Key flow across five screens: activate from Home, stand close to unlock, then use, share or manage the key.",
+        },
+        {
+          quote:
+            "The key isn't a feature bolted onto check-in. For a returning guest, it is check-in.",
+        },
+
+        { h: "What shipped", index: "05", navLabel: "Outcome" },
+        {
+          noteCards: [
+            {
+              value: "8 → 1",
+              title: "One identity, not eight",
+              body: "Every property now reads as The Southern first — its own name and photography still visible underneath, not replaced by it.",
+            },
+            {
+              value: "1 kit",
+              title: "One kit, two platforms",
+              body: "The same component set — cards, keys, the booking flow's own controls — runs the responsive portal and both native apps without forking.",
+            },
+            {
+              value: "2 apps",
+              title: "Booking to Digital Key, end to end",
+              body: "iOS and Android cover the full stay: browse and book, prepare a check-in, unlock the room, and manage extras once inside.",
+            },
+          ],
+        },
+        {
+          subSection: {
+            label: "What I learned",
+            statement: "A design system is a negotiation, not a kit of parts.",
+            body: [
+              "The hard part of this project was never the components — it was getting eight properties' worth of stakeholders to agree that one shared language was worth losing a little of their own. The kit only works once that argument is won.",
+              "Digital Key also taught me how much of a 'simple' flow is really fallback design: the happy path is one tap, but the real work is the share, the reception-desk alternative, and the moment the key silently expires.",
+            ],
+          },
+        },
+        {
+          wide: {
+            imageKey: "case.the-southern.footer",
+            ratio: 2560 / 2643,
+            caption:
+              "Closing on the wordmark alone — the same restraint the identity opened with.",
+          },
+        },
+      ],
+    },
   ],
 
   /* -----------------------------------------------------------------------
@@ -2281,6 +2424,41 @@ export const CONTENT = {
       plate: "grid",
       tone: "light",
       seed: 707,
+    },
+    "case.the-southern.hero": {
+      src: "img/case-the-southern-hero.jpg",
+      alt: "The Southern's splash screen on a phone, held up against the Mediterranean coastline it was shot on.",
+      plate: "mesh",
+      tone: "accent",
+      seed: 801,
+    },
+    "case.the-southern.system": {
+      src: "img/case-the-southern-system.png",
+      alt: "The Digital Key card and the wordmark lockup, the same component style reused across the portal and both apps.",
+      plate: "panels",
+      tone: "accent",
+      seed: 802,
+    },
+    "case.the-southern.desktop": {
+      src: "img/case-the-southern-desktop.jpg",
+      alt: "The booking portal's home surface: recommended stays, amenities, dining and a review prompt in one scroll.",
+      plate: "columns",
+      tone: "light",
+      seed: 803,
+    },
+    "case.the-southern.flow": {
+      src: "img/case-the-southern-flow.jpg",
+      alt: "The Digital Key flow across five screens: activate from Home, stand close to unlock, then use, share or manage the key.",
+      plate: "strata",
+      tone: "dark",
+      seed: 804,
+    },
+    "case.the-southern.footer": {
+      src: "img/case-the-southern-footer.jpg",
+      alt: "Three app screens over a drone shot of the coastline, closing on the wordmark alone against the water.",
+      plate: "orbit",
+      tone: "dark",
+      seed: 805,
     },
   },
 };
@@ -2997,6 +3175,39 @@ const STYLES_HOME = `
    video defaults to object-fit:fill and stretches/distorts to the box
    instead of covering it: full width, cropped and centred vertically. */
 .cardMediaImg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* An optional device mockup layered over a card's own video/thumbnail —
+   currently only The Southern uses it. Anchored low and mostly below the
+   frame at rest (cardMarkWrap's own overflow:hidden crops it), so idle
+   shows only a sliver; hover/centred slides it up toward the top edge.
+   Its own hover rule below is written after (and matches the specificity
+   of) .cardMarkWrap > *'s, so it wins outright rather than fighting that
+   rule's scale transform on the same property. */
+.cardMockup{
+  position:absolute;
+  left:8%;
+  /* Anchored low, so only its own top sliver clears the box at rest;
+     the hover/active rule below pulls it up by most of its own height
+     (percentages in translateY resolve against the element's own box,
+     not the container's) to bring it near the top edge instead. */
+  top:64%;
+  width:38%;
+  max-width:150px;
+  pointer-events:none;
+  opacity:.5;
+  filter:drop-shadow(0 12px 20px rgba(0,0,0,.28));
+  transform:translateY(0);
+  transition:transform var(--dur-slow) var(--ease-out),
+             opacity var(--dur-slow) var(--ease-std);
+}
+.projectCard:hover .cardMockup,
+.projectCard.is-active .cardMockup{
+  /* The image (tall, ~2:1) is well over twice the box's own height, so
+     a shift expressed as a big fraction of its own height easily
+     overshoots past the box's top edge entirely. -45% lands its top
+     just inside that edge instead of escaping above it. */
+  transform:translateY(-45%);
+  opacity:1;
+}
 .cardBody{
   padding:0 var(--s5) var(--s5);
   border-top:1px solid var(--hairline);
@@ -7713,6 +7924,15 @@ function ProjectCard({ project, onCapture, index, reduced, centerActive }) {
             large
           />
         )}
+        {project.cardMockup ? (
+          <img
+            className="cardMockup"
+            src={resolveSrc(project.cardMockup)}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+          />
+        ) : null}
       </span>
     </span>
   );
