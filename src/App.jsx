@@ -789,9 +789,57 @@ export const CONTENT = {
           ],
         },
         {
-          splitSequence: {
-            title: "One content type became two",
-            sub: "Everything that follows is a consequence of that",
+          appAudit: {
+            kicker: "The audit",
+            title: "What the live app was costing us.",
+            intro:
+              "I walked the home screen region by region before proposing anything, and wrote down what each one was doing to comprehension, density and the path to a first game.",
+            hint: "Hover a marker to isolate that region",
+            imageKey: "case.gamehouse-plus.liveAppAudit",
+            markers: [
+              {
+                title: "Overall Look & Feel",
+                body: "Purple is well suited to our target audience, but the lack of dark mode makes the experience feel dated. Baloo adds personality, but its weight and oversized typography become overwhelming across some screens.",
+                x: 88,
+                y: 3,
+                region: { x: 0, y: 0, w: 100, h: 15 },
+              },
+              {
+                title: "Header",
+                body: "Oversized: the header and navbar consume ~1/3 of the viewport. They don't collapse or become transparent, limiting content visibility. Redundant elements: the GameHouse+ logotype doesn't need persistent visibility, while the non-functional search bar could be consolidated into the navbar.",
+                x: 8,
+                y: 15,
+                region: { x: 0, y: 0, w: 100, h: 19 },
+              },
+              {
+                title: "Hero Section",
+                body: "The hero lacks clear visual hierarchy. The gradient blends into the background rather than creating focus, and there is no clear CTA to guide users forward.",
+                x: 92,
+                y: 40,
+                region: { x: 0, y: 19, w: 100, h: 27 },
+              },
+              {
+                title: "Categories & Description",
+                body: "Weak visual hierarchy: colour-coded gradients add visual noise and reduce whitespace. Too much copy: oversized titles and supporting descriptions compete with the content. The UI should prioritise the games.",
+                x: 8,
+                y: 53,
+                region: { x: 0, y: 46, w: 100, h: 12 },
+              },
+              {
+                title: "Game Cards",
+                body: "Too much visual noise: genre and no-WiFi icons are difficult to parse and lack clear affordance. The double frame adds unnecessary visual weight without adding clarity.",
+                x: 92,
+                y: 68,
+                region: { x: 0, y: 58, w: 100, h: 33 },
+              },
+              {
+                title: "Content Density",
+                body: "These screens highlight a broader content-density issue. Despite following a similar layout structure to Netflix, GH+ surfaces only half as many titles in the same viewport (4 vs. 8). This limits content discovery and under-communicates the value of a 100+ game catalog.",
+                x: 8,
+                y: 95,
+                region: { x: 0, y: 91, w: 100, h: 9 },
+              },
+            ],
           },
         },
 
@@ -909,11 +957,9 @@ export const CONTENT = {
           ],
         },
         {
-          wide: {
-            imageKey: "case.gamehouse-plus.categoryMap",
-            ratio: 21 / 9,
-            caption:
-              "Every game belonged to several categories at once, so no single one could carry the whole catalog. Format decides the surface — Home for instant, Classics for installable — while franchise and genre stay in Search filters, where a player asks for them.",
+          splitSequence: {
+            title: "One content type became two",
+            sub: "Everything that follows is a consequence of that",
           },
         },
 
@@ -1032,6 +1078,7 @@ export const CONTENT = {
           label: "The impact:",
           body: [
             { smallLabel: "Results" },
+            "We shipped three connected surfaces on that architecture: an instant-first Home, Classics as a dedicated downloadable destination, and format-agnostic discovery across Search and My Games.",
             "Measured against the installable control, at day zero and day one:",
           ],
         },
@@ -1053,9 +1100,6 @@ export const CONTENT = {
               body: "Time from opening GH+ to a game actually running.",
             },
           ],
-        },
-        {
-          p: "Three connected-content surfaces shipped on the architecture above: an instant-first Home, Classics as a dedicated downloadable destination, and format-agnostic discovery across Search and My Games.",
         },
         {
           subSection: {
@@ -1946,12 +1990,12 @@ export const CONTENT = {
       src: "img/case-gamehouse-plus-identical-tiles.png",
       alt: "The same game tile shown twice, once with a lightning-bolt instant-play badge and once with a download badge — identical tiles for two different experiences.",
     },
-    "case.gamehouse-plus.categoryMap": {
+    "case.gamehouse-plus.liveAppAudit": {
       src: null,
-      alt: "Overlapping category map, placeholder — an isometric lattice standing in for a game belonging to several categories at once.",
-      plate: "lattice",
-      tone: "dark",
-      seed: 553,
+      alt: "The live GH+ home screen, before the redesign — placeholder pending the real screenshot.",
+      plate: "grid",
+      tone: "light",
+      seed: 561,
     },
     "case.gamehouse-plus.home": {
       src: "img/case-gamehouse-plus-home.png",
@@ -4038,6 +4082,83 @@ const STYLES_SEQ = `
 .splitSeq--static .splitSeq__copyInner{opacity:1 !important}
 `;
 
+/* The live-app audit: a device shot with hoverable/tappable markers, each
+   isolating one region (a "spotlight" cutout via an oversized box-shadow,
+   clipped to the frame) and swapping in a numbered critique card. */
+const STYLES_AUDIT = `
+.appAudit{display:flex;flex-direction:column;gap:clamp(24px,4vh,40px)}
+.appAuditHead{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:var(--s7);
+  align-items:end;
+}
+.appAuditHead h3{
+  font-size:clamp(1.3rem,2.6vw,1.9rem);
+  font-weight:600;letter-spacing:-.02em;line-height:1.15;
+  color:var(--ink);margin-top:var(--s2);
+}
+.appAuditHead p{color:var(--ink-2);font-size:1rem;line-height:1.65;max-width:46ch}
+.appAuditHint{display:block;margin-top:var(--s3);color:var(--muted)}
+.appAuditStage{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(240px,320px);
+  gap:var(--s6);
+  align-items:start;
+}
+.appAuditFrame{
+  position:relative;
+  overflow:hidden;
+  border-radius:var(--r-lg);
+  border:1px solid var(--hairline);
+  box-shadow:var(--shadow-card);
+}
+.appAuditFrame img{display:block}
+.appAuditCutout{
+  position:absolute;
+  border-radius:var(--r-md);
+  box-shadow:0 0 0 2000px rgba(8,8,12,.72);
+  outline:1px solid rgba(255,255,255,.4);
+  outline-offset:-1px;
+  pointer-events:none;
+  transition:left var(--dur-slow) var(--ease-out),
+             top var(--dur-slow) var(--ease-out),
+             width var(--dur-slow) var(--ease-out),
+             height var(--dur-slow) var(--ease-out),
+             opacity var(--dur-base) var(--ease-std);
+}
+.appAuditDot{
+  position:absolute;
+  width:22px;height:22px;margin:-11px 0 0 -11px;
+  padding:0;border:3px solid #fff;border-radius:50%;
+  background:var(--accent);
+  cursor:pointer;
+  animation:appAuditPulse 2.4s ease-out infinite;
+}
+.appAuditDot:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.appAuditDot.is-active{animation:none;box-shadow:0 0 0 5px color-mix(in srgb, var(--accent) 30%, transparent)}
+.appAuditCard{
+  padding:var(--s5);
+  border:1px solid var(--hairline);
+  border-radius:var(--r-md);
+  background:var(--surface);
+  min-height:148px;
+  display:flex;flex-direction:column;gap:var(--s2);
+}
+.appAuditCardNum{color:var(--accent)}
+.appAuditCard h4{font-size:1.0625rem;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+.appAuditCard p{color:var(--ink-2);font-size:.9375rem;line-height:1.6}
+.appAuditCardEmpty{color:var(--muted)}
+@keyframes appAuditPulse{
+  0%,100%{box-shadow:0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent)}
+  50%{box-shadow:0 0 0 9px color-mix(in srgb, var(--accent) 0%, transparent)}
+}
+@media (max-width:760px){
+  .appAuditHead{grid-template-columns:1fr}
+  .appAuditStage{grid-template-columns:1fr}
+}
+`;
+
 /* One block for the ML² assistant: the edge-docked "ask me anything" button
    with its rotating rim of type, and the panel it opens. */
 const STYLES_ASK = `
@@ -4334,6 +4455,7 @@ function useStyleSheet() {
       STYLES_CASE +
       STYLES_ARCH +
       STYLES_SEQ +
+      STYLES_AUDIT +
       STYLES_ASK +
       STYLES_POST +
       STYLES_UTIL;
@@ -8866,6 +8988,90 @@ function ContentSplitSequence({ title, sub, reduced }) {
   );
 }
 
+/**
+ * A device screenshot with numbered markers — hover (desktop) or tap
+ * (touch) one to spotlight its region (an oversized box-shadow cuts the
+ * rest of the frame down to a dim scrim, clipped by the frame's own
+ * overflow:hidden) and swap in that marker's critique card. Only one
+ * marker is ever active, so a single index is enough state.
+ */
+function AppAudit({ audit }) {
+  const [active, setActive] = useState(null);
+  const markers = audit.markers;
+  const activeMarker = active != null ? markers[active] : null;
+
+  const clear = (idx) => setActive((a) => (a === idx ? null : a));
+
+  return (
+    <div className="appAudit reveal">
+      <div className="appAuditHead">
+        <div>
+          <span className="mono" style={{ color: "var(--muted)" }}>
+            {audit.kicker}
+          </span>
+          <h3>{audit.title}</h3>
+        </div>
+        <div>
+          <p>{audit.intro}</p>
+          <span className="mono appAuditHint">{audit.hint}</span>
+        </div>
+      </div>
+      <div className="appAuditStage">
+        <div className="appAuditFrame">
+          <Visual
+            imageKey={audit.imageKey}
+            ratio={1353 / 2724}
+            className="appAuditImg"
+          />
+          {activeMarker ? (
+            <div
+              className="appAuditCutout"
+              style={{
+                left: `${activeMarker.region.x}%`,
+                top: `${activeMarker.region.y}%`,
+                width: `${activeMarker.region.w}%`,
+                height: `${activeMarker.region.h}%`,
+              }}
+              aria-hidden="true"
+            />
+          ) : null}
+          {markers.map((m, idx) => (
+            <button
+              key={m.title}
+              type="button"
+              className={`appAuditDot${active === idx ? " is-active" : ""}`}
+              style={{ left: `${m.x}%`, top: `${m.y}%` }}
+              onMouseEnter={() => setActive(idx)}
+              onMouseLeave={() => clear(idx)}
+              onFocus={() => setActive(idx)}
+              onBlur={() => clear(idx)}
+              onClick={() => setActive((a) => (a === idx ? null : idx))}
+              aria-pressed={active === idx}
+              aria-label={`${idx + 1}. ${m.title}`}
+            />
+          ))}
+        </div>
+        <div className="appAuditCard">
+          {activeMarker ? (
+            <>
+              <span className="mono appAuditCardNum">
+                {String(active + 1).padStart(2, "0")}
+              </span>
+              <h4>{activeMarker.title}</h4>
+              <p>{activeMarker.body}</p>
+            </>
+          ) : (
+            <p className="appAuditCardEmpty mono">
+              {audit.markers.length} regions, {audit.markers.length} calls to
+              make
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /** A fixed set of cards — principles, steps — with no scroller chrome.
  * Titles are equal-height-matched at render so body copy always starts on
  * the same line, however many lines the longest title itself wraps to. */
@@ -9359,6 +9565,9 @@ function CaseRichBlock({ block, i, reduced }) {
         reduced={reduced}
       />
     );
+  }
+  if (block.appAudit) {
+    return <AppAudit key={i} audit={block.appAudit} />;
   }
   if (block.carousel) {
     return (
