@@ -1850,7 +1850,12 @@ export const CONTENT = {
       logoAspect: 12.264,
       name: "The Southern",
       mark: "the-southern",
-      eyebrow: "The Southern · Eunoia Digital",
+      eyebrow: "Eunoia Digital — The Southern",
+      // This case opens on a photo, not GH+'s video — keep the hero card on
+      // the light surface treatment instead of the shared dark video mat.
+      heroLight: true,
+      // A slow, subtle zoom on the hero photo — see .caseHeroFrame--ken.
+      heroKenBurns: true,
       cardVideo: {
         src: "video/the-southern-card.mp4",
         poster: "img/the-southern-card-poster.jpg",
@@ -1869,7 +1874,7 @@ export const CONTENT = {
         "Graphic Design",
         "Branding",
         "Art Direction",
-        "UX Design",
+        "UI Design",
         "Design Systems",
         "Responsive Web",
         "Mobile App Design",
@@ -1881,108 +1886,153 @@ export const CONTENT = {
         { value: "1", label: "Design system spanning web and mobile" },
       ],
       caseTitle: [
-        "Eight hotel brands. One digital identity.",
-        "Brand identity, a responsive portal and two native apps for The Southern, built with a small team at Eunoia Digital.",
+        <>
+          <span style={{ display: "block", color: "var(--muted)" }}>
+            The Southern
+          </span>
+          <span style={{ display: "block" }}>Digital Branding</span>
+        </>,
+        "An international hotel group's digital experience, rebuilt from the identity up — one responsive portal and two native apps.",
       ],
       images: {
         hero: "case.the-southern.hero",
       },
       richBody: [
-        { h: "Overview", index: "01", navLabel: "Overview" },
         {
-          stats: [
-            { value: "8 → 1", label: "Hotel brands unified into one identity" },
-            { value: "2", label: "Native apps shipped alongside the portal" },
-            { value: "1", label: "Design system spanning web and mobile" },
-          ],
-        },
-        {
-          p: "The Southern is a luxury hotel group built by folding eight previously separate properties under one name. Eunoia Digital brought me onto the small team rebuilding its digital presence from that new identity outward: a responsive booking portal, and native iOS/Android apps for the stay itself.",
-        },
-        {
-          quote:
-            "Unify eight brands into one portal without flattening any of them into wallpaper.",
-        },
-        {
-          p: "I worked across the whole thing — helping shape the visual identity, then building the design system it runs on, then designing the portal and the two app flows, booking and the digital key, that sit on top of it.",
-        },
-
-        { h: "The identity", index: "02", navLabel: "Identity" },
-        { sub: "A palette narrow enough to sit over eight different hotels" },
-        {
-          p: "The starting point was a serif wordmark and a deliberately restrained palette — a deep teal, a warm olive, and three neutrals. Restraint was the point: eight properties with their own history and their own photography needed a shared language plain enough to sit over any of it without a fight.",
-        },
-        {
-          imageKey: "case.the-southern.system",
-          ratio: 1607 / 622,
-          caption:
-            "The Digital Key card and the wordmark lockup — the same component style, reused across the portal and both apps.",
-        },
-
-        { h: "The portal", index: "03", navLabel: "Portal" },
-        { sub: "One responsive site standing in for eight brand sites" },
-        {
-          p: "The portal is where the unification argument gets tested for real: browse, compare rooms, book and manage a stay, all in one place instead of eight. The components I designed for it — recommendation cards, amenity tiles, the review prompt — are the same ones the apps reuse, so the brand doesn't fork the moment a screen gets smaller.",
-        },
-        {
-          imageKey: "case.the-southern.desktop",
-          ratio: 1280 / 1471,
-          caption:
-            "The booking portal's home surface: recommended stays, amenities, dining and a review prompt in one scroll.",
-        },
-
-        { h: "Arrive, unlock, stay.", index: "04", navLabel: "Digital Key" },
-        { sub: "The app's whole job is to remove the front-desk queue" },
-        {
-          p: "Digital Key is the app's centrepiece: activate it once from Home, then hold your phone near the door to unlock — no keycard, no desk. I designed the full sequence, including the states around it: sharing a key with someone else on the reservation, and the plain-language fallback for a guest who'd rather collect a physical card at the desk.",
-        },
-        {
-          imageKey: "case.the-southern.flow",
-          ratio: 2255 / 1279,
-          caption:
-            "The Digital Key flow across five screens: activate from Home, stand close to unlock, then use, share or manage the key.",
-        },
-        {
-          quote:
-            "The key isn't a feature bolted onto check-in. For a returning guest, it is check-in.",
-        },
-
-        { h: "What shipped", index: "05", navLabel: "Outcome" },
-        {
-          noteCards: [
-            {
-              value: "8 → 1",
-              title: "One identity, not eight",
-              body: "Every property now reads as The Southern first — its own name and photography still visible underneath, not replaced by it.",
-            },
-            {
-              value: "1 kit",
-              title: "One kit, two platforms",
-              body: "The same component set — cards, keys, the booking flow's own controls — runs the responsive portal and both native apps without forking.",
-            },
-            {
-              value: "2 apps",
-              title: "Booking to Digital Key, end to end",
-              body: "iOS and Android cover the full stay: browse and book, prepare a check-in, unlock the room, and manage extras once inside.",
-            },
-          ],
-        },
-        {
-          subSection: {
-            label: "What I learned",
-            statement: "A design system is a negotiation, not a kit of parts.",
-            body: [
-              "The hard part of this project was never the components — it was getting eight properties' worth of stakeholders to agree that one shared language was worth losing a little of their own. The kit only works once that argument is won.",
-              "Digital Key also taught me how much of a 'simple' flow is really fallback design: the happy path is one tap, but the real work is the share, the reception-desk alternative, and the moment the key silently expires.",
-            ],
+          freestanding: true,
+          attention: {
+            lead: "An omnichannel digital experience:",
+            statement:
+              "Strengthening a brand's identity and maximising conversion.",
           },
         },
         {
+          freestanding: true,
+          trio: [
+            {
+              title: "The client",
+              body: "The Southern is an international hotel group, recognised for its excellence in hospitality and its commitment to digital innovation.",
+            },
+            {
+              title: "The challenge",
+              body: "Build a single responsive portal with fluid navigation and a homogeneous experience across the group. On top of that, design native iOS and Android apps that would optimise the user experience and conversion.",
+            },
+            {
+              title: "What we did",
+              body: "We defined the group's digital strategy, established its new digital structure and led the user experience area. We created their design system, built out every component, and designed both the portal and the navigation flows of the mobile apps.",
+            },
+          ],
+        },
+
+        {
+          h: "A palette borrowed from the water.",
+          navLabel: "Identity",
+          label: "Identity:",
+          body: [
+            "The branding came first, and it came out of the photography. Teal from shallow water, a citrine green for anything the guest can act on, and a near-black for type. Six values, fixed in the system before a single screen was laid out.",
+            "The wordmark is set in a light serif, always over imagery, always with air around it. Everything else in the interface is a rule, a pill or a flat block.",
+          ],
+        },
+        {
+          swatches: [
+            { name: "Teal", hex: "#1D5861" },
+            { name: "Light teal", hex: "#E3E9EA" },
+            { name: "Light green", hex: "#C1B708" },
+            { name: "Dark green", hex: "#928B07" },
+            { name: "Black", hex: "#242424" },
+            { name: "Grey", hex: "#787878" },
+          ],
+        },
+        {
+          wide: {
+            imageKey: "case.the-southern.system",
+            ratio: 1607 / 622,
+            plain: true,
+          },
+        },
+
+        {
+          h: "How the work was split.",
+          navLabel: "Process",
+          label: "Process:",
+          body: [
+            "A small team at Eunoia Digital — a handful of designers sharing the identity, the system and the screens between us. I worked across the brand and the UI, which meant the same person who fixed a colour value also had to live with it in a component.",
+          ],
+        },
+        {
+          carousel: {
+            unit: "steps",
+            cards: [
+              {
+                title: "Digital strategy",
+                meta: "Framing",
+                body: "Mapped what needed to happen online, and what the group should own directly. The new digital structure came out of that work.",
+              },
+              {
+                title: "Brand foundations",
+                meta: "Branding, graphic design",
+                body: "Palette, wordmark treatment, type and the rules for setting either over photography. Fixed before layout began.",
+              },
+              {
+                title: "Design system",
+                meta: "UI design",
+                body: "Type scale, six colours, and a short list of components with every state drawn. Built to serve web and native without forking.",
+              },
+              {
+                title: "Portal",
+                meta: "Responsive web",
+                body: "One responsive portal across the group: fluid navigation, a single booking path, a homogeneous experience end to end.",
+              },
+              {
+                title: "App flows",
+                meta: "Mobile product design",
+                body: "Native iOS and Android screens for check-in, digital key, extras and support — the flows where conversion is won or lost.",
+              },
+            ],
+          },
+        },
+
+        {
+          h: "One kit, two platforms.",
+          navLabel: "System",
+          label: "The system:",
+          card: true,
+          body: [
+            "The design system had to hold a booking flow on web and the same booking flow on iOS and Android, without forking. So it stayed small: type scale, the six colours, one card, one pill button, one sheet, one list row, and the states each of them ships with.",
+            "Native conventions were respected at the edges — navigation bars, sheets, keyboards — and the system owned everything inside the content area. Components were documented as we built them, so the handoff was a library rather than a set of screens.",
+          ],
+        },
+        {
+          wide: {
+            imageKey: "case.the-southern.desktop",
+            ratio: 1280 / 1471,
+            plain: true,
+          },
+        },
+
+        {
+          h: "Arrive, unlock, stay.",
+          navLabel: "Flows",
+          label: "The flows:",
+          body: [
+            "The app was organised around what a guest actually does in order: choose a villa, check in, open the door, then add to the stay. The digital key is the moment the product earns its place — a teal full-screen state, one instruction, one target, and a clear way out.",
+            "Around it sit the quieter flows: language selection, bed configuration, early check-in, extras, and a support thread that answers the key question before it is asked.",
+          ],
+        },
+        {
+          wide: {
+            imageKey: "case.the-southern.flow",
+            ratio: 2255 / 1279,
+            plain: true,
+          },
+        },
+
+        {
+          freestanding: true,
           wide: {
             imageKey: "case.the-southern.footer",
             ratio: 2560 / 2643,
-            caption:
-              "Closing on the wordmark alone — the same restraint the identity opened with.",
+            plain: true,
           },
         },
       ],
@@ -2426,36 +2476,45 @@ export const CONTENT = {
       seed: 707,
     },
     "case.the-southern.hero": {
-      src: "img/case-the-southern-hero.jpg",
-      alt: "The Southern's splash screen on a phone, held up against the Mediterranean coastline it was shot on.",
+      src: "img/case-the-southern-header.jpg",
+      alt: "The Southern brand screen on an iPhone against a coastal cliff photograph.",
       plate: "mesh",
       tone: "accent",
       seed: 801,
     },
+    // Interim: still the pre-refresh asset (same subject — the Digital Key
+    // card and wordmark lockup — so it reads correctly in the meantime).
+    // Swap `src` for the real "southern-below-palette module.png" export
+    // once it's on hand; the design MCP's get_file caps a single fetch at
+    // 256KB and this file is bigger, so it never landed. See the delivery
+    // note left at the end of CONTENT.projects' the-southern entry.
     "case.the-southern.system": {
       src: "img/case-the-southern-system.png",
-      alt: "The Digital Key card and the wordmark lockup, the same component style reused across the portal and both apps.",
+      alt: "Digital key card and The Southern brand card side by side.",
       plate: "panels",
       tone: "accent",
       seed: 802,
     },
+    // Interim asset — see the case.the-southern.system note above.
     "case.the-southern.desktop": {
       src: "img/case-the-southern-desktop.jpg",
-      alt: "The booking portal's home surface: recommended stays, amenities, dining and a review prompt in one scroll.",
+      alt: "The Southern app screens laid over the shoreline.",
       plate: "columns",
       tone: "light",
       seed: 803,
     },
+    // Interim asset — see the case.the-southern.system note above.
     "case.the-southern.flow": {
       src: "img/case-the-southern-flow.jpg",
-      alt: "The Digital Key flow across five screens: activate from Home, stand close to unlock, then use, share or manage the key.",
+      alt: "Digital key flow across five screens, from home to door unlock.",
       plate: "strata",
       tone: "dark",
       seed: 804,
     },
+    // Interim asset — see the case.the-southern.system note above.
     "case.the-southern.footer": {
       src: "img/case-the-southern-footer.jpg",
-      alt: "Three app screens over a drone shot of the coastline, closing on the wordmark alone against the water.",
+      alt: "The Southern app screens and closing wordmark over the shoreline.",
       plate: "orbit",
       tone: "dark",
       seed: 805,
@@ -3675,6 +3734,16 @@ const STYLES_CASE = `
 .caseHeroFrame .inner{border-radius:var(--r-md);overflow:hidden}
 /* The GH+ case opens on a video — sit it in a black frame, not the light one. */
 .caseHeroFrame--video{background:var(--panel);border-color:var(--panel-hairline)}
+/* Overrides --video back to the light card for a richBody project whose
+   hero is a photo, not GH+'s video — see project.heroLight. */
+.caseHeroFrame--light{background:var(--surface);border-color:var(--hairline)}
+/* A slow, subtle zoom on the hero photo — see project.heroKenBurns. */
+.caseHeroFrame--ken .inner img{animation:caseKen 18s var(--ease-std) infinite alternate}
+@keyframes caseKen{from{transform:scale(1)}to{transform:scale(1.06)}}
+/* Reuses the caseHeroFrame card recipe for a section's *content* rather than
+   an image — its default padding is tuned tight for an inset photo, so
+   loosen it back out for prose + a heading. */
+.caseHeroFrame--content{padding:clamp(28px,4.5vw,72px)}
 
 .metaBar{
   display:grid;
@@ -9855,6 +9924,26 @@ function CaseRichBlock({ block, i, reduced }) {
     );
   }
   if (block.wide) {
+    // `plain` skips the padded, shadowed card in favour of a thin border and
+    // rounded corners straight on the image — full width either way, but
+    // without the card's own inset, for a section that already sits inside
+    // its own card (head.card) or wants the image to read as documentation
+    // rather than a framed showpiece.
+    if (block.wide.plain) {
+      return (
+        <figure className="wideImgPlain reveal" key={i}>
+          <Visual
+            imageKey={block.wide.imageKey}
+            ratio={block.wide.ratio || 16 / 7}
+          />
+          {block.wide.caption ? (
+            <figcaption className="mono wideCaption">
+              {block.wide.caption}
+            </figcaption>
+          ) : null}
+        </figure>
+      );
+    }
     return (
       <figure className="caseHeroFrame reveal" key={i}>
         <div className="inner">
@@ -9869,6 +9958,54 @@ function CaseRichBlock({ block, i, reduced }) {
           </figcaption>
         ) : null}
       </figure>
+    );
+  }
+  // A full-bleed centred statement, two lines of unequal weight — a break
+  // between sections rather than a section of its own (no heading, no rail
+  // entry; see `freestanding` in GameHousePlusCase's section grouping).
+  if (block.attention) {
+    return (
+      <p className="attention reveal" key={i}>
+        <span className="attentionLead">{block.attention.lead}</span>
+        <span className="attentionStatement">{block.attention.statement}</span>
+      </p>
+    );
+  }
+  // A plain 3-up (client / challenge / what-we-did): no card chrome, just a
+  // shared top rule — distinct from `columns`, whose boxes are bordered
+  // cards. Also freestanding: an intro beat before the first named section.
+  if (block.trio) {
+    return (
+      <div className="trioGrid reveal" key={i}>
+        {block.trio.map((col) => (
+          <div className="trioCol" key={col.title}>
+            <h2>{col.title}</h2>
+            <p>{col.body}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  // A fanned row of colour swatches — name and hex under a solid chip,
+  // overlapping at rest and separating out on hover. Used by a section
+  // introducing a brand's palette.
+  if (block.swatches) {
+    return (
+      <div className="swatchRow reveal" key={i}>
+        {block.swatches.map((sw, j) => (
+          <div
+            className="swatchCard"
+            key={sw.name}
+            style={{ marginLeft: j === 0 ? 0 : "-40px", zIndex: j + 1 }}
+          >
+            <div className="swatchChip" style={{ background: sw.hex }} />
+            <div>
+              <span className="swatchName">{sw.name}</span>
+              <span className="swatchHex mono">{sw.hex}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     );
   }
   // A fixed set of cards — principles, player segments, options, stats —
@@ -10004,11 +10141,17 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
   const sections = useMemo(() => {
     const list = [];
     let current = null;
-    project.richBody.forEach((block) => {
+    project.richBody.forEach((block, idx) => {
       if (block.h) {
         const label = block.navLabel || block.h;
         current = { id: slugify(label), label, blocks: [block] };
         list.push(current);
+      } else if (block.freestanding) {
+        // A block with no heading of its own — a full-bleed statement or
+        // image dropped between (or before/after) the numbered sections.
+        // Rendered on its own, outside any CaseSection, and left out of the
+        // rail below since it has no heading to jump to.
+        list.push({ freestanding: true, key: `fs-${idx}`, blocks: [block] });
       } else if (current) {
         current.blocks.push(block);
       }
@@ -10017,7 +10160,10 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
   }, [project.richBody]);
 
   const railItems = useMemo(
-    () => sections.map((s) => ({ id: s.id, label: s.label })),
+    () =>
+      sections
+        .filter((s) => !s.freestanding)
+        .map((s) => ({ id: s.id, label: s.label })),
     [sections],
   );
   const caseIds = useMemo(() => railItems.map((r) => r.id), [railItems]);
@@ -10089,7 +10235,9 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
             <p className="casePositioning reveal">{caseTitle[1]}</p>
           </div>
 
-          <div className="caseHeroFrame caseHeroFrame--video reveal">
+          <div
+            className={`caseHeroFrame caseHeroFrame--video${project.heroLight ? " caseHeroFrame--light" : ""}${project.heroKenBurns ? " caseHeroFrame--ken" : ""} reveal`}
+          >
             <div className="inner">
               <HeroMedia project={project} reduced={reduced} ratio={16 / 9} />
             </div>
@@ -10122,6 +10270,19 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
         <div className="container">
           <div className="postBody richCaseBody">
             {sections.map((section) => {
+              // No heading at all — a full-bleed statement or image dropped
+              // between sections. Rendered bare, with no CaseSection/rail
+              // entry of its own.
+              if (section.freestanding) {
+                return (
+                  <CaseRichBlock
+                    block={section.blocks[0]}
+                    i={0}
+                    key={section.key}
+                    reduced={reduced}
+                  />
+                );
+              }
               const [head, ...rest] = section.blocks;
               const children = rest.map((block, i) => (
                 <CaseRichBlock block={block} i={i} key={i} reduced={reduced} />
@@ -10165,6 +10326,23 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
                         {children}
                       </CaseSection>
                     </DarkPanel>
+                  ) : head.card ? (
+                    // A section that argues its point inside a bordered,
+                    // padded card on the light canvas — same idea as
+                    // head.dark's panel, just not inverted. The wide
+                    // caseHeroFrame recipe already has the right chrome;
+                    // --content just loosens its image-tuned padding.
+                    <div className="caseHeroFrame caseHeroFrame--content reveal">
+                      <CaseSection
+                        headingId={headingId}
+                        label={head.label}
+                        statement={head.h}
+                        body={head.body || []}
+                        reduced={reduced}
+                      >
+                        {children}
+                      </CaseSection>
+                    </div>
                   ) : (
                     <CaseSection
                       headingId={headingId}
@@ -10775,6 +10953,78 @@ const STYLES_POST = `
   content:"";position:absolute;left:0;top:.65em;
   width:5px;height:5px;border-radius:50%;
   background:var(--accent);
+}
+/* A full-bleed centred statement between sections — see block.attention.
+   No margin/border of its own: it's always wrapped in its own <section>,
+   so the shared section+section rule above already supplies both. */
+.attention{
+  max-width:30ch;
+  margin-inline:auto;
+  padding-block:clamp(56px,9vh,120px);
+  text-align:center;
+  text-wrap:balance;
+  font-size:clamp(1.5rem,3.4vw,2.75rem);
+  font-weight:600;letter-spacing:-.03em;line-height:1.12;
+}
+.attentionLead{display:block;color:var(--muted)}
+.attentionStatement{display:block;color:var(--ink)}
+
+/* A plain 3-up intro (client / challenge / what-we-did) — see block.trio.
+   Distinct from .postColumns: no per-item card, just a shared gap; also
+   always wrapped in its own <section>, so no top spacing of its own. */
+.trioGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:clamp(28px,4vw,64px);
+}
+.trioCol h2{
+  margin-bottom:12px;
+  font-size:1.0625rem;font-weight:600;letter-spacing:-.02em;color:var(--ink);
+}
+.trioCol p{
+  max-width:44ch;color:var(--ink-2);font-size:.9375rem;line-height:1.68;
+}
+
+/* A full-width image with a thin border instead of the padded, shadowed
+   caseHeroFrame card — see block.wide's "plain" flag. */
+.wideImgPlain{
+  margin:clamp(32px,4.5vh,56px) 0;
+  border:1px solid var(--hairline);
+  border-radius:var(--r-md);
+  overflow:hidden;
+}
+.wideImgPlain figcaption{margin-top:var(--s3);color:var(--muted)}
+
+/* A fanned, overlapping row of colour swatches — see block.swatches. Each
+   card's own z-index (inline, via style) keeps later cards stacking above
+   earlier ones at rest; hovering one brings it in front of both neighbours
+   and lifts it clear of the fan. */
+.swatchRow{
+  display:flex;
+  width:100%;
+  margin-top:clamp(24px,3vh,36px);
+}
+.swatchCard{
+  flex:1;min-width:0;position:relative;
+  background:var(--surface);border:1px solid var(--hairline);
+  border-radius:var(--r-lg);box-shadow:var(--shadow-card);
+  padding:var(--s3);display:flex;flex-direction:column;gap:10px;
+  transition:transform var(--dur-slow) var(--ease-out),
+             box-shadow var(--dur-slow) var(--ease-out);
+}
+.swatchCard:hover{
+  transform:translateY(-10px);
+  z-index:50;
+  box-shadow:0 18px 40px -18px rgba(10,10,10,.22);
+}
+.swatchChip{height:clamp(90px,15vw,190px);border-radius:var(--r-md)}
+.swatchName{display:block;font-size:.9375rem;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
+.swatchHex{display:block;margin-top:2px;color:var(--muted);font-size:.6875rem;letter-spacing:.12em}
+/* The overlapping fan only reads at width — six ~40px slivers on a phone
+   are unusable, so wrap to a plain grid and drop the overlap/stacking. */
+@media (max-width:640px){
+  .swatchRow{flex-wrap:wrap;gap:var(--s3)}
+  .swatchCard{flex:1 1 calc(33.333% - var(--s3));margin-left:0 !important;z-index:auto !important}
 }
 .postTableWrap{
   margin-top:var(--s5);
