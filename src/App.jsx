@@ -3175,6 +3175,11 @@ const STYLES_HOME = `
    video defaults to object-fit:fill and stretches/distorts to the box
    instead of covering it: full width, cropped and centred vertically. */
 .cardMediaImg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* The Southern's card video (and its poster, which shares the video's own
+   box) is an aerial shot with a thin sky/horizon band at the very top —
+   object-fit's default centred crop was eating into it. Anchoring the crop
+   to the top instead keeps that band visible. */
+.projectCard[data-card-slug="the-southern"] .cardMediaImg{object-position:center top}
 /* An optional device mockup layered over a card's own video/thumbnail —
    currently only The Southern uses it. Anchored low and mostly below the
    frame at rest (cardMarkWrap's own overflow:hidden crops it), so idle
@@ -3198,6 +3203,18 @@ const STYLES_HOME = `
   transform:translateY(0);
   transition:transform var(--dur-slow) var(--ease-out),
              opacity var(--dur-slow) var(--ease-std);
+}
+/* On touch devices the slide-up is triggered by scroll (useCenteredCard),
+   not hover, and the shared --dur-slow read as an abrupt jump-cut against
+   that slower, involuntary trigger. Only the transform leg is slowed —
+   the fade can stay on the shared timing. Matches the same (hover: none),
+   (pointer: coarse) guard useCenteredCard itself checks before it ever
+   sets centerActive, so this only applies where that logic is live. */
+@media (hover: none), (pointer: coarse){
+  .cardMockup{
+    transition:transform 2000ms var(--ease-out),
+               opacity var(--dur-slow) var(--ease-std);
+  }
 }
 .projectCard:hover .cardMockup,
 .projectCard.is-active .cardMockup{
