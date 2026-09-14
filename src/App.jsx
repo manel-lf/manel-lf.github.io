@@ -687,7 +687,8 @@ export const CONTENT = {
     // destination rather than a computed "next" one (see CaseEndCard).
     caseEndTitle: "Thanks for reading.",
     caseEndSub: "More case studies by Manel.",
-    caseEndHomeTitle: "Return to home",
+    caseEndHomeTitle: "Manel López's Portfolio",
+    caseEndHomeCta: "Return to home",
     railLabel: "Sections in this case study",
     rail: [
       { id: "overview", label: "Overview" },
@@ -3704,6 +3705,11 @@ const STYLES_CASE = `
   background:var(--panel);
 }
 .caseEnd{padding-block:var(--section-y)}
+/* This sign-off's two lines are short, single-thought copy — meant to each
+   read as one line, unlike a body section's longer, often-wrapped
+   statement, which is what the shared .sectionHead max-width is tuned
+   for. */
+.caseEnd .sectionHead{max-width:none}
 .caseEndCard{
   display:flex;align-items:center;gap:var(--s5);
   margin-top:var(--s6);
@@ -3736,6 +3742,22 @@ const STYLES_CASE = `
   background:var(--panel-ink);color:var(--panel);
   font-weight:800;font-size:1.25rem;letter-spacing:-.02em;
 }
+/* The redirect-home card reverses the panel's own light/dark pairing
+   instead of reusing it: a white-ish card with dark content, so it reads
+   as its own distinct moment rather than another dark tile on the panel. */
+.caseEndCard--home{
+  background:var(--panel-ink);
+  border-color:var(--panel-ink);
+}
+.caseEndCard--home:hover{
+  background:var(--panel-ink);
+  border-color:var(--panel);
+}
+.caseEndCard--home .caseEndCardMark--home{
+  background:var(--panel);color:var(--panel-ink);
+}
+.caseEndCard--home .caseEndCardTitle{color:var(--panel)}
+.caseEndCard--home .caseEndCardCta{background:var(--panel);color:var(--panel-ink)}
 .caseEndCardBody{min-width:0}
 .caseEndCardTitle{
   display:block;
@@ -8906,12 +8928,15 @@ function CaseEndCard({ project, onCapture, onHome }) {
 
   if (isGamehouse) {
     return (
-      <a className="caseEndCard" href="#/" onClick={onHome}>
-        {/* The header's own monogram is background:ink/color:canvas — on
-            the light canvas it's a dark badge, but this card sits on the
-            always-dark panel, where that would go near-invisible. Inverted
-            to panel-ink/panel, which stays legible on the panel regardless
-            of site theme. */}
+      <a
+        className="caseEndCard caseEndCard--home"
+        href="#/"
+        onClick={onHome}
+      >
+        {/* This card flips the panel's own light/dark pairing — a
+            white-ish card with dark content (see .caseEndCard--home) — so
+            leaving the case study reads as a distinct, final moment rather
+            than one more of the same dark tiles. */}
         <span
           className="caseEndCardMark caseEndCardMark--home"
           aria-hidden="true"
@@ -8923,7 +8948,7 @@ function CaseEndCard({ project, onCapture, onHome }) {
             {CONTENT.caseUi.caseEndHomeTitle}
           </span>
           <span className="viewCase caseEndCardCta">
-            {CONTENT.caseUi.backLabel}
+            {CONTENT.caseUi.caseEndHomeCta}
             <Icon name="arrowRight" size={16} />
           </span>
         </span>
