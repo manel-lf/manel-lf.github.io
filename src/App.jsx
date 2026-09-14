@@ -106,7 +106,7 @@ export const CONTENT = {
     suggestions: [
       "What's Manel's latest work?",
       "How do you use AI in your design workflow?",
-      "What's Manel doing right now?",
+      "Is he open to relocating or is he remote only?",
     ],
     inputPlaceholder: "Ask ML²",
     sendLabel: "Send",
@@ -5793,6 +5793,9 @@ Write like Manel would talk about his own work, just narrated in the third perso
 WHO HE IS
 Senior Product Designer at GameHouse, based in Barcelona. Currently open to new opportunities — he's employed, this isn't a resignation. Target direction is Senior / Lead / Principal Product Designer roles: more product influence, strategy, systems thinking, cross-functional leadership. Looking for stability and somewhere to grow long-term. His formal level at GameHouse is Senior, though the scope of his work and direct manager feedback point to Principal-level impact — call him Senior; only bring up the scope point if it's directly relevant.
 
+RELOCATION & REMOTE WORK
+Open to relocating for the right role. He's based in Barcelona — a city he loves and was born in — but would welcome the chance to experience somewhere new and be part of a hybrid team. He's been working remotely for a while now and misses the energy of in-person collaboration, though he's also genuinely comfortable working remotely — it's not a dealbreaker either way, more a preference for hybrid or in-person given the choice.
+
 PUBLIC PERSONAL DETAILS
 Share these warmly and readily whenever they're relevant — they're not secrets, they're part of what makes him easy to get to know, so don't be cagey about them. Just don't force them into an answer that isn't about them. A man from Barcelona, Spain, 1.85m tall. Two grey cats, siblings: Boira (girl) and Melindro (boy). Has loved games since childhood, especially competitive/PvP — Teamfight Tactics is a favourite, and he's getting back into Magic: The Gathering after a long break. Loves strategy and card games, and the craft behind games generally — systems, economies, progression, retention, gamification. Not exclusively a "gaming designer" — open to non-gaming products when the problem is interesting enough.
 
@@ -5801,6 +5804,9 @@ Almost none were his call. GameHouse and Popcore were company restructures; the 
 
 LATEST WORK
 Senior Product Designer at GameHouse, sole designer on GameHouse+. Involved from before launch through a major shift in direction: from a subscription built around downloadable games toward a platform where people can also play instantly in-app, without the two feeling like separate products. His role spans product direction, research, information architecture, UX/UI, prototyping, design systems and validation — working closely with product, engineering and leadership, not just designing screens.
+
+HOW HE COLLABORATES
+Brings people in early rather than presenting an already-polished design — works closely with product, engineering and data throughout, not just at the end. His engineering background means he can talk technical feasibility directly with developers early on, finding a balance between the design vision and what actually makes sense to build. He treats data — product analytics and user research alike — as tied into the design process itself, not something to check at the end. Overall: an open, collaborative, iterative process where people are involved from the start and everyone gets a say.
 
 AI AND DESIGN (his current opinion — state it as that, not as settled fact about the future)
 He's very into AI-assisted design workflows and uses AI daily; he thinks it will meaningfully change how designers work. He doesn't think it currently replaces strong UX designers or the judgment part of design: AI is good at producing UI and replicating existing patterns, but UX is deciding what should exist in the first place — a different problem needing taste, creativity and real understanding of the problem. His own loop: idea → prompt → working thing → evaluate → refine, using tools like Claude Code alongside Figma and his design system, so design conversations happen around something that actually works rather than a deck. The point of AI in his workflow is finding out what works earlier — it doesn't replace framing the problem or judging whether something's actually good.
@@ -5960,6 +5966,15 @@ const ASK_PRETEND = [
     followups: ["Is he looking to move again?", "What's his latest work?"],
   },
   {
+    match: /relocat|\bremote\b|hybrid team|willing to move|based where|where.*(based|located)/i,
+    reply:
+      "Yes, he'd actually love relocating for the right role. He's currently based in Barcelona, a city he loves and was born in, but he'd also love the chance to discover new cultures and be part of a hybrid team. He's been working remotely for quite some time and misses the energy and warmth of in-person collaboration, though he's also super comfortable with remote work.",
+    followups: [
+      "How does he collaborate cross-departmentally?",
+      "What's he looking for in his next role?",
+    ],
+  },
+  {
     match: /gam(e|ing)|tft|teamfight|magic.the.gathering|\bmtg\b|pvp|competitive|switch/i,
     reply:
       "He's loved games since he was a kid — it's not just an industry he happened to land in. He spends a lot of time on competitive and PvP stuff, and he's a sucker for strategy and card games specifically. Teamfight Tactics is a favourite, and he's getting back into Magic: The Gathering after a long break.\n\nWhat he actually loves is the craft underneath — progression, economies, rewards, competition, the systems that make a game worth coming back to. That's a big part of why gamification shows up so much in his work. That said, he's not precious about only working on games — he'll take a non-gaming product if the problem's interesting enough.",
@@ -5985,6 +6000,15 @@ const ASK_PRETEND = [
     reply:
       `He starts from the business tension, not the screens. On GameHouse+ that tension was one product suddenly holding two kinds of content that behaved nothing alike.\n\nSo the work was naming the conflict clearly, getting data and research to say which users each format actually served, and only then designing something that could hold both. Strategy first, pixels last.\n\n[${ASK_GAMEHOUSE_LABEL}](${ASK_GAMEHOUSE_HREF})`,
     followups: ["How does he use AI in his workflow?", "What's his design system like?"],
+  },
+  {
+    match: /collaborat|cross.?depart|cross.?function|work with (product|engineering|developers|data)/i,
+    reply:
+      "He likes getting people involved early rather than waiting until a design is already polished. He enjoys working closely with product, engineering, and data throughout the process, bringing different perspectives into the conversation from the start.\n\nWith developers, his engineering background gives him a solid understanding of what's technically feasible, so he can have those conversations early and find a good balance between the design vision and what makes sense to build.\n\nHe also really enjoys diving into data, whether that's product analytics or user research. He sees those insights deeply tied to design process rather than something to check at the end.\n\nOverall, he prefers an open, collaborative process where people are involved early, ideas are explored together, and everyone can iterate and have a say along the way.",
+    followups: [
+      "What's his approach to product strategy?",
+      "How does he use AI in his design workflow?",
+    ],
   },
   {
     match: /hire|available|opportunit|role\b|freelance|reach out|open to/i,
