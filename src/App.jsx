@@ -2535,41 +2535,29 @@ export const CONTENT = {
       tone: "accent",
       seed: 801,
     },
-    // No real export yet — the pre-refresh asset was tried here as an
-    // interim stand-in, but it's a UI-mockup composite with real white
-    // background baked into its own pixels (not a CSS border), so once the
-    // .wideImgPlain frame came off, that white read as a stray box against
-    // the canvas. A deterministic plate is the honest placeholder instead.
-    // Swap `src` for the real "southern-below-palette module.png" export
-    // once it's on hand; the design MCP's get_file caps a single fetch at
-    // 256KB and this file is bigger, so it never landed. See the delivery
-    // note left at the end of CONTENT.projects' the-southern entry.
     "case.the-southern.system": {
-      src: null,
+      src: "img/case-the-southern-system.png",
       alt: "Digital key card and The Southern brand card side by side.",
       plate: "panels",
       tone: "accent",
       seed: 802,
     },
-    // No real export yet — see the case.the-southern.system note above.
     "case.the-southern.desktop": {
-      src: null,
+      src: "img/case-the-southern-desktop.jpg",
       alt: "The Southern app screens laid over the shoreline.",
       plate: "columns",
       tone: "light",
       seed: 803,
     },
-    // No real export yet — see the case.the-southern.system note above.
     "case.the-southern.flow": {
-      src: null,
+      src: "img/case-the-southern-flow.png",
       alt: "Digital key flow across five screens, from home to door unlock.",
       plate: "strata",
       tone: "dark",
       seed: 804,
     },
-    // No real export yet — see the case.the-southern.system note above.
     "case.the-southern.footer": {
-      src: null,
+      src: "img/case-the-southern-footer.png",
       alt: "The Southern app screens and closing wordmark over the shoreline.",
       plate: "orbit",
       tone: "dark",
