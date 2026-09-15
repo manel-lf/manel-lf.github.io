@@ -1438,7 +1438,7 @@ export const CONTENT = {
             "A time-limited seasonal event. Tickets drop from ordinary maps, tickets open the summer map, the summer map pays out rewards.",
           ],
         },
-        { imageKey: "case.scavenger-hunt.summerFlow", ratio: 2.8 },
+        { imageKey: "case.scavenger-hunt.summerFlow", ratio: 1393 / 478 },
         {
           quote:
             "The reward for replaying old content is access to new content.",
@@ -1448,7 +1448,7 @@ export const CONTENT = {
         },
         {
           imageKey: "case.scavenger-hunt.summerEvent",
-          ratio: 1.85,
+          ratio: 2000 / 1084,
           caption:
             "The summer event map, unlocked by tickets earned from ordinary maps.",
         },
@@ -1496,7 +1496,7 @@ export const CONTENT = {
         },
         {
           imageKey: "case.scavenger-hunt.dailyQuests",
-          ratio: 2.0,
+          ratio: 1822 / 887,
           caption:
             "Left to right: first contact on daily login, the persistent home-panel tracking progress, and the reward claim screen.",
         },
@@ -2428,62 +2428,51 @@ export const CONTENT = {
       seed: 508,
     },
 
-    // Matched against the design project's uploads by content (the design
-    // MCP's file reader caps reads at 256KB, so none of the originals could
-    // be pulled in directly — see the richBody comment above). `src` stays
-    // null — pointing it at a file that doesn't exist in public/img/ yet
-    // renders as a blank box, not a broken-image icon, since Vite's dev
-    // server 200s every unmatched path with index.html. Once Manel saves
-    // each file under the exact name noted here, flip that entry's `src`
-    // from null to `"img/<name>"` and it swaps in with nothing else to
-    // change.
+    // The design MCP's own file reader caps reads at 256KB, so none of the
+    // design project's uploads could be pulled in through it (see the
+    // richBody comment above) — these six are the real files Manel shared
+    // directly in chat instead, extracted from the session transcript
+    // (which stores pasted images as base64) and matched to the design's
+    // six referenced uploads by content and, for the day/night pair, by
+    // their exact pixel dimensions matching the design's own
+    // `aspect-ratio:1895/830` slider CSS.
     "case.scavenger-hunt.hero": {
-      // → img/case-scavenger-hunt-hero.jpg — the underwater hidden-object
-      // map with the WINNER ribbon and in-game chat bubbles.
-      src: null,
-      alt: "Scavenger Hunt hero banner — an underwater hidden-object map with a WINNER ribbon and in-game chat bubbles.",
+      src: "img/case-scavenger-hunt-hero.webp",
+      alt: "Scavenger Hunt hero banner — the Funland amusement-park map, one of the game's hidden-object scenes.",
       plate: "orbit",
       tone: "dark",
       seed: 601,
     },
     "case.scavenger-hunt.dayMap": {
-      // → img/case-scavenger-hunt-day-map.jpg — the New York City map, day.
-      src: null,
+      src: "img/case-scavenger-hunt-day-map.webp",
       alt: "Scavenger Hunt map by day — a New York City hidden-object scene in daylight.",
       plate: "orbit",
       tone: "light",
       seed: 602,
     },
     "case.scavenger-hunt.nightMap": {
-      // → img/case-scavenger-hunt-night-map.jpg — the same crop, at night.
-      src: null,
+      src: "img/case-scavenger-hunt-night-map.webp",
       alt: "Scavenger Hunt map by night — the same New York City scene re-lit after dark, neon signs on.",
       plate: "orbit",
       tone: "dark",
       seed: 607,
     },
     "case.scavenger-hunt.summerFlow": {
-      // → img/case-scavenger-hunt-summer-flow.png — the ticket/map/rewards
-      // flow diagram.
-      src: null,
+      src: "img/case-scavenger-hunt-summer-flow.png",
       alt: "Summer event flow: collect tickets in normal maps, play the summer map, obtain rewards.",
       plate: "ramp",
       tone: "accent",
       seed: 606,
     },
     "case.scavenger-hunt.summerEvent": {
-      // → img/case-scavenger-hunt-summer-event.jpg — the ocean-background
-      // composite (ticket count, bundle shop, Join the Summer Event).
-      src: null,
+      src: "img/case-scavenger-hunt-summer-event.webp",
       alt: "Summer event map with phone screens showing tickets, bundles, and the Join the Summer Event screen.",
       plate: "ramp",
       tone: "accent",
       seed: 603,
     },
     "case.scavenger-hunt.dailyQuests": {
-      // → img/case-scavenger-hunt-daily-quests.jpg — the 3-panel composite
-      // (first-contact popup, home progress panel, reward chest).
-      src: null,
+      src: "img/case-scavenger-hunt-daily-quests.webp",
       alt: "Today's Goals flow: first contact on daily login, the persistent home panel tracking progress, and the reward claim screen.",
       plate: "panels",
       tone: "dark",
