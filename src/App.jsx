@@ -1861,6 +1861,10 @@ export const CONTENT = {
       // title here. The original artifact keeps the intro line as a small,
       // muted caption instead — see .casePositioning--compact.
       heroCompactPositioning: true,
+      // The closing image bleeds full-width with no bottom margin (see
+      // block.wide's `bleed` flag) — this drops caseEndPanel's own top
+      // margin too, so nothing reopens the gap right after it.
+      footerFlush: true,
       cardVideo: {
         src: "video/the-southern-card.mp4",
         poster: "img/the-southern-card-poster.jpg",
@@ -1873,8 +1877,10 @@ export const CONTENT = {
         "A branding and omnichannel experience design project for The Southern, a luxury hotel group — brand identity and app flows.",
       cardDescription:
         "A branding and omnichannel experience design project for The Southern, a luxury hotel group; brand identity and app flows.",
-      role: "UX/UI & Brand Design @ Eunoia Digital",
+      role: "UX/UI & Brand Design",
       years: "2024",
+      // A single year, not a range — see the metaBar's yearLabel fallback.
+      yearLabel: "Year",
       skills: [
         "Graphic Design",
         "Branding",
@@ -1883,7 +1889,6 @@ export const CONTENT = {
         "Design Systems",
         "Responsive Web",
         "Mobile App Design",
-        "Prototyping",
       ],
       metrics: [
         { value: "8 → 1", label: "Hotel brands unified into one identity" },
@@ -2038,6 +2043,7 @@ export const CONTENT = {
             imageKey: "case.the-southern.footer",
             ratio: 2560 / 2643,
             plain: true,
+            bleed: true,
           },
         },
       ],
@@ -2487,38 +2493,41 @@ export const CONTENT = {
       tone: "accent",
       seed: 801,
     },
-    // Interim: still the pre-refresh asset (same subject — the Digital Key
-    // card and wordmark lockup — so it reads correctly in the meantime).
+    // No real export yet — the pre-refresh asset was tried here as an
+    // interim stand-in, but it's a UI-mockup composite with real white
+    // background baked into its own pixels (not a CSS border), so once the
+    // .wideImgPlain frame came off, that white read as a stray box against
+    // the canvas. A deterministic plate is the honest placeholder instead.
     // Swap `src` for the real "southern-below-palette module.png" export
     // once it's on hand; the design MCP's get_file caps a single fetch at
     // 256KB and this file is bigger, so it never landed. See the delivery
     // note left at the end of CONTENT.projects' the-southern entry.
     "case.the-southern.system": {
-      src: "img/case-the-southern-system.png",
+      src: null,
       alt: "Digital key card and The Southern brand card side by side.",
       plate: "panels",
       tone: "accent",
       seed: 802,
     },
-    // Interim asset — see the case.the-southern.system note above.
+    // No real export yet — see the case.the-southern.system note above.
     "case.the-southern.desktop": {
-      src: "img/case-the-southern-desktop.jpg",
+      src: null,
       alt: "The Southern app screens laid over the shoreline.",
       plate: "columns",
       tone: "light",
       seed: 803,
     },
-    // Interim asset — see the case.the-southern.system note above.
+    // No real export yet — see the case.the-southern.system note above.
     "case.the-southern.flow": {
-      src: "img/case-the-southern-flow.jpg",
+      src: null,
       alt: "Digital key flow across five screens, from home to door unlock.",
       plate: "strata",
       tone: "dark",
       seed: 804,
     },
-    // Interim asset — see the case.the-southern.system note above.
+    // No real export yet — see the case.the-southern.system note above.
     "case.the-southern.footer": {
-      src: "img/case-the-southern-footer.jpg",
+      src: null,
       alt: "The Southern app screens and closing wordmark over the shoreline.",
       plate: "orbit",
       tone: "dark",
@@ -4069,6 +4078,10 @@ const STYLES_CASE = `
   margin-top:clamp(40px,7vh,88px);
   background:var(--panel);
 }
+/* A project whose case ends on a full-bleed image flush against this panel
+   (see .wideImgPlain--bleed) — drop the usual top margin so nothing
+   reopens the gap the image was just made to close. */
+.caseEndPanel--flush{margin-top:0}
 .caseEnd{padding-block:var(--section-y)}
 /* This sign-off's two lines are short, single-thought copy — meant to each
    read as one line, unlike a body section's longer, often-wrapped
@@ -9825,6 +9838,48 @@ function CaseStudy({ project, onCapture, onHome, flight, reduced }) {
 }
 
 /**
+ * A fanned, overlapping row of colour swatches — click one to copy its hex
+ * to the clipboard. `copiedIdx` is local, not global: only the swatch that
+ * was actually clicked shows "Copied", and it self-clears on a timer.
+ */
+function SwatchRow({ swatches }) {
+  const [copiedIdx, setCopiedIdx] = useState(null);
+  const timerRef = useRef(null);
+
+  useEffect(() => () => window.clearTimeout(timerRef.current), []);
+
+  const handleCopy = (hex, idx) => {
+    navigator.clipboard?.writeText(hex).catch(() => {});
+    window.clearTimeout(timerRef.current);
+    setCopiedIdx(idx);
+    timerRef.current = window.setTimeout(() => setCopiedIdx(null), 1400);
+  };
+
+  return (
+    <div className="swatchRow reveal">
+      {swatches.map((sw, j) => (
+        <button
+          type="button"
+          className="swatchCard"
+          key={sw.name}
+          style={{ marginLeft: j === 0 ? 0 : "-40px", zIndex: j + 1 }}
+          onClick={() => handleCopy(sw.hex, j)}
+          aria-label={`Copy ${sw.hex}`}
+        >
+          <div className="swatchChip" style={{ background: sw.hex }} />
+          <div>
+            <span className="swatchName">{sw.name}</span>
+            <span className="swatchHex mono">
+              {copiedIdx === j ? "Copied" : sw.hex}
+            </span>
+          </div>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+/**
  * Renders one block of a richBody array. Shares its vocabulary with the
  * journal post block model (h/p/list/stats/imageKey) and extends it with
  * the shapes this case study's outline actually needs: sub (a subheading
@@ -10025,8 +10080,15 @@ function CaseRichBlock({ block, i, reduced }) {
     // its own card (head.card) or wants the image to read as documentation
     // rather than a framed showpiece.
     if (block.wide.plain) {
+      // `bleed` breaks the image out of .container's max-width and side
+      // gutters (full viewport width) and drops its own bottom margin, so
+      // it sits flush against whatever follows — used for a closing image
+      // meant to run straight into the footer with no gap on any side.
       return (
-        <figure className="wideImgPlain reveal" key={i}>
+        <figure
+          className={`wideImgPlain reveal${block.wide.bleed ? " wideImgPlain--bleed" : ""}`}
+          key={i}
+        >
           <Visual
             imageKey={block.wide.imageKey}
             ratio={block.wide.ratio || 16 / 7}
@@ -10085,23 +10147,7 @@ function CaseRichBlock({ block, i, reduced }) {
   // overlapping at rest and separating out on hover. Used by a section
   // introducing a brand's palette.
   if (block.swatches) {
-    return (
-      <div className="swatchRow reveal" key={i}>
-        {block.swatches.map((sw, j) => (
-          <div
-            className="swatchCard"
-            key={sw.name}
-            style={{ marginLeft: j === 0 ? 0 : "-40px", zIndex: j + 1 }}
-          >
-            <div className="swatchChip" style={{ background: sw.hex }} />
-            <div>
-              <span className="swatchName">{sw.name}</span>
-              <span className="swatchHex mono">{sw.hex}</span>
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+    return <SwatchRow swatches={block.swatches} key={i} />;
   }
   // A fixed set of cards — principles, player segments, options, stats —
   // rather than a sequence, so no scroller chrome (counter, arrows).
@@ -10348,7 +10394,7 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
               <dd>{project.role}</dd>
             </div>
             <div className="metaCell">
-              <dt className="mono">{m.years}</dt>
+              <dt className="mono">{project.yearLabel || m.years}</dt>
               <dd>{project.years}</dd>
             </div>
             <div className="metaCell">
@@ -10465,7 +10511,9 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
 
         {/* More case studies — full-bleed black, like the header/footer
             "chrome" rather than another content section. */}
-        <div className="caseEndPanel">
+        <div
+          className={`caseEndPanel${project.footerFlush ? " caseEndPanel--flush" : ""}`}
+        >
           <div className="container">
             <section className="caseEnd" aria-labelledby="case-end-h">
               <SectionHead
@@ -11098,6 +11146,16 @@ const STYLES_POST = `
   margin:clamp(32px,4.5vh,56px) 0;
 }
 .wideImgPlain figcaption{margin-top:var(--s3);color:var(--muted)}
+/* Breaks out of .container's max-width and side gutters to run the full
+   viewport width, and drops its own bottom margin — for a closing image
+   meant to sit flush against whatever comes right after it. Relies on
+   body's own overflow-x:hidden so 100vw can't open a horizontal scrollbar. */
+.wideImgPlain--bleed{
+  width:100vw;
+  margin-left:calc(50% - 50vw);
+  margin-right:calc(50% - 50vw);
+  margin-bottom:0;
+}
 
 /* A fanned, overlapping row of colour swatches — see block.swatches. Each
    card's own z-index (inline, via style) keeps later cards stacking above
@@ -11113,6 +11171,7 @@ const STYLES_POST = `
   background:var(--surface);border:1px solid var(--hairline);
   border-radius:var(--r-lg);box-shadow:var(--shadow-card);
   padding:var(--s3);display:flex;flex-direction:column;gap:10px;
+  text-align:left;
   transition:transform var(--dur-slow) var(--ease-out),
              box-shadow var(--dur-slow) var(--ease-out);
 }
