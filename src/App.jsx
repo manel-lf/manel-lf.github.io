@@ -1404,9 +1404,10 @@ export const CONTENT = {
       // flat section instead (with Night Mode still getting the dark panel),
       // and the now-redundant standalone "Process." header text is dropped
       // since "Three features, three mechanisms" is already the line right
-      // before it. The day/night compare slider and the real screenshots
-      // (banner, summer-flow diagram, day/night maps, daily-quests screens)
-      // aren't included — see the images note in CONTENT.IMAGES below.
+      // before it. Night Mode's day/night drag-to-compare is a real,
+      // reusable `compareSlider` block/CompareSlider component (see the
+      // CaseRichBlock and CONTENT.IMAGES entries below) rather than a static
+      // screenshot, matching the design's own interactive treatment.
       richBody: [
         {
           h: "Same map, three features.",
@@ -1437,7 +1438,7 @@ export const CONTENT = {
             "A time-limited seasonal event. Tickets drop from ordinary maps, tickets open the summer map, the summer map pays out rewards.",
           ],
         },
-        { imageKey: "case.scavenger-hunt.summerFlow" },
+        { imageKey: "case.scavenger-hunt.summerFlow", ratio: 2.8 },
         {
           quote:
             "The reward for replaying old content is access to new content.",
@@ -1447,6 +1448,7 @@ export const CONTENT = {
         },
         {
           imageKey: "case.scavenger-hunt.summerEvent",
+          ratio: 1.85,
           caption:
             "The summer event map, unlocked by tickets earned from ordinary maps.",
         },
@@ -1464,6 +1466,13 @@ export const CONTENT = {
         {
           quote:
             "On a feature like this, the surfacing is key; a re-lit map nobody knows exists is a build flag, not content.",
+        },
+        {
+          compareSlider: {
+            dayImageKey: "case.scavenger-hunt.dayMap",
+            nightImageKey: "case.scavenger-hunt.nightMap",
+            caption: "Drag to compare the map by day and by night.",
+          },
         },
         {
           p: "Trade-off: replaying is never as good as new, and leaned on too hard it reads as padding rather than generosity. It buys retention time very cheaply — it doesn't replace a content pipeline, and shouldn't be sold internally as if it does.",
@@ -1487,6 +1496,7 @@ export const CONTENT = {
         },
         {
           imageKey: "case.scavenger-hunt.dailyQuests",
+          ratio: 2.0,
           caption:
             "Left to right: first contact on daily login, the persistent home-panel tracking progress, and the reward claim screen.",
         },
@@ -2418,44 +2428,63 @@ export const CONTENT = {
       seed: 508,
     },
 
-    // The design project this case study was transcribed from (see the
-    // richBody comment above) has real screenshots for every one of these —
-    // banner.png, summer-flow.png, day-map.png/night-map.png and
-    // daily-quests-screens.png — but the design MCP's file reader caps
-    // reads at 256KB and every one of them is larger, so none could be
-    // pulled in here. All five stay on placeholder plates until Manel drops
-    // the real files into public/img/.
+    // Matched against the design project's uploads by content (the design
+    // MCP's file reader caps reads at 256KB, so none of the originals could
+    // be pulled in directly — see the richBody comment above). `src` stays
+    // null — pointing it at a file that doesn't exist in public/img/ yet
+    // renders as a blank box, not a broken-image icon, since Vite's dev
+    // server 200s every unmatched path with index.html. Once Manel saves
+    // each file under the exact name noted here, flip that entry's `src`
+    // from null to `"img/<name>"` and it swaps in with nothing else to
+    // change.
     "case.scavenger-hunt.hero": {
+      // → img/case-scavenger-hunt-hero.jpg — the underwater hidden-object
+      // map with the WINNER ribbon and in-game chat bubbles.
       src: null,
-      alt: "Scavenger Hunt case study hero — concentric arcs over a dark field, standing in for event progress.",
+      alt: "Scavenger Hunt hero banner — an underwater hidden-object map with a WINNER ribbon and in-game chat bubbles.",
       plate: "orbit",
       tone: "dark",
       seed: 601,
     },
-    "case.scavenger-hunt.nightMode": {
+    "case.scavenger-hunt.dayMap": {
+      // → img/case-scavenger-hunt-day-map.jpg — the New York City map, day.
       src: null,
-      alt: "Scavenger Hunt system panel — concentric arcs over a dark field, standing in for the Night Mode entry point and its promotion popup.",
+      alt: "Scavenger Hunt map by day — a New York City hidden-object scene in daylight.",
       plate: "orbit",
-      tone: "dark",
+      tone: "light",
       seed: 602,
     },
-    "case.scavenger-hunt.summerFlow": {
+    "case.scavenger-hunt.nightMap": {
+      // → img/case-scavenger-hunt-night-map.jpg — the same crop, at night.
       src: null,
-      alt: "Scavenger Hunt system panel — a rising ramp standing in for the Summer Event flow: collect tickets in normal maps, play the summer map, obtain rewards.",
+      alt: "Scavenger Hunt map by night — the same New York City scene re-lit after dark, neon signs on.",
+      plate: "orbit",
+      tone: "dark",
+      seed: 607,
+    },
+    "case.scavenger-hunt.summerFlow": {
+      // → img/case-scavenger-hunt-summer-flow.png — the ticket/map/rewards
+      // flow diagram.
+      src: null,
+      alt: "Summer event flow: collect tickets in normal maps, play the summer map, obtain rewards.",
       plate: "ramp",
       tone: "accent",
       seed: 606,
     },
     "case.scavenger-hunt.summerEvent": {
+      // → img/case-scavenger-hunt-summer-event.jpg — the ocean-background
+      // composite (ticket count, bundle shop, Join the Summer Event).
       src: null,
-      alt: "Scavenger Hunt system panel — a rising ramp standing in for the ticket-driven Summer Event map.",
+      alt: "Summer event map with phone screens showing tickets, bundles, and the Join the Summer Event screen.",
       plate: "ramp",
       tone: "accent",
       seed: 603,
     },
     "case.scavenger-hunt.dailyQuests": {
+      // → img/case-scavenger-hunt-daily-quests.jpg — the 3-panel composite
+      // (first-contact popup, home progress panel, reward chest).
       src: null,
-      alt: "Scavenger Hunt system panel — nested panels standing in for the Today's Goals flow: first contact on daily login, the persistent home panel, and the reward claim screen.",
+      alt: "Today's Goals flow: first contact on daily login, the persistent home panel tracking progress, and the reward claim screen.",
       plate: "panels",
       tone: "dark",
       seed: 604,
@@ -5824,6 +5853,104 @@ function Visual({ imageKey, ratio = 16 / 9, fill = false, className, style }) {
           accent={entry.accent}
         />
       )}
+    </div>
+  );
+}
+
+/**
+ * A drag-to-compare pair of images (day/night, before/after) — the divider
+ * follows the pointer and clips the top layer with `clip-path`. Falls back
+ * to each entry's placeholder plate exactly like `Visual` when its `src`
+ * isn't set yet. The handle pulses once as a discoverability hint until the
+ * visitor's first drag; that's the only timed animation here, so it's the
+ * only thing gated behind `reduced` — the drag itself is user-initiated and
+ * stays available under reduced motion.
+ */
+function CompareSlider({ dayKey, nightKey, ratio = 1895 / 830, reduced }) {
+  const ref = useRef(null);
+  const [pos, setPos] = useState(50);
+  const [interacted, setInteracted] = useState(false);
+
+  const moveTo = useCallback((clientX) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const pct = ((clientX - rect.left) / rect.width) * 100;
+    setPos(Math.max(0, Math.min(100, pct)));
+  }, []);
+
+  const onDragStart = (e) => {
+    e.preventDefault();
+    if (!interacted) setInteracted(true);
+    const getX = (ev) => (ev.touches ? ev.touches[0].clientX : ev.clientX);
+    const move = (ev) => moveTo(getX(ev));
+    const up = () => {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+      document.removeEventListener("touchmove", move);
+      document.removeEventListener("touchend", up);
+    };
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+    document.addEventListener("touchmove", move, { passive: false });
+    document.addEventListener("touchend", up);
+    moveTo(getX(e));
+  };
+
+  const day = CONTENT.IMAGES[dayKey];
+  const night = CONTENT.IMAGES[nightKey];
+  if (!day || !night) {
+    if (import.meta.env.DEV) {
+      console.warn(
+        `[portfolio] compare slider missing image key(s): ${dayKey}, ${nightKey}`,
+      );
+    }
+    return null;
+  }
+
+  const renderLayer = (entry) =>
+    entry.src ? (
+      <img
+        src={resolveSrc(entry.src)}
+        alt={entry.alt}
+        draggable="false"
+        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      />
+    ) : (
+      <Plate
+        plate={entry.plate}
+        tone={entry.tone}
+        seed={entry.seed}
+        ratio={ratio}
+        alt={entry.alt}
+        glow={entry.glow}
+        accent={entry.accent}
+      />
+    );
+
+  return (
+    <div
+      ref={ref}
+      className="vis compareSlider"
+      style={{ aspectRatio: String(ratio) }}
+      onMouseDown={onDragStart}
+      onTouchStart={onDragStart}
+    >
+      <div className="compareLayer">{renderLayer(day)}</div>
+      <div
+        className="compareLayer"
+        style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
+      >
+        {renderLayer(night)}
+      </div>
+      <div className="compareDivider" style={{ left: `${pos}%` }} />
+      <div
+        className={`compareHandle${!interacted && !reduced ? " is-pulsing" : ""}`}
+        style={{ left: `${pos}%` }}
+      >
+        <Icon name="chevronLeft" size={11} />
+        <Icon name="chevronRight" size={11} />
+      </div>
     </div>
   );
 }
@@ -9978,6 +10105,20 @@ function CaseRichBlock({ block, i, reduced }) {
       </figure>
     );
   }
+  if (block.compareSlider) {
+    const { dayImageKey, nightImageKey, ratio, caption } = block.compareSlider;
+    return (
+      <figure className="postFig reveal" key={i}>
+        <CompareSlider
+          dayKey={dayImageKey}
+          nightKey={nightImageKey}
+          ratio={ratio}
+          reduced={reduced}
+        />
+        {caption ? <figcaption className="mono">{caption}</figcaption> : null}
+      </figure>
+    );
+  }
   if (block.list) {
     return (
       <ul className="postList reveal" key={i}>
@@ -11294,5 +11435,27 @@ const STYLES_UTIL = `
 
 @media (prefers-reduced-motion:reduce){
   .quoteSlide{transition:none}
+  .compareHandle{animation:none}
+}
+
+.compareSlider{position:relative;cursor:ew-resize;user-select:none;touch-action:none}
+.compareLayer{position:absolute;inset:0;pointer-events:none}
+.compareDivider{
+  position:absolute;top:0;bottom:0;width:2px;
+  background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.35);
+  pointer-events:none;transform:translateX(-1px);
+}
+.compareHandle{
+  position:absolute;top:50%;width:40px;height:40px;border-radius:50%;
+  background:#fff;color:#0a0a0a;
+  display:flex;align-items:center;justify-content:center;gap:1px;
+  transform:translate(-50%,-50%);
+  box-shadow:var(--shadow-card);
+  pointer-events:none;
+}
+.compareHandle.is-pulsing{animation:compareHandlePulse 1.6s ease-in-out infinite}
+@keyframes compareHandlePulse{
+  0%,100%{transform:translate(-50%,-50%) scale(1)}
+  50%{transform:translate(-50%,-50%) scale(1.14)}
 }
 `;
