@@ -1388,13 +1388,31 @@ export const CONTENT = {
       ],
       caseTitle: [
         "Three features, no new maps.",
-        "Retention engineering for Scavenger Hunt at Popcore.",
+        "Live-events design support on a top-grossing mobile title.",
       ],
       images: {
         hero: "case.scavenger-hunt.hero",
       },
+      // Transcribed from the "Scavenger Hunt case study adaptation" Claude
+      // Design project (Scavenger Hunt Case Study.dc.html) — copy is verbatim
+      // from that artifact. Its Overview/Process/Outcome header pairing maps
+      // onto this template's label+h SectionHead pattern, and Night Mode's
+      // dark feature panel maps onto the existing `dark: true` heading flag.
+      // The design nests all three features inside one "Process" umbrella
+      // section on a bordered card per feature (one of them dark) — this
+      // template has no nested-card block type, so each feature is its own
+      // flat section instead (with Night Mode still getting the dark panel),
+      // and the now-redundant standalone "Process." header text is dropped
+      // since "Three features, three mechanisms" is already the line right
+      // before it. The day/night compare slider and the real screenshots
+      // (banner, summer-flow diagram, day/night maps, daily-quests screens)
+      // aren't included — see the images note in CONTENT.IMAGES below.
       richBody: [
-        { h: "Overview", index: "01", navLabel: "Overview" },
+        {
+          h: "Same map, three features.",
+          navLabel: "Overview",
+          label: "Overview:",
+        },
         {
           stats: [
             { value: "Top-grossing", label: "Title the event ran on" },
@@ -1407,36 +1425,19 @@ export const CONTENT = {
         },
         {
           quote:
-            'The brief was never "add content." It was make the content we already have worth returning to.',
+            "New maps came with a significant production cost; the challenge was creating a stronger replay loop around already-completed content.",
         },
         { p: "Three features, three mechanisms, same asset underneath." },
 
-        { h: "Night Mode", index: "02", navLabel: "Night Mode" },
-        { sub: "Re-light it, don't redraw it" },
         {
-          p: "Replay completed maps at night. Same illustration, different lighting — and the search genuinely gets harder because you can see less of it. New content out of a rendering change.",
+          h: "Turning finished maps into liveops assets",
+          navLabel: "Summer Event",
+          label: "01 — Summer Event",
+          body: [
+            "A time-limited seasonal event. Tickets drop from ordinary maps, tickets open the summer map, the summer map pays out rewards.",
+          ],
         },
-        {
-          p: "I designed how it surfaces: the main menu entry point and the promotion popup that introduces it.",
-        },
-        {
-          quote:
-            "On a feature like this, the surfacing is the feature — a re-lit map nobody knows exists is a build flag, not content.",
-        },
-        {
-          imageKey: "case.scavenger-hunt.nightMode",
-          caption:
-            "The Night Mode entry point in the main menu, next to the popup that introduces it.",
-        },
-        {
-          p: "Trade-off: replaying is never as good as new, and leaned on too hard it reads as padding rather than generosity. It buys retention time very cheaply — it doesn't replace a content pipeline, and shouldn't be sold internally as if it does.",
-        },
-
-        { h: "Summer Event", index: "03", navLabel: "Summer Event" },
-        { sub: "Make the finished maps the currency" },
-        {
-          p: "A time-limited seasonal event. Tickets drop from ordinary maps, tickets open the summer map, the summer map pays out rewards.",
-        },
+        { imageKey: "case.scavenger-hunt.summerFlow" },
         {
           quote:
             "The reward for replaying old content is access to new content.",
@@ -1447,16 +1448,35 @@ export const CONTENT = {
         {
           imageKey: "case.scavenger-hunt.summerEvent",
           caption:
-            "The Summer Event map, unlocked by tickets earned from ordinary maps.",
+            "The summer event map, unlocked by tickets earned from ordinary maps.",
         },
 
-        { h: "Today's Goals", index: "04", navLabel: "Today's Goals" },
-        { sub: "A daily loop, with the ad as the pressure valve" },
         {
-          p: "Daily activities paying daily rewards. I designed three flows — first contact, completing missions, claiming from the menu — plus every screen and UI asset.",
+          h: "Re-light it, don't redraw it.",
+          navLabel: "Night Mode",
+          label: "02 — Night Mode",
+          dark: true,
+          body: [
+            "Replay completed maps at night. Same illustration, different lighting — and the search genuinely gets harder because you can see less of it. New content out of a rendering change.",
+            "I designed how it surfaces: the main menu entry point and the promotion popup that introduces it.",
+          ],
         },
         {
-          p: "Monetisation sits in one control: a player who can't or won't finish a mission watches a rewarded ad to skip it. Too cheap and the goals stop meaning anything, so the rewards stop feeling earned. Too hostile and a daily engagement loop quietly becomes a paywall, which the player solves by leaving.",
+          quote:
+            "On a feature like this, the surfacing is key; a re-lit map nobody knows exists is a build flag, not content.",
+        },
+        {
+          p: "Trade-off: replaying is never as good as new, and leaned on too hard it reads as padding rather than generosity. It buys retention time very cheaply — it doesn't replace a content pipeline, and shouldn't be sold internally as if it does.",
+        },
+
+        {
+          h: "Building daily habits through Today's Goals",
+          navLabel: "Today's Goals",
+          label: "03 — Today's Goals",
+          body: [
+            "Daily activities paying daily rewards. I designed three flows — first contact, completing missions, claiming from the menu — plus every screen and UI asset.",
+            "Monetisation sits in one control: a player who can't or won't finish a mission watches a rewarded ad to skip it. Too cheap and the goals stop meaning anything, so the rewards stop feeling earned. Too hostile and a daily engagement loop quietly becomes a paywall, which the player solves by leaving.",
+          ],
         },
         {
           list: [
@@ -1466,24 +1486,21 @@ export const CONTENT = {
           ],
         },
         {
-          imageKey: "case.scavenger-hunt.todaysGoalsFirstContact",
+          imageKey: "case.scavenger-hunt.dailyQuests",
           caption:
-            "The Today's Goals first-contact screen, showing the reward before a single mission starts.",
-        },
-        {
-          imageKey: "case.scavenger-hunt.todaysGoalsPanel",
-          caption:
-            "The persistent Today's Goals panel on the home screen, carrying progress and the repeat-claim flow.",
+            "Left to right: first contact on daily login, the persistent home-panel tracking progress, and the reward claim screen.",
         },
         {
           quote:
-            "Hyper-casual sessions are measured in seconds and the player has no investment yet — most of the design work here was removal, not addition.",
+            "Hyper-casual sessions are measured in seconds and the player has no investment yet — there is no room for friction.",
         },
 
-        { h: "Outcome", index: "05", navLabel: "Outcome" },
-        { p: "Shipped live as part of the game." },
-
-        { h: "In Hindsight", index: "06", navLabel: "Hindsight" },
+        {
+          h: "Shipped live as part of the game.",
+          navLabel: "Outcome",
+          label: "Outcome:",
+        },
+        { sub: "In hindsight" },
         {
           list: [
             "The skip — should have shipped with an explicit daily cap and a designed non-ad path from day one, rather than relying on tuning to keep it fair.",
@@ -1492,7 +1509,7 @@ export const CONTENT = {
           ],
         },
         {
-          p: "The genre's real constraint is never the interface, it's the cost of the next map. The most useful thing I did on this game was design around that instead of asking for more of it.",
+          p: "The game's real constraint is never the interface, it's the cost of the next map. The most useful thing I did on this game was design around that instead of asking for more of it.",
         },
       ],
     },
@@ -2401,6 +2418,13 @@ export const CONTENT = {
       seed: 508,
     },
 
+    // The design project this case study was transcribed from (see the
+    // richBody comment above) has real screenshots for every one of these —
+    // banner.png, summer-flow.png, day-map.png/night-map.png and
+    // daily-quests-screens.png — but the design MCP's file reader caps
+    // reads at 256KB and every one of them is larger, so none could be
+    // pulled in here. All five stay on placeholder plates until Manel drops
+    // the real files into public/img/.
     "case.scavenger-hunt.hero": {
       src: null,
       alt: "Scavenger Hunt case study hero — concentric arcs over a dark field, standing in for event progress.",
@@ -2415,6 +2439,13 @@ export const CONTENT = {
       tone: "dark",
       seed: 602,
     },
+    "case.scavenger-hunt.summerFlow": {
+      src: null,
+      alt: "Scavenger Hunt system panel — a rising ramp standing in for the Summer Event flow: collect tickets in normal maps, play the summer map, obtain rewards.",
+      plate: "ramp",
+      tone: "accent",
+      seed: 606,
+    },
     "case.scavenger-hunt.summerEvent": {
       src: null,
       alt: "Scavenger Hunt system panel — a rising ramp standing in for the ticket-driven Summer Event map.",
@@ -2422,19 +2453,12 @@ export const CONTENT = {
       tone: "accent",
       seed: 603,
     },
-    "case.scavenger-hunt.todaysGoalsFirstContact": {
+    "case.scavenger-hunt.dailyQuests": {
       src: null,
-      alt: "Scavenger Hunt system panel — nested panels standing in for the Today's Goals first-contact screen.",
+      alt: "Scavenger Hunt system panel — nested panels standing in for the Today's Goals flow: first contact on daily login, the persistent home panel, and the reward claim screen.",
       plate: "panels",
       tone: "dark",
       seed: 604,
-    },
-    "case.scavenger-hunt.todaysGoalsPanel": {
-      src: null,
-      alt: "Scavenger Hunt system panel — interlocking bars standing in for the persistent Today's Goals home panel.",
-      plate: "weave",
-      tone: "dark",
-      seed: 605,
     },
 
     "case.dragon-city-2.hero": {
