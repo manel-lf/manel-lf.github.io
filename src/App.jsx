@@ -1856,6 +1856,11 @@ export const CONTENT = {
       heroLight: true,
       // A slow, subtle zoom on the hero photo — see .caseHeroFrame--ken.
       heroKenBurns: true,
+      // The shared hero styles size the title and its positioning line
+      // identically (one continuous "statement"), which reads as one long
+      // title here. The original artifact keeps the intro line as a small,
+      // muted caption instead — see .casePositioning--compact.
+      heroCompactPositioning: true,
       cardVideo: {
         src: "video/the-southern-card.mp4",
         poster: "img/the-southern-card-poster.jpg",
@@ -1960,7 +1965,7 @@ export const CONTENT = {
           ],
         },
         {
-          carousel: {
+          stepper: {
             unit: "steps",
             cards: [
               {
@@ -3716,6 +3721,13 @@ const STYLES_CASE = `
 .caseTitle{color:var(--ink)}
 .caseTitle .subject{display:block;transform-origin:left top}
 .casePositioning{color:var(--muted);text-wrap:balance}
+/* A project whose title needs to read as only its own two lines — not this
+   giant intro sentence stacked under it as a third. Shrinks the intro back
+   down to a normal caption, matching the original artifact. */
+.casePositioning.casePositioning--compact{
+  font-size:1.0625rem;font-weight:400;letter-spacing:normal;line-height:1.62;
+  color:var(--ink-2);max-width:42ch;
+}
 
 /* shared-element flight: transform only, cloned target sits in place */
 .subject.is-flying{
@@ -3830,6 +3842,18 @@ const STYLES_CASE = `
 }
 .processCard .meta{color:var(--muted)}
 .processCard p{color:var(--ink-2);font-size:.875rem;line-height:1.6;margin-top:auto}
+/* ProcessStepper's discrete pager — a fixed-width track that slides by
+   exactly one card per step, instead of ProcessScroller's free native
+   scroll. The card itself reuses .processCard as-is. */
+.stepperViewport{overflow:hidden;margin-top:var(--s5)}
+.stepperTrack{
+  display:flex;gap:var(--s5);
+  transition:transform var(--dur-slow) var(--ease-out);
+}
+.stepperTrack .processCard{width:268px;flex:none}
+@media (prefers-reduced-motion:reduce){
+  .stepperTrack{transition:none}
+}
 /* A card with a thumbnail bleeds it full-width across the top instead of
    sitting inside the card's own padding — the padding moves to the body
    below it, same split as .bitTile/.bitMedia. */
@@ -8928,6 +8952,66 @@ function ProcessScroller({ cards, reduced, unit = "steps" }) {
 }
 
 /**
+ * A discrete, one-card-at-a-time pager — unlike ProcessScroller's free
+ * native scroll (built for a longer gallery), this steps through a short,
+ * fixed sequence exactly like the original design: prev/next move one card,
+ * disable at either end, and the whole track translates by a fixed step
+ * (card width + the track's own gap) rather than by a screenful. Used only
+ * where a project's own design calls for that exact discrete-step feel.
+ */
+function ProcessStepper({ cards, unit = "steps" }) {
+  const [step, setStep] = useState(0);
+  const lastStep = cards.length - 1;
+  // Matches .stepperTrack's card width (268px) + gap (var(--s5), 24px) —
+  // kept in sync with that CSS by hand since a transform can't read it.
+  const STEP_PX = 292;
+  return (
+    <>
+      <div className="scrollerHead">
+        <span className="mono" style={{ color: "var(--muted)" }}>
+          {`${cards.length} ${unit}`}
+        </span>
+        <span className="arrowPair">
+          <button
+            type="button"
+            className="iconBtn"
+            aria-label={CONTENT.caseUi.processPrev}
+            disabled={step === 0}
+            onClick={() => setStep((s) => Math.max(0, s - 1))}
+          >
+            <Icon name="chevronLeft" size={16} />
+          </button>
+          <button
+            type="button"
+            className="iconBtn"
+            aria-label={CONTENT.caseUi.processNext}
+            disabled={step === lastStep}
+            onClick={() => setStep((s) => Math.min(lastStep, s + 1))}
+          >
+            <Icon name="chevronRight" size={16} />
+          </button>
+        </span>
+      </div>
+      <div className="stepperViewport">
+        <ul
+          className="stepperTrack"
+          style={{ transform: `translateX(-${step * STEP_PX}px)` }}
+        >
+          {cards.map((c, i) => (
+            <li className="processCard" key={c.title}>
+              <span className="idx mono">{String(i + 1).padStart(2, "0")}</span>
+              <h3>{c.title}</h3>
+              <span className="meta mono">{c.meta}</span>
+              <p>{c.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  );
+}
+
+/**
  * A dense bento of screens/diagrams inside a dark panel. A 3-cell grid gets
  * an L-shaped layout (one hero cell, two stacked beside it) since the usual
  * 4-cell asymmetry would otherwise leave a gap; any other count falls back
@@ -9885,6 +9969,17 @@ function CaseRichBlock({ block, i, reduced }) {
       />
     );
   }
+  // A short, fixed sequence that pages one card at a time — see
+  // ProcessStepper. Distinct from `carousel`'s free-scroll gallery.
+  if (block.stepper) {
+    return (
+      <ProcessStepper
+        key={i}
+        cards={block.stepper.cards}
+        unit={block.stepper.unit}
+      />
+    );
+  }
   if (block.twoUp) {
     return (
       <div className="twoUpGrid reveal" key={i}>
@@ -10232,7 +10327,11 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
                 </span>
               </h1>
             </div>
-            <p className="casePositioning reveal">{caseTitle[1]}</p>
+            <p
+              className={`casePositioning reveal${project.heroCompactPositioning ? " casePositioning--compact" : ""}`}
+            >
+              {caseTitle[1]}
+            </p>
           </div>
 
           <div
@@ -10271,16 +10370,20 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
           <div className="postBody richCaseBody">
             {sections.map((section) => {
               // No heading at all — a full-bleed statement or image dropped
-              // between sections. Rendered bare, with no CaseSection/rail
-              // entry of its own.
+              // between sections. Still a <section> (no id, no rail entry)
+              // so the section+section rule below still gives it the same
+              // margin/rule as every other section boundary — without this,
+              // a freestanding block sitting flush against a bare <div>
+              // (not a <section>) got no top spacing of its own at all.
               if (section.freestanding) {
                 return (
-                  <CaseRichBlock
-                    block={section.blocks[0]}
-                    i={0}
-                    key={section.key}
-                    reduced={reduced}
-                  />
+                  <section key={section.key}>
+                    <CaseRichBlock
+                      block={section.blocks[0]}
+                      i={0}
+                      reduced={reduced}
+                    />
+                  </section>
                 );
               }
               const [head, ...rest] = section.blocks;
@@ -10987,11 +11090,12 @@ const STYLES_POST = `
 
 /* A full-width image with a thin border instead of the padded, shadowed
    caseHeroFrame card — see block.wide's "plain" flag. */
+/* Deliberately unframed — no border/radius, unlike every other image on the
+   site (.postFig, .caseHeroFrame). Matches the original artifact exactly,
+   which the user asked for even though it breaks with the design system's
+   usual "every image gets a subtle frame" convention. */
 .wideImgPlain{
   margin:clamp(32px,4.5vh,56px) 0;
-  border:1px solid var(--hairline);
-  border-radius:var(--r-md);
-  overflow:hidden;
 }
 .wideImgPlain figcaption{margin-top:var(--s3);color:var(--muted)}
 
