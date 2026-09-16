@@ -1564,124 +1564,208 @@ export const CONTENT = {
       ],
     },
     {
-      slug: "seat-cupra",
-      logo: "img/logos/cupra.svg",
-      logoAspect: 7.008,
-      name: "SEAT CUPRA",
-      mark: "cupra",
-      eyebrow: "SEAT CUPRA",
-      // Static for now (no clip shot yet) — still gets the same idle-dim/
-      // hover-brighten treatment as the video cards, just no playback.
-      cardThumbnail: "card.seatCupra.thumbnail",
-      // Case study isn't ready yet — the card shows a tooltip instead of
-      // navigating, and the route itself redirects home. See ProjectCard
-      // and App's routing guard.
-      underConstruction: true,
+      slug: "the-southern",
+      logo: "img/logos/eunoiadigital.svg",
+      logoAspect: 12.264,
+      name: "The Southern",
+      mark: "the-southern",
+      eyebrow: "The Southern · Eunoia Digital",
+      // This case opens on a photo, not GH+'s video — keep the hero card on
+      // the light surface treatment instead of the shared dark video mat.
+      heroLight: true,
+      // A slow, subtle zoom on the hero photo — see .caseHeroFrame--ken.
+      heroKenBurns: true,
+      // The shared hero styles size the title and its positioning line
+      // identically (one continuous "statement"), which reads as one long
+      // title here. The original artifact keeps the intro line as a small,
+      // muted caption instead — see .casePositioning--compact.
+      heroCompactPositioning: true,
+      // The closing image bleeds full-width with no bottom margin (see
+      // block.wide's `bleed` flag) — this drops caseEndPanel's own top
+      // margin too, so nothing reopens the gap right after it.
+      footerFlush: true,
+      cardVideo: {
+        src: "video/the-southern-card.mp4",
+        poster: "img/the-southern-card-poster.jpg",
+      },
+      // A phone mockup layered over the card's own video/poster — barely
+      // visible at rest, sliding up toward the top edge on hover. See
+      // ProjectCard's `cardMockup` handling and .cardMockup in the stylesheet.
+      cardMockup: "img/the-southern-card-phone.png",
       positioning:
-        "In-car infotainment for connected services — enrolment, data plans and software updates, across every screen in the range.",
+        "A branding and omnichannel experience design project for The Southern, a luxury hotel group — brand identity and app flows.",
       cardDescription:
-        "In-car infotainment. Connected-services enrolment, data plan purchase and an update centre, designed to hold from 7-inch clusters to 15-inch displays.",
-      role: "Junior UX UI Designer",
-      years: "2022 — 2023",
-      caseTitle: [
-        "One system, every screen size.",
-        "Connected-services infotainment design for SEAT and CUPRA.",
-      ],
+        "A branding and omnichannel experience design project for The Southern, a luxury hotel group; brand identity and app flows.",
+      role: "UX/UI & Brand Design",
+      years: "2024",
+      // A single year, not a range — see the metaBar's yearLabel fallback.
+      yearLabel: "Year",
       skills: [
-        "UX Design",
-        "UX Research",
-        "Automotive HMI",
-        "Responsive Systems",
-        "Visual",
+        "Graphic Design",
+        "Branding",
+        "Art Direction",
+        "UI Design",
+        "Design Systems",
+        "Responsive Web",
+        "Mobile App Design",
       ],
       metrics: [
-        { value: '7"–15"', label: "Screen sizes supported" },
-        { value: "3", label: "Core flows owned end to end" },
-        { value: "2", label: "Brands sharing one system" },
+        { value: "8 → 1", label: "Hotel brands unified into one identity" },
+        { value: "2", label: "Native apps shipped alongside the portal" },
+        { value: "1", label: "Design system spanning web and mobile" },
+      ],
+      caseTitle: [
+        <>
+          <span style={{ display: "block", color: "var(--muted)" }}>
+            The Southern
+          </span>
+          <span style={{ display: "block" }}>Digital Branding</span>
+        </>,
+        "An international hotel group's digital experience, rebuilt from the identity up — one responsive portal and two native apps.",
       ],
       images: {
-        hero: "case.seat-cupra.hero",
-        overview: "case.seat-cupra.overview",
-        system: [
-          "case.seat-cupra.system.1",
-          "case.seat-cupra.system.2",
-          "case.seat-cupra.system.3",
-          "case.seat-cupra.system.4",
-        ],
-        extend: ["case.seat-cupra.extend.1", "case.seat-cupra.extend.2"],
+        hero: "case.the-southern.hero",
       },
-      overview: {
-        eyebrow: "Overview:",
-        heading: "Backstory of the work.",
-        body: [
-          "Connected services turn a car into a product with an account, a subscription and a software lifecycle. I designed three of those flows for SEAT and CUPRA infotainment: enrolling the vehicle, buying a data plan, and managing software updates.",
-          "The context is unforgiving. The user is in a driver’s seat, possibly parked and impatient, reading a screen at arm’s length in variable light, using a system that cannot assume a keyboard, a fast connection or a second attempt.",
-        ],
-      },
-      process: {
-        eyebrow: "Process:",
-        heading: "How I kicked things off.",
-        body: [
-          "Automotive HMI has constraints you cannot design around, only design for: legal, safety, hardware and a screen range that spans more than double in physical size. I began by writing those constraints down as design inputs.",
-          "From there the work was mostly about reduction — finding the smallest flow that survives a bad connection, a distracted user and a 7-inch display.",
-        ],
-        cards: [
-          {
-            title: "Constraint inventory",
-            meta: "Framing",
-            body: "Hardware sizes, input methods, safety rules on what may appear while moving, and connectivity assumptions — collected as a single document that every design decision was checked against.",
+      richBody: [
+        {
+          freestanding: true,
+          attention: {
+            lead: "An omnichannel digital experience:",
+            statement:
+              "Strengthening a brand's identity and maximising conversion.",
           },
-          {
-            title: "Flow reduction",
-            meta: "UX design",
-            body: "Rewrote enrolment to the minimum number of decisions, deferring everything that could be completed later from a phone rather than blocking the driver in the car.",
+        },
+        {
+          freestanding: true,
+          trio: [
+            {
+              title: "The client",
+              body: "The Southern is an international hotel group, recognised for its excellence in hospitality and its commitment to digital innovation.",
+            },
+            {
+              title: "The challenge",
+              body: "Build a single responsive portal with fluid navigation and a homogeneous experience across the group. On top of that, design native iOS and Android apps that would optimise the user experience and conversion.",
+            },
+            {
+              title: "What we did",
+              body: "We defined the group's digital strategy, established its new digital structure and led the user experience area. We created their design system, built out every component, and designed both the portal and the navigation flows of the mobile apps.",
+            },
+          ],
+        },
+
+        {
+          h: "A palette borrowed from the water.",
+          navLabel: "Identity",
+          label: "Identity:",
+          body: [
+            "The branding came first, and it came out of the photography. Teal from shallow water, a citrine green for anything the guest can act on, and a near-black for type. Six values, fixed in the system before a single screen was laid out.",
+            "The wordmark is set in a light serif, always over imagery, always with air around it. Everything else in the interface is a rule, a pill or a flat block.",
+          ],
+        },
+        {
+          swatches: [
+            { name: "Teal", hex: "#1D5861" },
+            { name: "Light teal", hex: "#E3E9EA" },
+            { name: "Light green", hex: "#C1B708" },
+            { name: "Dark green", hex: "#928B07" },
+            { name: "Black", hex: "#242424" },
+            { name: "Grey", hex: "#787878" },
+          ],
+        },
+        {
+          wide: {
+            imageKey: "case.the-southern.system",
+            ratio: 1607 / 622,
+            plain: true,
           },
-          {
-            title: "Type and touch ramp",
-            meta: "Responsive system",
-            body: "One type and target scale defined against viewing distance rather than pixels, so the same layout stays legible and tappable at 7 inches and does not look sparse at 15.",
+        },
+
+        {
+          h: "How the work was split.",
+          navLabel: "Process",
+          label: "Process:",
+          body: [
+            "A small team at Eunoia Digital — a handful of designers sharing the identity, the system and the screens between us. I worked across the brand and the UI, which meant the same person who fixed a colour value also had to live with it in a component.",
+          ],
+        },
+        {
+          stepper: {
+            unit: "steps",
+            cards: [
+              {
+                title: "Digital strategy",
+                meta: "Framing",
+                body: "Mapped what needed to happen online, and what the group should own directly. The new digital structure came out of that work.",
+              },
+              {
+                title: "Brand foundations",
+                meta: "Branding, graphic design",
+                body: "Palette, wordmark treatment, type and the rules for setting either over photography. Fixed before layout began.",
+              },
+              {
+                title: "Design system",
+                meta: "UI design",
+                body: "Type scale, six colours, and a short list of components with every state drawn. Built to serve web and native without forking.",
+              },
+              {
+                title: "Portal",
+                meta: "Responsive web",
+                body: "One responsive portal across the group: fluid navigation, a single booking path, a homogeneous experience end to end.",
+              },
+              {
+                title: "App flows",
+                meta: "Mobile product design",
+                body: "Native iOS and Android screens for check-in, digital key, extras and support — the flows where conversion is won or lost.",
+              },
+            ],
           },
-          {
-            title: "Purchase without a keyboard",
-            meta: "Interaction design",
-            body: "Designed data plan purchase to avoid text entry wherever possible, handing off to the phone for anything that genuinely needed typing.",
+        },
+
+        {
+          h: "One kit, two platforms.",
+          navLabel: "System",
+          label: "The system:",
+          card: true,
+          body: [
+            "The design system had to hold a booking flow on web and the same booking flow on iOS and Android, without forking. So it stayed small: type scale, the six colours, one card, one pill button, one sheet, one list row, and the states each of them ships with.",
+            "Native conventions were respected at the edges — navigation bars, sheets, keyboards — and the system owned everything inside the content area. Components were documented as we built them, so the handoff was a library rather than a set of screens.",
+          ],
+        },
+        {
+          wide: {
+            imageKey: "case.the-southern.desktop",
+            ratio: 1280 / 1471,
+            plain: true,
           },
-          {
-            title: "Update centre",
-            meta: "UX design",
-            body: "Software updates presented as a state the driver can understand and trust: what is changing, how long it takes, and what happens if they walk away.",
+        },
+
+        {
+          h: "Arrive, unlock, stay.",
+          navLabel: "Flows",
+          label: "The flows:",
+          body: [
+            "The app was organised around what a guest actually does in order: choose a villa, check in, open the door, then add to the stay. The digital key is the moment the product earns its place — a teal full-screen state, one instruction, one target, and a clear way out.",
+            "Around it sit the quieter flows: language selection, bed configuration, early check-in, extras, and a support thread that answers the key question before it is asked.",
+          ],
+        },
+        {
+          wide: {
+            imageKey: "case.the-southern.flow",
+            ratio: 2255 / 1279,
+            plain: true,
           },
-          {
-            title: "In-vehicle review",
-            meta: "Validation",
-            body: "Reviewed on real hardware in real light. Contrast and legibility decisions that looked safe on a monitor repeatedly did not survive a sunny car park.",
+        },
+
+        {
+          freestanding: true,
+          wide: {
+            imageKey: "case.the-southern.footer",
+            ratio: 2560 / 2643,
+            plain: true,
+            bleed: true,
           },
-        ],
-      },
-      system: {
-        eyebrow: "Shaping the system:",
-        heading: "One system, every screen size.",
-        body: [
-          "The core of the work is a responsive system keyed to viewing distance instead of viewport width. Type, touch targets, spacing and information density all step together across the screen range, so a flow designed once behaves correctly on every configuration in the line-up.",
-          "Two brands share it. SEAT and CUPRA differ in tone and palette but not in structure, which meant the flows could be designed once and themed rather than forked.",
-        ],
-      },
-      extend: {
-        eyebrow: "Extend:",
-        heading: "Beyond the head unit.",
-        body: [
-          "Several flows genuinely belong on a phone — anything involving typing, payment detail or reading terms. I designed the handoff so starting in the car and finishing on a phone is one continuous task rather than two disconnected ones.",
-          "The same system also carried the companion-app surfaces that mirror vehicle state, so the two screens agreed with each other about what the car was doing.",
-        ],
-      },
-      impact: {
-        eyebrow: "The impact:",
-        heading: "What shipped, and what it taught me.",
-        body: [
-          "Three connected-services flows shipped into production infotainment across two brands and the full screen range, on a shared responsive system rather than per-configuration designs.",
-          "Automotive changed how I design generally. When you cannot patch next week and a mistake sits in front of the user for the life of the vehicle, you get rigorous about states, about legibility, and about testing on the real thing rather than on a monitor.",
-        ],
-      },
+        },
+      ],
     },
     {
       slug: "dragon-city-2",
@@ -1912,208 +1996,124 @@ export const CONTENT = {
       ],
     },
     {
-      slug: "the-southern",
-      logo: "img/logos/eunoiadigital.svg",
-      logoAspect: 12.264,
-      name: "The Southern",
-      mark: "the-southern",
-      eyebrow: "Eunoia Digital — The Southern",
-      // This case opens on a photo, not GH+'s video — keep the hero card on
-      // the light surface treatment instead of the shared dark video mat.
-      heroLight: true,
-      // A slow, subtle zoom on the hero photo — see .caseHeroFrame--ken.
-      heroKenBurns: true,
-      // The shared hero styles size the title and its positioning line
-      // identically (one continuous "statement"), which reads as one long
-      // title here. The original artifact keeps the intro line as a small,
-      // muted caption instead — see .casePositioning--compact.
-      heroCompactPositioning: true,
-      // The closing image bleeds full-width with no bottom margin (see
-      // block.wide's `bleed` flag) — this drops caseEndPanel's own top
-      // margin too, so nothing reopens the gap right after it.
-      footerFlush: true,
-      cardVideo: {
-        src: "video/the-southern-card.mp4",
-        poster: "img/the-southern-card-poster.jpg",
-      },
-      // A phone mockup layered over the card's own video/poster — barely
-      // visible at rest, sliding up toward the top edge on hover. See
-      // ProjectCard's `cardMockup` handling and .cardMockup in the stylesheet.
-      cardMockup: "img/the-southern-card-phone.png",
+      slug: "seat-cupra",
+      logo: "img/logos/cupra.svg",
+      logoAspect: 7.008,
+      name: "SEAT CUPRA",
+      mark: "cupra",
+      eyebrow: "SEAT CUPRA",
+      // Static for now (no clip shot yet) — still gets the same idle-dim/
+      // hover-brighten treatment as the video cards, just no playback.
+      cardThumbnail: "card.seatCupra.thumbnail",
+      // Case study isn't ready yet — the card shows a tooltip instead of
+      // navigating, and the route itself redirects home. See ProjectCard
+      // and App's routing guard.
+      underConstruction: true,
       positioning:
-        "A branding and omnichannel experience design project for The Southern, a luxury hotel group — brand identity and app flows.",
+        "In-car infotainment for connected services — enrolment, data plans and software updates, across every screen in the range.",
       cardDescription:
-        "A branding and omnichannel experience design project for The Southern, a luxury hotel group; brand identity and app flows.",
-      role: "UX/UI & Brand Design",
-      years: "2024",
-      // A single year, not a range — see the metaBar's yearLabel fallback.
-      yearLabel: "Year",
+        "In-car infotainment. Connected-services enrolment, data plan purchase and an update centre, designed to hold from 7-inch clusters to 15-inch displays.",
+      role: "Junior UX UI Designer",
+      years: "2022 — 2023",
+      caseTitle: [
+        "One system, every screen size.",
+        "Connected-services infotainment design for SEAT and CUPRA.",
+      ],
       skills: [
-        "Graphic Design",
-        "Branding",
-        "Art Direction",
-        "UI Design",
-        "Design Systems",
-        "Responsive Web",
-        "Mobile App Design",
+        "UX Design",
+        "UX Research",
+        "Automotive HMI",
+        "Responsive Systems",
+        "Visual",
       ],
       metrics: [
-        { value: "8 → 1", label: "Hotel brands unified into one identity" },
-        { value: "2", label: "Native apps shipped alongside the portal" },
-        { value: "1", label: "Design system spanning web and mobile" },
-      ],
-      caseTitle: [
-        <>
-          <span style={{ display: "block", color: "var(--muted)" }}>
-            The Southern
-          </span>
-          <span style={{ display: "block" }}>Digital Branding</span>
-        </>,
-        "An international hotel group's digital experience, rebuilt from the identity up — one responsive portal and two native apps.",
+        { value: '7"–15"', label: "Screen sizes supported" },
+        { value: "3", label: "Core flows owned end to end" },
+        { value: "2", label: "Brands sharing one system" },
       ],
       images: {
-        hero: "case.the-southern.hero",
+        hero: "case.seat-cupra.hero",
+        overview: "case.seat-cupra.overview",
+        system: [
+          "case.seat-cupra.system.1",
+          "case.seat-cupra.system.2",
+          "case.seat-cupra.system.3",
+          "case.seat-cupra.system.4",
+        ],
+        extend: ["case.seat-cupra.extend.1", "case.seat-cupra.extend.2"],
       },
-      richBody: [
-        {
-          freestanding: true,
-          attention: {
-            lead: "An omnichannel digital experience:",
-            statement:
-              "Strengthening a brand's identity and maximising conversion.",
+      overview: {
+        eyebrow: "Overview:",
+        heading: "Backstory of the work.",
+        body: [
+          "Connected services turn a car into a product with an account, a subscription and a software lifecycle. I designed three of those flows for SEAT and CUPRA infotainment: enrolling the vehicle, buying a data plan, and managing software updates.",
+          "The context is unforgiving. The user is in a driver’s seat, possibly parked and impatient, reading a screen at arm’s length in variable light, using a system that cannot assume a keyboard, a fast connection or a second attempt.",
+        ],
+      },
+      process: {
+        eyebrow: "Process:",
+        heading: "How I kicked things off.",
+        body: [
+          "Automotive HMI has constraints you cannot design around, only design for: legal, safety, hardware and a screen range that spans more than double in physical size. I began by writing those constraints down as design inputs.",
+          "From there the work was mostly about reduction — finding the smallest flow that survives a bad connection, a distracted user and a 7-inch display.",
+        ],
+        cards: [
+          {
+            title: "Constraint inventory",
+            meta: "Framing",
+            body: "Hardware sizes, input methods, safety rules on what may appear while moving, and connectivity assumptions — collected as a single document that every design decision was checked against.",
           },
-        },
-        {
-          freestanding: true,
-          trio: [
-            {
-              title: "The client",
-              body: "The Southern is an international hotel group, recognised for its excellence in hospitality and its commitment to digital innovation.",
-            },
-            {
-              title: "The challenge",
-              body: "Build a single responsive portal with fluid navigation and a homogeneous experience across the group. On top of that, design native iOS and Android apps that would optimise the user experience and conversion.",
-            },
-            {
-              title: "What we did",
-              body: "We defined the group's digital strategy, established its new digital structure and led the user experience area. We created their design system, built out every component, and designed both the portal and the navigation flows of the mobile apps.",
-            },
-          ],
-        },
-
-        {
-          h: "A palette borrowed from the water.",
-          navLabel: "Identity",
-          label: "Identity:",
-          body: [
-            "The branding came first, and it came out of the photography. Teal from shallow water, a citrine green for anything the guest can act on, and a near-black for type. Six values, fixed in the system before a single screen was laid out.",
-            "The wordmark is set in a light serif, always over imagery, always with air around it. Everything else in the interface is a rule, a pill or a flat block.",
-          ],
-        },
-        {
-          swatches: [
-            { name: "Teal", hex: "#1D5861" },
-            { name: "Light teal", hex: "#E3E9EA" },
-            { name: "Light green", hex: "#C1B708" },
-            { name: "Dark green", hex: "#928B07" },
-            { name: "Black", hex: "#242424" },
-            { name: "Grey", hex: "#787878" },
-          ],
-        },
-        {
-          wide: {
-            imageKey: "case.the-southern.system",
-            ratio: 1607 / 622,
-            plain: true,
+          {
+            title: "Flow reduction",
+            meta: "UX design",
+            body: "Rewrote enrolment to the minimum number of decisions, deferring everything that could be completed later from a phone rather than blocking the driver in the car.",
           },
-        },
-
-        {
-          h: "How the work was split.",
-          navLabel: "Process",
-          label: "Process:",
-          body: [
-            "A small team at Eunoia Digital — a handful of designers sharing the identity, the system and the screens between us. I worked across the brand and the UI, which meant the same person who fixed a colour value also had to live with it in a component.",
-          ],
-        },
-        {
-          stepper: {
-            unit: "steps",
-            cards: [
-              {
-                title: "Digital strategy",
-                meta: "Framing",
-                body: "Mapped what needed to happen online, and what the group should own directly. The new digital structure came out of that work.",
-              },
-              {
-                title: "Brand foundations",
-                meta: "Branding, graphic design",
-                body: "Palette, wordmark treatment, type and the rules for setting either over photography. Fixed before layout began.",
-              },
-              {
-                title: "Design system",
-                meta: "UI design",
-                body: "Type scale, six colours, and a short list of components with every state drawn. Built to serve web and native without forking.",
-              },
-              {
-                title: "Portal",
-                meta: "Responsive web",
-                body: "One responsive portal across the group: fluid navigation, a single booking path, a homogeneous experience end to end.",
-              },
-              {
-                title: "App flows",
-                meta: "Mobile product design",
-                body: "Native iOS and Android screens for check-in, digital key, extras and support — the flows where conversion is won or lost.",
-              },
-            ],
+          {
+            title: "Type and touch ramp",
+            meta: "Responsive system",
+            body: "One type and target scale defined against viewing distance rather than pixels, so the same layout stays legible and tappable at 7 inches and does not look sparse at 15.",
           },
-        },
-
-        {
-          h: "One kit, two platforms.",
-          navLabel: "System",
-          label: "The system:",
-          card: true,
-          body: [
-            "The design system had to hold a booking flow on web and the same booking flow on iOS and Android, without forking. So it stayed small: type scale, the six colours, one card, one pill button, one sheet, one list row, and the states each of them ships with.",
-            "Native conventions were respected at the edges — navigation bars, sheets, keyboards — and the system owned everything inside the content area. Components were documented as we built them, so the handoff was a library rather than a set of screens.",
-          ],
-        },
-        {
-          wide: {
-            imageKey: "case.the-southern.desktop",
-            ratio: 1280 / 1471,
-            plain: true,
+          {
+            title: "Purchase without a keyboard",
+            meta: "Interaction design",
+            body: "Designed data plan purchase to avoid text entry wherever possible, handing off to the phone for anything that genuinely needed typing.",
           },
-        },
-
-        {
-          h: "Arrive, unlock, stay.",
-          navLabel: "Flows",
-          label: "The flows:",
-          body: [
-            "The app was organised around what a guest actually does in order: choose a villa, check in, open the door, then add to the stay. The digital key is the moment the product earns its place — a teal full-screen state, one instruction, one target, and a clear way out.",
-            "Around it sit the quieter flows: language selection, bed configuration, early check-in, extras, and a support thread that answers the key question before it is asked.",
-          ],
-        },
-        {
-          wide: {
-            imageKey: "case.the-southern.flow",
-            ratio: 2255 / 1279,
-            plain: true,
+          {
+            title: "Update centre",
+            meta: "UX design",
+            body: "Software updates presented as a state the driver can understand and trust: what is changing, how long it takes, and what happens if they walk away.",
           },
-        },
-
-        {
-          freestanding: true,
-          wide: {
-            imageKey: "case.the-southern.footer",
-            ratio: 2560 / 2643,
-            plain: true,
-            bleed: true,
+          {
+            title: "In-vehicle review",
+            meta: "Validation",
+            body: "Reviewed on real hardware in real light. Contrast and legibility decisions that looked safe on a monitor repeatedly did not survive a sunny car park.",
           },
-        },
-      ],
+        ],
+      },
+      system: {
+        eyebrow: "Shaping the system:",
+        heading: "One system, every screen size.",
+        body: [
+          "The core of the work is a responsive system keyed to viewing distance instead of viewport width. Type, touch targets, spacing and information density all step together across the screen range, so a flow designed once behaves correctly on every configuration in the line-up.",
+          "Two brands share it. SEAT and CUPRA differ in tone and palette but not in structure, which meant the flows could be designed once and themed rather than forked.",
+        ],
+      },
+      extend: {
+        eyebrow: "Extend:",
+        heading: "Beyond the head unit.",
+        body: [
+          "Several flows genuinely belong on a phone — anything involving typing, payment detail or reading terms. I designed the handoff so starting in the car and finishing on a phone is one continuous task rather than two disconnected ones.",
+          "The same system also carried the companion-app surfaces that mirror vehicle state, so the two screens agreed with each other about what the car was doing.",
+        ],
+      },
+      impact: {
+        eyebrow: "The impact:",
+        heading: "What shipped, and what it taught me.",
+        body: [
+          "Three connected-services flows shipped into production infotainment across two brands and the full screen range, on a shared responsive system rather than per-configuration designs.",
+          "Automotive changed how I design generally. When you cannot patch next week and a mistake sits in front of the user for the life of the vehicle, you get rigorous about states, about legibility, and about testing on the real thing rather than on a monitor.",
+        ],
+      },
     },
   ],
 
