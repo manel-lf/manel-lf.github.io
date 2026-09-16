@@ -1835,11 +1835,9 @@ export const CONTENT = {
           ],
         },
         {
-          wide: {
-            imageKey: "case.dragon-city-2.targeting",
-            ratio: 3 / 4,
+          turnOrderFlow: {
             caption:
-              "The reordered turn flow: choose a target, then choose an attack, with the target step optional.",
+              "The ordering I shipped — target, then attack, the target step optional — against the one I didn't: attack first, target after.",
           },
         },
         {
@@ -1916,6 +1914,15 @@ export const CONTENT = {
             "Fog covers parts of the island; clearing it means fighting the boss inside. I designed the flow and both the prebattle and postbattle screens.",
             "They have different jobs. Prebattle has to make a level-3 Guardivyan feel worth preparing for — it's the only moment the player decides whether they're ready. Postbattle has to connect the win back to the island: victory, then orbs to heal the cursed land, then the territory opening up with a nature egg inside.",
           ],
+        },
+        {
+          p: "Feed and edit are side-paths off that same prebattle screen, and losing costs nothing but the attempt — the player lands back on it, not back at the city.",
+        },
+        {
+          bossLoopFlow: {
+            caption:
+              "The full loop, city screen to city screen. Not one of the two screens below — drawn out here because the loop only reads properly whole.",
+          },
         },
         {
           twoUp: [
@@ -2530,13 +2537,6 @@ export const CONTENT = {
       plate: "lattice",
       tone: "dark",
       seed: 701,
-    },
-    "case.dragon-city-2.targeting": {
-      src: null,
-      alt: "Dragon City 2 system panel — concentric arcs standing in for the target-then-attack turn flow.",
-      plate: "orbit",
-      tone: "light",
-      seed: 702,
     },
     "case.dragon-city-2.speedToggles": {
       src: null,
@@ -4371,6 +4371,42 @@ const STYLES_ARCH = `
 }
 `;
 
+/* Dragon City 2's two bespoke diagrams — TurnOrderFlow (target-vs-attack
+ * ordering) and BossLoopFlow (the full Cursed Boss loop). Same idiom as
+ * STYLES_ARCH: dark .darkMediaFrame, every colour a --panel-* token or a
+ * mix of the accent, static but for the inherited scroll reveal. Pills
+ * (rounded to a full pill via rx) are actions/outcomes; rects are screens. */
+const STYLES_DC2_FLOW = `
+.dc2Flow{padding:clamp(14px,2.6vw,26px) clamp(2px,0.8vw,10px) clamp(4px,1vw,12px)}
+.dc2Flow--wide{padding-block:clamp(18px,3vw,32px)}
+.dc2Flow svg{display:block;width:100%;height:auto;overflow:visible}
+.dc2FlowGridDot{fill:rgba(255,255,255,0.05)}
+.dc2FlowKick{fill:var(--panel-muted);font-family:var(--font-mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.dc2FlowKickSub{fill:rgba(255,255,255,0.34);font-family:var(--font-mono);font-size:11px;letter-spacing:.05em}
+.dc2FlowRowTag{fill:var(--panel-muted);font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;dominant-baseline:central}
+.dc2FlowRowTag--accent{fill:var(--accent)}
+.dc2FlowEdge{fill:none;stroke:rgba(255,255,255,0.18);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dc2FlowEdge--accent{stroke:var(--accent);stroke-width:2}
+.dc2FlowEdgeLabel{fill:var(--panel-muted);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;text-anchor:middle}
+.dc2FlowHeadFill{fill:rgba(255,255,255,0.34)}
+.dc2FlowHeadFill--accent{fill:var(--accent)}
+.dc2FlowPill{fill:rgba(255,255,255,0.06);stroke:rgba(255,255,255,0.20);stroke-width:1}
+.dc2FlowPill--key{fill:color-mix(in srgb, var(--accent) 14%, transparent);stroke:var(--accent);stroke-width:1.5}
+.dc2FlowPillLabel{fill:var(--panel-muted);font-family:var(--font-mono);font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;text-anchor:middle;dominant-baseline:central}
+.dc2FlowPillLabel--key{fill:var(--panel-ink);font-weight:600}
+.dc2FlowPillSub{fill:rgba(255,255,255,0.4);font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;text-anchor:middle;font-style:italic}
+.dc2FlowScreen{fill:rgba(255,255,255,0.02);stroke:rgba(255,255,255,0.16);stroke-width:1}
+.dc2FlowScreen--key{fill:color-mix(in srgb, var(--accent) 9%, transparent);stroke:var(--accent);stroke-width:1.5}
+.dc2FlowScreenLabel{fill:var(--panel-muted);font-family:var(--font-mono);font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;text-anchor:middle;dominant-baseline:central}
+.dc2FlowScreenLabel--key{fill:var(--panel-ink);font-weight:600}
+.dc2FlowScreenSub{fill:rgba(255,255,255,0.4);font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-anchor:middle;text-transform:uppercase}
+@media (max-width:640px){
+  .dc2FlowPillLabel,.dc2FlowScreenLabel{font-size:15px}
+  .dc2FlowKick{font-size:15px}
+  .dc2FlowKickSub{font-size:13px}
+}
+`;
+
 /* One content type became two — the scroll-scrubbed split. The track is tall,
    the stage pins inside it, and ContentSplitSequence writes the per-frame
    transforms. Static fallback (prefers-reduced-motion) is a plain parted row. */
@@ -4865,6 +4901,7 @@ function useStyleSheet() {
       STYLES_HOME +
       STYLES_CASE +
       STYLES_ARCH +
+      STYLES_DC2_FLOW +
       STYLES_SEQ +
       STYLES_AUDIT +
       STYLES_ASK +
@@ -9498,6 +9535,367 @@ function ArchitectureTree({ caption }) {
 }
 
 /**
+ * Two turn orderings for Dragon City 2's battle screen, weighed against
+ * each other: target-then-attack (shipped, the target step optional so the
+ * default path stays one tap) against attack-then-target (considered, not
+ * shipped). Same dark-panel diagram idiom as ArchitectureTree — nodes as
+ * pills instead of rects, since every step here is an action, not a
+ * destination.
+ */
+function TurnOrderFlow({ caption }) {
+  const STEP_W = 208;
+  const STEP_H = 56;
+  const GAP = 64;
+  const START_X = 186;
+  const stepX = (j) => START_X + j * (STEP_W + GAP);
+
+  const ROWS = [
+    {
+      key: "shipped",
+      tag: "SHIPPED",
+      y: 76,
+      accent: true,
+      steps: [
+        { label: "CHOOSE TARGET", sub: "optional" },
+        { label: "CHOOSE ATTACK" },
+        { label: "TURN RESOLUTION" },
+      ],
+    },
+    {
+      key: "considered",
+      tag: "CONSIDERED",
+      y: 182,
+      accent: false,
+      steps: [
+        { label: "CHOOSE ATTACK" },
+        { label: "CHOOSE TARGET" },
+        { label: "TURN RESOLUTION" },
+      ],
+    },
+  ];
+
+  return (
+    <figure className="darkMediaFrame reveal">
+      <div className="dc2Flow">
+        <svg
+          viewBox="0 0 980 256"
+          role="img"
+          aria-label="Two turn orderings weighed against each other. Shipped: choose a target, optional, then choose an attack, then turn resolution. Considered but not shipped: choose an attack, then choose a target, then turn resolution."
+        >
+          <defs>
+            <pattern
+              id="dc2FlowGrid"
+              width="28"
+              height="28"
+              patternUnits="userSpaceOnUse"
+            >
+              <circle cx="1" cy="1" r="1" className="dc2FlowGridDot" />
+            </pattern>
+            <marker
+              id="dc2FlowHead"
+              viewBox="0 0 10 10"
+              refX="8.5"
+              refY="5"
+              markerWidth="7"
+              markerHeight="7"
+              orient="auto-start-reverse"
+            >
+              <path d="M0,0 L10,5 L0,10 z" className="dc2FlowHeadFill" />
+            </marker>
+            <marker
+              id="dc2FlowHeadAccent"
+              viewBox="0 0 10 10"
+              refX="8.5"
+              refY="5"
+              markerWidth="7"
+              markerHeight="7"
+              orient="auto-start-reverse"
+            >
+              <path
+                d="M0,0 L10,5 L0,10 z"
+                className="dc2FlowHeadFill dc2FlowHeadFill--accent"
+              />
+            </marker>
+          </defs>
+
+          <rect x="0" y="0" width="980" height="256" fill="url(#dc2FlowGrid)" />
+
+          {ROWS.map((row) => (
+            <text
+              key={`tag-${row.key}`}
+              x="24"
+              y={row.y + 5}
+              className={`dc2FlowRowTag${row.accent ? " dc2FlowRowTag--accent" : ""}`}
+            >
+              {row.tag}
+            </text>
+          ))}
+
+          {ROWS.flatMap((row) =>
+            row.steps.slice(0, -1).map((_, j) => {
+              const x1 = stepX(j) + STEP_W / 2;
+              const x2 = stepX(j + 1) - STEP_W / 2;
+              return (
+                <path
+                  key={`e-${row.key}-${j}`}
+                  d={`M${x1},${row.y} L${x2},${row.y}`}
+                  className={`dc2FlowEdge${row.accent ? " dc2FlowEdge--accent" : ""}`}
+                  markerEnd={`url(#${row.accent ? "dc2FlowHeadAccent" : "dc2FlowHead"})`}
+                />
+              );
+            }),
+          )}
+
+          {ROWS.flatMap((row) =>
+            row.steps.map((step, j) => {
+              const x = stepX(j);
+              return (
+                <g key={`n-${row.key}-${j}`}>
+                  <rect
+                    x={x - STEP_W / 2}
+                    y={row.y - STEP_H / 2}
+                    width={STEP_W}
+                    height={STEP_H}
+                    rx={STEP_H / 2}
+                    className={`dc2FlowPill${row.accent ? " dc2FlowPill--key" : ""}`}
+                  />
+                  <text
+                    x={x}
+                    y={row.y + (step.sub ? -6 : 1)}
+                    className={`dc2FlowPillLabel${row.accent ? " dc2FlowPillLabel--key" : ""}`}
+                  >
+                    {step.label}
+                  </text>
+                  {step.sub ? (
+                    <text x={x} y={row.y + 14} className="dc2FlowPillSub">
+                      {step.sub}
+                    </text>
+                  ) : null}
+                </g>
+              );
+            }),
+          )}
+        </svg>
+      </div>
+      {caption ? <figcaption className="mono">{caption}</figcaption> : null}
+    </figure>
+  );
+}
+
+/**
+ * The full Cursed Boss loop: city screen, out to fog, through prebattle,
+ * to feed/battle/edit and back. Not one of the two screens the case study
+ * walks through in detail (see the twoUp just below this) — added because
+ * the loop only reads properly seen whole, feed/edit side-paths and the
+ * loss return included. Same diagram idiom as ArchitectureTree and
+ * TurnOrderFlow: pills for actions and outcomes, rects for screens, accent
+ * for the one path that actually clears the fog.
+ */
+function BossLoopFlow({ caption }) {
+  const SCREEN = "screen";
+  const PILL = "pill";
+  const NODES = [
+    { id: "city", type: SCREEN, x: 110, y: 260, w: 150, h: 60, label: "CITY SCREEN" },
+    { id: "tapFog", type: PILL, x: 300, y: 260, w: 150, h: 52, label: "TAP ON FOG" },
+    {
+      id: "prebattle",
+      type: SCREEN,
+      x: 520,
+      y: 260,
+      w: 214,
+      h: 78,
+      label: "CURSED BOSS",
+      sub: "PREBATTLE SCREEN",
+      key: true,
+    },
+
+    { id: "tapFeed", type: PILL, x: 742, y: 110, w: 140, h: 50, label: "TAP FEED" },
+    { id: "tapBattle", type: PILL, x: 742, y: 260, w: 140, h: 50, label: "TAP BATTLE", key: true },
+    { id: "tapEdit", type: PILL, x: 742, y: 410, w: 140, h: 50, label: "TAP EDIT" },
+
+    { id: "feedScreen", type: SCREEN, x: 952, y: 110, w: 150, h: 58, label: "FEED SCREEN" },
+    { id: "battleScreen", type: SCREEN, x: 952, y: 260, w: 150, h: 58, label: "BATTLE SCREEN", key: true },
+    { id: "tapScreen", type: SCREEN, x: 952, y: 410, w: 150, h: 58, label: "TAP SCREEN" },
+
+    { id: "feed", type: PILL, x: 1150, y: 110, w: 108, h: 48, label: "FEED" },
+    { id: "winBattle", type: PILL, x: 1150, y: 200, w: 130, h: 48, label: "WIN BATTLE", key: true },
+    { id: "loseBattle", type: PILL, x: 1150, y: 330, w: 130, h: 48, label: "LOSE BATTLE" },
+    { id: "edit", type: PILL, x: 1150, y: 410, w: 108, h: 48, label: "EDIT" },
+
+    { id: "rewards", type: SCREEN, x: 1330, y: 200, w: 150, h: 58, label: "REWARDS SCREEN", key: true },
+    { id: "defeat", type: SCREEN, x: 1330, y: 330, w: 150, h: 58, label: "DEFEAT SCREEN" },
+
+    {
+      id: "end",
+      type: SCREEN,
+      x: 1330,
+      y: 78,
+      w: 176,
+      h: 72,
+      label: "CITY SCREEN",
+      sub: "FOG DISAPPEARS",
+      key: true,
+    },
+  ];
+  const byId = Object.fromEntries(NODES.map((n) => [n.id, n]));
+  const right = (n) => n.x + n.w / 2;
+  const left = (n) => n.x - n.w / 2;
+  const top = (n) => n.y - n.h / 2;
+  const bottom = (n) => n.y + n.h / 2;
+
+  const elbow = (a, b, { accent = false, label } = {}) => {
+    const midX = (right(a) + left(b)) / 2;
+    const d =
+      a.y === b.y
+        ? `M${right(a)},${a.y} L${left(b)},${b.y}`
+        : `M${right(a)},${a.y} L${midX},${a.y} L${midX},${b.y} L${left(b)},${b.y}`;
+    return { d, accent, label, x: midX, y: (a.y + b.y) / 2 };
+  };
+
+  const EDGES = [
+    elbow(byId.city, byId.tapFog),
+    elbow(byId.tapFog, byId.prebattle),
+    elbow(byId.prebattle, byId.tapFeed),
+    elbow(byId.prebattle, byId.tapBattle, { accent: true }),
+    elbow(byId.prebattle, byId.tapEdit),
+    elbow(byId.tapFeed, byId.feedScreen),
+    elbow(byId.tapBattle, byId.battleScreen, { accent: true }),
+    elbow(byId.tapEdit, byId.tapScreen),
+    elbow(byId.feedScreen, byId.feed),
+    elbow(byId.battleScreen, byId.winBattle, { accent: true }),
+    elbow(byId.battleScreen, byId.loseBattle),
+    elbow(byId.tapScreen, byId.edit),
+    elbow(byId.winBattle, byId.rewards, { accent: true }),
+    elbow(byId.loseBattle, byId.defeat),
+    { d: `M1330,${top(byId.rewards)} L1330,${bottom(byId.end)}`, accent: true, label: "TAP", x: 1330, y: (top(byId.rewards) + bottom(byId.end)) / 2 },
+  ];
+
+  const railTop = {
+    d: `M1150,${top(byId.feed)} L1150,40 L520,40 L520,${top(byId.prebattle)}`,
+  };
+  const railEdit = {
+    d: `M1150,${bottom(byId.edit)} L1150,480 L500,480 L500,${bottom(byId.prebattle)}`,
+  };
+  const railDefeat = {
+    d: `M1330,${bottom(byId.defeat)} L1330,498 L545,498 L545,${bottom(byId.prebattle)}`,
+    label: "TAP",
+    x: 1330,
+    y: bottom(byId.defeat) + 18,
+  };
+
+  const rect = (n) => {
+    const base = n.type === PILL ? "dc2FlowPill" : "dc2FlowScreen";
+    return (
+      <rect
+        key={`r-${n.id}`}
+        x={left(n)}
+        y={top(n)}
+        width={n.w}
+        height={n.h}
+        rx={n.type === PILL ? n.h / 2 : 8}
+        className={`${base}${n.key ? ` ${base}--key` : ""}`}
+      />
+    );
+  };
+  const label = (n) => {
+    const base = n.type === PILL ? "dc2FlowPillLabel" : "dc2FlowScreenLabel";
+    return (
+      <g key={`t-${n.id}`}>
+        <text
+          x={n.x}
+          y={n.y + (n.sub ? -7 : 1)}
+          className={`${base}${n.key ? ` ${base}--key` : ""}`}
+        >
+          {n.label}
+        </text>
+        {n.sub ? (
+          <text x={n.x} y={n.y + 15} className="dc2FlowScreenSub">
+            {n.sub}
+          </text>
+        ) : null}
+      </g>
+    );
+  };
+
+  return (
+    <figure className="darkMediaFrame reveal">
+      <div className="dc2Flow dc2Flow--wide">
+        <svg
+          viewBox="30 10 1420 540"
+          role="img"
+          aria-label="The Cursed Boss loop. City screen, tap on fog, opens the Cursed Boss prebattle screen. From there: tap feed leads to the feed screen and back to prebattle; tap battle, the accented path, leads to the battle screen, which resolves as win battle — the accented path — to the rewards screen and back to the city screen with the fog cleared, or as lose battle to the defeat screen and back to the prebattle screen; tap edit leads to a tap screen, edit, and back to prebattle."
+        >
+          <defs>
+            <pattern
+              id="dc2FlowGridBoss"
+              width="28"
+              height="28"
+              patternUnits="userSpaceOnUse"
+            >
+              <circle cx="1" cy="1" r="1" className="dc2FlowGridDot" />
+            </pattern>
+            <marker
+              id="dc2FlowHeadBoss"
+              viewBox="0 0 10 10"
+              refX="8.5"
+              refY="5"
+              markerWidth="7"
+              markerHeight="7"
+              orient="auto-start-reverse"
+            >
+              <path d="M0,0 L10,5 L0,10 z" className="dc2FlowHeadFill" />
+            </marker>
+            <marker
+              id="dc2FlowHeadAccentBoss"
+              viewBox="0 0 10 10"
+              refX="8.5"
+              refY="5"
+              markerWidth="7"
+              markerHeight="7"
+              orient="auto-start-reverse"
+            >
+              <path
+                d="M0,0 L10,5 L0,10 z"
+                className="dc2FlowHeadFill dc2FlowHeadFill--accent"
+              />
+            </marker>
+          </defs>
+
+          <rect x="30" y="10" width="1420" height="540" fill="url(#dc2FlowGridBoss)" />
+
+          <text x="30" y="30" className="dc2FlowKick">
+            THE CURSED BOSS LOOP
+          </text>
+          <text x="30" y="48" className="dc2FlowKickSub">
+            clearing fog: city screen back to city screen
+          </text>
+
+          {[...EDGES, railTop, railEdit, railDefeat].map((e, idx) => (
+            <path
+              key={`e${idx}`}
+              d={e.d}
+              className={`dc2FlowEdge${e.accent ? " dc2FlowEdge--accent" : ""}`}
+              markerEnd={`url(#${e.accent ? "dc2FlowHeadAccentBoss" : "dc2FlowHeadBoss"})`}
+            />
+          ))}
+          {[...EDGES, railDefeat]
+            .filter((e) => e.label)
+            .map((e, idx) => (
+              <text key={`el${idx}`} x={e.x} y={e.y - 8} className="dc2FlowEdgeLabel">
+                {e.label}
+              </text>
+            ))}
+
+          {NODES.map((n) => rect(n))}
+          {NODES.map((n) => label(n))}
+        </svg>
+      </div>
+      {caption ? <figcaption className="mono">{caption}</figcaption> : null}
+    </figure>
+  );
+}
+
+/**
  * The six catalog surfaces the redesign inherited, in the order they sit
  * left-to-right once the stack has parted. `from` is the clustered pose
  * (a loose hand of cards near centre); `to` is the split pose — three left,
@@ -10327,6 +10725,12 @@ function CaseRichBlock({ block, i, reduced }) {
   }
   if (block.archTree) {
     return <ArchitectureTree key={i} caption={block.archTree.caption} />;
+  }
+  if (block.turnOrderFlow) {
+    return <TurnOrderFlow key={i} caption={block.turnOrderFlow.caption} />;
+  }
+  if (block.bossLoopFlow) {
+    return <BossLoopFlow key={i} caption={block.bossLoopFlow.caption} />;
   }
   if (block.splitSequence) {
     return (
