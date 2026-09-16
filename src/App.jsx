@@ -2271,11 +2271,8 @@ export const CONTENT = {
       alt: "The same game tile shown twice, once with a lightning-bolt instant-play badge and once with a download badge — identical tiles for two different experiences.",
     },
     "case.gamehouse-plus.liveAppAudit": {
-      src: null,
-      alt: "The live GH+ home screen, before the redesign — placeholder pending the real screenshot.",
-      plate: "grid",
-      tone: "light",
-      seed: 561,
+      src: "img/case-gamehouse-plus-live-app-audit.png",
+      alt: "The live GH+ home screen, before the redesign — an oversized purple header and navbar, a hero banner with no clear CTA, and a two-column game grid with heavy card chrome.",
     },
     "case.gamehouse-plus.home": {
       src: "img/case-gamehouse-plus-home.png",
