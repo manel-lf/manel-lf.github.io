@@ -1438,7 +1438,13 @@ export const CONTENT = {
         },
 
         {
-          h: "Three features, three mechanisms.",
+          h: (
+            <>
+              Three features,
+              <br />
+              three mechanisms.
+            </>
+          ),
           navLabel: "Process",
           label: "Process.",
         },
@@ -5973,35 +5979,68 @@ function CompareSlider({ dayKey, nightKey, ratio = 1895 / 830, reduced }) {
   );
 }
 
+/** Renders one non-wide content item inside a FeaturePanel's flowing
+ * column: paragraph, quote, list, or the small inline (maxWidth) image. */
+function FeaturePanelItem({ item, dark }) {
+  if (item.quote) {
+    return (
+      <blockquote className={`blockquote${dark ? " blockquote--onPanel" : ""}`}>
+        {item.quote}
+      </blockquote>
+    );
+  }
+  if (item.list) {
+    return (
+      <ul className={`subList${dark ? " subList--onPanel" : ""}`}>
+        {item.list.map((li, k) => (
+          <li key={k}>{li}</li>
+        ))}
+      </ul>
+    );
+  }
+  if (item.image) {
+    const { imageKey, caption, maxWidth, ratio } = item.image;
+    return (
+      <div className="featureMedia" style={{ maxWidth, width: "100%" }}>
+        <Visual imageKey={imageKey} ratio={ratio || 16 / 9} />
+        {caption ? <span className="caption">{caption}</span> : null}
+      </div>
+    );
+  }
+  return <p>{item.p}</p>;
+}
+
 /**
  * A bordered, optionally-dark card holding a kicker + statement heading and
  * a run of prose/media — the Claude Design "featurePanel" component, which
  * has no equivalent elsewhere in this template (every other case study
  * argues its points through plain CaseSection prose, not a stack of self-
  * contained cards). `content` is a flat list of {p}/{quote}/{list}/{image}/
- * {compareSlider} items; consecutive text items are grouped into one
- * `.prose` wrapper exactly like the artifact does.
+ * {compareSlider} items.
  *
  * Laid out as a 2-column grid, same idea as the shared `.caseSplit`: the
- * kicker+title sit in column 1, every prose group sits in column 2 beside
- * it. A "big" media item — an image with no `maxWidth` (a real screenshot
- * proving the feature, not the small inline diagram) or the compare-slider
- * — breaks out to span both columns instead.
+ * kicker+title sit in column 1, and everything else flows down column 2 as
+ * ONE flex column per run — not one grid row per item, which left a short
+ * paragraph sharing a grid row with the (taller) heading and stranding dead
+ * space below it. Only a "big" media item — an image with no `maxWidth` (a
+ * real screenshot proving the feature, not the small inline diagram) or the
+ * compare-slider — breaks a run and spans both columns on its own row.
  */
 function FeaturePanel({ panel, reduced }) {
   const { kicker, title, dark, content = [] } = panel;
-  const groups = [];
+  const runs = [];
   let buf = [];
   const flush = () => {
     if (buf.length) {
-      groups.push({ type: "prose", items: buf });
+      runs.push({ type: "run", items: buf });
       buf = [];
     }
   };
   content.forEach((item) => {
-    if (item.image || item.compareSlider) {
+    const isWide = item.compareSlider || (item.image && !item.image.maxWidth);
+    if (isWide) {
       flush();
-      groups.push({ type: "media", item });
+      runs.push({ type: "wide", item });
     } else {
       buf.push(item);
     }
@@ -6016,11 +6055,11 @@ function FeaturePanel({ panel, reduced }) {
         {kicker ? <span className="featureKicker">{kicker}</span> : null}
         {title ? <h3 className="featureStatement">{title}</h3> : null}
       </div>
-      {groups.map((g, i) => {
-        if (g.type === "media") {
-          if (g.item.compareSlider) {
+      {runs.map((r, i) => {
+        if (r.type === "wide") {
+          if (r.item.compareSlider) {
             const { dayImageKey, nightImageKey, caption } =
-              g.item.compareSlider;
+              r.item.compareSlider;
             return (
               <div className="featureMedia featureMedia--wide" key={i}>
                 <CompareSlider
@@ -6032,13 +6071,9 @@ function FeaturePanel({ panel, reduced }) {
               </div>
             );
           }
-          const { imageKey, caption, maxWidth, ratio } = g.item.image;
+          const { imageKey, caption, ratio } = r.item.image;
           return (
-            <div
-              className={`featureMedia${maxWidth ? "" : " featureMedia--wide"}`}
-              key={i}
-              style={maxWidth ? { maxWidth, width: "100%" } : undefined}
-            >
+            <div className="featureMedia featureMedia--wide" key={i}>
               <Visual imageKey={imageKey} ratio={ratio || 16 / 9} />
               {caption ? <span className="caption">{caption}</span> : null}
             </div>
@@ -6046,31 +6081,9 @@ function FeaturePanel({ panel, reduced }) {
         }
         return (
           <div className={`prose${dark ? " prose--onPanel" : ""}`} key={i}>
-            {g.items.map((it, j) => {
-              if (it.quote) {
-                return (
-                  <blockquote
-                    className={`blockquote${dark ? " blockquote--onPanel" : ""}`}
-                    key={j}
-                  >
-                    {it.quote}
-                  </blockquote>
-                );
-              }
-              if (it.list) {
-                return (
-                  <ul
-                    className={`subList${dark ? " subList--onPanel" : ""}`}
-                    key={j}
-                  >
-                    {it.list.map((li, k) => (
-                      <li key={k}>{li}</li>
-                    ))}
-                  </ul>
-                );
-              }
-              return <p key={j}>{it.p}</p>;
-            })}
+            {r.items.map((it, j) => (
+              <FeaturePanelItem item={it} dark={dark} key={j} />
+            ))}
           </div>
         );
       })}
@@ -11635,7 +11648,8 @@ const STYLES_UTIL = `
 .featureStatement{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.02em;color:var(--ink);margin:0;max-width:22ch}
 .featurePanel--dark .featureStatement{color:var(--panel-ink)}
 .featurePanel > .prose,.featureMedia{grid-column:2}
-.featureMedia--wide{grid-column:1 / -1}
+.featureMedia--wide{grid-column:1 / -1;margin-top:var(--s3)}
+.featurePanel + .featurePanel{margin-top:var(--s6)}
 .featureMedia{display:flex;flex-direction:column}
 .caption{display:block;margin-top:var(--s3);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.6875rem;line-height:1.4;max-width:60ch}
 .featurePanel--dark .caption{color:var(--panel-muted)}
