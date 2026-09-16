@@ -1374,6 +1374,8 @@ export const CONTENT = {
         "Night Mode, a ticket-driven Summer Event and a daily Today's Goals loop — three retention features built from maps the game already had.",
       role: "Game UX UI Designer",
       years: "2023",
+      // One year, not a range — "Years" reads oddly over a single value.
+      yearLabel: "Year",
       skills: [
         "UX Design",
         "Live Ops",
@@ -1386,6 +1388,9 @@ export const CONTENT = {
         { value: "Recurring", label: "Event cadence, not a one-off" },
         { value: "Live ops", label: "Shipped inside a running game" },
       ],
+      // The hero is a static illustration, not a video — plain light frame
+      // instead of GameHousePlusCase's default dark video-poster frame.
+      heroLight: true,
       caseTitle: [
         "Three features, no new maps.",
         "Live-events design support on a top-grossing mobile title.",
@@ -1519,16 +1524,16 @@ export const CONTENT = {
                 ],
               },
               {
+                quote:
+                  "Hyper-casual sessions are measured in seconds and the player has no investment yet — there is no room for friction.",
+              },
+              {
                 image: {
                   imageKey: "case.scavenger-hunt.dailyQuests",
                   ratio: 1822 / 887,
                   caption:
                     "Left to right: first contact on daily login, the persistent home-panel tracking progress, and the reward claim screen.",
                 },
-              },
-              {
-                quote:
-                  "Hyper-casual sessions are measured in seconds and the player has no investment yet — there is no room for friction.",
               },
             ],
           },
@@ -4240,6 +4245,8 @@ const STYLES_CASE = `
   .aboutCard{grid-template-columns:1fr}
   .aboutPortrait{order:-1;max-width:340px}
   .caseSplit{grid-template-columns:1fr;gap:var(--s5)}
+  .featurePanel{grid-template-columns:1fr}
+  .featureMedia,.featureMedia--wide{grid-column:1}
   .extendGrid{grid-template-columns:1fr}
   .caseNav{grid-template-columns:1fr}
   .caseNavBtn--next{text-align:left;align-items:flex-start}
@@ -5974,9 +5981,13 @@ function CompareSlider({ dayKey, nightKey, ratio = 1895 / 830, reduced }) {
  * argues its points through plain CaseSection prose, not a stack of self-
  * contained cards). `content` is a flat list of {p}/{quote}/{list}/{image}/
  * {compareSlider} items; consecutive text items are grouped into one
- * `.prose` wrapper exactly like the artifact does, and each image or
- * compare-slider breaks that grouping and renders standalone, matching the
- * artifact's own DOM order rather than forcing every item into one column.
+ * `.prose` wrapper exactly like the artifact does.
+ *
+ * Laid out as a 2-column grid, same idea as the shared `.caseSplit`: the
+ * kicker+title sit in column 1, every prose group sits in column 2 beside
+ * it. A "big" media item — an image with no `maxWidth` (a real screenshot
+ * proving the feature, not the small inline diagram) or the compare-slider
+ * — breaks out to span both columns instead.
  */
 function FeaturePanel({ panel, reduced }) {
   const { kicker, title, dark, content = [] } = panel;
@@ -5999,15 +6010,20 @@ function FeaturePanel({ panel, reduced }) {
   flush();
 
   return (
-    <div className={`featurePanel${dark ? " featurePanel--dark" : ""} reveal`}>
-      {kicker ? <span className="featureKicker">{kicker}</span> : null}
-      {title ? <h3 className="featureStatement">{title}</h3> : null}
+    <div
+      className={`featurePanel${dark ? " featurePanel--dark" : ""} reveal`}
+    >
+      <div className="featurePanelHead">
+        {kicker ? <span className="featureKicker">{kicker}</span> : null}
+        {title ? <h3 className="featureStatement">{title}</h3> : null}
+      </div>
       {groups.map((g, i) => {
         if (g.type === "media") {
           if (g.item.compareSlider) {
-            const { dayImageKey, nightImageKey, caption } = g.item.compareSlider;
+            const { dayImageKey, nightImageKey, caption } =
+              g.item.compareSlider;
             return (
-              <div className="featureMedia" key={i}>
+              <div className="featureMedia featureMedia--wide" key={i}>
                 <CompareSlider
                   dayKey={dayImageKey}
                   nightKey={nightImageKey}
@@ -6020,7 +6036,7 @@ function FeaturePanel({ panel, reduced }) {
           const { imageKey, caption, maxWidth, ratio } = g.item.image;
           return (
             <div
-              className="featureMedia"
+              className={`featureMedia${maxWidth ? "" : " featureMedia--wide"}`}
               key={i}
               style={maxWidth ? { maxWidth, width: "100%" } : undefined}
             >
@@ -11607,12 +11623,20 @@ const STYLES_UTIL = `
    verbatim (values included) from the Scavenger Hunt case-study artifact,
    since no equivalent existed here before. ---- */
 .featureStack{display:flex;flex-direction:column;gap:var(--s6);margin-top:clamp(32px,5vh,56px)}
-.featurePanel{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:clamp(28px,4.5vw,72px);box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:var(--s5)}
+.featurePanel{
+  background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r-lg);
+  padding:clamp(28px,4.5vw,72px);box-shadow:var(--shadow-card);
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.28fr);
+  column-gap:clamp(32px,6vw,88px);row-gap:var(--s5);align-items:start;
+}
 .featurePanel--dark{background:var(--panel);color:var(--panel-ink);border-color:var(--hairline)}
-.featureKicker{display:block;font-family:'JetBrains Mono',monospace;font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:calc(-1 * var(--s2))}
+.featurePanelHead{grid-column:1;display:flex;flex-direction:column;gap:var(--s3)}
+.featureKicker{display:block;font-family:'JetBrains Mono',monospace;font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .featurePanel--dark .featureKicker{color:var(--panel-muted)}
 .featureStatement{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.02em;color:var(--ink);margin:0;max-width:22ch}
 .featurePanel--dark .featureStatement{color:var(--panel-ink)}
+.featurePanel > .prose,.featureMedia{grid-column:2}
+.featureMedia--wide{grid-column:1 / -1}
 .featureMedia{display:flex;flex-direction:column}
 .caption{display:block;margin-top:var(--s3);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.6875rem;line-height:1.4;max-width:60ch}
 .featurePanel--dark .caption{color:var(--panel-muted)}
