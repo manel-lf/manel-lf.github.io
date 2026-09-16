@@ -1837,7 +1837,7 @@ export const CONTENT = {
         {
           turnOrderFlow: {
             caption:
-              "The ordering I shipped — target, then attack, the target step optional — against the one I didn't: attack first, target after.",
+              "What shipped first — attack, then target — updated to target-then-attack, the target step optional.",
           },
         },
         {
@@ -1862,7 +1862,7 @@ export const CONTENT = {
         {
           wide: {
             imageKey: "case.dragon-city-2.speedToggles",
-            ratio: 16 / 9,
+            ratio: 2786 / 1627,
             caption:
               "The battle HUD's speed controls: a 2× toggle and an autobattle button labelled 'auto'.",
           },
@@ -1896,7 +1896,7 @@ export const CONTENT = {
         {
           wide: {
             imageKey: "case.dragon-city-2.typeMatchups",
-            ratio: 3 / 4,
+            ratio: 2744 / 1549,
             caption:
               "The type-matchup screen: pick one element, see two lists, instead of the full N×N grid.",
           },
@@ -1928,13 +1928,13 @@ export const CONTENT = {
           twoUp: [
             {
               imageKey: "case.dragon-city-2.bossPrebattle",
-              ratio: 3 / 4,
+              ratio: 2700 / 1523,
               caption:
                 "The Cursed Boss prebattle screen, framing a level-3 Guardivyan as worth preparing for.",
             },
             {
               imageKey: "case.dragon-city-2.bossPostbattle",
-              ratio: 3 / 4,
+              ratio: 2712 / 1527,
               caption:
                 "The postbattle screen: victory, orbs to heal the cursed land, and the newly opened territory.",
             },
@@ -1968,7 +1968,7 @@ export const CONTENT = {
         {
           wide: {
             imageKey: "case.dragon-city-2.research",
-            ratio: 16 / 9,
+            ratio: 4604 / 2161,
             caption:
               "Ten first-time players' answers, classified into success / mid-success / fail bands defined before the data came in.",
           },
@@ -2532,43 +2532,43 @@ export const CONTENT = {
     },
 
     "case.dragon-city-2.hero": {
-      src: null,
-      alt: "Dragon City 2 case study hero — an interlocking lattice standing in for the campaign battle systems.",
+      src: "img/case-dragon-city-2-hero.png",
+      alt: "A collage of Dragon City 2 screens — breeding, island building and battle — captioned 'Breed Dragons', 'Build Your Island' and 'Win Battles'.",
       plate: "lattice",
       tone: "dark",
       seed: 701,
     },
     "case.dragon-city-2.speedToggles": {
-      src: null,
-      alt: "Dragon City 2 system panel — a rising ramp standing in for the 2× and autobattle speed controls.",
+      src: "img/case-dragon-city-2-speed-toggles.png",
+      alt: "The battle screen with the 2× speed and autobattle toggles circled in the top-left corner.",
       plate: "ramp",
       tone: "accent",
       seed: 703,
     },
     "case.dragon-city-2.typeMatchups": {
-      src: null,
-      alt: "Dragon City 2 system panel — interlocking bars standing in for the two-list type-matchup screen.",
+      src: "img/case-dragon-city-2-type-matchups.png",
+      alt: "The elemental effectiveness screen, showing what a selected dragon is weak against and strong against as two lists.",
       plate: "weave",
       tone: "light",
       seed: 704,
     },
     "case.dragon-city-2.bossPrebattle": {
-      src: null,
-      alt: "Dragon City 2 system panel — nested panels standing in for the Cursed Boss prebattle screen.",
+      src: "img/case-dragon-city-2-boss-prebattle.png",
+      alt: "The Cursed Boss prebattle screen: the player's team on one side, a level-3 Guardivyan on the other, team power and a Battle button below.",
       plate: "panels",
       tone: "dark",
       seed: 705,
     },
     "case.dragon-city-2.bossPostbattle": {
-      src: null,
-      alt: "Dragon City 2 system panel — stacked strata standing in for the postbattle territory reveal.",
+      src: "img/case-dragon-city-2-boss-postbattle.png",
+      alt: "The postbattle victory screen: XP earned, a new land unlocked, and a nature egg to claim by healing the land with orbs.",
       plate: "strata",
       tone: "accent",
       seed: 706,
     },
     "case.dragon-city-2.research": {
-      src: null,
-      alt: "Dragon City 2 research visual — a grid of hairline cells standing in for the FTUE classification bands.",
+      src: "img/case-dragon-city-2-research.png",
+      alt: "A spreadsheet of ten first-time players' survey answers and ratings, colour-coded by how well each response landed.",
       plate: "grid",
       tone: "light",
       seed: 707,
@@ -4383,7 +4383,7 @@ const STYLES_DC2_FLOW = `
 .dc2FlowGridDot{fill:rgba(255,255,255,0.05)}
 .dc2FlowKick{fill:var(--panel-muted);font-family:var(--font-mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
 .dc2FlowKickSub{fill:rgba(255,255,255,0.34);font-family:var(--font-mono);font-size:11px;letter-spacing:.05em}
-.dc2FlowRowTag{fill:var(--panel-muted);font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;dominant-baseline:central}
+.dc2FlowRowTag{fill:var(--panel-muted);font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;text-anchor:middle;dominant-baseline:central}
 .dc2FlowRowTag--accent{fill:var(--accent)}
 .dc2FlowEdge{fill:none;stroke:rgba(255,255,255,0.18);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dc2FlowEdge--accent{stroke:var(--accent);stroke-width:2}
@@ -9535,12 +9535,12 @@ function ArchitectureTree({ caption }) {
 }
 
 /**
- * Two turn orderings for Dragon City 2's battle screen, weighed against
- * each other: target-then-attack (shipped, the target step optional so the
- * default path stays one tap) against attack-then-target (considered, not
- * shipped). Same dark-panel diagram idiom as ArchitectureTree — nodes as
- * pills instead of rects, since every step here is an action, not a
- * destination.
+ * Two turn orderings for Dragon City 2's battle screen: the previous one —
+ * attack, then target — updated to target-then-attack, the target step
+ * optional so the default path stays one tap. This isn't a shipped-vs-
+ * rejected comparison, it's a revision — both were live at some point.
+ * Same dark-panel diagram idiom as ArchitectureTree — nodes as pills
+ * instead of rects, since every step here is an action, not a destination.
  */
 function TurnOrderFlow({ caption }) {
   const STEP_W = 208;
@@ -9548,12 +9548,13 @@ function TurnOrderFlow({ caption }) {
   const GAP = 64;
   const START_X = 186;
   const stepX = (j) => START_X + j * (STEP_W + GAP);
+  const ROW_TAG_GAP = 16;
 
   const ROWS = [
     {
-      key: "shipped",
-      tag: "SHIPPED",
-      y: 76,
+      key: "updated",
+      tag: "UPDATED",
+      y: 84,
       accent: true,
       steps: [
         { label: "CHOOSE TARGET", sub: "optional" },
@@ -9562,9 +9563,9 @@ function TurnOrderFlow({ caption }) {
       ],
     },
     {
-      key: "considered",
-      tag: "CONSIDERED",
-      y: 182,
+      key: "previous",
+      tag: "PREVIOUS",
+      y: 196,
       accent: false,
       steps: [
         { label: "CHOOSE ATTACK" },
@@ -9573,14 +9574,15 @@ function TurnOrderFlow({ caption }) {
       ],
     },
   ];
+  const tagY = (row) => row.y - STEP_H / 2 - ROW_TAG_GAP;
 
   return (
     <figure className="darkMediaFrame reveal">
       <div className="dc2Flow">
         <svg
-          viewBox="0 0 980 256"
+          viewBox="0 0 980 280"
           role="img"
-          aria-label="Two turn orderings weighed against each other. Shipped: choose a target, optional, then choose an attack, then turn resolution. Considered but not shipped: choose an attack, then choose a target, then turn resolution."
+          aria-label="Two turn orderings, previous updated to current. Previous: choose an attack, then choose a target, then turn resolution. Updated to: choose a target, optional, then choose an attack, then turn resolution."
         >
           <defs>
             <pattern
@@ -9618,13 +9620,13 @@ function TurnOrderFlow({ caption }) {
             </marker>
           </defs>
 
-          <rect x="0" y="0" width="980" height="256" fill="url(#dc2FlowGrid)" />
+          <rect x="0" y="0" width="980" height="280" fill="url(#dc2FlowGrid)" />
 
           {ROWS.map((row) => (
             <text
               key={`tag-${row.key}`}
-              x="24"
-              y={row.y + 5}
+              x={stepX(1)}
+              y={tagY(row)}
               className={`dc2FlowRowTag${row.accent ? " dc2FlowRowTag--accent" : ""}`}
             >
               {row.tag}
