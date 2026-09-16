@@ -234,47 +234,6 @@ export const CONTENT = {
     underConstruction: "WIP Case Study — Check back soon.",
   },
 
-  bits: {
-    eyebrow: "Design bits.",
-    heading: "What I have lately been working on.",
-    prevLabel: "Previous bits",
-    nextLabel: "Next bits",
-    // One label per row of four items below.
-    rowLabels: ["Prototypes and tooling"],
-    // Every tile uses this ratio, so the cards line up as an even grid.
-    mediaRatio: 4 / 3,
-    items: [
-      {
-        id: "bit-claude-figma",
-        kicker: "Coming soon",
-        caption:
-          "The GH+ Battle Pass product design case study will be revealed upon launch.",
-        imageKey: "bits.claudeFigma",
-      },
-      {
-        id: "bit-energy",
-        kicker: "Game economy",
-        caption:
-          "Jesterday’s energy economy modelled in a spreadsheet and tuned against session length before a single screen was drawn.",
-        imageKey: "bits.energy",
-      },
-      {
-        id: "bit-teaching",
-        kicker: "Teaching",
-        caption:
-          "Meet Rubriq, my rubric-based grading tool! It catches formatting mistakes, organizes submissions, and builds student progression — every grade is still mine.",
-        imageKey: "bits.teaching",
-      },
-      {
-        id: "bit-instant",
-        kicker: "Brand social",
-        caption:
-          "Social media content for Exclusive Traveler Club — a brief where the whole craft sits in type, spacing and restraint.",
-        imageKey: "bits.instant",
-      },
-    ],
-  },
-
   about: {
     eyebrow: "About me.",
     heading: "Design that ships.",
@@ -665,7 +624,6 @@ export const CONTENT = {
       { id: "about", label: "About" },
       { id: "shoutouts", label: "Shoutouts" },
       { id: "journal", label: "Journal" },
-      { id: "bits", label: "Bits" },
       { id: "contact", label: "Contact" },
     ],
     railLabel: "Sections on this page",
@@ -2198,22 +2156,6 @@ export const CONTENT = {
       seed: 27,
     },
 
-    "bits.claudeFigma": {
-      src: "img/bit-battlepass-comingsoon.png",
-      alt: "Blurred, obscured preview screens standing in for the GH+ Battle Pass case study, still under wraps.",
-    },
-    "bits.energy": {
-      src: "img/bit-game-economy.png",
-      alt: "A tier-by-tier XP and spark cost table from the Jesterday energy economy model.",
-    },
-    "bits.teaching": {
-      src: "img/bits-rubriq.jpg",
-      alt: "Rubriq, a rubric-based grading tool: a session-setup screen for uploading a submission screenshot and listing filenames to grade.",
-    },
-    "bits.instant": {
-      src: "img/bit-brand-social.png",
-      alt: "A Best Traveler Club award graphic from the Exclusive Traveler Club social content.",
-    },
     "bits.tokens": {
       src: null,
       alt: "Interlocking bars standing in for design tokens shared between Figma and Unity.",
@@ -3465,39 +3407,6 @@ button.projectCard{
   .cardTip{transition:none}
 }
 
-/* ============================== BITS ============================== */
-.bitsRows{
-  margin-top:clamp(32px,5vh,56px);
-  display:grid;
-  gap:var(--s7);
-  min-width:0;
-}
-/* A grid item defaults to min-width:auto, so without this the cluster
-   inflates to the row's min-content width (4 tiles + gaps) and pushes the
-   whole document sideways instead of letting the row scroll inside it. */
-.bitsCluster{min-width:0}
-.bitsRow{
-  min-width:0;
-  display:flex;
-  /* stretch, so every card in a row ends at the same baseline regardless of
-     how long its caption runs */
-  align-items:stretch;
-  gap:var(--s5);
-  overflow-x:auto;
-  scroll-snap-type:x mandatory;
-  scrollbar-width:none;
-  -ms-overflow-style:none;
-  overscroll-behavior-x:contain;
-  padding-bottom:var(--s2);
-}
-.bitsRow::-webkit-scrollbar{display:none}
-.bitsRow > .bitTile{flex:1 1 0;min-width:212px;scroll-snap-align:start}
-.rowHead{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:var(--s4);
-  margin-bottom:var(--s4);
-  color:var(--muted);
-}
 .arrowPair{display:flex;gap:var(--s2)}
 .iconBtn{
   display:grid;place-items:center;
@@ -3511,32 +3420,6 @@ button.projectCard{
 }
 .iconBtn:hover:not(:disabled){background:var(--surface);border-color:var(--ink)}
 .iconBtn:disabled{opacity:.32;cursor:not-allowed}
-
-.bitTile{
-  display:flex;flex-direction:column;gap:var(--s3);
-  background:var(--surface);
-  border:1px solid var(--hairline);
-  border-radius:var(--r-lg);
-  overflow:hidden;
-  box-shadow:var(--shadow-card);
-  transition:transform var(--dur-slow) var(--ease-out),
-             box-shadow var(--dur-slow) var(--ease-out);
-}
-.bitTile:hover{transform:translate3d(0,-3px,0);box-shadow:var(--shadow-lift)}
-.bitMedia{
-  border-radius:0;
-  overflow:hidden;
-  background:var(--surface-2);
-}
-.bitMedia > *{transition:transform ${DUR.reveal}ms var(--ease-out);will-change:transform}
-.bitTile:hover .bitMedia > *{transform:scale(1.04)}
-.bitBody{
-  padding:0 var(--s4) var(--s4);
-  display:flex;flex-direction:column;gap:var(--s2);
-  flex:1;
-}
-.bitBody .kicker{color:var(--accent)}
-.bitBody p{color:var(--ink-2);font-size:.875rem;line-height:1.55}
 
 /* ============================== ABOUT ============================== */
 .aboutCard{
@@ -3980,7 +3863,7 @@ const STYLES_CASE = `
 }
 /* A card with a thumbnail bleeds it full-width across the top instead of
    sitting inside the card's own padding — the padding moves to the body
-   below it, same split as .bitTile/.bitMedia. */
+   below it instead. */
 .processCard--media{padding:0;overflow:hidden}
 .processCardMedia{position:relative;aspect-ratio:2.1}
 .cardThumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -4324,7 +4207,6 @@ const STYLES_CASE = `
 }
 
 @media (max-width:640px){
-  .bitsRow > .bitTile{flex:0 0 78%}
   /* The longest role ("University Lecturer") does not fit at the hero size
      on a 320px screen, and wrapping mid-type would shift the page. Step the
      second line down instead; it reads as a subtitle either way. */
@@ -4369,10 +4251,9 @@ const STYLES_CASE = `
   .spotlightMedia{transform:none !important}
   .spotlight:hover,.spotlight.is-active,
   .projectCard:hover,.projectCard.is-active,
-  .bitTile:hover,.caseNavBtn:hover,.caseEndCard:hover,.btn:hover,.submit:hover{transform:none}
+  .caseNavBtn:hover,.caseEndCard:hover,.btn:hover,.submit:hover{transform:none}
   .projectCard:hover .cardMarkWrap > *,
   .projectCard.is-active .cardMarkWrap > *,
-  .bitTile:hover .bitMedia > *,
   .systemCell:hover > *{transform:none}
   .cardMediaDim{filter:saturate(1);opacity:1}
   .viewFade{animation:none}
@@ -7980,7 +7861,7 @@ function SectionRail({ items, activeId, label, reduced }) {
   );
 }
 
-/** Horizontal scroller with arrow controls. Used by Bits rows and Process. */
+/** Horizontal scroller with arrow controls. Used by the process cards. */
 function useScrollerControls() {
   const ref = useRef(null);
   const [state, setState] = useState({ atStart: true, atEnd: true });
@@ -8515,86 +8396,6 @@ function WorkSection({ projects, spotlight, onCapture, reduced }) {
             />
           ))}
         </ul>
-      </div>
-    </section>
-  );
-}
-
-/* =========================================================================
- * HOME — design bits
- * ========================================================================= */
-
-function BitsRow({ items, reduced, rowIndex }) {
-  const { ref, atStart, atEnd, scrollBy } = useScrollerControls();
-  return (
-    <div className="bitsCluster">
-      <div className="rowHead">
-        <span className="mono">
-          {CONTENT.bits.rowLabels[rowIndex] || `Set ${rowIndex + 1}`}
-        </span>
-        <span className="arrowPair">
-          <button
-            type="button"
-            className="iconBtn"
-            aria-label={CONTENT.bits.prevLabel}
-            disabled={atStart}
-            onClick={() => scrollBy(-1, reduced)}
-          >
-            <Icon name="chevronLeft" size={16} />
-          </button>
-          <button
-            type="button"
-            className="iconBtn"
-            aria-label={CONTENT.bits.nextLabel}
-            disabled={atEnd}
-            onClick={() => scrollBy(1, reduced)}
-          >
-            <Icon name="chevronRight" size={16} />
-          </button>
-        </span>
-      </div>
-      <ul className="bitsRow" ref={ref}>
-        {items.map((bit, i) => (
-          <li
-            className="bitTile reveal"
-            key={bit.id}
-            style={{ "--reveal-delay": `${i * 60}ms` }}
-          >
-            <div className="bitMedia">
-              <Visual imageKey={bit.imageKey} ratio={CONTENT.bits.mediaRatio} />
-            </div>
-            <div className="bitBody">
-              <span className="mono kicker">{bit.kicker}</span>
-              <p>{bit.caption}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function BitsSection({ reduced }) {
-  const rows = useMemo(() => {
-    const items = CONTENT.bits.items;
-    const out = [];
-    for (let i = 0; i < items.length; i += 4) out.push(items.slice(i, i + 4));
-    return out;
-  }, []);
-
-  return (
-    <section id="bits" className="section" aria-labelledby="bits-h">
-      <div className="container">
-        <SectionHead
-          headingId="bits-h"
-          label={CONTENT.bits.eyebrow}
-          statement={CONTENT.bits.heading}
-        />
-        <div className="bitsRows">
-          {rows.map((row, i) => (
-            <BitsRow key={i} items={row} rowIndex={i} reduced={reduced} />
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -11632,7 +11433,6 @@ function HomeView({ onCapture, reduced }) {
         <AboutSection />
         <Testimonials />
         <JournalSection onCapture={onCapture} />
-        <BitsSection reduced={reduced} />
         <ContactSection />
         <Footer />
       </main>
@@ -12120,8 +11920,7 @@ const STYLES_UTIL = `
 
 /* generous focus target on the large clickable surfaces */
 .projectCard:focus-visible,
-.caseNavBtn:focus-visible,
-.bitTile:focus-visible{outline-offset:4px}
+.caseNavBtn:focus-visible{outline-offset:4px}
 
 @media (prefers-reduced-motion:reduce){
   .quoteSlide{transition:none}
