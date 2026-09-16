@@ -1783,6 +1783,9 @@ export const CONTENT = {
         src: "video/dragon-city-2-card.mp4",
         poster: "img/dragon-city-2-card-poster.png",
       },
+      // The hero collage PNG has transparent gaps between its tiles — the
+      // default dark video mat showed through as black. See project.heroLight.
+      heroLight: true,
       positioning:
         "A cancelled midcore RPG sequel — campaign battle systems redesigned, then tested against real first-time players.",
       cardDescription:
