@@ -6389,7 +6389,7 @@ function scrollToId(id, reduced) {
   window.scrollTo({ top: y, behavior: reduced ? "auto" : "smooth" });
 }
 
-function Nav({ theme, onToggleTheme, onHome, onBook }) {
+function Nav({ theme, onToggleTheme, onBook }) {
   const [stuck, setStuck] = useState(false);
   useEffect(() => {
     const onScroll = () => setStuck(window.scrollY > 8);
@@ -6402,10 +6402,17 @@ function Nav({ theme, onToggleTheme, onHome, onBook }) {
   return (
     <header className={`nav xfade${stuck ? " is-stuck" : ""}`}>
       <a
-        href="#/"
+        href="/"
         className="monogram"
         aria-label={CONTENT.nav.homeLabel}
-        onClick={onHome}
+        onClick={(e) => {
+          // Unlike the in-app "back to home" links, this is a hard reset:
+          // drop the hash and force a real navigation/reload, even when
+          // already on "/" — scripted location.href assignment reloads
+          // regardless, landing fresh at the top.
+          e.preventDefault();
+          window.location.href = window.location.pathname;
+        }}
       >
         {CONTENT.meta.monogram}
       </a>
@@ -11570,7 +11577,6 @@ export default function App() {
       <Nav
         theme={theme}
         onToggleTheme={toggle}
-        onHome={goHome}
         onBook={() => setBooking(true)}
       />
       <AskWidget reduced={reduced} onBook={() => setBooking(true)} />
