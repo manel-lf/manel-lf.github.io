@@ -23,6 +23,7 @@ import {
   useRef,
   useState,
 } from "react";
+import * as amplitude from "@amplitude/unified";
 
 /* =========================================================================
  * CONTENT — the only thing you need to edit
@@ -6854,6 +6855,16 @@ function isSpotDark(x, y) {
   return false;
 }
 
+// One per page load, not per message — Agent Analytics groups a
+// conversation's turns into one session by this ID, so it needs to stay
+// stable across a whole back-and-forth rather than being regenerated per
+// request. A fresh page load reading as a fresh conversation is the right
+// granularity here; there's no in-widget "new chat" action to reset early.
+const ASK_SESSION_ID =
+  typeof crypto !== "undefined" && crypto.randomUUID
+    ? crypto.randomUUID()
+    : String(Date.now());
+
 async function askML(history) {
   const proxy = CONTENT.ask.endpoint;
   const key = import.meta.env.VITE_OPENAI_API_KEY;
@@ -6867,7 +6878,14 @@ async function askML(history) {
       const res = await fetch(proxy, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history }),
+        body: JSON.stringify({
+          messages: history,
+          // For the Worker's Agent Analytics tracking only — ties an ML²
+          // conversation back to the same visitor/device the rest of the
+          // site's Amplitude analytics already sees.
+          deviceId: amplitude.getDeviceId(),
+          sessionId: ASK_SESSION_ID,
+        }),
       });
       if (!res.ok) throw new Error(`proxy ${res.status}`);
       const data = await res.json();
@@ -11485,6 +11503,16 @@ export default function App() {
   useLayoutEffect(() => {
     window.scrollTo(0, 0);
   }, [route.view, route.slug]);
+
+  // First-event verification for the Amplitude setup: fires once, only if
+  // the visitor's actual landing route is home — not on every route, and
+  // not again on a later hashchange back to "/".
+  useEffect(() => {
+    if (route.view === "home") {
+      amplitude.track("Viewed Home Page", { prompt_version: "BA400.4" }); // helps improve this setup flow — safe to remove once you've verified the event lands
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   /**
    * Navigation itself is a plain anchor href, so keyboard, middle-click and

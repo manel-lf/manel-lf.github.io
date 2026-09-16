@@ -148,8 +148,60 @@ const json = (obj, status, extra) =>
     headers: { "Content-Type": "application/json", ...extra },
   });
 
+/**
+ * Amplitude Agent Analytics, SDK-free — @amplitude/ai itself can't be
+ * bundled into a Worker (it pulls in node:async_hooks/node:module/node:crypto,
+ * which Workers Builds rejects even with nodejs_compat). This posts
+ * [Agent]-prefixed events straight to the HTTP V2 API instead, per
+ * Amplitude's own documented Workers pattern. Never let a tracking failure
+ * touch the actual chat response — errors here are logged and dropped.
+ */
+async function trackAgentTurn(env, { userId, deviceId, sessionId, userText, replyText, latencyMs }) {
+  if (!env.AMPLITUDE_AI_API_KEY || env.AMPLITUDE_TRACKING_DISABLED) return;
+  const identity = userId ? { user_id: userId } : { device_id: deviceId || "ml2-anonymous" };
+  const traceId = crypto.randomUUID();
+  const common = {
+    ...identity,
+    time: Date.now(),
+    event_properties: {
+      "[Agent] Session ID": sessionId || "ml2-no-session",
+      "[Agent] Trace ID": traceId,
+      "[Agent] Agent ID": "ml2-chat",
+      "[Agent] Runtime": "cloudflare-workers",
+    },
+  };
+  const events = [
+    {
+      ...common,
+      event_type: "[Agent] User Message",
+      event_properties: { ...common.event_properties, $llm_message: { text: userText } },
+    },
+    {
+      ...common,
+      event_type: "[Agent] AI Response",
+      event_properties: {
+        ...common.event_properties,
+        "[Agent] Model Name": MODEL,
+        "[Agent] Provider": "openai",
+        "[Agent] Latency Ms": latencyMs,
+        $llm_message: { text: replyText },
+      },
+    },
+  ];
+  try {
+    const resp = await fetch("https://api2.amplitude.com/2/httpapi", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ api_key: env.AMPLITUDE_AI_API_KEY, events }),
+    });
+    if (!resp.ok) console.error(`[Amplitude] Agent Analytics flush failed: ${resp.status}`);
+  } catch (err) {
+    console.error(`[Amplitude] Agent Analytics flush error: ${err.message}`);
+  }
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const origin = request.headers.get("Origin") || "";
     const cors = corsHeaders(origin);
 
@@ -187,6 +239,14 @@ export default {
     if (!messages.length || total > MAX_TOTAL_CHARS)
       return json({ error: "message too large" }, 413, cors);
 
+    // Sent by the Ask widget: deviceId is the browser Amplitude SDK's own
+    // device ID (so Agent Analytics ties back to the same visitor regular
+    // analytics sees), sessionId is generated once per open conversation —
+    // see AskWidget in src/App.jsx.
+    const { deviceId, sessionId } = typeof body === "object" && body ? body : {};
+    const lastUserMessage = [...messages].reverse().find((m) => m.role === "user");
+
+    const startedAt = Date.now();
     let upstream;
     try {
       upstream = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -228,6 +288,18 @@ export default {
         ? data.choices[0].message.content.trim()
         : "";
     if (!reply) return json({ error: "empty completion" }, 502, cors);
+
+    if (lastUserMessage) {
+      ctx.waitUntil(
+        trackAgentTurn(env, {
+          deviceId,
+          sessionId,
+          userText: lastUserMessage.content,
+          replyText: reply,
+          latencyMs: Date.now() - startedAt,
+        }),
+      );
+    }
 
     return json({ reply }, 200, cors);
   },
