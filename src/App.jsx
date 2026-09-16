@@ -1874,7 +1874,7 @@ export const CONTENT = {
           navLabel: "Target First",
           label: "Reordering the decision:",
           body: [
-            "Players never chose targets because the game chose for them, so the fastest path through a turn skipped the only real decision in it. I inverted the order — target, then attack — keeping the target step optional so the default path stays one tap.",
+            "Players never chose targets because the game chose for them, so the fastest path through a turn skipped the only real decision in it. My first proposal kept the target step optional, preserving the one-tap default — but optional meant most players kept skipping it, which solved nothing. What shipped instead forced the choice: attack first, then a mandatory target step every turn.",
             {
               quote:
                 "Every battle gets slightly slower, permanently, for everyone. Worth it — a system nobody engages with is worth nothing however well it's modelled.",
@@ -1884,7 +1884,7 @@ export const CONTENT = {
         {
           turnOrderFlow: {
             caption:
-              "What shipped first — attack, then target — updated to target-then-attack, the target step optional.",
+              "Tried: target first, optional, keeping the one-tap default. Shipped: attack first, then a mandatory target step.",
             centerCaption: true,
           },
         },
@@ -9574,10 +9574,11 @@ function ArchitectureTree({ caption }) {
 }
 
 /**
- * Two turn orderings for Dragon City 2's battle screen: the previous one —
- * attack, then target — updated to target-then-attack, the target step
- * optional so the default path stays one tap. This isn't a shipped-vs-
- * rejected comparison, it's a revision — both were live at some point.
+ * Two turn orderings for Dragon City 2's battle screen: target-then-attack,
+ * the target step optional, was tried — kept the one-tap default, but
+ * "optional" meant most players kept skipping it, so it never shipped.
+ * What shipped keeps attack first and makes the target step mandatory
+ * instead, trading the one-tap default for guaranteed engagement.
  * Same dark-panel diagram idiom as ArchitectureTree — nodes as pills
  * instead of rects, since every step here is an action, not a destination.
  */
@@ -9596,8 +9597,8 @@ function TurnOrderFlow({ caption, centerCaption }) {
       y: 84,
       accent: true,
       steps: [
-        { label: "CHOOSE TARGET", sub: "optional" },
         { label: "CHOOSE ATTACK" },
+        { label: "CHOOSE TARGET" },
         { label: "TURN RESOLUTION" },
       ],
     },
@@ -9607,8 +9608,8 @@ function TurnOrderFlow({ caption, centerCaption }) {
       y: 196,
       accent: false,
       steps: [
+        { label: "CHOOSE TARGET", sub: "optional" },
         { label: "CHOOSE ATTACK" },
-        { label: "CHOOSE TARGET" },
         { label: "TURN RESOLUTION" },
       ],
     },
@@ -9621,7 +9622,7 @@ function TurnOrderFlow({ caption, centerCaption }) {
         <svg
           viewBox="0 0 980 280"
           role="img"
-          aria-label="Two turn orderings, previous updated to current. Previous: choose an attack, then choose a target, then turn resolution. Updated to: choose a target, optional, then choose an attack, then turn resolution."
+          aria-label="Two turn orderings tried during development. Tried but not shipped: choose a target, optional, then choose an attack, then turn resolution. What shipped: choose an attack, then choose a target, mandatory, then turn resolution."
         >
           <defs>
             <pattern
