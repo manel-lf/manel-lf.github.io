@@ -1822,17 +1822,17 @@ export const CONTENT = {
           label: "The problem:",
           body: [
             "Two problems pulling opposite ways. Players ground the same easy encounters for resources — repetition was the price of progression, paid in attention. Meanwhile the systems that made a fight interesting went unused: they attacked whatever the interface had pre-targeted, and almost nobody checked which element beat which.",
+            {
+              quote:
+                "Too slow and too shallow at once. Fix either one naively and the other gets worse.",
+            },
           ],
-        },
-        {
-          quote:
-            "Too slow and too shallow at once. Fix either one naively and the other gets worse.",
         },
 
         {
-          h: "Target, then attack — reordering the one real decision.",
+          h: "Target before or after attack?",
           navLabel: "Target First",
-          label: "Target before attack:",
+          label: "Reordering the decision:",
           body: [
             "Players never chose targets because the game chose for them, so the fastest path through a turn skipped the only real decision in it. I inverted the order — target, then attack — keeping the target step optional so the default path stays one tap.",
           ],
@@ -1841,6 +1841,7 @@ export const CONTENT = {
           turnOrderFlow: {
             caption:
               "What shipped first — attack, then target — updated to target-then-attack, the target step optional.",
+            centerCaption: true,
           },
         },
         {
@@ -1854,12 +1855,16 @@ export const CONTENT = {
           label: "Speed toggles:",
           body: [
             "2× and autobattle, so the fights that exist only to be farmed stop costing what a real fight costs. A scan across Galaxy of Heroes, Marvel Strike Force and Empires & Puzzles gave two conventions worth inheriting rather than reinventing.",
-          ],
-        },
-        {
-          list: [
-            "Speed controls grouped in one corner",
-            'Autobattle labelled with the word "auto" — no icon reads reliably',
+            {
+              list: [
+                "Speed controls grouped in one corner",
+                'Autobattle labelled with the word "auto" — no icon reads reliably',
+              ],
+            },
+            {
+              quote:
+                "Slow down the one turn that carries a decision, speed up the hundred that don't.",
+            },
           ],
         },
         {
@@ -1870,10 +1875,6 @@ export const CONTENT = {
               "The battle HUD's speed controls: a 2× toggle and an autobattle button labelled 'auto'.",
           },
         },
-        {
-          quote:
-            "Slow down the one turn that carries a decision, speed up the hundred that don't.",
-        },
 
         {
           h: "Pick one element, see two lists.",
@@ -1882,19 +1883,26 @@ export const CONTENT = {
           body: [
             "Every dragon has an element, strong against some and weak against others. The genre answer is the full N×N grid, and on a phone it fails — find a row, find a column, hold both in your head over a five-millimetre cell.",
             "I worked through the alternatives and landed on the opposite structure: pick one element, see two lists.",
-          ],
-        },
-        {
-          noteCards: [
-            { title: "Weak Against", body: "The elements this one beats." },
             {
-              title: "Strong Against",
-              body: "The elements that beat this one.",
+              noteCards: [
+                {
+                  title: "Weak Against",
+                  body: "The elements this one beats.",
+                },
+                {
+                  title: "Strong Against",
+                  body: "The elements that beat this one.",
+                },
+              ],
+            },
+            {
+              p: 'It answers the question players actually have, which is never "show me the system" and always "what do I bring to that fight?"',
             },
           ],
         },
         {
-          p: 'It answers the question players actually have, which is never "show me the system" and always "what do I bring to that fight?"',
+          quote:
+            "Loses the at-a-glance overview for the minority who want to study the whole game. Not who a portrait phone screen is for.",
         },
         {
           wide: {
@@ -1904,10 +1912,6 @@ export const CONTENT = {
               "The type-matchup screen: pick one element, see two lists, instead of the full N×N grid.",
           },
         },
-        {
-          quote:
-            "Loses the at-a-glance overview for the minority who want to study the whole game. Not who a portrait phone screen is for.",
-        },
 
         {
           h: "Fog with a payoff on both sides of the fight.",
@@ -1916,10 +1920,8 @@ export const CONTENT = {
           body: [
             "Fog covers parts of the island; clearing it means fighting the boss inside. I designed the flow and both the prebattle and postbattle screens.",
             "They have different jobs. Prebattle has to make a level-3 Guardivyan feel worth preparing for — it's the only moment the player decides whether they're ready. Postbattle has to connect the win back to the island: victory, then orbs to heal the cursed land, then the territory opening up with a nature egg inside.",
+            "Feed and edit are side-paths off that same prebattle screen, and losing costs nothing but the attempt — the player lands back on it, not back at the city.",
           ],
-        },
-        {
-          p: "Feed and edit are side-paths off that same prebattle screen, and losing costs nothing but the attempt — the player lands back on it, not back at the city.",
         },
         {
           bossLoopFlow: {
@@ -1943,9 +1945,6 @@ export const CONTENT = {
             },
           ],
         },
-        {
-          quote: "The payoff isn't the drop, it's the map getting bigger.",
-        },
 
         {
           h: "I designed it, then asked ten strangers to explain it back.",
@@ -1953,20 +1952,16 @@ export const CONTENT = {
           label: "Then I checked whether it landed:",
           body: [
             "I ran the FTUE research end to end — objectives, method, recruitment, analysis, report.",
+            {
+              list: [
+                "10 casual and midcore players, US/CA/UK, 16–25, recruited on City Sim, Resource Management and Team RPG play history",
+                "10–15 minutes of first-time play, screen and voice recorded, thinking aloud",
+                "Post-test survey built around comprehension, not satisfaction",
+              ],
+            },
+            "The questions were blunt on purpose: what are candies used for, how do you get orbs, how do you heal the cursed land, rate the Cursed Boss battle and why. A player who enjoyed the game but couldn't answer counted as a failure.",
+            "Those last two test the Cursed Boss loop directly. I designed it, then asked ten strangers to explain it back to me. Every answer was classified against three bands defined before I saw any data — success, mid success, fail — so the bar couldn't quietly move to fit the result.",
           ],
-        },
-        {
-          list: [
-            "10 casual and midcore players, US/CA/UK, 16–25, recruited on City Sim, Resource Management and Team RPG play history",
-            "10–15 minutes of first-time play, screen and voice recorded, thinking aloud",
-            "Post-test survey built around comprehension, not satisfaction",
-          ],
-        },
-        {
-          p: "The questions were blunt on purpose: what are candies used for, how do you get orbs, how do you heal the cursed land, rate the Cursed Boss battle and why. A player who enjoyed the game but couldn't answer counted as a failure.",
-        },
-        {
-          p: "Those last two test the Cursed Boss loop directly. I designed it, then asked ten strangers to explain it back to me. Every answer was classified against three bands defined before I saw any data — success, mid success, fail — so the bar couldn't quietly move to fit the result.",
         },
         {
           wide: {
@@ -1983,29 +1978,28 @@ export const CONTENT = {
           label: "Outcome:",
           body: [
             "Findings went back grouped two ways: by feature, for the owners of each, and by question, for the tutorial as a whole.",
+            {
+              quote:
+                "Watching a person fail to understand your feature does something a summary of the same fact does not.",
+            },
+            "The team was carrying assumptions about player behaviour that the recordings contradicted, and written findings weren't shifting them — so I cut a compendium video of players actually playing and put it in front of everyone.",
+            "Dragon City 2 was cancelled in beta and never launched. There are no live metrics behind any of this, and I'd rather say so than imply otherwise — the reasoning is the part that transferred.",
           ],
-        },
-        {
-          quote:
-            "Watching a person fail to understand your feature does something a summary of the same fact does not.",
-        },
-        {
-          p: "The team was carrying assumptions about player behaviour that the recordings contradicted, and written findings weren't shifting them — so I cut a compendium video of players actually playing and put it in front of everyone.",
-        },
-        {
-          p: "Dragon City 2 was cancelled in beta and never launched. There are no live metrics behind any of this, and I'd rather say so than imply otherwise — the reasoning is the part that transferred.",
         },
 
         {
           h: "What I'd change before the fieldwork, not after.",
           navLabel: "Hindsight",
           label: "In hindsight:",
-        },
-        {
-          list: [
-            "Recruitment — 16–25 for a game with a broader commercial audience. I ran the spec as briefed; I'd argue with it now, before fieldwork rather than after.",
-            "Sequence — I tested comprehension after building. The type chart and the boss loop could each have been failed on paper, by five people, in an afternoon.",
-            "Integration — battle work and research ran as parallel tracks that happened to overlap on one feature. Designing the second to deliberately test the first would have cost nothing.",
+          body: [
+            {
+              list: [
+                "Recruitment — 16–25 for a game with a broader commercial audience. I ran the spec as briefed; I'd argue with it now, before fieldwork rather than after.",
+                "Sequence — I tested comprehension after building. The type chart and the boss loop could each have been failed on paper, by five people, in an afternoon.",
+                "Integration — battle work and research ran as parallel tracks that happened to overlap on one feature. Designing the second to deliberately test the first would have cost nothing.",
+              ],
+            },
+            "Thanks for reading.",
           ],
         },
       ],
@@ -4382,6 +4376,7 @@ const STYLES_ARCH = `
 const STYLES_DC2_FLOW = `
 .dc2Flow{padding:clamp(14px,2.6vw,26px) clamp(2px,0.8vw,10px) clamp(4px,1vw,12px)}
 .dc2Flow--wide{padding-block:clamp(18px,3vw,32px)}
+.dc2FlowCaption--center{text-align:center}
 .dc2Flow svg{display:block;width:100%;height:auto;overflow:visible}
 .dc2FlowGridDot{fill:rgba(255,255,255,0.05)}
 .dc2FlowKick{fill:var(--panel-muted);font-family:var(--font-mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
@@ -9545,7 +9540,7 @@ function ArchitectureTree({ caption }) {
  * Same dark-panel diagram idiom as ArchitectureTree — nodes as pills
  * instead of rects, since every step here is an action, not a destination.
  */
-function TurnOrderFlow({ caption }) {
+function TurnOrderFlow({ caption, centerCaption }) {
   const STEP_W = 208;
   const STEP_H = 56;
   const GAP = 64;
@@ -9682,7 +9677,13 @@ function TurnOrderFlow({ caption }) {
           )}
         </svg>
       </div>
-      {caption ? <figcaption className="mono">{caption}</figcaption> : null}
+      {caption ? (
+        <figcaption
+          className={`mono${centerCaption ? " dc2FlowCaption--center" : ""}`}
+        >
+          {caption}
+        </figcaption>
+      ) : null}
     </figure>
   );
 }
@@ -10732,7 +10733,13 @@ function CaseRichBlock({ block, i, reduced }) {
     return <ArchitectureTree key={i} caption={block.archTree.caption} />;
   }
   if (block.turnOrderFlow) {
-    return <TurnOrderFlow key={i} caption={block.turnOrderFlow.caption} />;
+    return (
+      <TurnOrderFlow
+        key={i}
+        caption={block.turnOrderFlow.caption}
+        centerCaption={block.turnOrderFlow.centerCaption}
+      />
+    );
   }
   if (block.bossLoopFlow) {
     return <BossLoopFlow key={i} caption={block.bossLoopFlow.caption} />;
