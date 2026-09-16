@@ -1393,7 +1393,6 @@ export const CONTENT = {
       heroLight: true,
       caseTitle: [
         "Three features, no new maps.",
-        "Live-events design support on a top-grossing mobile title.",
         "Retention engineering for Scavenger Hunt at Popcore.",
       ],
       // The artifact forces its caseHeadGrid to a single stacked column
