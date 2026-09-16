@@ -1840,8 +1840,8 @@ export const CONTENT = {
         "Visual",
       ],
       caseTitle: [
-        "Slow down the decision, speed up the repetition.",
-        "Campaign battle UX and FTUE research for Dragon City 2.",
+        "Better decisions. Faster battles.",
+        "Battle UX & FTUE for Dragon City 2.",
       ],
       images: {
         hero: "case.dragon-city-2.hero",
@@ -1875,6 +1875,10 @@ export const CONTENT = {
           label: "Reordering the decision:",
           body: [
             "Players never chose targets because the game chose for them, so the fastest path through a turn skipped the only real decision in it. I inverted the order — target, then attack — keeping the target step optional so the default path stays one tap.",
+            {
+              quote:
+                "Every battle gets slightly slower, permanently, for everyone. Worth it — a system nobody engages with is worth nothing however well it's modelled.",
+            },
           ],
         },
         {
@@ -1883,10 +1887,6 @@ export const CONTENT = {
               "What shipped first — attack, then target — updated to target-then-attack, the target step optional.",
             centerCaption: true,
           },
-        },
-        {
-          quote:
-            "Every battle gets slightly slower, permanently, for everyone. Worth it — a system nobody engages with is worth nothing however well it's modelled.",
         },
 
         {
@@ -2039,7 +2039,6 @@ export const CONTENT = {
                 "Integration — battle work and research ran as parallel tracks that happened to overlap on one feature. Designing the second to deliberately test the first would have cost nothing.",
               ],
             },
-            "Thanks for reading.",
           ],
         },
       ],
