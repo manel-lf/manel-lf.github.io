@@ -1389,137 +1389,172 @@ export const CONTENT = {
       caseTitle: [
         "Three features, no new maps.",
         "Live-events design support on a top-grossing mobile title.",
+        "Retention engineering for Scavenger Hunt at Popcore.",
       ],
+      // The artifact forces its caseHeadGrid to a single stacked column
+      // (`grid-template-columns:1fr` inline) instead of this template's
+      // default 2-column split — see caseHeadStack below.
+      caseHeadStack: true,
       images: {
         hero: "case.scavenger-hunt.hero",
       },
-      // Transcribed from the "Scavenger Hunt case study adaptation" Claude
-      // Design project (Scavenger Hunt Case Study.dc.html) — copy is verbatim
-      // from that artifact. Its Overview/Process/Outcome header pairing maps
-      // onto this template's label+h SectionHead pattern, and Night Mode's
-      // dark feature panel maps onto the existing `dark: true` heading flag.
-      // The design nests all three features inside one "Process" umbrella
-      // section on a bordered card per feature (one of them dark) — this
-      // template has no nested-card block type, so each feature is its own
-      // flat section instead (with Night Mode still getting the dark panel),
-      // and the now-redundant standalone "Process." header text is dropped
-      // since "Three features, three mechanisms" is already the line right
-      // before it. Night Mode's day/night drag-to-compare is a real,
-      // reusable `compareSlider` block/CompareSlider component (see the
-      // CaseRichBlock and CONTENT.IMAGES entries below) rather than a static
-      // screenshot, matching the design's own interactive treatment.
+      // Transcribed 1:1 from the "Scavenger Hunt case study adaptation"
+      // Claude Design project (Scavenger Hunt Case Study.dc.html): same
+      // three sections (Overview/Process/Outcome), same Process → three
+      // bordered feature-panel cards (Night Mode's dark) nesting, same
+      // label punctuation and kicker/title text. `featurePanel` and
+      // `compareSlider` (Night Mode's drag-to-compare day/night map) exist
+      // only because this case study needed them — see FeaturePanel/
+      // CompareSlider and their CaseRichBlock hookups above.
       richBody: [
         {
           h: "Same map, three features.",
           navLabel: "Overview",
-          label: "Overview:",
-        },
-        {
-          stats: [
-            { value: "Top-grossing", label: "Title the event ran on" },
-            { value: "Recurring", label: "Event cadence, not a one-off" },
-            { value: "Live ops", label: "Shipped inside a running game" },
-          ],
-        },
-        {
-          p: "Scavenger Hunt is a hyper-casual hidden-object game: find a set of items in a dense, hand-illustrated map. The maps are the expensive thing — players exhaust them far faster than an art team can draw them, which is the structural economics problem of the whole genre. A player who runs out of things to do doesn't complain, they just stop opening the app.",
-        },
-        {
-          quote:
-            "New maps came with a significant production cost; the challenge was creating a stronger replay loop around already-completed content.",
-        },
-        { p: "Three features, three mechanisms, same asset underneath." },
-
-        {
-          h: "Turning finished maps into liveops assets",
-          navLabel: "Summer Event",
-          label: "01 — Summer Event",
+          label: "Overview.",
+          // Stats/paragraphs/quote all sit in the artifact's own single
+          // .prose column — as `body`, not sibling blocks, so spacing
+          // between them comes from the section's normal prose gap.
           body: [
-            "A time-limited seasonal event. Tickets drop from ordinary maps, tickets open the summer map, the summer map pays out rewards.",
+            {
+              stats: [
+                { value: "Top-grossing", label: "Title the event ran on" },
+                { value: "Recurring", label: "Event cadence, not a one-off" },
+                { value: "Live ops", label: "Shipped inside a running game" },
+              ],
+            },
+            {
+              p: "Scavenger Hunt is a hyper-casual hidden-object game: find a set of items in a dense, hand-illustrated map. The maps are the expensive thing — players exhaust them far faster than an art team can draw them, which is the structural economics problem of the whole genre. A player who runs out of things to do doesn't complain, they just stop opening the app.",
+            },
+            {
+              quote:
+                "New maps came with a significant production cost; the challenge was creating a stronger replay loop around already-completed content.",
+            },
+            { p: "Three features, three mechanisms, same asset underneath." },
           ],
-        },
-        { imageKey: "case.scavenger-hunt.summerFlow", ratio: 1393 / 478 },
-        {
-          quote:
-            "The reward for replaying old content is access to new content.",
-        },
-        {
-          p: "A finished map stops being something the player has completed and becomes something they farm. The time limit supplies urgency a permanent feature can't.",
-        },
-        {
-          imageKey: "case.scavenger-hunt.summerEvent",
-          ratio: 2000 / 1084,
-          caption:
-            "The summer event map, unlocked by tickets earned from ordinary maps.",
         },
 
         {
-          h: "Re-light it, don't redraw it.",
-          navLabel: "Night Mode",
-          label: "02 — Night Mode",
-          dark: true,
-          body: [
-            "Replay completed maps at night. Same illustration, different lighting — and the search genuinely gets harder because you can see less of it. New content out of a rendering change.",
-            "I designed how it surfaces: the main menu entry point and the promotion popup that introduces it.",
-          ],
+          h: "Three features, three mechanisms.",
+          navLabel: "Process",
+          label: "Process.",
         },
         {
-          quote:
-            "On a feature like this, the surfacing is key; a re-lit map nobody knows exists is a build flag, not content.",
-        },
-        {
-          compareSlider: {
-            dayImageKey: "case.scavenger-hunt.dayMap",
-            nightImageKey: "case.scavenger-hunt.nightMap",
-            caption: "Drag to compare the map by day and by night.",
+          featurePanel: {
+            kicker: "01 — Summer Event",
+            title: "Turning finished maps into liveops assets",
+            content: [
+              {
+                p: "A time-limited seasonal event. Tickets drop from ordinary maps, tickets open the summer map, the summer map pays out rewards.",
+              },
+              {
+                image: {
+                  imageKey: "case.scavenger-hunt.summerFlow",
+                  ratio: 1393 / 478,
+                  maxWidth: 564,
+                },
+              },
+              {
+                quote:
+                  "The reward for replaying old content is access to new content.",
+              },
+              {
+                p: "A finished map stops being something the player has completed and becomes something they farm. The time limit supplies urgency a permanent feature can't.",
+              },
+              {
+                image: {
+                  imageKey: "case.scavenger-hunt.summerEvent",
+                  ratio: 2000 / 1084,
+                  caption:
+                    "The summer event map, unlocked by tickets earned from ordinary maps.",
+                },
+              },
+            ],
           },
         },
         {
-          p: "Trade-off: replaying is never as good as new, and leaned on too hard it reads as padding rather than generosity. It buys retention time very cheaply — it doesn't replace a content pipeline, and shouldn't be sold internally as if it does.",
+          featurePanel: {
+            kicker: "02 — Night Mode",
+            title: "Re-light it, don't redraw it.",
+            dark: true,
+            content: [
+              {
+                p: "Replay completed maps at night. Same illustration, different lighting — and the search genuinely gets harder because you can see less of it. New content out of a rendering change.",
+              },
+              {
+                p: "I designed how it surfaces: the main menu entry point and the promotion popup that introduces it.",
+              },
+              {
+                quote:
+                  "On a feature like this, the surfacing is key; a re-lit map nobody knows exists is a build flag, not content.",
+              },
+              {
+                compareSlider: {
+                  dayImageKey: "case.scavenger-hunt.dayMap",
+                  nightImageKey: "case.scavenger-hunt.nightMap",
+                  caption: "Drag to compare the map by day and by night.",
+                },
+              },
+              {
+                p: "Trade-off: replaying is never as good as new, and leaned on too hard it reads as padding rather than generosity. It buys retention time very cheaply — it doesn't replace a content pipeline, and shouldn't be sold internally as if it does.",
+              },
+            ],
+          },
         },
-
         {
-          h: "Building daily habits through Today's Goals",
-          navLabel: "Today's Goals",
-          label: "03 — Today's Goals",
-          body: [
-            "Daily activities paying daily rewards. I designed three flows — first contact, completing missions, claiming from the menu — plus every screen and UI asset.",
-            "Monetisation sits in one control: a player who can't or won't finish a mission watches a rewarded ad to skip it. Too cheap and the goals stop meaning anything, so the rewards stop feeling earned. Too hostile and a daily engagement loop quietly becomes a paywall, which the player solves by leaving.",
-          ],
-        },
-        {
-          list: [
-            "Show the final reward at first contact, so the loop has a visible destination",
-            "Keep a persistent home-screen panel, so progress is ambient rather than somewhere you navigate to",
-            "Run the repeat interactions through that same panel, so there's one place to learn instead of three",
-          ],
-        },
-        {
-          imageKey: "case.scavenger-hunt.dailyQuests",
-          ratio: 1822 / 887,
-          caption:
-            "Left to right: first contact on daily login, the persistent home-panel tracking progress, and the reward claim screen.",
-        },
-        {
-          quote:
-            "Hyper-casual sessions are measured in seconds and the player has no investment yet — there is no room for friction.",
+          featurePanel: {
+            kicker: "03 — Today's Goals",
+            title: "Building daily habits through Today's Goals",
+            content: [
+              {
+                p: "Daily activities paying daily rewards. I designed three flows — first contact, completing missions, claiming from the menu — plus every screen and UI asset.",
+              },
+              {
+                p: "Monetisation sits in one control: a player who can't or won't finish a mission watches a rewarded ad to skip it. Too cheap and the goals stop meaning anything, so the rewards stop feeling earned. Too hostile and a daily engagement loop quietly becomes a paywall, which the player solves by leaving.",
+              },
+              {
+                list: [
+                  "Show the final reward at first contact, so the loop has a visible destination",
+                  "Keep a persistent home-screen panel, so progress is ambient rather than somewhere you navigate to",
+                  "Run the repeat interactions through that same panel, so there's one place to learn instead of three",
+                ],
+              },
+              {
+                image: {
+                  imageKey: "case.scavenger-hunt.dailyQuests",
+                  ratio: 1822 / 887,
+                  caption:
+                    "Left to right: first contact on daily login, the persistent home-panel tracking progress, and the reward claim screen.",
+                },
+              },
+              {
+                quote:
+                  "Hyper-casual sessions are measured in seconds and the player has no investment yet — there is no room for friction.",
+              },
+            ],
+          },
         },
 
         {
           h: "Shipped live as part of the game.",
           navLabel: "Outcome",
-          label: "Outcome:",
-        },
-        { sub: "In hindsight" },
-        {
-          list: [
-            "The skip — should have shipped with an explicit daily cap and a designed non-ad path from day one, rather than relying on tuning to keep it fair.",
-            "Night Mode's difficulty — it came from reduced visibility alone. A deliberate difficulty pass (item placement, count, timer) would have made it a mode rather than a filter.",
-            "Measurement — three engagement features landed close together and their effects can't now be separated. I'd stagger them, or at minimum agree the measurement plan before the first one ships.",
+          label: "Outcome.",
+          // subLabel/subList/closing p sit in the artifact's own single
+          // .prose column (same as Overview's) — as `body` here, not
+          // sibling blocks, so they inherit the section's normal
+          // paragraph-to-paragraph spacing instead of touching.
+          body: [
+            { subLabel: "In hindsight" },
+            {
+              subList: [
+                "The skip — should have shipped with an explicit daily cap and a designed non-ad path from day one, rather than relying on tuning to keep it fair.",
+                "Night Mode's difficulty — it came from reduced visibility alone. A deliberate difficulty pass (item placement, count, timer) would have made it a mode rather than a filter.",
+                "Measurement — three engagement features landed close together and their effects can't now be separated. I'd stagger them, or at minimum agree the measurement plan before the first one ships.",
+              ],
+            },
+            {
+              p: "The game's real constraint is never the interface, it's the cost of the next map. The most useful thing I did on this game was design around that instead of asking for more of it.",
+            },
           ],
-        },
-        {
-          p: "The game's real constraint is never the interface, it's the cost of the next map. The most useful thing I did on this game was design around that instead of asking for more of it.",
         },
       ],
     },
@@ -5933,6 +5968,102 @@ function CompareSlider({ dayKey, nightKey, ratio = 1895 / 830, reduced }) {
 }
 
 /**
+ * A bordered, optionally-dark card holding a kicker + statement heading and
+ * a run of prose/media — the Claude Design "featurePanel" component, which
+ * has no equivalent elsewhere in this template (every other case study
+ * argues its points through plain CaseSection prose, not a stack of self-
+ * contained cards). `content` is a flat list of {p}/{quote}/{list}/{image}/
+ * {compareSlider} items; consecutive text items are grouped into one
+ * `.prose` wrapper exactly like the artifact does, and each image or
+ * compare-slider breaks that grouping and renders standalone, matching the
+ * artifact's own DOM order rather than forcing every item into one column.
+ */
+function FeaturePanel({ panel, reduced }) {
+  const { kicker, title, dark, content = [] } = panel;
+  const groups = [];
+  let buf = [];
+  const flush = () => {
+    if (buf.length) {
+      groups.push({ type: "prose", items: buf });
+      buf = [];
+    }
+  };
+  content.forEach((item) => {
+    if (item.image || item.compareSlider) {
+      flush();
+      groups.push({ type: "media", item });
+    } else {
+      buf.push(item);
+    }
+  });
+  flush();
+
+  return (
+    <div className={`featurePanel${dark ? " featurePanel--dark" : ""} reveal`}>
+      {kicker ? <span className="featureKicker">{kicker}</span> : null}
+      {title ? <h3 className="featureStatement">{title}</h3> : null}
+      {groups.map((g, i) => {
+        if (g.type === "media") {
+          if (g.item.compareSlider) {
+            const { dayImageKey, nightImageKey, caption } = g.item.compareSlider;
+            return (
+              <div className="featureMedia" key={i}>
+                <CompareSlider
+                  dayKey={dayImageKey}
+                  nightKey={nightImageKey}
+                  reduced={reduced}
+                />
+                {caption ? <span className="caption">{caption}</span> : null}
+              </div>
+            );
+          }
+          const { imageKey, caption, maxWidth, ratio } = g.item.image;
+          return (
+            <div
+              className="featureMedia"
+              key={i}
+              style={maxWidth ? { maxWidth, width: "100%" } : undefined}
+            >
+              <Visual imageKey={imageKey} ratio={ratio || 16 / 9} />
+              {caption ? <span className="caption">{caption}</span> : null}
+            </div>
+          );
+        }
+        return (
+          <div className={`prose${dark ? " prose--onPanel" : ""}`} key={i}>
+            {g.items.map((it, j) => {
+              if (it.quote) {
+                return (
+                  <blockquote
+                    className={`blockquote${dark ? " blockquote--onPanel" : ""}`}
+                    key={j}
+                  >
+                    {it.quote}
+                  </blockquote>
+                );
+              }
+              if (it.list) {
+                return (
+                  <ul
+                    className={`subList${dark ? " subList--onPanel" : ""}`}
+                    key={j}
+                  >
+                    {it.list.map((li, k) => (
+                      <li key={k}>{li}</li>
+                    ))}
+                  </ul>
+                );
+              }
+              return <p key={j}>{it.p}</p>;
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
  * A project's hero visual — a looping muted video when the project has one
  * (its own case-study banner, not just the home spotlight card), falling
  * back to the plain static image otherwise. Pauses on `prefers-reduced-
@@ -10022,6 +10153,29 @@ function CaseRichBlock({ block, i, reduced }) {
       </h3>
     );
   }
+  // A small mono uppercase label — lighter-weight than `sub`'s bold
+  // subheading. Matches the Claude Design "subLabel" component (e.g. "In
+  // hindsight" ahead of a `subList`).
+  if (block.subLabel) {
+    return (
+      <span className="subLabel reveal" key={i}>
+        {block.subLabel}
+      </span>
+    );
+  }
+  // The Claude Design "subList" component: a plain bulleted list, visually
+  // lighter than `list`'s `.postList` (different type scale and dot
+  // position) — kept separate rather than reusing `.postList` so an exact
+  // import doesn't drift from the artifact's own values.
+  if (block.subList) {
+    return (
+      <ul className="subList reveal" key={i}>
+        {block.subList.map((item, j) => (
+          <li key={j}>{item}</li>
+        ))}
+      </ul>
+    );
+  }
   if (block.quote) {
     return (
       <p className="postQuote reveal" key={i}>
@@ -10095,6 +10249,9 @@ function CaseRichBlock({ block, i, reduced }) {
         {caption ? <figcaption className="mono">{caption}</figcaption> : null}
       </figure>
     );
+  }
+  if (block.featurePanel) {
+    return <FeaturePanel panel={block.featurePanel} reduced={reduced} key={i} />;
   }
   if (block.list) {
     return (
@@ -10506,13 +10663,23 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
             {CONTENT.caseUi.backLabel}
           </a>
 
-          <div className="caseHeadGrid">
+          <div
+            className="caseHeadGrid"
+            style={
+              project.caseHeadStack
+                ? { gridTemplateColumns: "1fr" }
+                : undefined
+            }
+          >
             <div>
               <span className="caseEyebrow mono">{project.eyebrow}</span>
               <h1 className="caseTitle">
                 <span className="subject" ref={subjectRef}>
                   {caseTitle[0]}
                 </span>
+                {caseTitle[2] ? (
+                  <span className="prefix">{caseTitle[2]}</span>
+                ) : null}
               </h1>
             </div>
             <p
@@ -11435,4 +11602,25 @@ const STYLES_UTIL = `
   0%,100%{transform:translate(-50%,-50%) scale(1)}
   50%{transform:translate(-50%,-50%) scale(1.14)}
 }
+
+/* ---- Claude Design "featurePanel" — a bordered card stack, lifted
+   verbatim (values included) from the Scavenger Hunt case-study artifact,
+   since no equivalent existed here before. ---- */
+.featureStack{display:flex;flex-direction:column;gap:var(--s6);margin-top:clamp(32px,5vh,56px)}
+.featurePanel{background:var(--surface);border:1px solid var(--hairline);border-radius:var(--r-lg);padding:clamp(28px,4.5vw,72px);box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:var(--s5)}
+.featurePanel--dark{background:var(--panel);color:var(--panel-ink);border-color:var(--hairline)}
+.featureKicker{display:block;font-family:'JetBrains Mono',monospace;font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:calc(-1 * var(--s2))}
+.featurePanel--dark .featureKicker{color:var(--panel-muted)}
+.featureStatement{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:600;line-height:1.1;letter-spacing:-.02em;color:var(--ink);margin:0;max-width:22ch}
+.featurePanel--dark .featureStatement{color:var(--panel-ink)}
+.featureMedia{display:flex;flex-direction:column}
+.caption{display:block;margin-top:var(--s3);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:.6875rem;line-height:1.4;max-width:60ch}
+.featurePanel--dark .caption{color:var(--panel-muted)}
+.blockquote{border-left:2px solid var(--accent);padding-left:var(--s5);margin:0;font-size:1.0625rem;line-height:1.55;font-weight:600;color:var(--ink);max-width:62ch}
+.blockquote--onPanel{color:var(--panel-ink)}
+.subList{margin:0;display:flex;flex-direction:column;gap:var(--s3);list-style:none;padding:0}
+.subList li{position:relative;padding-left:var(--s5);color:var(--ink-2);font-size:1rem;line-height:1.6}
+.subList li::before{content:"";position:absolute;left:0;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.subList--onPanel li{color:var(--panel-muted)}
+.subLabel{display:block;margin-top:var(--s7);margin-bottom:var(--s2);font-family:'JetBrains Mono',monospace;font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500}
 `;
