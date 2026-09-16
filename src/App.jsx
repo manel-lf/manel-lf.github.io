@@ -1667,7 +1667,6 @@ export const CONTENT = {
           </span>
           <span style={{ display: "block" }}>Digital Branding</span>
         </>,
-        "An international hotel group's digital experience, rebuilt from the identity up — one responsive portal and two native apps.",
       ],
       images: {
         hero: "case.the-southern.hero",
@@ -10460,7 +10459,9 @@ function CaseStudy({ project, onCapture, onHome, flight, reduced }) {
                 </span>
               </h1>
             </div>
-            <p className="casePositioning reveal">{caseTitle[1]}</p>
+            {caseTitle[1] ? (
+              <p className="casePositioning reveal">{caseTitle[1]}</p>
+            ) : null}
           </div>
 
           <div className="caseHeroFrame reveal">
@@ -11225,11 +11226,13 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
                 ) : null}
               </h1>
             </div>
-            <p
-              className={`casePositioning reveal${project.heroCompactPositioning ? " casePositioning--compact" : ""}`}
-            >
-              {caseTitle[1]}
-            </p>
+            {caseTitle[1] ? (
+              <p
+                className={`casePositioning reveal${project.heroCompactPositioning ? " casePositioning--compact" : ""}`}
+              >
+                {caseTitle[1]}
+              </p>
+            ) : null}
           </div>
 
           <div
