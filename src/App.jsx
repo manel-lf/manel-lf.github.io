@@ -1439,7 +1439,10 @@ export const CONTENT = {
       logoAspect: 2.681,
       name: "Radisson Hotels",
       mark: "radisson",
-      eyebrow: "Radisson Hotels — via Eunoia Digital",
+      eyebrow: "Radisson Hotels · Eunoia Digital",
+      // Static for now (no clip shot yet) — still gets the same idle-dim/
+      // hover-brighten treatment as the video cards, just no playback.
+      cardThumbnail: "card.radisson.thumbnail",
       // Case study isn't ready yet — the card shows a tooltip instead of
       // navigating, and the route itself redirects home. See ProjectCard
       // and App's routing guard. There's no real intention of building this
@@ -1768,126 +1771,6 @@ export const CONTENT = {
       ],
     },
     {
-      slug: "seat-cupra",
-      logo: "img/logos/cupra.svg",
-      logoAspect: 7.008,
-      name: "SEAT CUPRA",
-      mark: "cupra",
-      eyebrow: "SEAT CUPRA",
-      // Static for now (no clip shot yet) — still gets the same idle-dim/
-      // hover-brighten treatment as the video cards, just no playback.
-      cardThumbnail: "card.seatCupra.thumbnail",
-      // Case study isn't ready yet — the card shows a tooltip instead of
-      // navigating, and the route itself redirects home. See ProjectCard
-      // and App's routing guard.
-      underConstruction: true,
-      positioning:
-        "In-car infotainment for connected services — enrolment, data plans and software updates, across every screen in the range.",
-      cardDescription:
-        "In-car infotainment. Connected-services enrolment, data plan purchase and an update centre, designed to hold from 7-inch clusters to 15-inch displays.",
-      role: "Junior UX UI Designer",
-      years: "2022 — 2023",
-      caseTitle: [
-        "One system, every screen size.",
-        "Connected-services infotainment design for SEAT and CUPRA.",
-      ],
-      skills: [
-        "UX Design",
-        "UX Research",
-        "Automotive HMI",
-        "Responsive Systems",
-        "Visual",
-      ],
-      metrics: [
-        { value: '7"–15"', label: "Screen sizes supported" },
-        { value: "3", label: "Core flows owned end to end" },
-        { value: "2", label: "Brands sharing one system" },
-      ],
-      images: {
-        hero: "case.seat-cupra.hero",
-        overview: "case.seat-cupra.overview",
-        system: [
-          "case.seat-cupra.system.1",
-          "case.seat-cupra.system.2",
-          "case.seat-cupra.system.3",
-          "case.seat-cupra.system.4",
-        ],
-        extend: ["case.seat-cupra.extend.1", "case.seat-cupra.extend.2"],
-      },
-      overview: {
-        eyebrow: "Overview:",
-        heading: "Backstory of the work.",
-        body: [
-          "Connected services turn a car into a product with an account, a subscription and a software lifecycle. I designed three of those flows for SEAT and CUPRA infotainment: enrolling the vehicle, buying a data plan, and managing software updates.",
-          "The context is unforgiving. The user is in a driver’s seat, possibly parked and impatient, reading a screen at arm’s length in variable light, using a system that cannot assume a keyboard, a fast connection or a second attempt.",
-        ],
-      },
-      process: {
-        eyebrow: "Process:",
-        heading: "How I kicked things off.",
-        body: [
-          "Automotive HMI has constraints you cannot design around, only design for: legal, safety, hardware and a screen range that spans more than double in physical size. I began by writing those constraints down as design inputs.",
-          "From there the work was mostly about reduction — finding the smallest flow that survives a bad connection, a distracted user and a 7-inch display.",
-        ],
-        cards: [
-          {
-            title: "Constraint inventory",
-            meta: "Framing",
-            body: "Hardware sizes, input methods, safety rules on what may appear while moving, and connectivity assumptions — collected as a single document that every design decision was checked against.",
-          },
-          {
-            title: "Flow reduction",
-            meta: "UX design",
-            body: "Rewrote enrolment to the minimum number of decisions, deferring everything that could be completed later from a phone rather than blocking the driver in the car.",
-          },
-          {
-            title: "Type and touch ramp",
-            meta: "Responsive system",
-            body: "One type and target scale defined against viewing distance rather than pixels, so the same layout stays legible and tappable at 7 inches and does not look sparse at 15.",
-          },
-          {
-            title: "Purchase without a keyboard",
-            meta: "Interaction design",
-            body: "Designed data plan purchase to avoid text entry wherever possible, handing off to the phone for anything that genuinely needed typing.",
-          },
-          {
-            title: "Update centre",
-            meta: "UX design",
-            body: "Software updates presented as a state the driver can understand and trust: what is changing, how long it takes, and what happens if they walk away.",
-          },
-          {
-            title: "In-vehicle review",
-            meta: "Validation",
-            body: "Reviewed on real hardware in real light. Contrast and legibility decisions that looked safe on a monitor repeatedly did not survive a sunny car park.",
-          },
-        ],
-      },
-      system: {
-        eyebrow: "Shaping the system:",
-        heading: "One system, every screen size.",
-        body: [
-          "The core of the work is a responsive system keyed to viewing distance instead of viewport width. Type, touch targets, spacing and information density all step together across the screen range, so a flow designed once behaves correctly on every configuration in the line-up.",
-          "Two brands share it. SEAT and CUPRA differ in tone and palette but not in structure, which meant the flows could be designed once and themed rather than forked.",
-        ],
-      },
-      extend: {
-        eyebrow: "Extend:",
-        heading: "Beyond the head unit.",
-        body: [
-          "Several flows genuinely belong on a phone — anything involving typing, payment detail or reading terms. I designed the handoff so starting in the car and finishing on a phone is one continuous task rather than two disconnected ones.",
-          "The same system also carried the companion-app surfaces that mirror vehicle state, so the two screens agreed with each other about what the car was doing.",
-        ],
-      },
-      impact: {
-        eyebrow: "The impact:",
-        heading: "What shipped, and what it taught me.",
-        body: [
-          "Three connected-services flows shipped into production infotainment across two brands and the full screen range, on a shared responsive system rather than per-configuration designs.",
-          "Automotive changed how I design generally. When you cannot patch next week and a mistake sits in front of the user for the life of the vehicle, you get rigorous about states, about legibility, and about testing on the real thing rather than on a monitor.",
-        ],
-      },
-    },
-    {
       slug: "dragon-city-2",
       logo: "img/logos/socialpoint.svg",
       logoAspect: 4.867,
@@ -2118,6 +2001,126 @@ export const CONTENT = {
         },
       ],
     },
+    {
+      slug: "seat-cupra",
+      logo: "img/logos/cupra.svg",
+      logoAspect: 7.008,
+      name: "SEAT CUPRA",
+      mark: "cupra",
+      eyebrow: "SEAT CUPRA",
+      // Static for now (no clip shot yet) — still gets the same idle-dim/
+      // hover-brighten treatment as the video cards, just no playback.
+      cardThumbnail: "card.seatCupra.thumbnail",
+      // Case study isn't ready yet — the card shows a tooltip instead of
+      // navigating, and the route itself redirects home. See ProjectCard
+      // and App's routing guard.
+      underConstruction: true,
+      positioning:
+        "In-car infotainment for connected services — enrolment, data plans and software updates, across every screen in the range.",
+      cardDescription:
+        "In-car infotainment. Connected-services enrolment, data plan purchase and an update centre, designed to hold from 7-inch clusters to 15-inch displays.",
+      role: "Junior UX UI Designer",
+      years: "2022 — 2023",
+      caseTitle: [
+        "One system, every screen size.",
+        "Connected-services infotainment design for SEAT and CUPRA.",
+      ],
+      skills: [
+        "UX Design",
+        "UX Research",
+        "Automotive HMI",
+        "Responsive Systems",
+        "Visual",
+      ],
+      metrics: [
+        { value: '7"–15"', label: "Screen sizes supported" },
+        { value: "3", label: "Core flows owned end to end" },
+        { value: "2", label: "Brands sharing one system" },
+      ],
+      images: {
+        hero: "case.seat-cupra.hero",
+        overview: "case.seat-cupra.overview",
+        system: [
+          "case.seat-cupra.system.1",
+          "case.seat-cupra.system.2",
+          "case.seat-cupra.system.3",
+          "case.seat-cupra.system.4",
+        ],
+        extend: ["case.seat-cupra.extend.1", "case.seat-cupra.extend.2"],
+      },
+      overview: {
+        eyebrow: "Overview:",
+        heading: "Backstory of the work.",
+        body: [
+          "Connected services turn a car into a product with an account, a subscription and a software lifecycle. I designed three of those flows for SEAT and CUPRA infotainment: enrolling the vehicle, buying a data plan, and managing software updates.",
+          "The context is unforgiving. The user is in a driver’s seat, possibly parked and impatient, reading a screen at arm’s length in variable light, using a system that cannot assume a keyboard, a fast connection or a second attempt.",
+        ],
+      },
+      process: {
+        eyebrow: "Process:",
+        heading: "How I kicked things off.",
+        body: [
+          "Automotive HMI has constraints you cannot design around, only design for: legal, safety, hardware and a screen range that spans more than double in physical size. I began by writing those constraints down as design inputs.",
+          "From there the work was mostly about reduction — finding the smallest flow that survives a bad connection, a distracted user and a 7-inch display.",
+        ],
+        cards: [
+          {
+            title: "Constraint inventory",
+            meta: "Framing",
+            body: "Hardware sizes, input methods, safety rules on what may appear while moving, and connectivity assumptions — collected as a single document that every design decision was checked against.",
+          },
+          {
+            title: "Flow reduction",
+            meta: "UX design",
+            body: "Rewrote enrolment to the minimum number of decisions, deferring everything that could be completed later from a phone rather than blocking the driver in the car.",
+          },
+          {
+            title: "Type and touch ramp",
+            meta: "Responsive system",
+            body: "One type and target scale defined against viewing distance rather than pixels, so the same layout stays legible and tappable at 7 inches and does not look sparse at 15.",
+          },
+          {
+            title: "Purchase without a keyboard",
+            meta: "Interaction design",
+            body: "Designed data plan purchase to avoid text entry wherever possible, handing off to the phone for anything that genuinely needed typing.",
+          },
+          {
+            title: "Update centre",
+            meta: "UX design",
+            body: "Software updates presented as a state the driver can understand and trust: what is changing, how long it takes, and what happens if they walk away.",
+          },
+          {
+            title: "In-vehicle review",
+            meta: "Validation",
+            body: "Reviewed on real hardware in real light. Contrast and legibility decisions that looked safe on a monitor repeatedly did not survive a sunny car park.",
+          },
+        ],
+      },
+      system: {
+        eyebrow: "Shaping the system:",
+        heading: "One system, every screen size.",
+        body: [
+          "The core of the work is a responsive system keyed to viewing distance instead of viewport width. Type, touch targets, spacing and information density all step together across the screen range, so a flow designed once behaves correctly on every configuration in the line-up.",
+          "Two brands share it. SEAT and CUPRA differ in tone and palette but not in structure, which meant the flows could be designed once and themed rather than forked.",
+        ],
+      },
+      extend: {
+        eyebrow: "Extend:",
+        heading: "Beyond the head unit.",
+        body: [
+          "Several flows genuinely belong on a phone — anything involving typing, payment detail or reading terms. I designed the handoff so starting in the car and finishing on a phone is one continuous task rather than two disconnected ones.",
+          "The same system also carried the companion-app surfaces that mirror vehicle state, so the two screens agreed with each other about what the car was doing.",
+        ],
+      },
+      impact: {
+        eyebrow: "The impact:",
+        heading: "What shipped, and what it taught me.",
+        body: [
+          "Three connected-services flows shipped into production infotainment across two brands and the full screen range, on a shared responsive system rather than per-configuration designs.",
+          "Automotive changed how I design generally. When you cannot patch next week and a mistake sits in front of the user for the life of the vehicle, you get rigorous about states, about legibility, and about testing on the real thing rather than on a monitor.",
+        ],
+      },
+    },
   ],
 
   /* -----------------------------------------------------------------------
@@ -2283,6 +2286,11 @@ export const CONTENT = {
       plate: "orbit",
       tone: "dark",
       seed: 211,
+    },
+
+    "card.radisson.thumbnail": {
+      src: "img/radisson-card.png",
+      alt: "Two Radisson Hotels app screens, a summer promotion and a hotel booking page, over the entrance of a Radisson hotel.",
     },
 
     "case.jesterday.hero": {
