@@ -228,6 +228,7 @@ export const CONTENT = {
     spotlightSlug: "gamehouse-plus",
     viewCase: "View case",
     viewOnBehance: "View on Behance",
+    comingSoon: "Coming soon",
     underConstruction: "WIP Case Study — Check back soon.",
   },
 
@@ -2952,7 +2953,7 @@ body{
 /* Hero is the first thing in <main>, directly under the fixed nav, so its
    own top padding has to clear the nav the way .caseTop does for case
    studies — there's no banner above it doing that job any more. */
-.hero{padding-top:clamp(104px,16vh,168px);padding-bottom:clamp(48px,7vh,88px)}
+.hero{padding-top:clamp(128px,20vh,208px);padding-bottom:clamp(48px,7vh,88px)}
 .heroName{
   font-size:clamp(2.75rem,9.2vw,7.5rem);
   font-weight:700;letter-spacing:-.045em;line-height:.92;
@@ -2982,8 +2983,11 @@ body{
      some engines — enough for the reflow to visibly nudge the page (most
      noticeable as the whole viewport twitching on mobile Safari, which
      redraws its chrome on almost any layout shift). A true height removes
-     the ambiguity outright; overflow is a safety net, not expected to clip. */
-  height:1em;
+     the ambiguity outright; overflow is a safety net, not expected to clip.
+     1.25em rather than 1em so descenders (the "g" in Designer, the "y" in
+     University/Prototyper) have room — the roles list isn't all-caps and
+     several of them dip below the baseline. */
+  height:1.25em;
   overflow:hidden;
 }
 .typeLine{min-width:0}
@@ -3001,7 +3005,7 @@ body{
 .heroLower{
   display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
   gap:var(--s7);
-  margin-top:clamp(40px,6vh,80px);
+  margin-top:clamp(64px,10vh,120px);
   align-items:end;
 }
 .heroBio{
@@ -8326,10 +8330,7 @@ function ProjectCard({ project, onCapture, index, reduced, centerActive }) {
           {media}
           <span className="cardBody">
             <span className="cardDesc">{project.cardDescription}</span>
-            <span className="cardCta mono">
-              {CONTENT.work.viewCase}
-              <Icon name="arrowRight" size={14} />
-            </span>
+            <span className="cardCta mono">{CONTENT.work.comingSoon}</span>
           </span>
         </button>
         <span
