@@ -1259,7 +1259,7 @@ export const CONTENT = {
       // A phone mockup layered over the card's own video/poster — barely
       // visible at rest, sliding up toward the top edge on hover. See
       // ProjectCard's `cardMockup` handling and .cardMockup in the stylesheet.
-      cardMockup: "img/the-southern-card-phone.png",
+      cardMockup: "img/the-southern-card-phone.webp",
       positioning:
         "A branding and omnichannel experience design project for The Southern, a luxury hotel group — brand identity and app flows.",
       cardDescription:
@@ -1780,7 +1780,7 @@ export const CONTENT = {
       eyebrow: "Dragon City 2 · Socialpoint",
       cardVideo: {
         src: "video/dragon-city-2-card.mp4",
-        poster: "img/dragon-city-2-card-poster.png",
+        poster: "img/dragon-city-2-card-poster.webp",
       },
       // The hero collage PNG has transparent gaps between its tiles — the
       // default dark video mat showed through as black. See project.heroLight.
@@ -2261,19 +2261,19 @@ export const CONTENT = {
       alt: "Netflix and GameHouse+ home screens side by side at the same viewport height — Netflix fits eight titles, GH+ only four.",
     },
     "case.gamehouse-plus.home": {
-      src: "img/case-gamehouse-plus-home.png",
+      src: "img/case-gamehouse-plus-home.webp",
       alt: "Home, rebuilt as an instant-first starting point — a video carousel and Keep Playing row above the catalog.",
     },
     "case.gamehouse-plus.classics": {
-      src: "img/case-gamehouse-plus-classics.png",
+      src: "img/case-gamehouse-plus-classics.webp",
       alt: "Classics, its own tab in the tab bar for the dedicated downloadable-franchise surface.",
     },
     "case.gamehouse-plus.search": {
-      src: "img/case-gamehouse-plus-search.png",
+      src: "img/case-gamehouse-plus-search.webp",
       alt: "Search, with a Series filter that spans franchise and genre results across both formats.",
     },
     "case.gamehouse-plus.myGames": {
-      src: "img/case-gamehouse-plus-my-games.png",
+      src: "img/case-gamehouse-plus-my-games.webp",
       alt: "My Games, one library holding every saved or installed title regardless of how it loads.",
     },
 
@@ -2282,7 +2282,7 @@ export const CONTENT = {
     // frame, referenced directly by path rather than through this registry.
 
     "card.seatCupra.thumbnail": {
-      src: "img/seat-cupra-card.png",
+      src: "img/seat-cupra-card.webp",
       alt: "SEAT CUPRA's connected-services infotainment screen, a night-mode navigation view on the car's dashboard display.",
       plate: "orbit",
       tone: "dark",
@@ -7848,8 +7848,18 @@ function SectionRail({ items, activeId, label, reduced }) {
 
   useLayoutEffect(measure, [measure, items]);
   useEffect(() => {
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    let raf = 0;
+    const onResize = () => {
+      if (!raf) raf = requestAnimationFrame(() => {
+        raf = 0;
+        measure();
+      });
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("resize", onResize);
+    };
   }, [measure]);
 
   return (
@@ -7944,8 +7954,18 @@ function useEqualHeight(selector) {
       });
     };
     measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    let raf = 0;
+    const onResize = () => {
+      if (!raf) raf = requestAnimationFrame(() => {
+        raf = 0;
+        measure();
+      });
+    };
+    window.addEventListener("resize", onResize);
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("resize", onResize);
+    };
   }, [selector]);
   return ref;
 }
