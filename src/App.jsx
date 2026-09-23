@@ -4524,14 +4524,18 @@ const STYLES_AUDIT = `
   .appAuditDot{animation:none}
 }
 .appAuditCard{
-  position:absolute;right:0;width:300px;padding:20px;
-  background:var(--surface);border-radius:12px;
+  /* left/top are set inline per marker, in real pixels off the device's
+     own live edges — see cardPos in AppAudit/fit. */
+  position:absolute;width:300px;padding:20px;
+  /* --surface-2, not --surface: the card now sits on the audit's own
+     white caseHeroFrame panel (--surface), so matching that background
+     read as invisible — a slightly tinted surface gives it a real edge. */
+  background:var(--surface-2);border-radius:12px;
   box-shadow:0 1px 2px rgba(10,10,10,.04);
   opacity:0;pointer-events:none;
   transition:opacity 220ms cubic-bezier(.4,0,.2,1);
 }
 .appAuditCard.is-active{opacity:1;pointer-events:auto}
-.appAuditCard--left{left:0;right:auto}
 .appAuditCard--wide{width:320px}
 .appAuditCardNum{display:block;color:var(--accent);margin-bottom:10px}
 .appAuditCard h3{margin:0 0 10px;font-size:1.0625rem;font-weight:600;letter-spacing:-.02em;line-height:1.3;color:var(--ink)}
@@ -10037,8 +10041,20 @@ function ContentSplitSequence({ title, sub, reduced }) {
  * hover/focus/tap drive `active`, exactly as before this component learned
  * to scroll-step.
  */
+// The device sits inset within the fixed 1064x860 canvas at these
+// constants (see .appAuditDevice) — used to place the (unscaled) cards
+// against its actual edges rather than the canvas's own, see `fit` below.
+const AUDIT_DEVICE_LEFT = 332;
+const AUDIT_DEVICE_WIDTH = 400;
+const AUDIT_CARD_GAP = 24;
+
 function AppAudit({ audit, reduced }) {
   const [active, setActive] = useState(0);
+  // Per-marker {left, top} in pixels, relative to .appAuditFrame — see
+  // `fit` below. The cards live outside the scaled .appAuditScaler
+  // specifically so their own size never scales with the device; their
+  // position is computed from its live rect instead of inheriting it.
+  const [cardPos, setCardPos] = useState(() => audit.markers.map(() => null));
   const rootRef = useRef(null);
   const frameRef = useRef(null);
   const scalerRef = useRef(null);
@@ -10047,11 +10063,17 @@ function AppAudit({ audit, reduced }) {
   const markers = audit.markers;
   const activeMarker = markers[active];
 
-  // Scales the fixed 1064x860 canvas down as one rigid unit. Reads live
-  // element geometry rather than anything cached, so it self-corrects on
-  // every call regardless of what the layout looked like the first time
-  // it ran (position:sticky's own rect keeps shifting as the page
-  // scrolls, so a stale one-off measurement doesn't stay valid).
+  // Scales the fixed 1064x860 canvas down as one rigid unit, and places
+  // each card against the device's own (scaled) edges rather than the
+  // canvas's — a canvas-relative anchor stayed proportionally correct
+  // when the cards scaled down with the device, but once they render at
+  // a fixed, normal size (see .appAuditCard's width), the same anchor
+  // point would either overlap the device or float too far from it as
+  // the scale changes. Reads live element geometry rather than anything
+  // cached, so it self-corrects on every call regardless of what the
+  // layout looked like the first time it ran (position:sticky's own rect
+  // keeps shifting as the page scrolls, so a stale one-off measurement
+  // doesn't stay valid).
   const fit = () => {
     const root = rootRef.current;
     const frame = frameRef.current;
@@ -10074,7 +10096,12 @@ function AppAudit({ audit, reduced }) {
     const topOverhead = rootRect.top - stageRect.top;
     const bottomPad = parseFloat(getComputedStyle(stage).paddingBottom) || 0;
     const availH = stage.clientHeight - topOverhead - bottomPad;
-    const sh = availH > 0 ? availH / 860 : target;
+    // Under reduced motion the stage isn't pinned or height-capped (see
+    // .appAudit--static) — its own height instead depends on the frame's,
+    // which this same calculation is about to set, so height-fitting here
+    // would be circular. Skip it: the plain 10% target is already correct
+    // for a panel that's free to grow as tall as its content needs.
+    const sh = !reduced && availH > 0 ? availH / 860 : target;
     // Only shrink past the 10% target when the panel's height actually
     // forces it — never stack the two constraints. Floored at .35 — an
     // implausibly short viewport (a phone in landscape, a tiny resized
@@ -10084,6 +10111,28 @@ function AppAudit({ audit, reduced }) {
     const s = Math.max(0.35, Math.min(target, sh));
     scaler.style.transform = `scale(${s})`;
     frame.style.height = `${Math.round(860 * s)}px`;
+
+    const scalerRect = scaler.getBoundingClientRect();
+    const frameRect = frame.getBoundingClientRect();
+    const deviceLeft = scalerRect.left + AUDIT_DEVICE_LEFT * s;
+    const deviceRight = deviceLeft + AUDIT_DEVICE_WIDTH * s;
+    const next = markers.map((m) => {
+      const width = m.cardWidth === 320 ? 320 : 300;
+      const left =
+        m.side === "left"
+          ? deviceLeft - frameRect.left - AUDIT_CARD_GAP - width
+          : deviceRight - frameRect.left + AUDIT_CARD_GAP;
+      const top = scalerRect.top - frameRect.top + m.cardTop * s;
+      return { left, top };
+    });
+    setCardPos((prev) =>
+      prev.some(
+        (p, i) =>
+          !p || Math.abs(p.left - next[i].left) > 0.5 || p.top !== next[i].top,
+      )
+        ? next
+        : prev,
+    );
   };
 
   useEffect(() => {
@@ -10186,51 +10235,58 @@ function AppAudit({ audit, reduced }) {
                   />
                 ))}
               </div>
-              {markers.map((m, idx) => (
-                <div
-                  key={m.title}
-                  className={`appAuditCard${m.side === "left" ? " appAuditCard--left" : ""}${m.cardWidth === 320 ? " appAuditCard--wide" : ""}${active === idx ? " is-active" : ""}`}
-                  style={{ top: `${m.cardTop}px` }}
-                >
-                  <span className="mono appAuditCardNum">
-                    {String(idx + 1).padStart(2, "0")}
-                  </span>
-                  <h3>{m.title}</h3>
-                  {m.body ? <p>{m.body}</p> : null}
-                  {m.lead ? (
-                    <p className="appAuditCardLead">{m.lead}</p>
-                  ) : null}
-                  {m.list ? (
-                    <ul>
-                      {m.list.map((item, j) => (
-                        <li key={j}>
-                          <span className="dot" aria-hidden="true" />
-                          {typeof item === "string" ? (
-                            <span>{item}</span>
-                          ) : (
-                            <span>
-                              <strong>{item.lead}</strong> {item.text}
-                            </span>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                  {m.image ? (
-                    <>
-                      <Visual
-                        imageKey={m.image.imageKey}
-                        ratio={280 / 283}
-                        className="appAuditCardImg"
-                      />
-                      <span className="mono appAuditCardCaption">
-                        {m.image.caption}
-                      </span>
-                    </>
-                  ) : null}
-                </div>
-              ))}
             </div>
+            {/* Siblings of .appAuditScaler, not children of it — these size
+                themselves normally (see .appAuditCard's fixed width) and
+                are positioned in real pixels off the device's own live
+                edges (cardPos, from `fit`), rather than scaling down with
+                the canvas the way the device and its dots do. */}
+            {markers.map((m, idx) => (
+              <div
+                key={m.title}
+                className={`appAuditCard${m.side === "left" ? " appAuditCard--left" : ""}${m.cardWidth === 320 ? " appAuditCard--wide" : ""}${active === idx ? " is-active" : ""}`}
+                style={
+                  cardPos[idx]
+                    ? { left: `${cardPos[idx].left}px`, top: `${cardPos[idx].top}px` }
+                    : undefined
+                }
+              >
+                <span className="mono appAuditCardNum">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <h3>{m.title}</h3>
+                {m.body ? <p>{m.body}</p> : null}
+                {m.lead ? <p className="appAuditCardLead">{m.lead}</p> : null}
+                {m.list ? (
+                  <ul>
+                    {m.list.map((item, j) => (
+                      <li key={j}>
+                        <span className="dot" aria-hidden="true" />
+                        {typeof item === "string" ? (
+                          <span>{item}</span>
+                        ) : (
+                          <span>
+                            <strong>{item.lead}</strong> {item.text}
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {m.image ? (
+                  <>
+                    <Visual
+                      imageKey={m.image.imageKey}
+                      ratio={280 / 283}
+                      className="appAuditCardImg"
+                    />
+                    <span className="mono appAuditCardCaption">
+                      {m.image.caption}
+                    </span>
+                  </>
+                ) : null}
+              </div>
+            ))}
           </div>
         </div>
       </div>
