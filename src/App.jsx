@@ -735,23 +735,24 @@ export const CONTENT = {
           navLabel: "Overview",
           label: "Overview:",
           body: [
-            "GH+ is a subscription service for casual puzzle games. Most of its players are women over thirty in the US, and most of them play in the gaps of the day rather than in long sittings.",
-            "It launched as a catalog of downloadable titles. Find a game, install it, keep it while you subscribe. That model held for years.",
+            { smallLabel: "The audience" },
+            "Most of its players are women over thirty in the US, and most of them play in the gaps of the day rather than in long sittings.",
+            { smallLabel: "The app" },
+            "GameHouse+ (GH+) is a subscription service for casual puzzle games. It launched as a catalog of downloadable titles. Find a game, install it, keep it while you subscribe. That model held for years.",
             {
-              bold: "Then instant play arrived, and the catalog stopped making sense.",
+              quote:
+                "Then instant play arrived, and the catalog — and the approach behind it — stopped making sense.",
             },
-            "Instant play let a game start in seconds — no install, no wait, no storage. A second kind of content in a product built to hold one, and everything downstream came loose with it: the home screen, the navigation, search, even the words we used for a game.",
-            "I led the design work that turned the catalog into a platform that could hold both. I was the only designer on GH+, working end to end — research, content architecture, the design system, and the rebuilt surfaces — with product, data and engineering alongside.",
+            { smallLabel: "My role" },
+            "I led the design work that turned the catalog into a platform that could hold both. I was the only designer on GH+, and worked end to end — from research and concept to pixel-perfect design.",
           ],
         },
-        { hr: true },
+        { sub: "This was the app before we rebuilt it" },
+        {
+          p: "I walked the home screen region by region before proposing anything, and wrote down what each one was doing to comprehension, density and the path to a first game.",
+        },
         {
           appAudit: {
-            kicker: "The audit:",
-            title: "What the live app was costing us.",
-            intro:
-              "I walked the home screen region by region before proposing anything, and wrote down what each one was doing to comprehension, density and the path to a first game.",
-            hint: "Hover a marker to isolate that region",
             imageKey: "case.gamehouse-plus.liveAppAudit",
             markers: [
               {
@@ -4446,21 +4447,35 @@ const STYLES_SEQ = `
 .splitSeq--static .splitSeq__copyInner{opacity:1 !important}
 `;
 
-/* The live-app audit: a device shot with hoverable/tappable markers, laid
-   out on a fixed-size canvas (see AppAudit) that scales as one rigid unit
-   rather than reflowing, matching the Claude Design artifact exactly. */
+/* The live-app audit: a device shot with hoverable/tappable/scroll-stepped
+   markers, laid out on a fixed-size canvas (see AppAudit) that scales as
+   one rigid unit rather than reflowing, matching the Claude Design
+   artifact's own layout. The scroll-pin (.appAudit/.appAuditStage) is this
+   site's own addition on top of that: the same tall-track-plus-sticky-
+   stage trick as .splitSeq/.splitSeq__stage above, so the device stays on
+   screen while the six markers unfold in order as the visitor scrolls. */
 const STYLES_AUDIT = `
-.appAudit{margin-top:clamp(56px,8vh,104px)}
-.appAuditHead{
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,1.28fr);
-  gap:clamp(32px,6vw,88px);
-  align-items:start;
+.appAudit{
+  margin-top:clamp(56px,8vh,104px);
+  height:calc(min(100vh, 900px) + 330vh);
+  height:calc(min(100svh, 900px) + 330vh);
 }
-.appAuditIntro{display:flex;flex-direction:column;gap:20px}
-.appAuditIntro p{margin:0;color:var(--ink-2);font-size:1rem;line-height:1.68;max-width:62ch}
-.appAuditHint{color:var(--muted)}
-.appAuditRoot{position:relative;margin-top:clamp(40px,6vh,72px)}
+.appAuditStage{
+  position:sticky;
+  top:0;
+  height:min(100vh, 900px);
+  height:min(100svh, 900px);
+  display:grid;
+  align-items:center;
+  overflow:visible;
+}
+.appAudit--static{height:auto}
+.appAudit--static .appAuditStage{
+  position:static;
+  height:auto;
+  display:block;
+}
+.appAuditRoot{position:relative}
 .appAuditFrame{position:relative}
 .appAuditScaler{
   position:absolute;top:0;left:50%;margin-left:-532px;
@@ -10001,15 +10016,25 @@ function ContentSplitSequence({ title, sub, reduced }) {
  * container (rather than reflowing) — matches the Claude Design artifact,
  * which hand-places each critique card near its own marker instead of
  * swapping a single card's content. Hover (desktop), focus (keyboard) or
- * tap (touch) a marker to spotlight its region; the first marker
- * ("Overall Look & Feel") is active by default and never dims the frame,
- * since it critiques the whole screen rather than one part of it.
+ * tap (touch) a marker always works; on top of that, once the section is
+ * pinned (see the scroll effect below), scrolling itself steps through the
+ * markers in order — the device stays on screen while 01 through NN unfold
+ * one at a time. The first marker ("Overall Look & Feel") is active by
+ * default and never dims the frame, since it critiques the whole screen
+ * rather than one part of it.
+ *
+ * Under reduced motion the pin is skipped entirely (same `--static`
+ * pattern as ContentSplitSequence): the frame sits in normal flow and only
+ * hover/focus/tap drive `active`, exactly as before this component learned
+ * to scroll-step.
  */
-function AppAudit({ audit }) {
+function AppAudit({ audit, reduced }) {
   const [active, setActive] = useState(0);
   const rootRef = useRef(null);
   const frameRef = useRef(null);
   const scalerRef = useRef(null);
+  const trackRef = useRef(null);
+  const stageRef = useRef(null);
   const markers = audit.markers;
   const activeMarker = markers[active];
 
@@ -10032,96 +10057,129 @@ function AppAudit({ audit }) {
     return () => ro.disconnect();
   }, []);
 
+  // Scroll-driven stepping: how far the (tall) track has scrolled past the
+  // (pinned) stage maps directly to which marker is active. Additive with
+  // the hover/focus/click handlers below, not a replacement for them — a
+  // visitor can still jump a marker by hand, scrolling just picks it up
+  // again on the next frame.
+  useEffect(() => {
+    if (reduced) return;
+    const track = trackRef.current;
+    const stage = stageRef.current;
+    if (!track || !stage) return;
+    const clamp01 = (n) => (n < 0 ? 0 : n > 1 ? 1 : n);
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const rect = track.getBoundingClientRect();
+      const span = rect.height - stage.offsetHeight;
+      const p = span > 0 ? clamp01(-rect.top / span) : 0;
+      const idx = Math.min(markers.length - 1, Math.floor(p * markers.length));
+      setActive(idx);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [reduced, markers.length]);
+
   return (
-    <div className="appAudit reveal">
-      <div className="appAuditHead">
-        <SectionHead label={audit.kicker} statement={audit.title} />
-        <div className="appAuditIntro">
-          <p>{audit.intro}</p>
-          <span className="mono appAuditHint">{audit.hint}</span>
-        </div>
-      </div>
-      <div className="appAuditRoot" ref={rootRef}>
-        <div className="appAuditFrame" ref={frameRef}>
-          <div className="appAuditScaler" ref={scalerRef}>
-            <div className="appAuditDevice">
-              <Visual
-                imageKey={audit.imageKey}
-                fill
-                className="appAuditDeviceImg"
-              />
-              <div
-                className="appAuditOverlay"
-                style={{ opacity: activeMarker.noDim ? 0 : 1 }}
-                aria-hidden="true"
-              >
-                <div
-                  className="appAuditHole"
-                  style={{
-                    top: `${(activeMarker.region || [0, 757])[0]}px`,
-                    height: `${
-                      (activeMarker.region || [0, 757])[1] -
-                      (activeMarker.region || [0, 757])[0]
-                    }px`,
-                  }}
+    <div
+      className={`appAudit${reduced ? " appAudit--static" : ""} reveal`}
+      ref={trackRef}
+    >
+      <div className="appAuditStage" ref={stageRef}>
+        <div className="appAuditRoot" ref={rootRef}>
+          <div className="appAuditFrame" ref={frameRef}>
+            <div className="appAuditScaler" ref={scalerRef}>
+              <div className="appAuditDevice">
+                <Visual
+                  imageKey={audit.imageKey}
+                  fill
+                  className="appAuditDeviceImg"
                 />
+                <div
+                  className="appAuditOverlay"
+                  style={{ opacity: activeMarker.noDim ? 0 : 1 }}
+                  aria-hidden="true"
+                >
+                  <div
+                    className="appAuditHole"
+                    style={{
+                      top: `${(activeMarker.region || [0, 757])[0]}px`,
+                      height: `${
+                        (activeMarker.region || [0, 757])[1] -
+                        (activeMarker.region || [0, 757])[0]
+                      }px`,
+                    }}
+                  />
+                </div>
+                {markers.map((m, idx) => (
+                  <button
+                    key={m.title}
+                    type="button"
+                    className={`appAuditDot${active === idx ? " is-active" : ""}`}
+                    style={{ left: `${m.x}%`, top: `${m.y}%` }}
+                    onMouseEnter={() => setActive(idx)}
+                    onFocus={() => setActive(idx)}
+                    onClick={() => setActive(idx)}
+                    aria-pressed={active === idx}
+                    aria-label={`${idx + 1}. ${m.title}`}
+                  />
+                ))}
               </div>
               {markers.map((m, idx) => (
-                <button
+                <div
                   key={m.title}
-                  type="button"
-                  className={`appAuditDot${active === idx ? " is-active" : ""}`}
-                  style={{ left: `${m.x}%`, top: `${m.y}%` }}
-                  onMouseEnter={() => setActive(idx)}
-                  onFocus={() => setActive(idx)}
-                  onClick={() => setActive(idx)}
-                  aria-pressed={active === idx}
-                  aria-label={`${idx + 1}. ${m.title}`}
-                />
+                  className={`appAuditCard${m.side === "left" ? " appAuditCard--left" : ""}${m.cardWidth === 320 ? " appAuditCard--wide" : ""}${active === idx ? " is-active" : ""}`}
+                  style={{ top: `${m.cardTop}px` }}
+                >
+                  <span className="mono appAuditCardNum">
+                    {String(idx + 1).padStart(2, "0")}
+                  </span>
+                  <h3>{m.title}</h3>
+                  {m.body ? <p>{m.body}</p> : null}
+                  {m.lead ? (
+                    <p className="appAuditCardLead">{m.lead}</p>
+                  ) : null}
+                  {m.list ? (
+                    <ul>
+                      {m.list.map((item, j) => (
+                        <li key={j}>
+                          <span className="dot" aria-hidden="true" />
+                          {typeof item === "string" ? (
+                            <span>{item}</span>
+                          ) : (
+                            <span>
+                              <strong>{item.lead}</strong> {item.text}
+                            </span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  {m.image ? (
+                    <>
+                      <Visual
+                        imageKey={m.image.imageKey}
+                        ratio={280 / 283}
+                        className="appAuditCardImg"
+                      />
+                      <span className="mono appAuditCardCaption">
+                        {m.image.caption}
+                      </span>
+                    </>
+                  ) : null}
+                </div>
               ))}
             </div>
-            {markers.map((m, idx) => (
-              <div
-                key={m.title}
-                className={`appAuditCard${m.side === "left" ? " appAuditCard--left" : ""}${m.cardWidth === 320 ? " appAuditCard--wide" : ""}${active === idx ? " is-active" : ""}`}
-                style={{ top: `${m.cardTop}px` }}
-              >
-                <span className="mono appAuditCardNum">
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
-                <h3>{m.title}</h3>
-                {m.body ? <p>{m.body}</p> : null}
-                {m.lead ? <p className="appAuditCardLead">{m.lead}</p> : null}
-                {m.list ? (
-                  <ul>
-                    {m.list.map((item, j) => (
-                      <li key={j}>
-                        <span className="dot" aria-hidden="true" />
-                        {typeof item === "string" ? (
-                          <span>{item}</span>
-                        ) : (
-                          <span>
-                            <strong>{item.lead}</strong> {item.text}
-                          </span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
-                {m.image ? (
-                  <>
-                    <Visual
-                      imageKey={m.image.imageKey}
-                      ratio={280 / 283}
-                      className="appAuditCardImg"
-                    />
-                    <span className="mono appAuditCardCaption">
-                      {m.image.caption}
-                    </span>
-                  </>
-                ) : null}
-              </div>
-            ))}
           </div>
         </div>
       </div>
@@ -10720,7 +10778,7 @@ function CaseRichBlock({ block, i, reduced }) {
     );
   }
   if (block.appAudit) {
-    return <AppAudit key={i} audit={block.appAudit} />;
+    return <AppAudit key={i} audit={block.appAudit} reduced={reduced} />;
   }
   // A bare hairline separator between two blocks that need a harder break
   // than the usual margin-top gives them (see the audit block that follows
