@@ -10047,55 +10047,65 @@ function AppAudit({ audit, reduced }) {
   const markers = audit.markers;
   const activeMarker = markers[active];
 
-  useEffect(() => {
+  // Scales the fixed 1064x860 canvas down as one rigid unit. Reads live
+  // element geometry rather than anything cached, so it self-corrects on
+  // every call regardless of what the layout looked like the first time
+  // it ran (position:sticky's own rect keeps shifting as the page
+  // scrolls, so a stale one-off measurement doesn't stay valid).
+  const fit = () => {
     const root = rootRef.current;
     const frame = frameRef.current;
     const scaler = scalerRef.current;
     const stage = stageRef.current;
-    if (
-      !root ||
-      !frame ||
-      !scaler ||
-      !stage ||
-      typeof ResizeObserver === "undefined"
-    )
-      return;
-    const fit = () => {
-      const w = root.clientWidth;
-      if (!w) return;
-      const sw = Math.min(1, w / 1064);
-      // The canvas also has to clear the pinned stage's own height, not
-      // just its width — the panel's title, intro and padding above it
-      // (mirrored below, since there's no cheap way to read the actual
-      // bottom padding alone) all eat into that fixed budget before the
-      // device gets any of it.
-      const stageRect = stage.getBoundingClientRect();
-      const rootRect = root.getBoundingClientRect();
-      const overhead = (rootRect.top - stageRect.top) * 2;
-      const availH = stage.clientHeight - overhead;
-      const sh = availH > 0 ? availH / 860 : sw;
-      // .9: even the tighter of the two fits above gets sized down a bit
-      // further, so the device never sits flush against the panel's own
-      // edges while pinned. Floored at .35 — an implausibly short viewport
-      // (a phone in landscape, a tiny resized window) would otherwise
-      // shrink the height-based fit toward zero; better to let a legible
-      // device spill slightly past the panel there than vanish inside it.
-      const s = Math.max(0.35, Math.min(sw, sh) * 0.9);
-      scaler.style.transform = `scale(${s})`;
-      frame.style.height = `${Math.round(860 * s)}px`;
-    };
+    if (!root || !frame || !scaler || !stage) return;
+    const w = root.clientWidth;
+    if (!w) return;
+    // 10% smaller than a true 1:1 fit, per the brief — the device's
+    // normal, width-driven size.
+    const target = Math.min(1, w / 1064) * 0.9;
+    // The canvas also has to clear the pinned stage's own height, not
+    // just its width. Top overhead (padding, title, intro, the root's
+    // own margin) is read directly off the live gap between the stage
+    // and the root, so it can't drift out of sync with a copy-pasted
+    // number; bottom overhead is just the stage's own padding, read the
+    // same way rather than assumed equal to the (much taller) top gap.
+    const stageRect = stage.getBoundingClientRect();
+    const rootRect = root.getBoundingClientRect();
+    const topOverhead = rootRect.top - stageRect.top;
+    const bottomPad = parseFloat(getComputedStyle(stage).paddingBottom) || 0;
+    const availH = stage.clientHeight - topOverhead - bottomPad;
+    const sh = availH > 0 ? availH / 860 : target;
+    // Only shrink past the 10% target when the panel's height actually
+    // forces it — never stack the two constraints. Floored at .35 — an
+    // implausibly short viewport (a phone in landscape, a tiny resized
+    // window) would otherwise shrink the height-based fit toward zero;
+    // better to let a legible device spill slightly past the panel
+    // there than vanish inside it.
+    const s = Math.max(0.35, Math.min(target, sh));
+    scaler.style.transform = `scale(${s})`;
+    frame.style.height = `${Math.round(860 * s)}px`;
+  };
+
+  useEffect(() => {
+    const root = rootRef.current;
+    const stage = stageRef.current;
+    if (!root || !stage || typeof ResizeObserver === "undefined") return;
     fit();
     const ro = new ResizeObserver(fit);
     ro.observe(root);
     ro.observe(stage);
     return () => ro.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Scroll-driven stepping: how far the (tall) track has scrolled past the
   // (pinned) stage maps directly to which marker is active. Additive with
   // the hover/focus/click handlers below, not a replacement for them — a
   // visitor can still jump a marker by hand, scrolling just picks it up
-  // again on the next frame.
+  // again on the next frame. Re-running `fit` here too, not just from the
+  // resize observer above, is what makes the sizing self-correct through
+  // the scroll-pin's own position changes rather than trusting whatever
+  // it measured once at mount.
   useEffect(() => {
     if (reduced) return;
     const track = trackRef.current;
@@ -10105,6 +10115,7 @@ function AppAudit({ audit, reduced }) {
     let raf = 0;
     const update = () => {
       raf = 0;
+      fit();
       const rect = track.getBoundingClientRect();
       const span = rect.height - stage.offsetHeight;
       const p = span > 0 ? clamp01(-rect.top / span) : 0;
@@ -10122,6 +10133,7 @@ function AppAudit({ audit, reduced }) {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduced, markers.length]);
 
   return (
