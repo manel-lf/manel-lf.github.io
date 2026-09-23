@@ -747,12 +747,11 @@ export const CONTENT = {
             "I led the design work that turned the catalog into a platform that could hold both. I was the only designer on GH+, and worked end to end — from research and concept to pixel-perfect design.",
           ],
         },
-        { sub: "This was the app before we rebuilt it" },
-        {
-          p: "I walked the home screen region by region before proposing anything, and wrote down what each one was doing to comprehension, density and the path to a first game.",
-        },
         {
           appAudit: {
+            title: "This was the app before we rebuilt it",
+            intro:
+              "I walked the home screen region by region before proposing anything, and wrote down what each one was doing to comprehension, density and the path to a first game.",
             imageKey: "case.gamehouse-plus.liveAppAudit",
             markers: [
               {
@@ -4457,25 +4456,35 @@ const STYLES_SEQ = `
 const STYLES_AUDIT = `
 .appAudit{
   margin-top:clamp(56px,8vh,104px);
-  height:calc(min(100vh, 900px) + 330vh);
-  height:calc(min(100svh, 900px) + 330vh);
+  /* The 980px cap (not 900px) leaves room for the panel's own title,
+     intro paragraph and padding above the device — see .appAuditStage. */
+  height:calc(min(100vh, 980px) + 330vh);
+  height:calc(min(100svh, 980px) + 330vh);
 }
 .appAuditStage{
   position:sticky;
   top:0;
-  height:min(100vh, 900px);
-  height:min(100svh, 900px);
-  display:grid;
-  align-items:center;
+  /* .caseHeroFrame already sets its own margin-top, meant for a card that
+     sits once in normal flow — here it would just offset where the pin
+     locks, so it's zeroed and .appAudit's own margin-top is the only
+     spacing before this whole block. */
+  margin-top:0;
+  height:min(100vh, 980px);
+  height:min(100svh, 980px);
   overflow:visible;
+  /* .caseHeroFrame/.caseHeroFrame--content (see the className list on the
+     element itself) supply the white panel — background, border, radius,
+     shadow and padding. Just the sticky/height/pin mechanics live here. */
 }
 .appAudit--static{height:auto}
-.appAudit--static .appAuditStage{
-  position:static;
-  height:auto;
-  display:block;
+.appAudit--static .appAuditStage{position:static;height:auto}
+.appAuditTitle{
+  margin:0 0 var(--s3);
+  font-size:1.0625rem;font-weight:600;letter-spacing:-.01em;
+  color:var(--ink);
 }
-.appAuditRoot{position:relative}
+.appAuditIntro{margin:0;color:var(--ink-2);font-size:1rem;line-height:1.68;max-width:62ch}
+.appAuditRoot{position:relative;margin-top:clamp(24px,4vh,40px)}
 .appAuditFrame{position:relative}
 .appAuditScaler{
   position:absolute;top:0;left:50%;margin-left:-532px;
@@ -10042,18 +10051,43 @@ function AppAudit({ audit, reduced }) {
     const root = rootRef.current;
     const frame = frameRef.current;
     const scaler = scalerRef.current;
-    if (!root || !frame || !scaler || typeof ResizeObserver === "undefined")
+    const stage = stageRef.current;
+    if (
+      !root ||
+      !frame ||
+      !scaler ||
+      !stage ||
+      typeof ResizeObserver === "undefined"
+    )
       return;
     const fit = () => {
       const w = root.clientWidth;
       if (!w) return;
-      const s = Math.min(1, w / 1064);
+      const sw = Math.min(1, w / 1064);
+      // The canvas also has to clear the pinned stage's own height, not
+      // just its width — the panel's title, intro and padding above it
+      // (mirrored below, since there's no cheap way to read the actual
+      // bottom padding alone) all eat into that fixed budget before the
+      // device gets any of it.
+      const stageRect = stage.getBoundingClientRect();
+      const rootRect = root.getBoundingClientRect();
+      const overhead = (rootRect.top - stageRect.top) * 2;
+      const availH = stage.clientHeight - overhead;
+      const sh = availH > 0 ? availH / 860 : sw;
+      // .9: even the tighter of the two fits above gets sized down a bit
+      // further, so the device never sits flush against the panel's own
+      // edges while pinned. Floored at .35 — an implausibly short viewport
+      // (a phone in landscape, a tiny resized window) would otherwise
+      // shrink the height-based fit toward zero; better to let a legible
+      // device spill slightly past the panel there than vanish inside it.
+      const s = Math.max(0.35, Math.min(sw, sh) * 0.9);
       scaler.style.transform = `scale(${s})`;
       frame.style.height = `${Math.round(860 * s)}px`;
     };
     fit();
     const ro = new ResizeObserver(fit);
     ro.observe(root);
+    ro.observe(stage);
     return () => ro.disconnect();
   }, []);
 
@@ -10095,7 +10129,12 @@ function AppAudit({ audit, reduced }) {
       className={`appAudit${reduced ? " appAudit--static" : ""} reveal`}
       ref={trackRef}
     >
-      <div className="appAuditStage" ref={stageRef}>
+      <div
+        className="appAuditStage caseHeroFrame caseHeroFrame--content"
+        ref={stageRef}
+      >
+        <h3 className="appAuditTitle">{audit.title}</h3>
+        <p className="appAuditIntro">{audit.intro}</p>
         <div className="appAuditRoot" ref={rootRef}>
           <div className="appAuditFrame" ref={frameRef}>
             <div className="appAuditScaler" ref={scalerRef}>
