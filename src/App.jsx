@@ -847,48 +847,46 @@ export const CONTENT = {
           noDivider: true,
           body: [
             "Our audience splits two ways: how long they've been with us, and how much time they have to give.",
+            { groupLabel: "When they joined" },
+            {
+              noteCards: [
+                {
+                  kicker: "Where churn was highest",
+                  kickerAccent: true,
+                  title: "New players",
+                  body: "Most of them left before a game even opened. For them, an install is a commitment they aren't ready to make yet.",
+                },
+                {
+                  kicker: "Where the revenue was",
+                  kickerAccent: true,
+                  title: "Returning players",
+                  body: "They're loyal to franchises and used to downloading and buying. For them, a download means owning the game, not waiting for it.",
+                },
+              ],
+            },
+            { groupLabel: "How they play" },
+            {
+              noteCards: [
+                {
+                  kicker: "Shortest sessions",
+                  kickerAccent: true,
+                  title: "Busy moms",
+                  body: "Play in short breaks between everything else. They want a quick distraction: tap, play, leave.",
+                },
+                {
+                  kicker: "Longest sessions",
+                  kickerAccent: true,
+                  title: "Empty nesters",
+                  body: "Settle in for long sessions. They prefer games with a clear benefit, like keeping their brain sharp.",
+                },
+              ],
+            },
+            {
+              quote:
+                'No single format serves all four. That\'s why "make everything instant" was never the answer.',
+            },
+            "The challenge was never introducing instant play. It was introducing it without making the ecosystem shallower.",
           ],
-        },
-        { groupLabel: "When they joined" },
-        {
-          noteCards: [
-            {
-              kicker: "Where churn was highest",
-              kickerAccent: true,
-              title: "New players",
-              body: "Most of them left before a game even opened. For them, an install is a commitment they aren't ready to make yet.",
-            },
-            {
-              kicker: "Where the revenue was",
-              kickerAccent: true,
-              title: "Returning players",
-              body: "They're loyal to franchises and used to downloading and buying. For them, a download means owning the game, not waiting for it.",
-            },
-          ],
-        },
-        { groupLabel: "How they play" },
-        {
-          noteCards: [
-            {
-              kicker: "Shortest sessions",
-              kickerAccent: true,
-              title: "Busy moms",
-              body: "Play in short breaks between everything else. They want a quick distraction: tap, play, leave.",
-            },
-            {
-              kicker: "Longest sessions",
-              kickerAccent: true,
-              title: "Empty nesters",
-              body: "Settle in for long sessions. They prefer games with a clear benefit, like keeping their brain sharp.",
-            },
-          ],
-        },
-        {
-          quote:
-            'No single format serves all four. That\'s why "make everything instant" was never the answer.',
-        },
-        {
-          p: "The challenge was never introducing instant play. It was introducing it without making the ecosystem shallower.",
         },
         {
           twoUp: [
@@ -896,12 +894,6 @@ export const CONTENT = {
               imageKey: "case.gamehouse-plus.newVsReturning",
               ratio: 4 / 3,
               caption: "The same app had to please our distinct player segments.",
-            },
-            {
-              imageKey: "case.gamehouse-plus.identicalTiles",
-              ratio: 4 / 3,
-              caption:
-                "Identical tiles, incompatible experiences. We even ported existing installable games to in-app.",
             },
           ],
         },
@@ -921,6 +913,16 @@ export const CONTENT = {
                 "one genre or several",
               ],
             },
+            {
+              twoUp: [
+                {
+                  imageKey: "case.gamehouse-plus.identicalTiles",
+                  ratio: 4 / 3,
+                  caption:
+                    "Identical tiles, incompatible experiences. We even ported existing installable games to in-app.",
+                },
+              ],
+            },
             "Every title already carried a stack of tags, and almost none of them registered with players. Surfacing more would not have helped: expose every dimension and a catalog becomes a database — technically complete, cognitively useless. Filters multiply, the home screen turns into a control panel, and the player who had ten minutes now has eight. It had to get simpler, not more complete.",
             "So the question stopped being how do we organise this content, and became:",
             {
@@ -933,30 +935,16 @@ export const CONTENT = {
         {
           staticCards: [
             {
-              // Single sketch render, not a light/dark pair — same file
-              // both ways rather than a separate re-render per theme.
-              thumb: {
-                light: "img/gh-principle-state.png",
-                dark: "img/gh-principle-state.png",
-              },
               title: "Show state, never rules.",
               meta: "Principle",
               body: "The interface says what a game is right now: playable, locked, installed, new. It never explains the system that produced that state. Players don't need our logic. They need to know what happens if they tap.",
             },
             {
-              thumb: {
-                light: "img/gh-principle-surface.png",
-                dark: "img/gh-principle-surface.png",
-              },
               title: "One dimension leads per surface.",
               meta: "Principle",
               body: "Home surfaces whichever games play fastest and feel freshest right now. Classics holds the downloadable catalog that complements and extends it. Search finds one specific game a player already has in mind, wherever it lives.",
             },
             {
-              thumb: {
-                light: "img/gh-principle-format.png",
-                dark: "img/gh-principle-format.png",
-              },
               title:
                 "Format decides where a game lives, never whether a player can find it.",
               meta: "Principle",
