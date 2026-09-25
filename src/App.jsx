@@ -880,33 +880,7 @@ export const CONTENT = {
             'No single format serves all four. That\'s why "make everything instant" was never the answer.',
         },
         {
-          innerSplit: {
-            label: "Understanding our players",
-            items: [
-              "The split ran by tenure, not by mood, and the two groups wanted opposite things.",
-              {
-                noteCards: [
-                  {
-                    kicker: "Where churn was highest",
-                    kickerAccent: true,
-                    title: "New players",
-                    body: "Most of them left before a game ever opened. The install was not a wait, it was a decision, taken at the moment they were least invested. Instant play removed it, and they stayed.",
-                  },
-                  {
-                    kicker: "Where the revenue was",
-                    kickerAccent: true,
-                    title: "Returning players",
-                    body: "Loyal to franchises, used to downloading and buying the games they follow. For them the download is ownership rather than friction, and the new instant titles read as lighter, cheaper content beside it.",
-                  },
-                ],
-              },
-              'Which is why "make everything instant" was never the answer. Instant play won back the players we were losing, and devalued the catalog for the players we already had.',
-              {
-                quote:
-                  "The challenge was never introducing instant play. It was introducing it without making the ecosystem shallower.",
-              },
-            ],
-          },
+          p: "The challenge was never introducing instant play. It was introducing it without making the ecosystem shallower.",
         },
         {
           twoUp: [
