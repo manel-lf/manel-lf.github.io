@@ -841,14 +841,43 @@ export const CONTENT = {
         },
 
         {
-          h: "When instant play arrived.",
-          navLabel: "The Shift",
-          label: "The shift:",
+          h: "Understanding our audience",
+          navLabel: "Audience",
+          label: "The audience:",
+          noDivider: true,
           body: [
-            "A downloadable game asks for a commitment before it gives you anything — a tap, a wait, storage, patience. Players who make that trade get something real back: a game that's theirs, that opens instantly ever after, that they'll return to for months.",
-            "Instant play inverts the deal. Nothing to install, nothing to own. Tap, play, leave.",
-            "Both are good, for different people at different moments. And — this is the part that broke the product — they look identical in a grid. Same tile, same art, same tap. One starts in seconds, the other in minutes, and players were the ones absorbing the difference.",
+            "Our audience splits two ways: how long they've been with us, and how much time they have to give.",
           ],
+        },
+        { sub: "By tenure" },
+        {
+          noteCards: [
+            {
+              title: "New players",
+              body: "Most of them left before a game even opened. For them, an install is a commitment they aren't ready to make yet.",
+            },
+            {
+              title: "Returning players",
+              body: "They're loyal to franchises and used to downloading and buying. For them, a download means owning the game, not waiting for it.",
+            },
+          ],
+        },
+        { sub: "By time" },
+        {
+          noteCards: [
+            {
+              title: "Busy moms",
+              body: "Play in short breaks between everything else. They want a quick distraction: tap, play, leave.",
+            },
+            {
+              title: "Empty nesters",
+              body: "Settle in for long sessions. They prefer games with a clear benefit, like keeping their brain sharp.",
+            },
+          ],
+        },
+        {
+          quote:
+            'No single format serves all four. That\'s why "make everything instant" was never the answer.',
         },
         {
           innerSplit: {
@@ -10168,7 +10197,15 @@ function AppAudit({ audit, reduced }) {
       const rect = track.getBoundingClientRect();
       const span = rect.height - stage.offsetHeight;
       const p = span > 0 ? clamp01(-rect.top / span) : 0;
-      const idx = Math.min(markers.length - 1, Math.floor(p * markers.length));
+      // Once the whole track — pinned stage included — has scrolled fully
+      // past, drop back to the first marker rather than leaving whichever
+      // one was active when the visitor scrolled on. It's off-screen at
+      // that point either way; this just means scrolling back up into it
+      // later starts over at 01 instead of resuming mid-way through.
+      const idx =
+        rect.bottom < 0
+          ? 0
+          : Math.min(markers.length - 1, Math.floor(p * markers.length));
       setActive(idx);
     };
     const onScroll = () => {
@@ -11352,7 +11389,11 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
               // (SectionHead + prose), just inverted, same as CaseStudy's
               // own "system" section.
               return (
-                <section id={section.id} key={section.id}>
+                <section
+                  id={section.id}
+                  key={section.id}
+                  className={head.noDivider ? "richSection--noDivider" : undefined}
+                >
                   {head.dark ? (
                     <DarkPanel>
                       <CaseSection
@@ -11940,6 +11981,17 @@ const STYLES_POST = `
   margin-top:clamp(56px,7vh,96px);
   padding-top:clamp(40px,5vh,72px);
   border-top:1px solid var(--hairline);
+}
+/* Opt-in override for a section whose PRECEDING one ends on something that
+   can run past its own box — the app-audit's tallest marker card, at
+   normal size, can spill past its panel on a short viewport (see
+   AppAudit). A hairline sitting right where that card might still be
+   trailing off would look broken; more bare space instead just quietly
+   absorbs it, with no line for it to visibly cross. */
+.richCaseBody section + section.richSection--noDivider{
+  border-top:none;
+  padding-top:0;
+  margin-top:clamp(120px,16vh,200px);
 }
 /* A closing statement, set off from the rest of its section the same way
    sections are set off from each other, just a size down. */
