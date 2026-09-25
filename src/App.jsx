@@ -849,45 +849,64 @@ export const CONTENT = {
             "Our audience splits two ways: how long they've been with us, and how much time they have to give.",
           ],
         },
-        { sub: "By tenure" },
         {
-          noteCards: [
-            {
-              title: "New players",
-              body: "Most of them left before a game even opened. For them, an install is a commitment they aren't ready to make yet.",
-            },
-            {
-              title: "Returning players",
-              body: "They're loyal to franchises and used to downloading and buying. For them, a download means owning the game, not waiting for it.",
-            },
-          ],
-        },
-        { sub: "By time" },
-        {
-          noteCards: [
-            {
-              title: "Busy moms",
-              body: "Play in short breaks between everything else. They want a quick distraction: tap, play, leave.",
-            },
-            {
-              title: "Empty nesters",
-              body: "Settle in for long sessions. They prefer games with a clear benefit, like keeping their brain sharp.",
-            },
-          ],
+          innerSplit: {
+            label: "By tenure",
+            items: [
+              {
+                noteCards: [
+                  {
+                    kicker: "Where churn was highest",
+                    kickerAccent: true,
+                    title: "New players",
+                    body: "Most of them left before a game even opened. For them, an install is a commitment they aren't ready to make yet.",
+                  },
+                  {
+                    kicker: "Where the revenue was",
+                    kickerAccent: true,
+                    title: "Returning players",
+                    body: "They're loyal to franchises and used to downloading and buying. For them, a download means owning the game, not waiting for it.",
+                  },
+                ],
+              },
+            ],
+          },
         },
         {
-          quote:
-            'No single format serves all four. That\'s why "make everything instant" was never the answer.',
-        },
-        {
-          p: "The challenge was never introducing instant play. It was introducing it without making the ecosystem shallower.",
+          innerSplit: {
+            label: "By time",
+            divider: true,
+            items: [
+              {
+                noteCards: [
+                  {
+                    kicker: "Shortest sessions",
+                    kickerAccent: true,
+                    title: "Busy moms",
+                    body: "Play in short breaks between everything else. They want a quick distraction: tap, play, leave.",
+                  },
+                  {
+                    kicker: "Longest sessions",
+                    kickerAccent: true,
+                    title: "Empty nesters",
+                    body: "Settle in for long sessions. They prefer games with a clear benefit, like keeping their brain sharp.",
+                  },
+                ],
+              },
+              {
+                quote:
+                  'No single format serves all four. That\'s why "make everything instant" was never the answer.',
+              },
+              "The challenge was never introducing instant play. It was introducing it without making the ecosystem shallower.",
+            ],
+          },
         },
         {
           twoUp: [
             {
               imageKey: "case.gamehouse-plus.newVsReturning",
               ratio: 4 / 3,
-              caption: "The two players the redesign had to serve at once.",
+              caption: "The same app had to please our distinct player segments.",
             },
             {
               imageKey: "case.gamehouse-plus.identicalTiles",
