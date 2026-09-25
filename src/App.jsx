@@ -845,6 +845,11 @@ export const CONTENT = {
           navLabel: "Audience",
           label: "The first step:",
           noDivider: true,
+          leftFigure: {
+            imageKey: "case.gamehouse-plus.newVsReturning",
+            ratio: 4 / 3,
+            caption: "The same app had to please our distinct player segments.",
+          },
           body: [
             "Our audience splits two ways: how long they've been with us, and how much time they have to give.",
             { groupLabel: "When they joined" },
@@ -886,15 +891,6 @@ export const CONTENT = {
                 'No single format serves all four. That\'s why "make everything instant" was never the answer.',
             },
             "The challenge was never introducing instant play. It was introducing it without making the ecosystem shallower.",
-          ],
-        },
-        {
-          twoUp: [
-            {
-              imageKey: "case.gamehouse-plus.newVsReturning",
-              ratio: 4 / 3,
-              caption: "The same app had to please our distinct player segments.",
-            },
           ],
         },
 
@@ -3777,6 +3773,15 @@ const STYLES_CASE = `
   gap:clamp(32px,6vw,88px);
   align-items:start;
 }
+/* A section whose left column carries an image instead of ending at the
+   heading — stretched to the row's full height (set by the taller right
+   column) so the figure's own margin-top:auto can sink it to the row's
+   bottom edge, landing flush with wherever the prose column ends. */
+.caseSplit--figureLeft{align-items:stretch}
+.caseSplitLeft{display:flex;flex-direction:column}
+/* Overrides .caseHeroFrame's own margin-top (same specificity, later in
+   the cascade) — the auto margin is what does the bottom-sinking. */
+.caseSplitLeftFigure{margin-top:auto!important;padding-top:var(--s6)}
 .prose{display:flex;flex-direction:column;gap:var(--s4)}
 .prose p{color:var(--ink-2);font-size:1rem;line-height:1.68;max-width:62ch}
 .prose--onPanel p{color:var(--panel-muted)}
@@ -4456,38 +4461,27 @@ const STYLES_SEQ = `
 .splitSeq--static .splitSeq__copyInner{opacity:1 !important}
 `;
 
-/* The live-app audit: a device shot with hoverable/tappable/scroll-stepped
-   markers, laid out on a fixed-size canvas (see AppAudit) that scales as
-   one rigid unit rather than reflowing, matching the Claude Design
-   artifact's own layout. The scroll-pin (.appAudit/.appAuditStage) is this
-   site's own addition on top of that: the same tall-track-plus-sticky-
-   stage trick as .splitSeq/.splitSeq__stage above, so the device stays on
-   screen while the six markers unfold in order as the visitor scrolls. */
+/* The live-app audit: a device shot with hoverable/tappable markers, laid
+   out on a fixed-size canvas (see AppAudit) that scales as one rigid unit
+   rather than reflowing, matching the Claude Design artifact's own layout.
+   Nothing here is scroll-stepped any more — the panel sits in normal flow
+   (.appAuditStage is the same white caseHeroFrame card either way) and a
+   viewport-centering check in AppAudit itself decides whether a marker is
+   selected at all. */
 const STYLES_AUDIT = `
 .appAudit{
   margin-top:clamp(56px,8vh,104px);
-  /* The 980px cap (not 900px) leaves room for the panel's own title,
-     intro paragraph and padding above the device — see .appAuditStage. */
-  height:calc(min(100vh, 980px) + 330vh);
-  height:calc(min(100svh, 980px) + 330vh);
 }
 .appAuditStage{
-  position:sticky;
-  top:0;
   /* .caseHeroFrame already sets its own margin-top, meant for a card that
-     sits once in normal flow — here it would just offset where the pin
-     locks, so it's zeroed and .appAudit's own margin-top is the only
-     spacing before this whole block. */
+     sits once in normal flow — .appAudit's own margin-top above is the
+     only spacing wanted before this whole block. */
   margin-top:0;
-  height:min(100vh, 980px);
-  height:min(100svh, 980px);
   overflow:visible;
   /* .caseHeroFrame/.caseHeroFrame--content (see the className list on the
      element itself) supply the white panel — background, border, radius,
-     shadow and padding. Just the sticky/height/pin mechanics live here. */
+     shadow and padding. */
 }
-.appAudit--static{height:auto}
-.appAudit--static .appAuditStage{position:static;height:auto}
 .appAuditTitle{
   margin:0 0 var(--s3);
   font-size:1.0625rem;font-weight:600;letter-spacing:-.01em;
@@ -4521,17 +4515,23 @@ const STYLES_AUDIT = `
   box-shadow:0 0 0 6px var(--surface),0 0 0 7px var(--hairline-strong);
   cursor:pointer;transform:translate(-50%,-50%);
   transition:transform 220ms cubic-bezier(.34,1.32,.64,1);
-  animation:appAuditPulse 2400ms cubic-bezier(.16,1,.3,1) infinite;
 }
 .appAuditDot:hover,.appAuditDot:focus-visible{transform:translate(-50%,-50%) scale(1.18)}
 .appAuditDot:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* A single strong pulse fires whenever a dot BECOMES the active one —
+   .is-active is only added/removed on a real selection change (see the
+   active state in AppAudit), never toggled while it stays selected, so
+   this plays once per change rather than looping the whole time it's
+   active. */
+.appAuditDot.is-active{
+  animation:appAuditPulse 700ms cubic-bezier(.16,1,.3,1) 1;
+}
 @keyframes appAuditPulse{
-  0%{box-shadow:0 0 0 6px var(--surface),0 0 0 7px var(--hairline-strong),0 0 0 7px rgba(33,69,230,.38)}
-  70%{box-shadow:0 0 0 6px var(--surface),0 0 0 7px var(--hairline-strong),0 0 0 24px rgba(33,69,230,0)}
-  100%{box-shadow:0 0 0 6px var(--surface),0 0 0 7px var(--hairline-strong),0 0 0 24px rgba(33,69,230,0)}
+  0%{box-shadow:0 0 0 6px var(--surface),0 0 0 7px var(--hairline-strong),0 0 0 7px rgba(33,69,230,.55)}
+  100%{box-shadow:0 0 0 6px var(--surface),0 0 0 7px var(--hairline-strong),0 0 0 28px rgba(33,69,230,0)}
 }
 @media (prefers-reduced-motion: reduce){
-  .appAuditDot{animation:none}
+  .appAuditDot.is-active{animation:none}
 }
 .appAuditCard{
   /* left/top are set inline per marker, in real pixels off the device's
@@ -9168,16 +9168,43 @@ function CaseSection({
   onPanel,
   headingId,
   reduced,
+  leftFigure,
 }) {
+  const head = (
+    <SectionHead
+      headingId={headingId}
+      label={label}
+      statement={statement}
+      onPanel={onPanel}
+    />
+  );
   return (
     <div id={id}>
-      <div className="caseSplit">
-        <SectionHead
-          headingId={headingId}
-          label={label}
-          statement={statement}
-          onPanel={onPanel}
-        />
+      <div className={`caseSplit${leftFigure ? " caseSplit--figureLeft" : ""}`}>
+        {/* leftFigure sinks to the bottom of this column via its own
+            margin-top:auto, so it lines up with wherever the right
+            column's content happens to end — a stretch context, not a
+            fixed offset, so it tracks the prose height at any width. */}
+        {leftFigure ? (
+          <div className="caseSplitLeft">
+            {head}
+            <figure className="caseSplitLeftFigure caseHeroFrame">
+              <div className="inner">
+                <Visual
+                  imageKey={leftFigure.imageKey}
+                  ratio={leftFigure.ratio || 4 / 3}
+                />
+              </div>
+              {leftFigure.caption ? (
+                <figcaption className="mono wideCaption">
+                  {leftFigure.caption}
+                </figcaption>
+              ) : null}
+            </figure>
+          </div>
+        ) : (
+          head
+        )}
         <div
           className={`prose${onPanel ? " prose--onPanel" : ""} reveal`}
           style={{ "--reveal-delay": "120ms" }}
@@ -10038,18 +10065,18 @@ function ContentSplitSequence({ title, sub, reduced }) {
  * 1064x860 canvas that scales down as one rigid unit to fit its
  * container (rather than reflowing) — matches the Claude Design artifact,
  * which hand-places each critique card near its own marker instead of
- * swapping a single card's content. Hover (desktop), focus (keyboard) or
- * tap (touch) a marker always works; on top of that, once the section is
- * pinned (see the scroll effect below), scrolling itself steps through the
- * markers in order — the device stays on screen while 01 through NN unfold
- * one at a time. The first marker ("Overall Look & Feel") is active by
- * default and never dims the frame, since it critiques the whole screen
- * rather than one part of it.
+ * swapping a single card's content.
  *
- * Under reduced motion the pin is skipped entirely (same `--static`
- * pattern as ContentSplitSequence): the frame sits in normal flow and only
- * hover/focus/tap drive `active`, exactly as before this component learned
- * to scroll-step.
+ * No marker is selected by default. Scrolling the device roughly into the
+ * middle of the viewport auto-selects the first one — its dot fires a
+ * single strong pulse (see .appAuditDot.is-active) and its card appears —
+ * and scrolling it back out of that band clears the selection entirely:
+ * no dimming, no card. Hover, focus or tap on any dot always works too,
+ * independent of that centering check.
+ *
+ * Under reduced motion the centering check is skipped and the first
+ * marker is simply active from the start, so nothing here depends on
+ * scroll position for those users.
  */
 // The device sits inset within the fixed 1064x860 canvas at these
 // constants (see .appAuditDevice) — used to place the (unscaled) cards
@@ -10059,66 +10086,37 @@ const AUDIT_DEVICE_WIDTH = 400;
 const AUDIT_CARD_GAP = 24;
 
 function AppAudit({ audit, reduced }) {
-  const [active, setActive] = useState(0);
+  const markers = audit.markers;
+  const [active, setActive] = useState(() => (reduced ? 0 : null));
+  const [centered, setCentered] = useState(false);
   // Per-marker {left, top} in pixels, relative to .appAuditFrame — see
   // `fit` below. The cards live outside the scaled .appAuditScaler
   // specifically so their own size never scales with the device; their
   // position is computed from its live rect instead of inheriting it.
-  const [cardPos, setCardPos] = useState(() => audit.markers.map(() => null));
+  const [cardPos, setCardPos] = useState(() => markers.map(() => null));
   const rootRef = useRef(null);
   const frameRef = useRef(null);
   const scalerRef = useRef(null);
-  const trackRef = useRef(null);
-  const stageRef = useRef(null);
-  const markers = audit.markers;
-  const activeMarker = markers[active];
+  const activeMarker = active !== null ? markers[active] : null;
 
-  // Scales the fixed 1064x860 canvas down as one rigid unit, and places
-  // each card against the device's own (scaled) edges rather than the
-  // canvas's — a canvas-relative anchor stayed proportionally correct
-  // when the cards scaled down with the device, but once they render at
-  // a fixed, normal size (see .appAuditCard's width), the same anchor
-  // point would either overlap the device or float too far from it as
-  // the scale changes. Reads live element geometry rather than anything
-  // cached, so it self-corrects on every call regardless of what the
-  // layout looked like the first time it ran (position:sticky's own rect
-  // keeps shifting as the page scrolls, so a stale one-off measurement
-  // doesn't stay valid).
+  // Scales the fixed 1064x860 canvas down as one rigid unit — purely off
+  // the container's width, now that the panel is never pinned or height-
+  // capped — and places each card against the device's own (scaled)
+  // edges rather than the canvas's: a canvas-relative anchor stayed
+  // proportionally correct when the cards scaled down with the device,
+  // but once they render at a fixed, normal size (see .appAuditCard's
+  // width), the same anchor point would either overlap the device or
+  // float too far from it as the scale changes.
   const fit = () => {
     const root = rootRef.current;
     const frame = frameRef.current;
     const scaler = scalerRef.current;
-    const stage = stageRef.current;
-    if (!root || !frame || !scaler || !stage) return;
+    if (!root || !frame || !scaler) return;
     const w = root.clientWidth;
     if (!w) return;
     // 10% smaller than a true 1:1 fit, per the brief — the device's
-    // normal, width-driven size.
-    const target = Math.min(1, w / 1064) * 0.9;
-    // The canvas also has to clear the pinned stage's own height, not
-    // just its width. Top overhead (padding, title, intro, the root's
-    // own margin) is read directly off the live gap between the stage
-    // and the root, so it can't drift out of sync with a copy-pasted
-    // number; bottom overhead is just the stage's own padding, read the
-    // same way rather than assumed equal to the (much taller) top gap.
-    const stageRect = stage.getBoundingClientRect();
-    const rootRect = root.getBoundingClientRect();
-    const topOverhead = rootRect.top - stageRect.top;
-    const bottomPad = parseFloat(getComputedStyle(stage).paddingBottom) || 0;
-    const availH = stage.clientHeight - topOverhead - bottomPad;
-    // Under reduced motion the stage isn't pinned or height-capped (see
-    // .appAudit--static) — its own height instead depends on the frame's,
-    // which this same calculation is about to set, so height-fitting here
-    // would be circular. Skip it: the plain 10% target is already correct
-    // for a panel that's free to grow as tall as its content needs.
-    const sh = !reduced && availH > 0 ? availH / 860 : target;
-    // Only shrink past the 10% target when the panel's height actually
-    // forces it — never stack the two constraints. Floored at .35 — an
-    // implausibly short viewport (a phone in landscape, a tiny resized
-    // window) would otherwise shrink the height-based fit toward zero;
-    // better to let a legible device spill slightly past the panel
-    // there than vanish inside it.
-    const s = Math.max(0.35, Math.min(target, sh));
+    // normal size, driven by width alone.
+    const s = Math.min(1, w / 1064) * 0.9;
     scaler.style.transform = `scale(${s})`;
     frame.style.height = `${Math.round(860 * s)}px`;
 
@@ -10147,52 +10145,36 @@ function AppAudit({ audit, reduced }) {
 
   useEffect(() => {
     const root = rootRef.current;
-    const stage = stageRef.current;
-    if (!root || !stage || typeof ResizeObserver === "undefined") return;
+    if (!root || typeof ResizeObserver === "undefined") return;
     fit();
     const ro = new ResizeObserver(fit);
     ro.observe(root);
-    ro.observe(stage);
     return () => ro.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Scroll-driven stepping: how far the (tall) track has scrolled past the
-  // (pinned) stage maps directly to which marker is active. Additive with
-  // the hover/focus/click handlers below, not a replacement for them — a
-  // visitor can still jump a marker by hand, scrolling just picks it up
-  // again on the next frame. Re-running `fit` here too, not just from the
-  // resize observer above, is what makes the sizing self-correct through
-  // the scroll-pin's own position changes rather than trusting whatever
-  // it measured once at mount.
+  // Whether the device sits roughly in the middle of the viewport right
+  // now — the trigger for auto-selecting the first marker. A generous
+  // band (44% of viewport height, centred on its midpoint) rather than an
+  // exact midpoint match, so it fires as soon as the device is
+  // comfortably in view instead of only at one precise scroll offset.
   useEffect(() => {
     if (reduced) return;
-    const track = trackRef.current;
-    const stage = stageRef.current;
-    if (!track || !stage) return;
-    const clamp01 = (n) => (n < 0 ? 0 : n > 1 ? 1 : n);
+    const root = rootRef.current;
+    if (!root) return;
     let raf = 0;
-    const update = () => {
+    const check = () => {
       raf = 0;
-      fit();
-      const rect = track.getBoundingClientRect();
-      const span = rect.height - stage.offsetHeight;
-      const p = span > 0 ? clamp01(-rect.top / span) : 0;
-      // Once the whole track — pinned stage included — has scrolled fully
-      // past, drop back to the first marker rather than leaving whichever
-      // one was active when the visitor scrolled on. It's off-screen at
-      // that point either way; this just means scrolling back up into it
-      // later starts over at 01 instead of resuming mid-way through.
-      const idx =
-        rect.bottom < 0
-          ? 0
-          : Math.min(markers.length - 1, Math.floor(p * markers.length));
-      setActive(idx);
+      const rect = root.getBoundingClientRect();
+      const elCenter = rect.top + rect.height / 2;
+      const viewportCenter = window.innerHeight / 2;
+      const tolerance = window.innerHeight * 0.22;
+      setCentered(Math.abs(elCenter - viewportCenter) < tolerance);
     };
     const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
+      if (!raf) raf = requestAnimationFrame(check);
     };
-    update();
+    check();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     return () => {
@@ -10200,18 +10182,20 @@ function AppAudit({ audit, reduced }) {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reduced, markers.length]);
+  }, [reduced]);
+
+  // Centering is the only thing that resets or re-triggers the default
+  // selection — a manual hover/click in between is left alone until the
+  // device is next centred (or scrolled back out) rather than being
+  // fought over on every render.
+  useEffect(() => {
+    if (reduced) return;
+    setActive(centered ? 0 : null);
+  }, [centered, reduced]);
 
   return (
-    <div
-      className={`appAudit${reduced ? " appAudit--static" : ""} reveal`}
-      ref={trackRef}
-    >
-      <div
-        className="appAuditStage caseHeroFrame caseHeroFrame--content"
-        ref={stageRef}
-      >
+    <div className="appAudit reveal">
+      <div className="appAuditStage caseHeroFrame caseHeroFrame--content">
         <h3 className="appAuditTitle">{audit.title}</h3>
         <p className="appAuditIntro">{audit.intro}</p>
         <div className="appAuditRoot" ref={rootRef}>
@@ -10223,22 +10207,24 @@ function AppAudit({ audit, reduced }) {
                   fill
                   className="appAuditDeviceImg"
                 />
-                <div
-                  className="appAuditOverlay"
-                  style={{ opacity: activeMarker.noDim ? 0 : 1 }}
-                  aria-hidden="true"
-                >
+                {activeMarker ? (
                   <div
-                    className="appAuditHole"
-                    style={{
-                      top: `${(activeMarker.region || [0, 757])[0]}px`,
-                      height: `${
-                        (activeMarker.region || [0, 757])[1] -
-                        (activeMarker.region || [0, 757])[0]
-                      }px`,
-                    }}
-                  />
-                </div>
+                    className="appAuditOverlay"
+                    style={{ opacity: activeMarker.noDim ? 0 : 1 }}
+                    aria-hidden="true"
+                  >
+                    <div
+                      className="appAuditHole"
+                      style={{
+                        top: `${(activeMarker.region || [0, 757])[0]}px`,
+                        height: `${
+                          (activeMarker.region || [0, 757])[1] -
+                          (activeMarker.region || [0, 757])[0]
+                        }px`,
+                      }}
+                    />
+                  </div>
+                ) : null}
                 {markers.map((m, idx) => (
                   <button
                     key={m.title}
@@ -11422,6 +11408,7 @@ function GameHousePlusCase({ project, onCapture, onHome, flight, reduced }) {
                       statement={head.h}
                       body={head.body || []}
                       reduced={reduced}
+                      leftFigure={head.leftFigure}
                     >
                       {children}
                     </CaseSection>
