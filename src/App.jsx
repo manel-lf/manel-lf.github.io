@@ -843,63 +843,52 @@ export const CONTENT = {
         {
           h: "Understanding our audience",
           navLabel: "Audience",
-          label: "The audience:",
+          label: "The first step:",
           noDivider: true,
           body: [
             "Our audience splits two ways: how long they've been with us, and how much time they have to give.",
           ],
         },
+        { groupLabel: "When they joined" },
         {
-          innerSplit: {
-            label: "By tenure",
-            items: [
-              {
-                noteCards: [
-                  {
-                    kicker: "Where churn was highest",
-                    kickerAccent: true,
-                    title: "New players",
-                    body: "Most of them left before a game even opened. For them, an install is a commitment they aren't ready to make yet.",
-                  },
-                  {
-                    kicker: "Where the revenue was",
-                    kickerAccent: true,
-                    title: "Returning players",
-                    body: "They're loyal to franchises and used to downloading and buying. For them, a download means owning the game, not waiting for it.",
-                  },
-                ],
-              },
-            ],
-          },
+          noteCards: [
+            {
+              kicker: "Where churn was highest",
+              kickerAccent: true,
+              title: "New players",
+              body: "Most of them left before a game even opened. For them, an install is a commitment they aren't ready to make yet.",
+            },
+            {
+              kicker: "Where the revenue was",
+              kickerAccent: true,
+              title: "Returning players",
+              body: "They're loyal to franchises and used to downloading and buying. For them, a download means owning the game, not waiting for it.",
+            },
+          ],
+        },
+        { groupLabel: "How they play" },
+        {
+          noteCards: [
+            {
+              kicker: "Shortest sessions",
+              kickerAccent: true,
+              title: "Busy moms",
+              body: "Play in short breaks between everything else. They want a quick distraction: tap, play, leave.",
+            },
+            {
+              kicker: "Longest sessions",
+              kickerAccent: true,
+              title: "Empty nesters",
+              body: "Settle in for long sessions. They prefer games with a clear benefit, like keeping their brain sharp.",
+            },
+          ],
         },
         {
-          innerSplit: {
-            label: "By time",
-            divider: true,
-            items: [
-              {
-                noteCards: [
-                  {
-                    kicker: "Shortest sessions",
-                    kickerAccent: true,
-                    title: "Busy moms",
-                    body: "Play in short breaks between everything else. They want a quick distraction: tap, play, leave.",
-                  },
-                  {
-                    kicker: "Longest sessions",
-                    kickerAccent: true,
-                    title: "Empty nesters",
-                    body: "Settle in for long sessions. They prefer games with a clear benefit, like keeping their brain sharp.",
-                  },
-                ],
-              },
-              {
-                quote:
-                  'No single format serves all four. That\'s why "make everything instant" was never the answer.',
-              },
-              "The challenge was never introducing instant play. It was introducing it without making the ecosystem shallower.",
-            ],
-          },
+          quote:
+            'No single format serves all four. That\'s why "make everything instant" was never the answer.',
+        },
+        {
+          p: "The challenge was never introducing instant play. It was introducing it without making the ecosystem shallower.",
         },
         {
           twoUp: [
@@ -3823,6 +3812,17 @@ const STYLES_CASE = `
 .systemPanel .innerSplit--divider{border-color:var(--panel-hairline)}
 .innerSplitLabel{margin:0;color:var(--muted)}
 .innerSplitLabel--onPanel{color:var(--panel-muted)}
+/* A full-width mono title sitting on its own hairline, ahead of a card
+   row that spans the whole column rather than living in a caseSplit's
+   right-hand prose. */
+.groupLabel{
+  display:block;
+  margin:clamp(40px,6vh,72px) 0 0;
+  padding-bottom:var(--s3);
+  border-bottom:1px solid var(--hairline);
+  color:var(--muted);
+}
+.groupLabel + .cardGrid{margin-top:var(--s5)}
 .wideVisual{
   margin-top:clamp(32px,5vh,64px);
   border-radius:var(--r-lg);overflow:hidden;
@@ -10753,6 +10753,16 @@ function CaseRichBlock({ block, i, reduced }) {
       <span className="subLabel reveal" key={i}>
         {block.subLabel}
       </span>
+    );
+  }
+  // A full-width mono title on its own hairline, ahead of a card row —
+  // used when a group of cards needs a heading but isn't inside a
+  // caseSplit's two-column layout.
+  if (block.groupLabel) {
+    return (
+      <h3 className="mono groupLabel reveal" key={i}>
+        {block.groupLabel}
+      </h3>
     );
   }
   // The Claude Design "subList" component: a plain bulleted list, visually
