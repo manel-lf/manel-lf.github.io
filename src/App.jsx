@@ -898,6 +898,13 @@ export const CONTENT = {
           h: "Six dimensions, one mental model.",
           navLabel: "Complexity",
           label: "Designing for complexity:",
+          leftFigure: {
+            imageKey: "case.gamehouse-plus.identicalTiles",
+            ratio: 4 / 3,
+            caption:
+              "Identical tiles, incompatible experiences. We even ported existing installable games to in-app.",
+            align: "top",
+          },
           body: [
             "Once instant play existed, every game in GH+ sat on several axes at once:",
             {
@@ -907,16 +914,6 @@ export const CONTENT = {
                 "quick session or long session",
                 "franchise or standalone",
                 "one genre or several",
-              ],
-            },
-            {
-              twoUp: [
-                {
-                  imageKey: "case.gamehouse-plus.identicalTiles",
-                  ratio: 4 / 3,
-                  caption:
-                    "Identical tiles, incompatible experiences. We even ported existing installable games to in-app.",
-                },
               ],
             },
             "Every title already carried a stack of tags, and almost none of them registered with players. Surfacing more would not have helped: expose every dimension and a catalog becomes a database — technically complete, cognitively useless. Filters multiply, the home screen turns into a control panel, and the player who had ten minutes now has eight. It had to get simpler, not more complete.",
@@ -965,28 +962,32 @@ export const CONTENT = {
               emphasisLead: "Content duality",
               rest: " was our internal term: both formats are first-class content, and the product has to hold both without asking players to understand the difference. Should they coexist in one experience, or live in separate ones?",
             },
-            "Behavioural data answered a question we hadn't asked. The most engaged players were neither the instant-play nor the downloadable players — they were the ones who did both. Any architecture that made one half harder to reach would destroy the behaviour producing our best retention.",
-            "Three directions, judged against that.",
+            {
+              quote:
+                "We were surprised to find that our most engaged players weren't purely instant-play or purely downloadable — they were the ones who played both.",
+            },
+            "That reframed the problem: it wasn't about picking a format to lead with, it was about getting every player to both eventually. We weighed three directions; here's the one we shipped:",
           ],
         },
         {
           noteCards: [
             {
               kicker: "A — Considered",
-              title: "One catalog, format as a badge.",
-              body: "Every game in one grid, with a small marker telling you which kind it is. Cheapest to build, and it failed for a single reason: it pushed the decision onto the player at exactly the moment they wanted to play. The badge became homework.",
+              title: "Having all the games be foundable in the same Home page",
+              body: "One grid, every game, a small badge marking its format. Cheapest to build — and it failed for one reason: it pushed the format decision onto the player at the exact moment they wanted to play.",
             },
             {
               kicker: "B — Considered",
-              title: "A toggle between the two.",
-              body: "One surface, switched between instant and downloadable. Tidy, and quietly dangerous: a toggle defaults, and whatever it doesn't default to disappears. Downloadables would have thinned in perception long before anything changed in fact, taking the dual-format players with them.",
+              title:
+                "Having a toggle that made downloadable games visible, which was off by default",
+              body: "One surface, one switch — downloadable stayed hidden until a player flipped it. Tidy, but dangerous: whatever isn't the default quietly disappears, thinning downloadables in perception long before anything changed in fact.",
             },
             {
               kicker: "C — Shipped",
               kickerAccent: true,
               highlight: true,
-              title: "Asymmetric, but connected.",
-              body: "Home became an instant-first starting point. Classics became a dedicated home for downloadable franchises. Franchise and genre ran underneath both, through Search and My Games, so no player ever hit a wall between the two halves of the library.",
+              title: "Surfacing in-app first, downloadable later.",
+              body: "Home: an instant-first starting point. Classics: a dedicated home for downloadable franchises. Search and My Games ran underneath both, so no player ever hit a wall between the two halves.",
               body2:
                 "C shipped because it gave new players the clearest first experience without hiding the downloadable ecosystem behind a control — the only direction that served acquisition and protected dual-format play at once.",
             },
@@ -998,10 +999,7 @@ export const CONTENT = {
             onPanel: true,
             divider: true,
             items: [
-              "We didn't reason our way to this. We tested it.",
-              "An A/B test put an installable control against two instant-play variants — one plain, one with a forced video trailer on launch. Both instant variants opened at more than six times the control's day-zero rate and cut the path from entry to first play by roughly six-fold.",
-              "Day-one retention was the tiebreak. Forcing the video trailer bought a little more day-zero engagement and gave part of it back the next day; the plain variant held retention best, so it shipped. The metric that moves first is rarely the one that matters.",
-              "Amplitude funnels and session replays gave us the behavioural picture underneath — including the dual-format finding that decided the architecture. An unmoderated usability study, six participants, tested the redesigned Home before it shipped.",
+              "An A/B test put an installable control against an instant-play variant: instant opened at more than six times the control's day-zero rate, cut the path from entry to first play roughly six-fold, and still held retention best the following day — proof the metric that moves first is rarely the one that matters. Amplitude funnels and session replays gave us the behavioural picture underneath, including the dual-format finding that decided the architecture, and an unmoderated six-participant usability study tested the redesigned Home before it shipped.",
             ],
           },
         },
@@ -2625,7 +2623,13 @@ const DUR = {
 
 const STYLES = `
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+/* overflow-x lives on html, not body — body's own overflow-x:hidden
+   forces its overflow-y to a computed auto (see the CSS Overflow spec's
+   overflow-value pairing rule), which turns body into a scroll container
+   of its own and breaks position:sticky for any descendant (only
+   .splitSeq__stage today) relative to the real viewport. html doesn't
+   have that problem and clips the same horizontal overflow just as well. */
+html{-webkit-text-size-adjust:100%;overflow-x:hidden}
 body{margin:0}
 h1,h2,h3,h4,p,figure,blockquote,ul,ol{margin:0}
 ul,ol{padding:0;list-style:none}
@@ -2704,7 +2708,6 @@ body{
   font-size:1rem;
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
 }
 
 /* Theme cross-fade. Only applied after mount so first paint never animates. */
@@ -4415,9 +4418,21 @@ const STYLES_SEQ = `
   text-wrap:balance;
 }
 /* Under ~760px there is no room for a headline behind three-wide card
-   groups — drop it into normal flow just below the cluster instead. */
+   groups — drop it into normal flow just below the cluster instead. The
+   stage also drops its desktop height:min(100vh,900px) for a plain auto
+   height here: that height existed to center a headline that overlaps
+   the cards, which no longer happens once the headline is static content
+   below them, and keeping it would pin a mostly-empty panel on screen
+   for a stretch of scrolling with nothing left to reveal. The scroll
+   effect reads the stage's height live every frame, so a shorter stage
+   on mobile just means a shorter pinned hold — nothing to keep in sync
+   by hand. */
 @media (max-width:760px){
-  .splitSeq__stage{justify-content:flex-start;padding-top:6vh}
+  .splitSeq__stage{
+    height:auto;
+    justify-content:flex-start;
+    padding-block:6vh;
+  }
   .splitSeq__cards{height:min(52svh, 360px)}
   .splitSeq__copy{
     position:static;
@@ -9178,17 +9193,22 @@ function CaseSection({
       onPanel={onPanel}
     />
   );
+  // "bottom" (the default) sinks the figure to the row's own bottom edge
+  // via margin-top:auto, which needs the row stretched to the taller
+  // column's full height; "top" just sits it in normal flow right under
+  // the heading, so the row keeps its ordinary content-fit height.
+  const pinBottom = leftFigure && leftFigure.align !== "top";
   return (
     <div id={id}>
-      <div className={`caseSplit${leftFigure ? " caseSplit--figureLeft" : ""}`}>
-        {/* leftFigure sinks to the bottom of this column via its own
-            margin-top:auto, so it lines up with wherever the right
-            column's content happens to end — a stretch context, not a
-            fixed offset, so it tracks the prose height at any width. */}
+      <div
+        className={`caseSplit${pinBottom ? " caseSplit--figureLeft" : ""}`}
+      >
         {leftFigure ? (
           <div className="caseSplitLeft">
             {head}
-            <figure className="caseSplitLeftFigure caseHeroFrame">
+            <figure
+              className={`caseHeroFrame${pinBottom ? " caseSplitLeftFigure" : ""}`}
+            >
               <div className="inner">
                 <Visual
                   imageKey={leftFigure.imageKey}
@@ -12077,7 +12097,7 @@ const STYLES_POST = `
 /* Breaks out of .container's max-width and side gutters to run the full
    viewport width, and drops its own bottom margin — for a closing image
    meant to sit flush against whatever comes right after it. Relies on
-   body's own overflow-x:hidden so 100vw can't open a horizontal scrollbar. */
+   html's own overflow-x:hidden so 100vw can't open a horizontal scrollbar. */
 .wideImgPlain--bleed{
   width:100vw;
   margin-left:calc(50% - 50vw);
