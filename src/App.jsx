@@ -995,12 +995,10 @@ export const CONTENT = {
         },
         {
           innerSplit: {
-            label: "The evidence",
+            label: "The Architecture we Shipped",
             onPanel: true,
             divider: true,
-            items: [
-              "An A/B test put an installable control against an instant-play variant: instant opened at more than six times the control's day-zero rate, cut the path from entry to first play roughly six-fold, and still held retention best the following day — proof the metric that moves first is rarely the one that matters. Amplitude funnels and session replays gave us the behavioural picture underneath, including the dual-format finding that decided the architecture, and an unmoderated six-participant usability study tested the redesigned Home before it shipped.",
-            ],
+            items: [],
           },
         },
         {
@@ -11995,6 +11993,7 @@ const STYLES_POST = `
    sections are set off from each other, just a size down. */
 .richSubSection{
   margin-top:clamp(48px,7vh,88px);
+  margin-bottom:clamp(220px,24vh,320px);
   padding-top:clamp(28px,4vh,48px);
   border-top:1px solid var(--hairline);
 }
