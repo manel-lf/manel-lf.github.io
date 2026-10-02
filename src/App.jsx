@@ -1439,9 +1439,11 @@ export const CONTENT = {
       name: "Radisson Hotels",
       mark: "radisson",
       eyebrow: "Radisson Hotels · Eunoia Digital",
-      // Static for now (no clip shot yet) — still gets the same idle-dim/
-      // hover-brighten treatment as the video cards, just no playback.
+      // Static backdrop with the two app screens layered over it, sliding up
+      // on hover — the same cardMockup mechanism The Southern uses, tuned
+      // for a pair of phones (see the radisson rules next to .cardMockup).
       cardThumbnail: "card.radisson.thumbnail",
+      cardMockup: "img/radisson-card-devices.webp",
       // Case study isn't ready yet — the card shows a tooltip instead of
       // navigating, and the route itself redirects home. See ProjectCard
       // and App's routing guard. There's no real intention of building this
@@ -2007,9 +2009,13 @@ export const CONTENT = {
       name: "SEAT CUPRA",
       mark: "cupra",
       eyebrow: "SEAT CUPRA",
-      // Static for now (no clip shot yet) — still gets the same idle-dim/
-      // hover-brighten treatment as the video cards, just no playback.
-      cardThumbnail: "card.seatCupra.thumbnail",
+      // A real clip, same as the other cards: the poster is the idle frame
+      // and the clip plays ping-pong on hover (desktop) or once centred in
+      // view (mobile). See the note on the Jesterday card.
+      cardVideo: {
+        src: "video/seat-cupra-card.mp4",
+        poster: "img/seat-cupra-card-poster.webp",
+      },
       // Case study isn't ready yet — the card shows a tooltip instead of
       // navigating, and the route itself redirects home. See ProjectCard
       // and App's routing guard.
@@ -2279,17 +2285,11 @@ export const CONTENT = {
     // project) — their old static art lives on only as that clip's poster
     // frame, referenced directly by path rather than through this registry.
 
-    "card.seatCupra.thumbnail": {
-      src: "img/seat-cupra-card.webp",
-      alt: "SEAT CUPRA's connected-services infotainment screen, a night-mode navigation view on the car's dashboard display.",
-      plate: "orbit",
-      tone: "dark",
-      seed: 211,
-    },
-
+    // Just the backdrop — the two phones are a separate layer (cardMockup on
+    // the project) that slides in over it on hover.
     "card.radisson.thumbnail": {
-      src: "img/radisson-card.png",
-      alt: "Two Radisson Hotels app screens, a summer promotion and a hotel booking page, over the entrance of a Radisson hotel.",
+      src: "img/radisson-card-bg.webp",
+      alt: "The blurred entrance of a Radisson hotel at dusk.",
     },
 
     "case.jesterday.hero": {
@@ -3352,6 +3352,20 @@ const STYLES_HOME = `
      just inside that edge instead of escaping above it. */
   transform:translateY(-45%);
   opacity:1;
+}
+/* Radisson's mockup is a pair of phones, not one tall handset: centred and
+   wider, and its artwork already carries its own soft shadow, so the
+   drop-shadow above is dropped. The rise distance is retuned to the pair's
+   ~1:1 shape so it settles fully inside the box instead of overshooting. */
+.projectCard[data-card-slug="radisson"] .cardMockup{
+  left:0;right:0;margin-inline:auto;
+  width:46%;max-width:260px;
+  top:70%;
+  filter:none;
+}
+.projectCard[data-card-slug="radisson"]:hover .cardMockup,
+.projectCard[data-card-slug="radisson"].is-active .cardMockup{
+  transform:translateY(-68%);
 }
 .cardBody{
   padding:0 var(--s5) var(--s5);
