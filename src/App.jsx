@@ -1072,33 +1072,36 @@ export const CONTENT = {
             { smallLabel: "Results" },
             "We shipped three connected surfaces on that architecture: an instant-first Home, Classics as a dedicated downloadable destination, and format-agnostic discovery across Search and My Games.",
             "Measured against the installable control, at day zero and day one:",
-          ],
-        },
-        {
-          noteCards: [
             {
-              value: "6×",
-              title: "Day-zero open rate",
-              body: "Instant play measured against the installable control.",
-            },
-            {
-              value: "2×",
-              title: "Day-one ecosystem retention",
-              body: "Players coming back the next day, across both formats.",
-            },
-            {
-              value: "~6× faster",
-              title: "Entry to first play",
-              body: "Time from opening GH+ to a game actually running.",
+              stack: true,
+              noteCards: [
+                {
+                  value: "6×",
+                  title: "Day-zero open rate",
+                  body: "Instant play measured against the installable control.",
+                },
+                {
+                  value: "2×",
+                  title: "Day-one ecosystem retention",
+                  body: "Players coming back the next day, across both formats.",
+                },
+                {
+                  value: "~6× faster",
+                  title: "Entry to first play",
+                  body: "Time from opening GH+ to a game actually running.",
+                },
+              ],
             },
           ],
         },
         {
           subSection: {
-            label: "What I learned",
-            statement: "Where things live decides what players do.",
+            label: "My notes",
+            statement: "What I learned",
             body: [
+              { smallLabel: "The right ratio" },
               "Platform transformations are information-architecture problems long before they're UI problems. We spent more time deciding where things live than deciding how they look, and that turned out to be the right ratio.",
+              { smallLabel: "Two front doors" },
               "Two audiences with opposite needs can share a product, but not one flat hierarchy. They need separate front doors and a shared library underneath — and the players who cross between them are worth designing for directly.",
             ],
           },
@@ -3915,6 +3918,9 @@ const STYLES_CASE = `
   gap:clamp(12px,1.6vw,24px);
   margin-top:clamp(32px,5vh,56px);
 }
+/* One card per row — for a card set that sits inside a prose column. The
+   column's own gap already spaces it from the text above. */
+.cardGrid--stack{grid-template-columns:1fr;margin-top:0}
 .noteCard{
   display:flex;flex-direction:column;gap:var(--s2);
   padding:var(--s5);
@@ -11144,7 +11150,10 @@ function CaseRichBlock({ block, i, reduced }) {
   }
   if (block.noteCards) {
     return (
-      <div className="cardGrid reveal" key={i}>
+      <div
+        className={`cardGrid${block.stack ? " cardGrid--stack" : ""} reveal`}
+        key={i}
+      >
         {block.noteCards.map((c, j) => (
           <div
             className={`noteCard${c.highlight ? " noteCard--highlight" : ""}`}
