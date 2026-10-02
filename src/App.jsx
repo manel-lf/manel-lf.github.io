@@ -692,7 +692,7 @@ export const CONTENT = {
       positioning:
         "A consumer subscription app for casual games, repositioned around instant play.",
       cardDescription:
-        "End-to-end ownership of a casual-games subscription app — research, product analytics, design system and the first-session rebuild.",
+        "Content architecture for a casual-games subscription app.",
       role: "Senior Product Designer, sole designer on GH+",
       years: "2025 — 2026",
       team: "Product, Engineering, Content, Data",
@@ -1131,7 +1131,7 @@ export const CONTENT = {
       positioning:
         "An indie mobile multiplayer title, given a design system and an economy that survive production.",
       cardDescription:
-        "Indie mobile multiplayer. Design system built from scratch, an energy economy modelled end to end, and the component library implemented in Unity.",
+        "Design system and economy for a multiplayer game.",
       role: "Game UX UI Designer",
       years: "2023 — 2025",
       skills: [
@@ -1262,7 +1262,7 @@ export const CONTENT = {
       positioning:
         "A branding and omnichannel experience design project for The Southern, a luxury hotel group — brand identity and app flows.",
       cardDescription:
-        "A branding and omnichannel experience design project for The Southern, a luxury hotel group; brand identity and app flows.",
+        "Branding and experience design for a luxury hotel group.",
       role: "UX/UI & Brand Design",
       years: "2024",
       // A single year, not a range — see the metaBar's yearLabel fallback.
@@ -1453,7 +1453,7 @@ export const CONTENT = {
       positioning:
         "Enterprise interfaces, flows and UI kits for a global hotel group, produced at agency scale.",
       cardDescription:
-        "Enterprise interfaces for a global hotel group. Flows, screens and reusable UI kits delivered at agency pace without losing consistency.",
+        "Enterprise UI kits for a global hotel group.",
       role: "UX UI Designer",
       years: "2024",
       caseTitle: [
@@ -1575,7 +1575,7 @@ export const CONTENT = {
       positioning:
         "Three engagement features built from one hyper-casual game's existing maps — no new art, no new pipeline.",
       cardDescription:
-        "Night Mode, a ticket-driven Summer Event and a daily Today's Goals loop — three retention features built from maps the game already had.",
+        "Three retention features for a hidden-object game.",
       role: "Game UX UI Designer",
       years: "2023",
       // One year, not a range — "Years" reads oddly over a single value.
@@ -1789,7 +1789,7 @@ export const CONTENT = {
       positioning:
         "A cancelled midcore RPG sequel — campaign battle systems redesigned, then tested against real first-time players.",
       cardDescription:
-        "Campaign battle redesign and first-time-user research for an unlaunched RPG sequel — what shipped in the systems, and what the research proved people actually understood.",
+        "Battle UX and first-time-user research for an RPG sequel.",
       role: "Intern Game UX UI Designer",
       years: "2021 — 2022",
       skills: [
@@ -2024,7 +2024,7 @@ export const CONTENT = {
       positioning:
         "In-car infotainment for connected services — enrolment, data plans and software updates, across every screen in the range.",
       cardDescription:
-        "In-car infotainment. Connected-services enrolment, data plan purchase and an update centre, designed to hold from 7-inch clusters to 15-inch displays.",
+        "Connected-services infotainment for SEAT and CUPRA.",
       role: "Junior UX UI Designer",
       years: "2022 — 2023",
       caseTitle: [
