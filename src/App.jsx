@@ -1022,7 +1022,11 @@ export const CONTENT = {
               "Two additions carry it. Keep Playing brings back the games a player has already engaged with, so a returning session starts where the last one stopped. A video carousel sits above it, putting featured titles in motion so players can judge a game before tapping into it.",
             ],
             imageKey: "case.gamehouse-plus.home",
-            ratio: 1353 / 2724,
+            video: {
+              src: "video/gamehouse-plus-home.mp4",
+              poster: "img/gamehouse-plus-home-poster.jpg",
+            },
+            ratio: 540 / 1080,
           },
         },
         {
@@ -6253,6 +6257,79 @@ function CardVideo({ cardVideo, active, reduced, className }) {
   );
 }
 
+/**
+ * A looping, muted clip standing in for a still inside a case study body
+ * (see featureRow's `video`). Doesn't fetch until it nears the viewport and
+ * only plays while it's actually on screen; shows the poster as a plain
+ * image under reduced motion.
+ */
+function FeatureVideo({ video, ratio, label, reduced }) {
+  const ref = useRef(null);
+  const [near, setNear] = useState(() => !("IntersectionObserver" in window));
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || near) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setNear(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "300px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [near]);
+
+  // A <source> appended after mount doesn't start loading on its own.
+  useEffect(() => {
+    if (near && ref.current) ref.current.load();
+  }, [near]);
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || !near || reduced || !("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) v.play().catch(() => {});
+        else v.pause();
+      },
+      { threshold: 0.25 },
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, [near, reduced]);
+
+  const box = { aspectRatio: String(ratio), overflow: "hidden" };
+  const fit = { width: "100%", height: "100%", objectFit: "cover" };
+  if (reduced) {
+    return (
+      <div className="vis" style={box}>
+        <img src={resolveSrc(video.poster)} alt={label} style={fit} />
+      </div>
+    );
+  }
+  return (
+    <div className="vis" style={box}>
+      <video
+        ref={ref}
+        muted
+        loop
+        playsInline
+        autoPlay={near}
+        preload={near ? "auto" : "none"}
+        poster={resolveSrc(video.poster)}
+        aria-label={label}
+        style={fit}
+      >
+        {near ? <source src={resolveSrc(video.src)} type="video/mp4" /> : null}
+      </video>
+    </div>
+  );
+}
+
 /* =========================================================================
  * Icons — every icon on the site is inline SVG. No icon font, no emoji.
  * ========================================================================= */
@@ -11139,7 +11216,7 @@ function CaseRichBlock({ block, i, reduced }) {
   }
   // Media and copy side by side, alternating which side the image sits on.
   if (block.featureRow) {
-    const { kicker, title, body, imageKey, ratio, imageFirst } =
+    const { kicker, title, body, imageKey, ratio, imageFirst, video } =
       block.featureRow;
     const copy = (
       <div className="featureCopy" key="copy">
@@ -11155,7 +11232,16 @@ function CaseRichBlock({ block, i, reduced }) {
     const figure = (
       <div className="featureVisual" key="fig">
         <div className="featureVisualInner">
-          <Visual imageKey={imageKey} ratio={ratio || 16 / 10} />
+          {video ? (
+            <FeatureVideo
+              video={video}
+              ratio={ratio || 16 / 10}
+              label={CONTENT.IMAGES[imageKey]?.alt}
+              reduced={reduced}
+            />
+          ) : (
+            <Visual imageKey={imageKey} ratio={ratio || 16 / 10} />
+          )}
         </div>
       </div>
     );
