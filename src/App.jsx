@@ -1117,7 +1117,8 @@ export const CONTENT = {
       eyebrow: "GPixel · Jesterday",
       // A real clip instead of the centred wordmark — set only for cards
       // that have one. `poster` is the paused/idle frame; the clip plays
-      // ping-pong on hover (desktop) or once centred in view (mobile).
+      // through once on hover (desktop) or when centred in view (mobile),
+      // then holds its last frame.
       cardVideo: {
         src: "video/jesterday-card.mp4",
         poster: "img/jesterday-card-poster.png",
@@ -2010,8 +2011,8 @@ export const CONTENT = {
       mark: "cupra",
       eyebrow: "SEAT CUPRA",
       // A real clip, same as the other cards: the poster is the idle frame
-      // and the clip plays ping-pong on hover (desktop) or once centred in
-      // view (mobile). See the note on the Jesterday card.
+      // and the clip plays through once on hover (desktop) or when centred
+      // in view (mobile). See the note on the Jesterday card.
       cardVideo: {
         src: "video/seat-cupra-card.mp4",
         poster: "img/seat-cupra-card-poster.webp",
@@ -3353,19 +3354,25 @@ const STYLES_HOME = `
   transform:translateY(-45%);
   opacity:1;
 }
-/* Radisson's mockup is a pair of phones, not one tall handset: centred and
-   wider, and its artwork already carries its own soft shadow, so the
-   drop-shadow above is dropped. The rise distance is retuned to the pair's
-   ~1:1 shape so it settles fully inside the box instead of overshooting. */
+/* Radisson's mockup is a pair of phones, not one tall handset, and its
+   artwork already carries its own soft shadow (so the drop-shadow above is
+   dropped). The settled state reproduces the supplied composite: the devices
+   PNG sits at ~68.5% of the card's width, flush to the right edge, so the
+   phones themselves span roughly 44%-87% of the width with their bottoms a
+   hair above the card's bottom edge. It is anchored by its bottom and moved
+   with translateY — percentages there are of the image's own height, and the
+   phones end 19.4% of that above the image's bottom edge, so 19.4% lands them
+   on the edge. Idle pushes a further 62% down, leaving just the tops showing. */
 .projectCard[data-card-slug="radisson"] .cardMockup{
-  left:0;right:0;margin-inline:auto;
-  width:46%;max-width:260px;
-  top:70%;
+  left:auto;right:-0.3%;
+  top:auto;bottom:2.3%;
+  width:68.5%;max-width:none;
   filter:none;
+  transform:translateY(calc(19.4% + 62%));
 }
 .projectCard[data-card-slug="radisson"]:hover .cardMockup,
 .projectCard[data-card-slug="radisson"].is-active .cardMockup{
-  transform:translateY(-68%);
+  transform:translateY(19.4%);
 }
 .cardBody{
   padding:0 var(--s5) var(--s5);
@@ -6168,13 +6175,9 @@ function HeroMedia({ project, reduced, ratio = 16 / 9, className }) {
 /**
  * A work card's clip: paused on its own first frame while idle, dimmed by
  * CSS (see `.cardMediaDim`); once `active` (hovered, or — on touch —
- * centred in the viewport) it plays ping-pong. Forward is real native
- * playback (smooth, hardware-decoded); reverse has no native equivalent,
- * so it's hand-walked via `currentTime`, one step per the video's own
- * `seeked` event rather than a fixed timer — a seek is an async decode
- * from the nearest keyframe, and driving steps on a clock queued a new one
- * before the last had resolved, which is what made the reverse leg
- * stutter. Falls back to a still first frame under reduced motion.
+ * centred in the viewport) it plays through once and holds its last frame.
+ * Going idle rewinds to the first frame, so the next activation starts from
+ * the top. Falls back to a still first frame under reduced motion.
  *
  * The clip itself doesn't start downloading until the card nears the
  * viewport — four of these on one page would otherwise all fetch on load,
@@ -6211,43 +6214,11 @@ function CardVideo({ cardVideo, active, reduced, className }) {
     if (!v || !seen) return;
 
     if (active && !reduced) {
-      let cancelled = false;
-      let pendingTimer = 0;
-      // Each step waits for the video's own `seeked` event instead of
-      // firing on a fixed-interval timer — a seek is an async decode from
-      // the nearest keyframe, and firing the next one on a clock queued it
-      // before the last had actually resolved, which is what made the
-      // reverse leg visibly stutter. A step only ever starts once the
-      // browser is done with the last one; the 90ms floor after that keeps
-      // its pace close to the forward leg it mirrors when seeks resolve
-      // faster than that.
-      const reverseStep = () => {
-        if (cancelled) return;
-        const t = v.currentTime - 0.09;
-        if (t <= 0) {
-          v.currentTime = 0;
-          v.play().catch(() => {});
-          return;
-        }
-        const stepStart = performance.now();
-        const onSeeked = () => {
-          v.removeEventListener("seeked", onSeeked);
-          if (cancelled) return;
-          const wait = Math.max(0, 90 - (performance.now() - stepStart));
-          pendingTimer = window.setTimeout(reverseStep, wait);
-        };
-        v.addEventListener("seeked", onSeeked);
-        v.currentTime = t;
-      };
-      const onEnded = () => reverseStep();
+      // Plays once and simply stops: an ended video holds its last frame on
+      // its own, so there is nothing to do on `ended`.
       v.loop = false;
-      v.addEventListener("ended", onEnded);
       v.play().catch(() => {});
-      return () => {
-        cancelled = true;
-        window.clearTimeout(pendingTimer);
-        v.removeEventListener("ended", onEnded);
-      };
+      return;
     }
 
     v.pause();
