@@ -333,6 +333,7 @@ export const CONTENT = {
           },
           {
             imageKey: "journal.groundingIdeas.before",
+            ratio: 2752 / 528,
             caption:
               "The old shape: a chain of translations between the question and an answer.",
           },
@@ -342,6 +343,7 @@ export const CONTENT = {
           },
           {
             imageKey: "journal.groundingIdeas.after",
+            ratio: 2500 / 720,
             caption:
               "The current shape: idea and evidence sit close enough to argue with each other directly.",
           },
@@ -2192,25 +2194,16 @@ export const CONTENT = {
     },
 
     "journal.groundingIdeas.before": {
-      src: null,
-      alt: "Abstract plate of stepped columns standing in for the old, linear prototyping chain.",
-      plate: "columns",
-      tone: "dark",
-      seed: 192,
+      src: "img/journal-grounding-ideas-before.webp",
+      alt: "The old prototyping process as a chain: Ideation, Wireframes, Flows, Low-Fidelity Mockups, Prototyping, and finally a clunky Figma prototype.",
     },
     "journal.groundingIdeas.after": {
-      src: null,
-      alt: "Abstract plate of concentric arcs standing in for the current, looped prototyping process.",
-      plate: "orbit",
-      tone: "dark",
-      seed: 193,
+      src: "img/journal-grounding-ideas-after.webp",
+      alt: "The current prototyping process as a loop: Ideation feeds Prompting, which cycles with Evaluating Results until it produces a functional prototype.",
     },
     "journal.groundingIdeas": {
-      src: null,
-      alt: "Abstract plate of concentric arcs for the grounding-ideas-fast journal entry.",
-      plate: "orbit",
-      tone: "dark",
-      seed: 191,
+      src: "img/journal-grounding-ideas-hero.webp",
+      alt: "Title card reading Prototyping with AI, by Manel López — Vibe Coding & Vibe Designing.",
     },
     "journal.toolkit.fig": {
       src: null,
