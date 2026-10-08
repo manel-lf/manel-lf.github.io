@@ -2202,8 +2202,11 @@ export const CONTENT = {
       alt: "The current prototyping process as a loop: Ideation feeds Prompting, which cycles with Evaluating Results until it produces a functional prototype.",
     },
     "journal.groundingIdeas": {
-      src: "img/journal-grounding-ideas-hero.webp",
-      alt: "Title card reading Prototyping with AI, by Manel López — Vibe Coding & Vibe Designing.",
+      src: null,
+      alt: "Abstract plate of concentric arcs for the grounding-ideas-fast journal entry.",
+      plate: "orbit",
+      tone: "dark",
+      seed: 191,
     },
     "journal.toolkit.fig": {
       src: null,
